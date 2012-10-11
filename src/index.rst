@@ -1,22 +1,42 @@
-.. TurboGears2 Website documentation master file, created by
-   sphinx-quickstart on Tue Sep 25 15:42:11 2012.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+##########################
+ TurboGears Web Framework
+##########################
 
-Welcome to TurboGears2 Website's documentation!
-===============================================
+*********************************************************
+ The next generation web framework that scales with you.
+*********************************************************
 
-Contents:
+TurboGears will help you to create a database-driven, ready-to-extend application in minutes. All with code that is as natural as writing a function, designer friendly templates, easy AJAX on the browser side and on the server side and with an incredibly powerful and flexible Object Relational Mapper (ORM).
 
-.. toctree::
-   :maxdepth: 2
+***************
+ Give It a Try
+***************
+
+.. code-block:: bash
+
+   $ virtualenv --no-site-packages tg2env
+   $ cd tg2env/
+   $ source bin/activate
+   (tg2env)$ easy_install -i http://tg.gy/current tg.devtools
+   (tg2env)$ paster quickstart example
+   (tg2env)$ cd example
+   (tg2env)$ python setup.py develop -i http://tg.gy/current
+   (tg2env)$ paster setup-app development.ini
+   (tg2env)$ paster serve development.ini
+
+Get started Learning TurboGears 2 by looking at our famous wiki tutorial. 
+Follow on Google+ for the latest news
+
+############################################
+ A new Generation in dynamic web frameworks
+############################################
 
 
+TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails. All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration. We wanted something that had:
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+* Real multi-database support
+* Support for Horizontal data partitioning (aka, sharding)
+* Support for a variety of JavaScript toolkits, and new widget system to make building ajax heavy apps easier
+* Support for multiple data-exchange formats
+* Built in extensibility via standard WSGI components
+* Programmer friendly template system that also works for designers
