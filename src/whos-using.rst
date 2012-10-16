@@ -32,27 +32,27 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _SourceForge: https://sourceforge.net/p/allura/home/
 .. _Fedora Community: https://admin.fedoraproject.org/community/
 .. _OrcaTec LLC: http://www.orcatec.com/
-.. _PyF: file:///home/marvin/src/website/src/_build/html/whos-using.html#pyf
-.. _ACR CMS: file:///home/marvin/src/website/src/_build/html/whos-using.html#acr-cms
-.. _Moksha: file:///home/marvin/src/website/src/_build/html/whos-using.html#moksha
-.. _1000 Corks: file:///home/marvin/src/website/src/_build/html/whos-using.html#corks
-.. _Glossom: file:///home/marvin/src/website/src/_build/html/whos-using.html#glossom
-.. _The Voice of Turkey: file:///home/marvin/src/website/src/_build/html/whos-using.html#the-voice-of-turkey
-.. _AxantWeb: file:///home/marvin/src/website/src/_build/html/whos-using.html#axantweb
-.. _ESOF2010 Media Gallery: file:///home/marvin/src/website/src/_build/html/whos-using.html#esof2010-media-gallery
-.. _Accademia delle Scienze: file:///home/marvin/src/website/src/_build/html/whos-using.html#accademia-delle-scienze
-.. _LSCube: file:///home/marvin/src/website/src/_build/html/whos-using.html#lscube
-.. _Noodle NG: file:///home/marvin/src/website/src/_build/html/whos-using.html#noodle-ng
-.. _Paris Envies: file:///home/marvin/src/website/src/_build/html/whos-using.html#id1
-.. _Accolade: file:///home/marvin/src/website/src/_build/html/whos-using.html#accolade
-.. _DiggDot: file:///home/marvin/src/website/src/_build/html/whos-using.html#diggdot
-.. _Diggdot.us: file:///home/marvin/src/website/src/_build/html/whos-using.html#diggdot-us
-.. _way to let your geek flag fly: file:///home/marvin/src/website/src/_build/html/whos-using.html#way-to-let-your-geek-flag-fly
-.. _Soda: file:///home/marvin/src/website/src/_build/html/whos-using.html#soda
-.. _Irrepressible.info: file:///home/marvin/src/website/src/_build/html/whos-using.html#irrepressible-info
-.. _Observer: file:///home/marvin/src/website/src/_build/html/whos-using.html#observer
-.. _Slashdotted: file:///home/marvin/src/website/src/_build/html/whos-using.html#slashdotted
-.. _Oprius Software: file:///home/marvin/src/website/src/_build/html/whos-using.html#oprius-software
-.. _MeCommerce: file:///home/marvin/src/website/src/_build/html/whos-using.html#mecommerce
-.. _My Drawings: file:///home/marvin/src/website/src/_build/html/whos-using.html#my-drawings
-.. _ShowMeDo: file:///home/marvin/src/website/src/_build/html/whos-using.html#showmedo
+.. _PyF: http://pyfproject.org/
+.. _ACR CMS: http://www.acrcms.org/acr/index
+.. _Moksha: https://fedorahosted.org/moksha/
+.. _1000 Corks: http://1000corks.com/
+.. _Glossom: http://www.glossom.com/
+.. _The Voice of Turkey: http://www.osesturkiye.com/
+.. _AxantWeb: http://www.axantweb.com/
+.. _ESOF2010 Media Gallery: http://nubes.esof2010.org/
+.. _Accademia delle Scienze: http://media.accademiadellescienze.it/
+.. _LSCube: http://media.lscube.org/
+.. _Noodle NG: https://code.google.com/p/noodle-ng/
+.. _Paris Envies: http://www.parisenvies.com/
+.. _Accolade: http://www.accoladeprep.com/
+.. _DiggDot: http://diggdot.us/
+.. _Diggdot.us: http://diggdot.us/
+.. _way to let your geek flag fly: http://www.macworld.com/2006/05/features/hotstuff4/index.php
+.. _Soda: http://www.soda.co.uk/
+.. _Irrepressible.info: http://irrepressible.info/
+.. _Observer: http://observer.guardian.co.uk/amnesty/story/0,,1784718,00.html
+.. _Slashdotted: http://yro.slashdot.org/yro/06/05/28/136247.shtml
+.. _Oprius Software: http://www.oprius.com/
+.. _MeCommerce: http://mecommerce.goodstorm.com/
+.. _My Drawings: http://mydrawings.com/
+.. _ShowMeDo: http://showmedo.com/
