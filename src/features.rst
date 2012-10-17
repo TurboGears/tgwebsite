@@ -1,3 +1,5 @@
+.. include:: features/shallow-sidebar.rst
+
 ##########
  Features
 ##########

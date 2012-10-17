@@ -69,4 +69,12 @@ TurboGears 2 is built on top of the experience of several next generation web fr
    /welcome/presentations
    /welcome/turbogears-way
    /whos-using
-
+   /features/components
+   /features/deep-sidebar
+   /features/reuse
+   /features/shallow-sidebar
+   /features/wsgi
+   /features/components/genshi
+   /features/components/mako
+   /features/components/pylons
+   /features/components/sqlalchemy

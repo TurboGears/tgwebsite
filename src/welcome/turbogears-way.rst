@@ -1,5 +1,5 @@
-.. include:: sidebar.rst
-
+.. include:: /welcome/sidebar.rst
+   
 ####################
  The Turbogears Way
 ####################
