@@ -55,3 +55,18 @@ TurboGears 2 is built on top of the experience of several next generation web fr
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
 .. _`wiki tutorial`: http://www.turbogears.org/book/part1/wiki20.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
+
+
+.. toctree::
+   :hidden:
+   
+   /index
+   /current-status
+   /documentation
+   /features
+   /resources
+   /welcome/overview
+   /welcome/presentations
+   /welcome/turbogears-way
+   /whos-using
+

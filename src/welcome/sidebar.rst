@@ -1,4 +1,3 @@
-
 .. sidebar:: Overview
 
    - :doc:`/welcome/overview`
