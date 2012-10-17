@@ -2,11 +2,13 @@
  TurboGears Web Framework
 ##########################
 
+.. include:: welcome/sidebar.rst
+   
 *********************************************************
  The next generation web framework that scales with you.
 *********************************************************
 
-TurboGears will help you to create a database-driven, ready-to-extend application in minutes. All with code that is as natural as writing a function, designer friendly templates, easy AJAX on the browser side and on the server side and with an incredibly powerful and flexible Object Relational Mapper (ORM).
+TurboGears will help you to create a database-driven, ready-to-extend application in minutes. All with code that is `as natural as writing a function`_, `designer friendly templates`_, easy `AJAX`_ on the `browser side`_ and on the `server side`_ and with an incredibly powerful and flexible `Object Relational Mapper (ORM)`_.
 
 ***************
  Give It a Try
@@ -24,8 +26,9 @@ TurboGears will help you to create a database-driven, ready-to-extend applicatio
    (tg2env)$ paster setup-app development.ini
    (tg2env)$ paster serve development.ini
 
-Get started Learning TurboGears 2 by looking at our famous wiki tutorial. 
-Follow on Google+ for the latest news
+Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
+
+Follow on `Google+`_ for the latest news.
 
 ############################################
  A new Generation in dynamic web frameworks
@@ -40,3 +43,15 @@ TurboGears 2 is built on top of the experience of several next generation web fr
 * Support for multiple data-exchange formats
 * Built in extensibility via standard WSGI components
 * Programmer friendly template system that also works for designers
+
+.. _`Overview`: welcome/overview.html
+.. _`Presentations`: welcome/presentations.html
+.. _`The TurboGears Way`: welcome/turbogears-way.html
+.. _`as natural as writing a function`: http://www.turbogears.org/2.1/docs/main/Controllers.html
+.. _`designer friendly templates`: http://genshi.edgewall.org/
+.. _`AJAX`: http://en.wikipedia.org/wiki/AJAX
+.. _`browser side`: http://www.toscawidgets.org/
+.. _`server side`: http://www.pylonshq.org/
+.. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
+.. _`wiki tutorial`: http://www.turbogears.org/book/part1/wiki20.html
+.. _`Google+`: https://plus.google.com/115723575598932631951
