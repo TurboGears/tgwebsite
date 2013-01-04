@@ -115,10 +115,6 @@
   {%- endif %}
 {%- endblock %}
 
-{% if render_sidebar and (theme_collapsiblesidebar|tobool) %}
-{% set script_files = script_files + ['_static/sidebar.js'] %}
-{% endif %}
-
 {% if theme_headerheight %}
 {% set script_files = script_files + ['_static/header.js'] %}
 {% endif %}

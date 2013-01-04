@@ -1,8 +1,8 @@
 .. include:: /features/shallow-sidebar.rst
 
-####################################
- An architecture for tomorrow: WSGI
-####################################
+###############################
+ WSGI: Tomorrow's Architecture
+###############################
 
 For many years, authors of Python web applications and pages had to rely on non-standard methods to get data from their code to the user's web browser. CGI, FastCGI, mod_python, and proprietary interfaces were all used with varying degrees of success.
 
