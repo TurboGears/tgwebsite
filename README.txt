@@ -1,6 +1,8 @@
 TODO:
-- Cogbin currently generates a JSON struct that is read and displayed by a genshi template. Convert to static generation.
-- create setup.py that install docutils and sphinx
+- Need to make a 'makebook' function
+- Need to silence sphinx
+- Add search box on site template. Include doc page inventories for searching
+- All items at the bottom of the buildsite.sh file
 
 README:
 
