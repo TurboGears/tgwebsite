@@ -65,6 +65,7 @@ TurboGears 2 is built on top of the experience of several next generation web fr
    /documentation
    /features
    /resources
+   /cogbin
    /welcome/overview
    /welcome/presentations
    /welcome/turbogears-way
