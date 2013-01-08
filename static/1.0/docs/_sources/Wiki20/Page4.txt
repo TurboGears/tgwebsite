@@ -1,0 +1,158 @@
+20 Minute Wiki Page 4
+=====================
+
+Friendlier URLs
+---------------
+
+Now that we have page display and editing working, lets put a bit of polish on
+this wiki and add page linking and creation. Before we do that, though, we'll
+address the ugly query cruft on our URLS. We'd much rather see ``/Foo`` instead
+of ``/?pagename=Foo``.
+
+Luckily, this is really easy to do. We just add a ``default`` method to our
+``Root`` controller. The ``default`` method is called when no other URLs match
+and provides one way to implement our clean URL scheme:
+
+.. parsed-literal::
+
+    # ...
+
+    @expose()
+    def save(self, pagename, data, submit):
+        page = Page.byPagename(pagename)
+        page.data = data
+        turbogears.flash("Changes saved!")
+        raise turbogears.redirect(**"/%s" % pagename**)
+
+    **@expose()**
+    **def default(self, pagename):**
+        **return self.index(pagename)**
+
+We've also changed our redirect in the ``save`` method to match our new URL
+scheme. But this raises the question, what sort of wiki doesn't have a way to
+link pages?
+
+
+What about WikiWords?
+---------------------
+
+WikiWords have also been described as WordsSmashedTogether. A typical wiki
+will automatically create links for these words when it finds them. Sounds
+like a good idea, and this sounds like a job for a regular expression (and
+we'll ignore the `having two problems`_ comments).
+
+.. _having two problems: http://regex.info/blog/2006-09-15/247
+
+We'll start by pulling in Python's regular expression engine into our
+controller:
+
+.. parsed-literal::
+
+    #...
+
+    from wiki20.model import Page
+    from docutils.core import publish_parts
+    **import re**
+
+    class Root(controllers.RootController):
+    #...
+
+A WikiWord is a word that starts with an uppercase letter, has a collection
+of lowercase letters and numbers followed by another uppercase letter and
+more letters and numbers. Here's a regular expression that meets that
+requirement:
+
+.. parsed-literal::
+
+    #...
+
+    from wiki20.model import Page
+    from docutils.core import publish_parts
+    import re
+
+    **wikiwords = re.compile(r"\\b([A-Z]\\w+[A-Z]+\\w+)")**
+
+    class Root(controllers.RootController):
+    #...
+
+Then, we need to apply it to our formatted text and convert the matches to
+links.:
+
+.. parsed-literal::
+
+    def index(self, pagename="FrontPage"):
+        page = Page.byPagename(pagename)
+        content = publish_parts(page.data,
+                                writer_name="html")['html_body']
+        **root = str(turbogears.url('/'))**
+        **content = wikiwords.sub(r'<a href="%s\\1">\\1</a>' % root, content)**
+        return dict(data=content, page=page)
+
+Now if you've been wondering about the ``tg.url()``, you can configure TurboGears so that it doesn't live at the root of a site. This allows you to combine multiple TurboGears apps on a single server. Using ``tg.url()`` means that your links will continue to work when this happens.
+
+For those of you new to Python, the ``r'string'`` means 'raw string', one that
+turns off escaping, which is mostly used in regex strings to prevent you from
+having to double escape slashes. The substitution will also look a bit weird,
+but is more understandable if you recognize that the ``%s`` gets substituted
+with ``root``, then the substitution is done which replaces the ``\1`` with the
+string matching the regex.
+
+Go ahead and edit your front page to include a WikiWord. When the page is
+displayed, you'll see that it's now a link. You probably won't be surprised
+to find that clicking that link produces an error.
+
+
+Hey, where's the page?
+----------------------
+
+It's time to add a check for pages that don't exist. Our approach will be
+simple: if the page doesn't exist, you get an edit page to use to create it.
+
+In the ``index`` method, we'll check to see if the page exists. If it doesn't,
+we'll redirect to a new ``notfound`` method. We'll add this method after the
+``index`` method and before the ``edit`` method. Here are the changes we make to
+the controller:
+
+.. parsed-literal::
+
+    from wiki20.model import Page
+    from docutils.core import publish_parts
+    import re
+    **from sqlobject import SQLObjectNotFound**
+
+    wikiwords = re.compile(r"\\b([A-Z]\w+[A-Z]+\\w+)")
+
+    class Root(controllers.RootController):
+        @expose(template="wiki20.templates.page")
+        def index(self, pagename="FrontPage"):
+            **try:**
+                **page = Page.byPagename(pagename)**
+            **except SQLObjectNotFound:**
+                **raise turbogears.redirect("notfound", pagename = pagename)**
+            content = publish_parts(page.data,
+                                    writer_name="html")['html_body']
+            root = str(turbogears.url('/'))
+            content = wikiwords.sub(r'<a href="%s\\1">\\1</a>' % root, content)
+            return dict(data=content, page=page)
+
+        **@expose("wiki20.templates.edit")**
+        **def notfound(self, pagename):**
+            **page = Page(pagename=pagename, data="")**
+            **return dict(page=page)**
+
+The ``index`` code changes illustrate the "better to beg forgiveness than ask
+permission" pattern which is favored by most Pythonistas. We're also leaking a
+bit of our model into our controller. For a larger project, we can create a
+facade in our model, but for a 20 minute hack, that's more trouble than it's
+worth. Notice that we can use the ``redirect()`` to pass parameters into the
+destination method.
+
+As for the ``notfound`` method, the first line of the method adds a row to the
+page table.  With SQLObject, just instantiating an object is enough to insert
+it in the database. From there, the path is exactly the same it would be for
+our ``edit`` method.
+
+With these changes in place, we have a fully functional wiki. Give it a try!
+You should be able to create new pages now.
+
+:doc:`Go back to page 3 <Page3>` | :doc:`Continue on to page 5 <Page5>`

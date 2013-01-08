@@ -1,0 +1,597 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using Pylint to Improve the Quality of Your Code &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="TurboGears Toolbox" href="Toolbox.html" />
+    <link rel="prev" title="Gzip Compressing Content" href="GzipCompressing.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Toolbox.html" title="TurboGears Toolbox"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GzipCompressing.html" title="Gzip Compressing Content"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Using Pylint to Improve the Quality of Your Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#where-to-use-pylint">Where to Use Pylint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-scenarios">Common Scenarios</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#e1101-accessing-a-non-existent-class-member">E1101 - Accessing a non-existent class member</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#r0903-r0904-too-few-or-many-public-methods">R0903 &amp; R0904 - Too Few or Many Public methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#c0103-invalid-class-name">C0103 - Invalid class name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#w0232-no-init-method">W0232 - No <tt class="docutils literal"><span class="pre">__init__</span></tt> method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#r0201-walks-like-a-function-talks-like-a-method">R0201 - Walks like a function, talks like a method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#border-cases">Border cases</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#w0401-w0611-wildcard-imports">W0401 &amp; W0611 - Wildcard imports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#future">Future</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="using-pylint-to-improve-the-quality-of-your-code">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Using Pylint to Improve the Quality of Your Code</a><a class="headerlink" href="#using-pylint-to-improve-the-quality-of-your-code" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-pylint-to-improve-the-quality-of-your-code" id="id1">Using Pylint to Improve the Quality of Your Code</a><ul>
+<li><a class="reference internal" href="#installation" id="id2">Installation</a></li>
+<li><a class="reference internal" href="#usage" id="id3">Usage</a></li>
+<li><a class="reference internal" href="#where-to-use-pylint" id="id4">Where to Use Pylint</a></li>
+<li><a class="reference internal" href="#common-scenarios" id="id5">Common Scenarios</a></li>
+<li><a class="reference internal" href="#border-cases" id="id6">Border cases</a></li>
+<li><a class="reference internal" href="#future" id="id7">Future</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><a class="reference external" href="http://www.logilab.org/857">Pylint</a> is a Python tool that checks a module for coding standards. According
+to the TurboGears project coding guidelines, <a class="reference external" href="http://www.python.org/dev/peps/pep-0008/">PEP8</a> is the standard and pylint
+is a good mechanical test to help us in attaining that goal.</p>
+<p>The range of checks run from Python errors, missing docstrings, unused imports,
+unintended redefinition of built-ins, to bad naming and more.</p>
+<div class="section" id="installation">
+<h2><a class="toc-backref" href="#id2">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Currently pylint is not <tt class="docutils literal"><span class="pre">easy_install</span></tt>&#8216;able but is available in most package
+managers and there are source/install packages for a number of systems
+available on the logilab site.</p>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#id3">Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>While you simply can run pylint by hand we would advise to rather use a script
+named <a class="reference download internal" href="_downloads/pylint_projectname.py"><tt class="xref download docutils literal"><span class="pre">pylint_projectname.py</span></tt></a> which
+you should copy to the base dir of your TurboGears project and let your RCS
+handle its backup and revisioning. Its main purpose is to call pylint on either
+the files you specify on its command line or on all your projects files ending
+in <cite>.py</cite>. It also adds the following parameters to the call to pylint:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">--reports=n</span></tt></dt>
+<dd>Turn off the code metric reports as theyjust get in the way while you are
+refactoring.</dd>
+<dt><tt class="docutils literal"><span class="pre">--include-ids=y</span></tt></dt>
+<dd>List the message id on each line, this makes for a faster reference while
+refactoring.</dd>
+<dt><tt class="docutils literal"><span class="pre">--additional-builtins=_</span></tt></dt>
+<dd>Kid has adopted some of the bad habits of other projects and uses the
+shorthand underscore as a valid variable, this will stop pylint from crying
+foul</dd>
+<dt><tt class="docutils literal"><span class="pre">--disable-msg=I0011</span></tt></dt>
+<dd>Suppress messages referring to in-line suppression of messages. Read on to
+learn why this is useful.</dd>
+</dl>
+<p>Please note that you can easily override these parameters either by changing
+the script or by adding new parameters to its command line.</p>
+<p>pylint also allows you to modify it&#8217;s global presets from a configuration file
+in your home directory. However, the preferred method is to use in-line
+comments in your Python source code files to suppress specific occurrences of
+specific messages. The reason for this is that TurboGears combines a lot of
+other projects into one single distribution and some of these projects use
+advanced magic that is not understood by pylint. For example SQLObject makes
+heavy use of Python&#8217;s introspection capabilities to generate methods
+on-the-fly, a feature that doesn&#8217;t mix well with pylint&#8217;s static analysis
+method. SQLObject also provides some means to modify the behaviour of your
+classes via an inner class named <tt class="docutils literal"><span class="pre">sqlmeta</span></tt> which also triggers some pylint
+warnings as these classes usually have no <tt class="docutils literal"><span class="pre">__init__</span></tt> method and the class
+name doesn&#8217;t start with a capital letter. Thus some of pylints warnings could
+be disabled in certain circumstances. But you should not disable them globally
+(either in your <tt class="docutils literal"><span class="pre">~/.pylintrc</span></tt> or in the <tt class="docutils literal"><span class="pre">pylint_projectname.py</span></tt> script)
+because the warnings are valid and should be considered. Rather, disable each
+warning on the line or in the class where it is flagged after you checked that
+you can disregard it.</p>
+<p>An analogy to this approach might be Python&#8217;s <tt class="docutils literal"><span class="pre">try/except</span></tt> error handling.
+The except block should be explicit about the error condition and preferably
+not universal. As a rule of thumb, if you own the code you shouldn&#8217;t suppress
+the message but if the condition occurs because of the a 3rd party module, it
+is ok to suppress it explicitly. Always prefer to use in-line suppression and
+only as a last resort use global suppression.</p>
+<p>Remember the goal is better code not getting a 10/10 score from pylint. Don&#8217;t
+just suppress a message because you want a clean pylint report. Fix the code or
+leave it unsuppressed so that it is easily seen by someone else who might have
+the time and inclination to refactor it.</p>
+<p>For more information about the arcane art of creating a <tt class="docutils literal"><span class="pre">~/.pylintrc</span></tt> file
+you might want to look into <a class="reference external" href="http://www.logilab.org/card/pylint_tutorial">pylint&#8217;s documentation</a>. A quick way to generate
+such a file is to call pylint directly, maybe with a set of parameters you want
+to have set within the generated file, and add the special parameter
+<tt class="docutils literal"><span class="pre">--generate-rcfile</span></tt> to the command line. Pylint then prints out a config
+file, and by redirecting this output to a file you have your config file in no
+time. For example:</p>
+<div class="highlight-python"><pre>pylint --reports=n --include-ids=y --additional-builtins=_ \
+    --disable-msg=I0011 --generate-rcfile &gt; .pylintrc</pre>
+</div>
+<p>generates such a resource file in your working directory. Note that pylint only
+searches your home directory and not the working directory for such a file. You
+can use the <tt class="docutils literal"><span class="pre">--rcfile=filename</span></tt> option to have pylint read a complex set of
+options from such a (or any) file.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><strong>Hint:</strong> you can set up a number of editors to call external commands
+with a single keystroke or even every time you save a file. Doing this so
+that pylint checks your changes every time is a very good way to keep
+rolling while you are refactoring.</p>
+</div>
+</div>
+<div class="section" id="where-to-use-pylint">
+<h2><a class="toc-backref" href="#id4">Where to Use Pylint</a><a class="headerlink" href="#where-to-use-pylint" title="Permalink to this headline">¶</a></h2>
+<p>Pylint should be ran against anything that ends in <tt class="docutils literal"><span class="pre">.py</span></tt> and is TurboGears
+proper (including tests) and modules specifically designed to enhance
+TurboGears.</p>
+<p>Rule of thumb: If it ends in <tt class="docutils literal"><span class="pre">.py</span></tt> and is in the repository, run pylint
+against it. The <a class="reference download internal" href="_downloads/pylint_projectname.py"><tt class="xref download docutils literal"><span class="pre">pylint_projectname.py</span></tt></a>
+script mentioned above does that for you automatically.</p>
+</div>
+<div class="section" id="common-scenarios">
+<h2><a class="toc-backref" href="#id5">Common Scenarios</a><a class="headerlink" href="#common-scenarios" title="Permalink to this headline">¶</a></h2>
+<p>The following are examples found while running pylint against <tt class="docutils literal"><span class="pre">model.py</span></tt> for a
+project that had <a class="reference internal" href="Identity/index.html"><em>Identity</em></a> enabled. Most of the problems that pylint
+found can be refactored out but some can not as they would require changes to SQLObject.
+For those, you can just explicitly suppress those messages. Please note that pylint
+shows an informational message named I0011 for such inlined suppressions. To get
+rid of these messages you might want to add <tt class="docutils literal"><span class="pre">--disable-msg=I0011</span></tt> to your pylint
+command line. <tt class="docutils literal"><span class="pre">pylint_projectname.py</span></tt> has this option activated by default.</p>
+<div class="section" id="e1101-accessing-a-non-existent-class-member">
+<h3>E1101 - Accessing a non-existent class member<a class="headerlink" href="#e1101-accessing-a-non-existent-class-member" title="Permalink to this headline">¶</a></h3>
+<p>If you have an <tt class="docutils literal"><span class="pre">alternateMethodName</span></tt> for a column, you will encounter this error.
+SQLObject uses some introspection techniques that are not visible to pylint.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">by_visit_key</span><span class="p">(</span><span class="n">visit_key</span><span class="p">)</span>  <span class="c">#pylint: disable-msg=E1101</span>
+</pre></div>
+</div>
+<p>A working example of a <tt class="docutils literal"><span class="pre">model.py</span></tt> file that has been run through pylint,
+refactored and fitted with pylint special comments supressing messages that are
+beyond the scope of TurboGears is attached to this page as <a class="reference download internal" href="_downloads/clean-model.py"><tt class="xref download docutils literal"><span class="pre">clean-model.py</span></tt></a>.</p>
+</div>
+<div class="section" id="r0903-r0904-too-few-or-many-public-methods">
+<h3>R0903 &amp; R0904 - Too Few or Many Public methods<a class="headerlink" href="#r0903-r0904-too-few-or-many-public-methods" title="Permalink to this headline">¶</a></h3>
+<p>Pylint thinks that the acceptable number of public methods of a class is between
+five and 20. Five is just five more than the usual number of methods in a
+<tt class="docutils literal"><span class="pre">SQLObject.sqlmeta</span></tt> class, and 20 much too low for any SQLObject with three or
+more columns/attributes/properties. So you can either adjust these values with
+<tt class="docutils literal"><span class="pre">--max-public-methods=30</span></tt> (or more) and <tt class="docutils literal"><span class="pre">--min-public-methods=0</span></tt>, but you
+can only do this globally on pylints command line or in its configuration file.
+A better solution might be to specifically acknowledge that your Model classes
+don&#8217;t fit the standard:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>     <span class="c">#pylint: disable-msg=R0904</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>          <span class="c">#pylint: disable-msg=R0903</span>
+        <span class="n">table</span><span class="o">=</span><span class="s">&quot;tg_visit&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="c0103-invalid-class-name">
+<h3>C0103 - Invalid class name<a class="headerlink" href="#c0103-invalid-class-name" title="Permalink to this headline">¶</a></h3>
+<p>This warnings name is a bit misleading as it also complains about class names
+that are legal in Python but counter to PEP8. pylint expects classes to start
+with a capital letter and having at least two more characters (letters, digits,
+underscores). SQLObject&#8217;s <tt class="docutils literal"><span class="pre">sqlmeta</span></tt> classes do not fit this rule, but you
+can&#8217;t rename them, so you might want to disable this error during the definition
+of each sqlmeta:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>     <span class="c">#pylint: disable-msg=R0904</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>          <span class="c">#pylint: disable-msg=R0903,C0103</span>
+        <span class="n">table</span><span class="o">=</span><span class="s">&quot;tg_visit&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="w0232-no-init-method">
+<h3>W0232 - No <tt class="docutils literal"><span class="pre">__init__</span></tt> method<a class="headerlink" href="#w0232-no-init-method" title="Permalink to this headline">¶</a></h3>
+<p>This one gets triggered by the inner <tt class="docutils literal"><span class="pre">sqlmeta</span></tt> classes of SQLObjects unless
+you change them to new-style classes by deriving the from object. It also gets
+triggered by classes deriving from <tt class="docutils literal"><span class="pre">turbogears.controllers.Controller</span></tt>. One
+could say that SQLObjects and Controllers make up for most of the classes in a
+simple project and thus disabling this warning in the global settings would make
+sense. We&#8217;d rather advise to disable it on a per file basis, it&#8217;s more explicit
+and you won&#8217;t run into the problem of accidently supressing the warning in a
+class where it would be important. To do so just add</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#pylint: disable-msg: W0232</span>
+</pre></div>
+</div>
+<p>to the header of each Controller file and to your <tt class="docutils literal"><span class="pre">model.py</span></tt> file.</p>
+</div>
+<div class="section" id="r0201-walks-like-a-function-talks-like-a-method">
+<h3>R0201 - Walks like a function, talks like a method<a class="headerlink" href="#r0201-walks-like-a-function-talks-like-a-method" title="Permalink to this headline">¶</a></h3>
+<p><em>&#8220;Used when a method doesn&#8217;t use its bound instance, and so could be written as
+a function.&#8221;</em></p>
+<p>Having a class or object method that does not access its <tt class="docutils literal"><span class="pre">cls</span></tt> or <tt class="docutils literal"><span class="pre">self</span></tt> is
+a perfect candidate for refactoring. For methods of CherryPy controllers however
+this is absolute correct behaviour, since most of the time they only use their
+parameters to control their inner flow. Still these methods need to be methods,
+otherwise CherryPy would not be able to find them. Thus, disabling this warning
+on the outermost scope of a controller module seems acceptable.</p>
+</div>
+</div>
+<div class="section" id="border-cases">
+<h2><a class="toc-backref" href="#id6">Border cases</a><a class="headerlink" href="#border-cases" title="Permalink to this headline">¶</a></h2>
+<p>There are some decisions you have to make when using pylint. On one hand it is
+not easy but desirable to get a perfect score of 10 for every <tt class="docutils literal"><span class="pre">*.py</span></tt> file in
+your project. On the other, hand many people have added the call to pylint to
+their development routine, maybe right before finally committing your local
+changes to the RCS repository, and want to have the number of errors as low as
+possible. So for some warnings (and maybe even errors) you might decide to just
+ignore them for a short time and disable them locally and/or temporarily. Here
+are some errors that might pop up at you:</p>
+<div class="section" id="w0401-w0611-wildcard-imports">
+<h3>W0401 &amp; W0611 - Wildcard imports<a class="headerlink" href="#w0401-w0611-wildcard-imports" title="Permalink to this headline">¶</a></h3>
+<p><em>&#8220;Used when</em> <tt class="docutils literal"><span class="pre">from</span> <span class="pre">module</span> <span class="pre">import</span> <span class="pre">*</span></tt> <em>is detected.&#8221;</em></p>
+<p><em>&#8220;Used when an imported module or variable is not used.&#8221;</em></p>
+<p>While wildcard imports don&#8217;t belong in production code, but they might have a
+place in modules that are under heavy development. For example the <tt class="docutils literal"><span class="pre">model.py</span></tt>
+file probably doesn&#8217;t get changed during 90% of the development time, but during
+the other 10% you might change it more often then any other file (except for
+unit tests files, of course). You might add new columns every other hour, change
+hand crafted SQL queries and so on. And during this period it is quite
+convenient to have all the Columns from <tt class="docutils literal"><span class="pre">sqlobject.col</span></tt> and the <tt class="docutils literal"><span class="pre">AND</span></tt> and
+<tt class="docutils literal"><span class="pre">OR</span></tt> functions right at your fingertips so that you can go ahead and rework
+your model (and test it right after every non trivial change) and even check it
+in without pylint yelling about minor issues like wildcard imports and unused
+imports. And please don&#8217;t disable them globally, just drop the following line
+right before the import section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#pylint: disable-msg=W0401,W0611</span>
+</pre></div>
+</div>
+<p>But beware that after you have a stable model, you definitely should re-enable
+all warnings and check pylints output. After all you might have overlooked
+something :-)</p>
+<p>But that is not all that is to this. Some people prefer to have their cake and
+eat it too, so instead of</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#pylint: disable-msg=W0401,W0611</span>
+<span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>they do</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sqlobject</span> <span class="kn">as</span> <span class="nn">orm</span>
+</pre></div>
+</div>
+<p>and can access everything that sqlobject provides through the <tt class="docutils literal"><span class="pre">orm</span></tt> namespace.
+The only drawback of this solution is that your code gets lengthier and more
+boiler-platy. Instead of</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&quot;visit&quot;</span>
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">alternateMethodName</span><span class="o">=</span><span class="s">&quot;by_visit_key&quot;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">expiry</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>you&#8217;d have to type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">orm</span><span class="o">.</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&quot;visit&quot;</span>
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">alternateMethodName</span><span class="o">=</span><span class="s">&quot;by_visit_key&quot;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">expiry</span> <span class="o">=</span> <span class="n">orm</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">DateTimeCol</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that docstrings and pylint inline directives have been omitted for brevity,
+don&#8217;t do this at home. And brevity is what the second form is lacking, it has
+traded brevity (&#8220;Readability counts&#8221;) for explicitness (&#8220;Explicit is better than
+implicit&#8221;). It&#8217;s your choice.</p>
+</div>
+</div>
+<div class="section" id="future">
+<h2><a class="toc-backref" href="#id7">Future</a><a class="headerlink" href="#future" title="Permalink to this headline">¶</a></h2>
+<p>This document is a starting point for improving the code base and is subject to
+change as more input is received.  There may very well be items that we want
+changed globally with respect to TurboGears.  And finally, yes there does exist
+perfectly valid and reasonable code that pylint may throw a tantrum about that
+is why in-line suppression is a good thing.</p>
+<p>And it also might happen that the <a class="reference download internal" href="_downloads/pylint_projectname.py"><tt class="xref download docutils literal"><span class="pre">pylint_projectname.py</span></tt></a>
+script becomes a standard part of a quickstart project. Who knows?</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,721 @@
+.. index:: FAQ, frequently asked questions
+
+TurboGears 1.0 FAQ
+==================
+
+.. contents::
+   :depth: 4
+
+
+General
+-------
+
+
+What is TurboGears?
+~~~~~~~~~~~~~~~~~~~
+
+TurboGears is a rapid development "front-to_back" web meta-framework.
+Its aim is to simplify and speed up the development of modern web
+applications written in the Python programming language.
+
+Please see also the TurboGears `homepage`_ for a description of the project's
+goals.
+
+.. _homepage: http://turbogears.org/about/
+
+
+How is TurboGears licensed? Can I use it for commercial applications?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears itself is licensed under the `MIT license`_. Its different parts may
+be licensed differently. Please read the details on the `license page`_.
+
+In general, all licenses allow commercial usage and even closed-source
+distribution of your application if you include a copy of the resp. license,
+but if in doubt, please **consult your lawyer**.
+
+.. _MIT license: http://www.opensource.org/licenses/mit-license.php
+.. _license page: http://docs.turbogears.org/1.0/License
+
+
+How does TurboGears compare to Ruby on Rails/Django/Pylons/etc.?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Which framework should I choose for my new project?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is an ever popular topic on the mailing list.
+See, for example, these threads:
+
+* `TurboGears vs Django (older)`_ (2006-07-29)
+* `TurboGears vs JSP vs PHP vs Ruby on Rails vs Webware`_ (2006-08-15)
+* `Who are the core TurboGears developers`_ (2006-11-14)
+* `Sharing between TurboGears/Django/Pylons/etc.`_ (2006-12_02)
+* `TurboGears vs Django`_ (2006-12-05)
+
+.. _TurboGears vs Django: http://groups.google.com/group/turbogears/browse_thread/thread/d3998a4e750c39c9/4d7710c0297e36c3?
+
+.. _TurboGears vs JSP vs PHP vs Ruby on Rails vs Webware: http://groups.google.com/group/turbogears/browse_thread/thread/9dbde16e18adfaa4/aa0016827977f55a?
+
+.. _TurboGears vs Django (older): http://groups.google.com/group/turbogears/browse_thread/thread/a37037677b067872/e2d226ec2d062a6d?
+
+.. _Who are the core TurboGears developers: http://groups.google.com/group/turbogears/browse_thread/thread/1ab38ef8f76eab9f/b7b074f4a58fdc0a?
+
+.. _Sharing between TurboGears/Django/Pylons/etc.: http://groups.google.com/group/turbogears/browse_thread/thread/0e9664be2f12a31d/e354217af8e322e8?
+
+And these blog articles:
+
+* `Why I Chose Turbogears`_
+* `TurboGears and Pylons (a technical comparison)`_
+
+.. _Why I Chose Turbogears:
+    http://sanjaypatel.blogspot.com/2007/07/why-i-chose-turbogears.html
+
+.. _TurboGears and Pylons (a technical comparison):
+    http://blog.ianbicking.org/turbogears-and-pylons.html
+
+
+Documentation
+-------------
+
+
+Where can I find documentation about using TurboGears 1.0?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There is a Wiki for all documentation. Start with the
+:doc:`TurboGears 1.0 Documentation <index>` page.
+
+
+What books are available for learning TurboGears?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The "official" TurboGears book is *Rapid Web Applications with TurboGears*
+by Mark Ramm et al. The book has its own homepage at
+http://www.turbogearsbook.com/ and you can also visit the `Amazon page`_
+for this book.
+
+.. _Amazon page: http://www.amazon.com/Rapid-Web-Applications-TurboGears-Ajax-Powered/dp/0132433885/ref=pd_sxp_f_pt/002-9656812-7128002
+
+
+What should I learn to become a (better) Python web application developer?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Which other books should I read?
+
+Please refer to these mailing list discussions:
+
+* `What's My Learning Path?`_
+* `Suggestions for a intermediate or advanced python book`_
+* `Best advanced python text?`_
+
+.. _What's My Learning Path?: http://groups.google.com/group/turbogears/browse_thread/thread/97857ec694fb980a/155570d241090b9e
+
+.. _Suggestions for a intermediate or advanced python book: http://groups.google.com/group/turbogears/browse_thread/thread/9288051c66a6b212/a81c4ecb276d84f6
+
+.. _Best advanced python text?: http://groups.google.com/group/turbogears/browse_thread/thread/31cd587d08c582fe/ef446d6383f876c6
+
+
+Installation
+------------
+
+
+For now, there is also a separate page for :doc:`Installation Troubleshooting <Install/Troubleshooting>`
+
+
+When can we expect Python 2.5 support?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears supports Python 2.5 as of version **1.0.2**.
+
+
+When can we expect Python 2.6 support?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears officially supports Python 2.6 as of version **1.1**.
+
+
+How can I do offline installations?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I save the eggs that ``easy_install`` downloads, so I can install
+them to another host or location later without having to download them again?
+
+You can use the recipe explained in this mailing list post:
+
+`TurboGears-1.0 available at WebFaction`_ (2007-01-05)
+
+.. _TurboGears-1.0 available at WebFaction:
+    http://groups.google.com/group/turbogears/msg/69bfb85830f9a15e
+
+In short, download the eggs with::
+
+    easy_install -zmaxd <somedir> TurboGears
+
+and install them with::
+
+    easy_install -H None -f <somedir> TurboGears
+
+where ``<somedir>`` should be the directory where you want to save the ``.egg``
+files.
+
+
+How can I do non-root installations?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I install TurboGears on a Unix-like system without root user privileges?
+
+An easy and quick way is to use the `virtualenv`_ program to create a separate,
+clean Python environment and install TurboGears in this environment. The basic
+steps are:
+
+#. install virtualenv with  ``easy_install virtualenv``.
+#. Run ``virtualenv <new env dir>``
+#. ``source <new env dir>/bin/activate``
+#. Download `tgsetup.py`_ and run ``python tgsetup.py``.
+#. Install additional eggs, like nose, pysqlite, SQLObject, SQLAlchemy,
+   etc. with ``easy_install <package name>``
+
+``<new env dir>`` is the name of a directory that virtualenv should create.
+It will contain the new Python environment. Everytime you want to work with
+this environment, you need to carry out step 3. from above, so that the library
+modules and scripts from the environment are used.
+
+See also :doc:`How to Install TurboGears Without root Privileges <Install/NonRoot>`
+for detailed instructions.
+
+.. _virtualenv: http://cheeseshop.python.org/pypi/virtualenv
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+
+
+Troubleshooting
+---------------
+
+
+What is causing ``TypeError: generate_content()``?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Why do I see the exception** ``"TypeError: generate_content() takes exactly 1
+argument (2 given)"`` whenever I access any page of my TurboGears application?
+
+This is an incompatibilty between kid version 0.9.3 and 0.9.4.
+
+**Solution:** delete all ``*.pyc`` files in your ``templates`` folder and
+subfolders and restart your application.
+
+See also `ticket #1200`_.
+
+.. _ticket #1200: http://trac.turbogears.org/ticket/1200
+
+
+Why do I get the log messages twice?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Why do I see all logging messages twice when I run my application in
+development mode?
+
+This is normal. The TurboGears application server, Cherrypy 2.x, runs two
+processes when in development mode and it's set to autoreload. Each process
+outputs logging messages and that is why they appear twice. This does not
+happen in production mode and also doesn't happen in newer (i.e. CP3)
+CherryPy versions (which TurboGears does not use yet), which involved a
+rewrite of the reloading mechanism.
+
+
+Why does the JavaScript/CSS code of my widgets not get included in my page?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Do your templates inherit from ``master.kid``? See the mailing list post
+`scripts in head`_ for details.
+
+.. _scripts in head: http://groups.google.com/group/turbogears/browse_thread/thread/f1769fdb294d5edb/6f387ced6ff00e54?#6f387ced6ff00e54
+
+
+What causes ``"'Stream' object has no attribute 'tag'"``?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is most probably caused by mixing Genshi and ToscaWidgets incorrectly.
+
+In the beginning, there was Kid and "traditional" widgets.  Traditional widgets
+returned an ElementTree object, which the Kid engine converted into HTML.  In
+Genshi, you can use traditional widgets, but you must use the ``"ET()"`` function
+to explicitly convert them to HTML.  (If you get ``"<script element at ASDFASDF>"``
+in your output, that is a sign that you are handing a traditional widget back
+to Genshi, and NOT wrapping it in ``ET()``.)
+
+ToscaWidgets, on the other hand, return HTML natively.  If you wrap a
+ToscaWidget reference in ``ET()``, you will get a stack trace saying ``"'Stream'
+object has no attribute 'tag'"``.
+
+Note that these issues do not exist any more in TurboGears 1.1 and 1.5,
+they do all the necessary wrapping and converting for you. TurboGears 1.5
+even allows Genshi templates in TurboGears widgets and will convert between
+the Kid and Genshi templating systems under the hood.
+
+
+Why do I sometimes get 500 Internal Errors after my app has been idle?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Why does my application work fine until it's idle for a while then the next
+request returns a ``"500 Internal Error"`` response?
+
+Are you using a MySQL database? If so, this is probably the MySQL time out.
+Because CherryPy is a long running process it doesn't make a new connection on
+every page load. After a period of inactivity the MySQL server will timeout
+the connection. This causes an error the next time the application attempts to
+use the connection.
+
+One solution some people use is to set up a cron job that every so often wgets
+a page from the application that will cause a database query. There is also
+apparently a MySQL ``wait_timeout`` setting that can be adjusted to stop the
+connection from timing out.
+
+
+Why do my AJAX-enabled widgets stop working after some minutes?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This might be due to the fact that you have enabled identity and the session
+has timed out and the AJAX-calls from your widget (e.g. ``loadJSONDoc``)
+encounter a 401 ("Unauthorized") or 500 ("Internal Server Error") error.
+
+A simple method to handle this would be to wrap the ``loadJSONDoc`` call and
+always add a ``errback`` callback function that catches this error::
+
+    function ljd_errhandler(result) {
+        if (result instanceof XMLHttpRequestError &&
+            (result.number == 401 || result.number == 500) {
+            /* handle error here, for example simply display an error message */
+        }
+    }
+
+    function do_loadjsondoc(url, cb_func) {
+        d = loadJSONDoc(url);
+        d.addCallbacks(cb_func, ljd_erhandler);
+        return d;
+    }
+
+
+
+Components
+----------
+
+
+Why does TurboGears 1.0 still use CherryPy 2.x instead of CherryPy 3?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When TurboGears was created, CP3 didn't exist and there where `major changes`_
+between CP2 and CP3. Therefore the breaking changes required to support CP3
+in have been made only in TG 1.5.
+
+.. _major changes: http://cherrypy.org/wiki/WhatsNewIn30
+
+
+Which alternative template engines can I use with TurboGears?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+What are the pros and cons of each?
+
+In principle, you can use any templating language that provides a Buffet_ plugin
+interface, either directly or through a separate :doc:`template engine plugin <TemplatePlugins>`
+package. Template engines, that have been successfully used with TurboGears,
+include :doc:`Genshi <GenshiTemplating>`, :doc:`Cheetah <CheetahTemplating>` and :doc:`Jinja <DjangoTemplating>`.
+For general information how to use non-standard template engines with TurboGears,
+see :doc:`Using Alternate Templating Engines <AlternativeTemplating>`.
+
+If you are using widgets, you need Kid to render the widgets, but you can still
+use a different template engine for your page templates. With ToscaWidget you
+can use any Buffet-compliant template engine for your widgets.
+
+For a long mailing list thread with a discussion of different template engines
+and speed comparisons, see `Kid vs Cheetah`_
+
+.. _buffet: http://projects.dowski.com/projects/buffet
+.. _kid vs cheetah: http://groups.google.com/group/turbogears/browse_thread/thread/8feecc4deec2f937/aeea222b2890b661?lnk=gst&q=%27++vs+%27&rnum=2
+
+
+How do I use SQLAlchemy instead of SQLObject for my project?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+What are the pros and cons of this exchange?
+
+See the article :doc:`SQLObject vs SQLAlchemy <SQLObject/VsSQLAlchemy>`.
+
+
+Can I use more than one database handle with TurboGears?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You sure can! The page :doc:`MultipleDatabases <MultipleDatabases>` explains how to do it with
+SQLAchemy.
+
+
+How can I port my project from Kid & TG widgets to Genshi & ToscaWidgets?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+See the page `Ugrading from 1.0 to 1.1 <http://docs.turbogears.org/1.1/Upgrade>` for hints on this.
+
+
+Can I use MochiKit 1.4 with TurboGears?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears 1.0.8 comes with MochiKit 1.4 included, though version 1.3.1
+is still used by default. You can use the newer version by setting
+``tg.mochikit_version`` or ``tg_mochikit.version``  to '1.4'
+
+It is also possible in older versions of TurboGears, but you have to include
+the new MochiKit version with your project. There are two ways to do this.
+
+#. Copy the latest ``MochiKit.js`` in the ``static/javascript`` directory
+   of your project and include it manually in ``master.kid`` or in each
+   template that needs it with the following tag in the HTML ``head`` section::
+
+        <script src="${tg.url('/static/javascript/MochiKit.js')}" />
+
+#. Create a custom widget that wraps MochiKit and include it in
+   ``tg_include_widgets``. Here's how to do this:
+
+   #. Create sub-package called ``widgets`` in your project::
+
+        $ mkdir <yourproject>/widgets
+        $ touch <yourproject>/widgets/__init__.py
+
+   #. Create sub-sub-package called ``widgets.jslibs`` in your project::
+
+        $ mkdir -p <yourproject>/widgets/jslibs/static/javascript
+        $ vi <yourproject>/widgets/jslibs/__init__.py
+
+      ::
+
+        # <yourproject>/widgets/jslibs/__init__.py
+        __all__ = [
+          'mochikit'
+        ]
+
+        import pkg_resources
+        from turbogears.widgets import JSLink, register_static_directory
+
+        js_dir = pkg_resources.resource_filename("yourproject.widgets.jslibs",
+                "static")
+        register_static_directory("jslibs", js_dir)
+
+        mochikit = JSLink("jslibs", "javascript/MochiKit.js")
+
+   #. Put ``MochiKit.js`` 1.4 in
+      ``yourproject/widgets/jslibs/static/javascript``
+
+   #. Use it in your application by e.g. setting this in ``app.cfg``::
+
+        tg.include_widgets = ['myproject.widgets.jslibs.mochikit']
+
+
+
+Deployment
+----------
+
+
+How do I deploy my configuration and a default database?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Do I have to copy my configuration file and/or database when I deploy my
+TurboGears application as an egg?
+
+From TurboGears version 1.0.4b3 onwards it is easy to include a default
+configuration file in your application's egg file, which then will be found
+by the standard start script automatically. You just have to uncomment a section
+in your project's ``setup.py`` file, which is appropriatly commented. Older
+projects can be updated to use this technique by following the instructions
+on the :doc:`Upgrade <Install/Upgrade>` page.
+
+While, in principle, one could also include a default database in the egg, this
+would only make sense for single-file databases, like those used by SQLite, but
+then again, one wouldn't normally want to write to files contained in an egg.
+
+One solution is to provide a :doc:`custom tg-admin command <CommandPlugins>` for your application,
+that asks the user for the database connection parameters and then initializes
+the database using the ``tg-admin sql create`` command followed by some custom
+code to fill the the dadabase with some bootstrap data.
+
+
+How do I ...?
+-------------
+
+
+How do I divide ``controller.py`` and ``model.py`` into separate files?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please see this mailing list post:
+
+`How use tgbig to break controllers.py into multiple files`_ (2007-01-17)
+
+.. _how to divide controller.py and model.py: http://groups.google.com/group/turbogears/browse_thread/thread/35b0fc45c8648c91/be477777cd0d946d?
+
+.. _How use tgbig to break controllers.py into multiple files: http://groups.google.com/group/turbogears/browse_thread/thread/61bb34312502c444/6a4b64021e1ef856?
+
+
+How can I find the filesystem locations for my project?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I find out the filesystem location of my application's project
+directory or its package directory?
+
+Use the ``pkg_resources`` module which comes with ``setuptools``
+
+For example, You can get the full path to the ``templates`` directory
+inside the ``wiki20`` package by::
+
+    from pkg_resources import resource_filename
+    resource_filename('wiki20', 'templates')
+
+You can then easily move up an down in the filesystem by using the
+functions form the standard `os.path module`_.
+
+Please bear in mind, when you have :doc:`installed your application as an egg <Install/DeployWithAnEgg>`,
+there is no "project directory" per se, in fact, the files of your
+application may not even reside directly in the filesystem but in a ZIP
+archive. You can build an egg that contains additiional data file alongside
+your application's package directory. See the `setuptools documentation`_
+for more information.
+
+.. _os.path module: http://docs.python.org/lib/module-os.path.html
+.. _setuptools documentation:
+  http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources
+
+
+How can I use special characters in my URLs?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I use special (non-identifier) characters in my URLs resp. controller
+method names?
+
+You can't because method names have to conform to the rules for Python
+identifiers. But you can work around this by handling URL dispatching yourself
+in an exposed ``default`` method of your controller, ex: setattr(class,
+irregular, method) to effectively alias the page.
+
+See post `irregular controller names`_ for details.
+
+.. _irregular controller names: http://groups.google.com/group/turbogears/browse_thread/thread/cf72ba5333c84001/1d768d8640866570?#1d768d8640866570
+
+
+How do I change the name of a project?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To change the name of a project called "foo" created by tg-admin quickstart,
+you have to manually go through all the files of the project and replace all
+occurences of "foo"  with "matrix", where "matrix" is the new name of the
+project. If you are under Linux/Mac, you can automate this tedious work with
+this shell snippet::
+
+    find . -name "*" | \
+        while read f; do
+            sed -e 's#foo#matrix#g' < "$f" > /tmp/x
+            mv /tmp/x "$f"
+        done
+
+
+How can I output HTML passed by the controller in my Kid templates?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I display HTML markup in my template variable without having Kid
+escape the HTML special characters?
+
+Use ``${XML(mytemplatevar)}`` or refactor by defining and using a `kid template
+function`_, for example::
+
+    <a py:def="link(url, text)" href='${url}'>${text}</a>
+
+Then in your template you use::
+
+    ${link('http://foo.com/', 'Foo.com')}
+
+Which will render to this output::
+
+    <a href='http://foo.com/'>Foo.com</a>
+
+
+.. _kid template function:
+    http://kid-templating.org/language.html#named-template-functions-py-def
+
+
+How can I organize my templates hierarchically?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How can I have templates in subdirectories of my project's ``templates`` directory?
+
+Short answer: Just put an empty file named ``__init__.py`` in the
+subdirectory.
+
+Long answer: templates are looked up by the template engines via the normal
+Python module package mechanisms and the ``templates`` directory is therefore
+a `Python package`_. Subdirectories have to be sub-packages as well and you
+can achieve that by placing an ``__init__.py`` file in them. The
+``__init__.py`` can contain Python code, but an empty file will do just as
+well.
+
+.. _Python package:
+    http://docs.python.org/tut/node8.html#SECTION008400000000000000000
+
+
+How to I specify an alternate template to use in my controller method?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Put ``tg_template`` set to the name of the template you want to use into the
+dictionary you return from your controller method, e.g.::
+
+    @expose('.templates.index')
+    def index(self, **kw):
+        d = dict(message='Hello World!')
+        if some_condition:
+            d['tg_template'] = '.templates.other'
+        return d
+
+
+How can set the attributes of a form or a form field widget?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please refer to the "Tips" section on the :doc:`Widgets Tips & Tricks <Widgets/Tips>` page.
+
+
+How do I pre-fill (some) fields when I display a widgets-based form?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You provide a dictionary to the ``value`` parameter when you display the widget
+in the template. The dictionary must contain the the field names as keys and
+their preset value as values. You pass both the widget form object and the
+values dictionary to the template from your controller method.
+
+Example::
+
+    # widgets.py
+    myform = TableForm(
+        fields = [
+            widgets.TextField('name'),
+            widgets.TextField('email')
+    )
+
+::
+
+    # controllers.py
+    from widgets import myform
+
+    class MyController(controllers.controller):
+        ...
+        @expose('.templates.form_template')
+        def showform(sefl, **kw):
+            form_values = dict(
+                name = "Joe Doe",
+                email = "joe@doe.com"
+            )
+            return dict(form=myform, form_values=form_values)
+
+::
+
+    <!-- form_template.kid -->
+    ...
+    ${form(value=form_values)}
+    ...
+
+
+How can I access a method of a custom widget from its template?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please see this mailing list post:
+
+`Adding custom method to a custom widget`_ (2007-01-27)
+
+.. _Adding custom method to a custom widget: http://groups.google.com/group/turbogears/browse_thread/thread/2d2844b1b626b6ed/2d2e5f2e2f81a83b?
+
+
+How can I re-use the definition of a form field list for another form?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please see this mailing list post:
+
+`how to reuse form definition`_ (2007-01-29)
+
+.. _how to reuse form definition: http://groups.google.com/group/turbogears/browse_thread/thread/0083be65857021e4/c673acfda86e881c?
+
+
+How can I properly display error messages from chained validators?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+How do I prevent the error message from a chained validator to show up next
+to all form fields?
+
+Please see this mailing list post:
+
+`custom validator help`_ (2007-01-26)
+
+.. _custom validator help: http://groups.google.com/group/turbogears/browse_thread/thread/3551860964d78ed1/d21eed1006017280?
+
+
+How do I validate two forms on the same page?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Just set the action attribute of each form to a different value making
+them submit to two different controller methods.
+
+You can then use a ``@validate`` decorator with a different `form` argument
+on each method.
+
+
+How can I write a widget which displays an image?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+That's easy. Just include an image tag in the template of the widget::
+
+    class ImageWidget(widgets.Widget):
+        template = '<img xmlns:py="http://purl.org/kid/ns#" src="${value}" />'
+
+and provide the image URL when you display the widget::
+
+    ${myimagewidget(tg.url('myimage.png'))}
+
+If you want to serve a :doc:`dynamically generated image <ServeDynamicFiles>`, you have to provide a
+controller method for this, and use the URL to this controller
+method as the value for the widget.
+
+.. _dynamically generated image: ServeDynamicFiles
+
+
+How can I log exception tracebacks in my production server logs?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please see this mailing list post:
+
+`How to get python tracebacks into production log`_ (2007-01-14)
+
+.. _How to get python tracebacks into production log:
+  http://groups.google.com/group/turbogears/browse_thread/thread/22a00b086714d34a
+
+
+How do I do full text indexing with TurboGears?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Krys Wilken has released TurboLucene, which makes it easy to use Lucene
+based searches within TurboGears. You can find our more at:
+http://dev.krys.ca/turbolucene/
+
+Alternatively, Nadav Samet explains how to do full text indexing with Xapian
+on his blog:
+
+http://www.thesamet.com/blog/2007/02/04/pumping-up-your-applications-with-xapian-full-text-search/
+
+
+How do I activate localization for my TurboGears project?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Keywords: i18n, l10n
+
+If you want to activate localization for your project, you need to do the
+following. This will copy the localized strings of TurboGears into your
+project. These steps are necessary if you want get TurboGears's built-in texts
+translated, even if you have not localized your part of the project.::
+
+    tg-admin i18n collect
+    tg-admin i18n add <locale>
+    tg-admin i18n compile
+
+TurboGears does support localized validation error messages from FormEncode
+since 1.0.2 (`ticket 1136`_). Please note that you need at least FormEncode 0.7
+for localized validation error messages.
+
+.. _ticket 1136: http://trac.turbogears.org/ticket/1136

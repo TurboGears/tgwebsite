@@ -1,0 +1,54 @@
+.. index:: Zeroconf, Bonjour, Rendezvous
+
+Zeroconf support in TurboGears
+==============================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+When a project is started in development mode, TurboGears automatically
+announces its IP address and port number to the network. This is done
+through Zeroconf_ (aka Apple Bonjour/Rendezvous), specifically the
+*DNS Service Discovery* (DNS-SD) protocol. To disable DNS-SD announcements
+(or enable it in production environments), use the ``tg.bonjour`` variable
+in the configuration file.
+
+.. note::
+    There is a bug in TurboGears 1.0.x versions that prevents you from
+    disabling Zeroconf (if it is available) in development mode, even if
+    you set ``tg.bonjour`` to a false value. You can, however, enable it
+    in production mode by setting ``tg.bonjour`` to the name under which
+    your application should appear in the service list.
+
+.. _zeroconf: http://en.wikipedia.org/wiki/Zeroconf
+
+
+Mac OS X
+--------
+
+Service announcement works out of the box in Mac OS X (through the
+``"/usr/bin/dns-sd"`` binary). To see the list of HTTP services published in
+your network, open Safari and enable "Bonjour bookmarks" in the
+"Bookmark preferences" tab.
+
+
+Linux
+-----
+
+Zeroconf support for Linux depends on Avahi_, so make sure that you have
+Avahi and its Gnome applet installed, e.g. on Ubuntu (Dapper and above)::
+
+   apt-get install avahi-daemon service-discovery-applet
+
+.. _avahi: http://avahi.org
+
+After adding `sd-applet` to your Gnome Panel, make sure it has "Services -
+_http._tcp" and "Advanced - Browse services published on this machine"
+enabled in Preferences.
+
+
+Windows
+-------
+
+TurboGears support for Zeroconf isn't available on Windows yet.

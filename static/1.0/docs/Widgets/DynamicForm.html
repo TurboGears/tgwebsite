@@ -1,0 +1,254 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dynamically Modifying a Form’s Widgets With Ajax &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Dynamic Validation" href="../DynamicValidation.html" />
+    <link rel="prev" title="Changing Widget Defaults at Run Time" href="ModifyDefaults.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../DynamicValidation.html" title="Dynamic Validation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ModifyDefaults.html" title="Changing Widget Defaults at Run Time"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ModifyDefaults.html"
+                        title="previous chapter">Changing Widget Defaults at Run Time</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../DynamicValidation.html"
+                        title="next chapter">Dynamic Validation</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="dynamically-modifying-a-form-s-widgets-with-ajax">
+<span id="index-0"></span><h1>Dynamically Modifying a Form&#8217;s Widgets With Ajax<a class="headerlink" href="#dynamically-modifying-a-form-s-widgets-with-ajax" title="Permalink to this headline">¶</a></h1>
+<p>Sometimes there is the need to dynamically modify one widget in a form
+based upon what the user has selected in another field. This can be done
+via a page reload, but it is faster and slicker to use Ajax.</p>
+<p>Let&#8217;s take an example and run with it. Say you have a SingleSelect field
+named <cite>client_id</cite>, and based upon what the user selects there, another
+SingleSelect named <cite>projects</cite> will be populated with the proper options.</p>
+<p>The basic strategy is:</p>
+<ol class="arabic simple">
+<li>Create a form with the SingleSelect widgets.</li>
+<li>Create a controller method that displays it.</li>
+<li>Create a controller method to (asynchronously) populate the <cite>projects</cite> field.</li>
+<li>Implement the template with the JavaScript that does the autoupdate magic.</li>
+</ol>
+<p>For this example we assume a model with objects &#8220;Client&#8221; and &#8220;Project&#8221;
+with a one to many relationship from Client to Project, like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Client</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+
+    <span class="n">clientName</span>  <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Project</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+
+    <span class="n">projectDesc</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Client&#39;</span><span class="p">)</span>
+
+<span class="n">Client</span><span class="o">.</span><span class="n">sqlmeta</span><span class="o">.</span><span class="n">addJoin</span><span class="p">(</span><span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;Project&#39;</span><span class="p">,</span>
+    <span class="n">joinMethodName</span><span class="o">=</span><span class="s">&#39;projects&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Here is our form in controllers.py (the name of the project is assumed
+to be <cite>exampleproject</cite>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">validate</span><span class="p">,</span> <span class="n">validators</span><span class="p">,</span> <span class="n">widgets</span>
+
+<span class="kn">from</span> <span class="nn">exampleproject.model</span> <span class="kn">import</span> <span class="n">Client</span>
+
+<span class="n">client_project_form</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span><span class="s">&#39;clientform&#39;</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">widgets</span><span class="o">.</span><span class="n">SingleSelectField</span><span class="p">(</span><span class="s">&#39;client_id&#39;</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="p">[(</span><span class="n">client</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">client</span><span class="o">.</span><span class="n">clientName</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">Client</span><span class="o">.</span><span class="n">select</span><span class="p">()],</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">Client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">widgets</span><span class="o">.</span><span class="n">SingleSelectField</span><span class="p">(</span><span class="s">&#39;projects&#39;</span><span class="p">,</span>
+            <span class="n">options</span><span class="o">=</span><span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">projectDesc</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">Client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">projects</span><span class="p">])</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This simply displays the two single selects. It will default to displaying the
+first client in the database and it&#8217;s associated projects. Nothing fancy here.</p>
+<p>Equally mundane is the controller method to display it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&#39;exampleproject.templates.clientprojects&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">clientprojects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">client_project_form</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;save&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This simply returns our form in a dictionary to the <tt class="docutils literal"><span class="pre">clientprojects.kid</span></tt>
+template we are going to create for rendering the form on the page.</p>
+<p>Here is the method which we will be calling asynchronously to repopulate
+the project&#8217;s select field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;client_id&#39;</span><span class="p">:</span> <span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">()})</span>
+<span class="k">def</span> <span class="nf">get_projects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client_id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">projects</span><span class="o">=</span><span class="n">model</span><span class="o">.</span><span class="n">Client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">client_id</span><span class="p">)</span><span class="o">.</span><span class="n">projects</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It will accept an integer client id, retrieve the associated projects,
+and return them in JSON format.</p>
+<p>We want to make use MochiKit for our dynamic form, therefore we set</p>
+<blockquote>
+<div>tg.include_widgets = [&#8216;turbogears.mochikit&#8217;]</div></blockquote>
+<p>in <tt class="docutils literal"><span class="pre">config/app.cfg</span></tt>. This makes sure MochiKit is included on every page.
+Instead, you can also add MochiKit to the dynamic form widget using its
+<cite>javascript</cite> attribute, or add an explict JavaScript link to the page template.</p>
+<p>The following is where things get exciting. This is the clientprojects.kid
+template which will render the form and perform amazing ajaxian feats.
+Again you can add the necessary JavaScript as a JSSource or JSLink to the
+form widget using the <cite>javascript</cite> attribute, but we have simple included
+the JavaScript directly in the template:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'"&gt;
+&lt;head&gt;
+&lt;meta content="text/html; charset=utf-8"
+      http-equiv="Content-Type" py:replace="''"/&gt;
+&lt;title&gt;Client Projects&lt;/title&gt;
+
+&lt;script  type="text/javascript"&gt;
+var conn = MochiKit.Signal.connect;
+
+replace_project = function(res) {
+    replaceChildNodes($('clientform_projects'),
+        map(function(p) {
+            return OPTION({value: p.id}, p.projectDesc);
+        }, res.projects));
+};
+
+client_id_changed = function() {
+    loadJSONDoc('get_projects',
+        {client_id: $('clientform_client_id').value}
+    ).addCallback(replace_project);
+};
+
+conn(window, 'onload', function() {
+    conn($('clientform_client_id'), 'onchange', client_id_changed);
+    client_id_changed();
+});
+&lt;/script&gt;
+
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h2&gt;Client Projects&lt;/h2&gt;
+
+&lt;div py:replace="form(action=action)"/&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>The line:</p>
+<div class="highlight-python"><pre>&lt;div py:replace="form(action=action)"/&gt;</pre>
+</div>
+<p>merely displays our form. It is the JavaScript in the head of the template
+that does our job of dynamically changing the select fields.</p>
+<p>Here is the sequence of events when the page loads:</p>
+<p>An <cite>onload</cite> event get registered with MochiKit.Signal:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">conn</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s">&#39;onload&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>So, when the page is finished loading, the registered function gets called:</p>
+<div class="highlight-python"><pre> function() {
+    var client_id = $('clientform_client_id');
+    conn(client_id, 'onchange', client_id_changed);
+    client_id_changed(client_id);
+}</pre>
+</div>
+<p>This function registers the <cite>onchange</cite> event for the element with the id
+<cite>clientform_client_id</cite> (our client select widget) so that the <cite>client_id_changed</cite>
+function will be called any time that field changes.  This must be registered
+after the page is finished loading, which is why we put this in a function
+registered to be called <cite>onload</cite> instead of just registering this onchange event directly.
+After registering the function we also immediately call it to make sure the
+project selector is set up correctly.</p>
+<p>The <cite>client_id_changed</cite> function gets the value of the <cite>client_id</cite> field
+and calls the <cite>get_projects</cite> method of our controller asynchronously,
+giving it an argument of the <cite>client_id</cite>.  It then registers a callback function,
+<cite>replace_projects</cite>, and exits.</p>
+<p>When the response from <cite>get_projects</cite> comes back, it is handed to <cite>replace_project</cite>.
+<cite>replace_projects</cite> gets the <cite>projects</cite> item of the result, which is a list of
+hashes (dictionaries) containing the project data) and replaces the contents
+of the element with id <cite>clientform_projects</cite> (our projects select field) with
+OPTION nodes generated dynamically from the data in the response. Note that the
+select field is not replaced, only its child nodes, i.e. the OPTION items.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+Genshi Rendering without using @expose()
+========================================
+
+Sometimes you wish to render Genshi templates in a controller or via a library rather than through the standard @expose() decorator.  An example of why you would want to do this is to generate a multi-part e-mail message (e.g., to notify a new user of their account creation).
+
+A recipe follows::
+
+    from genshi.output import TextSerializer, HTMLSerializer
+    from genshi.template import markup
+
+    variables = dict(a='var_a', b='var_b') # this is your context variables available to the Genshi template
+
+    template = markup.MarkupTemplate(file('/path/to/file')) # reads and parses the template utilizing the XML templating system
+
+    # note that you have to call generate twice as "render" "consumes" the generated output stream
+    textpart = template.generate(**variables).render(TextSerializer) # serializes the generated output to Text
+    htmlpart = template.generate(**variables).render(HTMLSerializer) # serializes the generated output to HTML
+
+Note that all "text" nodes are reproduced intact, so you may need to tidy up your templates to reduce spurious white space, or do some additional filtering.
+
+And an example which uses the "title" of the HTML template as the subject, and then only serializes the body::
+
+    HTMLStream = template.generate(**variables)
+    subject = HTMLStream.select('head/title').render(TextSerializer).strip()
+    htmlpart = HTMLStream.select('body').render(HTMLSerializer)
+    # ... similar for the text output

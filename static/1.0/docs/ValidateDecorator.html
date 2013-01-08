@@ -1,0 +1,595 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>@validate() &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Error Handling" href="ErrorHandling.html" />
+    <link rel="prev" title="@expose()" href="ExposeDecorator.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ErrorHandling.html" title="Error Handling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ExposeDecorator.html" title="@expose()"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">&#64;validate()</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#validating-widget-forms">Validating Widget Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validating-arguments-without-form-widgets">Validating Arguments (Without Form Widgets)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-validation-errors">Handling Validation Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#schema-validation">Schema Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#converting-url-strings-to-python-types-manually">Converting URL Strings to Python Types Manually</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-topics">Advanced Topics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#providing-state">Providing State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#when-you-really-need-that-value-failsafe-values">When You Really Need That Value: <tt class="docutils literal"><span class="pre">failsafe_values</span></tt></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#beware-of-the-recursion-guard">Beware of the Recursion Guard</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="validate">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">&#64;validate()</a><a class="headerlink" href="#validate" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#validate" id="id1">&#64;validate()</a><ul>
+<li><a class="reference internal" href="#validating-widget-forms" id="id2">Validating Widget Forms</a></li>
+<li><a class="reference internal" href="#validating-arguments-without-form-widgets" id="id3">Validating Arguments (Without Form Widgets)</a></li>
+<li><a class="reference internal" href="#handling-validation-errors" id="id4">Handling Validation Errors</a></li>
+<li><a class="reference internal" href="#schema-validation" id="id5">Schema Validation</a></li>
+<li><a class="reference internal" href="#converting-url-strings-to-python-types-manually" id="id6">Converting URL Strings to Python Types Manually</a></li>
+<li><a class="reference internal" href="#advanced-topics" id="id7">Advanced Topics</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>When using TurboGears, your controller methods get their arguments built from
+the various GET, POST, and URL mechanisms provided by CherryPy. The only
+downside is that all the arguments will be strings and you&#8217;d like them
+converted to their normal Python datatype: numbers to <tt class="docutils literal"><span class="pre">int</span></tt>, dates to
+<tt class="docutils literal"><span class="pre">datetime</span></tt>, etc.</p>
+<p>This conversion functionality is provided by the <a class="reference external" href="http://formencode.org/">FormEncode</a> package and is
+applied to your methods using the <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator. FormEncode
+provides both validation and conversion as a single step, reasoning that you
+frequently need to validate something before you can convert it or that you&#8217;ll
+need to convert something before you can really validate it.</p>
+<p>The <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator can evaluate both widget-based forms and the
+standard CherryPy arguments. The <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator is not required in
+order to use TurboGears. If you don&#8217;t put a <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator on your
+method, you&#8217;ll simply have to do the string validation and conversion yourself.</p>
+<div class="section" id="validating-widget-forms">
+<h2><a class="toc-backref" href="#id2">Validating Widget Forms</a><a class="headerlink" href="#validating-widget-forms" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to use <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> is to pass in a reference to a
+widgets-based form instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;yourpkg.templates.aform&#39;</span><span class="p">)</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">yourpkg</span><span class="o">.</span><span class="n">forms</span><span class="o">.</span><span class="n">my_form</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">show_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field1</span><span class="p">,</span> <span class="n">field2</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">yourpkg</span><span class="o">.</span><span class="n">forms</span><span class="o">.</span><span class="n">a_form</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">yourpkg.forms.a_form</span></tt> is an instance of a <tt class="docutils literal"><span class="pre">turbogears.widgets.Form</span></tt>
+sub-class or a callable that returns such an instance. The callable will be
+called for each request, so you can dynamically build forms depending on the
+request context.</p>
+<p>The widgets system will take care of building a schema to handle the data
+conversions and you&#8217;ll wind up with the <tt class="docutils literal"><span class="pre">int</span></tt> or <tt class="docutils literal"><span class="pre">datetime</span></tt> objects you
+specified when building the form. When paired with the <a class="reference internal" href="ErrorHandling.html"><em>error handling</em></a>
+decorators, you can handle the common case of building a form, validating it,
+re-displaying the form if there are errors, and converting a valid form into the
+proper arguments in only a few lines of Python.</p>
+<p>See <a class="reference internal" href="Widgets/FormValidationWithSchemas.html"><em>Widget Form Validation with Schemas</em></a>
+for more information.</p>
+</div>
+<div class="section" id="validating-arguments-without-form-widgets">
+<h2><a class="toc-backref" href="#id3">Validating Arguments (Without Form Widgets)</a><a class="headerlink" href="#validating-arguments-without-form-widgets" title="Permalink to this headline">¶</a></h2>
+<p>When not using forms, the story gets a bit more complex. Basically, you need to
+specify which validator goes with which argument using the <tt class="docutils literal"><span class="pre">validators</span></tt>
+keyword argument for the <tt class="docutils literal"><span class="pre">validate</span></tt> decorator. Here&#8217;s a simple example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">validators</span>
+
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;yourpkg.templates.someform&#39;</span><span class="p">)</span>
+    <span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="c"># Only letters/numbers/underscores/dashes</span>
+        <span class="n">item</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">PlainText</span><span class="p">(),</span>
+        <span class="c"># Default value &#39;M&#39;</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">OneOf</span><span class="p">([</span><span class="s">&#39;S&#39;</span><span class="p">,</span> <span class="s">&#39;M&#39;</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">],</span> <span class="n">if_empty</span><span class="o">=</span><span class="s">&#39;M&#39;</span><span class="p">),</span>
+        <span class="c"># Required field</span>
+        <span class="n">price</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Money</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+    <span class="k">def</span> <span class="nf">storeitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+            <span class="k">pass</span> <span class="c"># handle the error however you want!</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">newvalue</span><span class="o">=</span><span class="n">value</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see FormEncode and TurboGears provide a number of useful validators
+that are available in the <tt class="docutils literal"><span class="pre">turbogears.validators</span></tt> module.</p>
+<p>For most validators, you can pass keyword arguments for more specific
+constraints. For the list of available validators, check both the
+<a class="reference external" href="http://formencode.org/module-formencode.validators.html#classes">FormEncode validators</a> and <a class="reference external" href="http://turbogears.org/1.0/docs/api/turbogears.validators-module.html">TurboGears validators</a> (<a class="reference external" href="http://trac.turbogears.org/browser/branches/1.0/turbogears/validators.py">source</a>) modules.
+You can also create your own validators or build on existing validators by
+inheriting from one of the defaults. See the <a class="reference external" href="http://formencode.org/">FormEncode documentation</a>
+for how this is done.</p>
+<p>The dictionary passed to the <tt class="docutils literal"><span class="pre">validators</span></tt> argument of the <tt class="docutils literal"><span class="pre">validate</span></tt>
+decorator maps the incoming field names to the appropriate FormEncode
+validators - in this example, we used <tt class="docutils literal"><span class="pre">PlainText</span></tt>, <tt class="docutils literal"><span class="pre">OneOf</span></tt> and <tt class="docutils literal"><span class="pre">Money</span></tt>.
+If all values pass validation, <tt class="docutils literal"><span class="pre">tg_errors</span></tt> won&#8217;t change from it&#8217;s default
+value of <tt class="docutils literal"><span class="pre">None</span></tt> and you are assured that value will be an <tt class="docutils literal"><span class="pre">int</span></tt>.
+Wait a minute! What&#8217;s this <tt class="docutils literal"><span class="pre">tg_errors</span></tt>?</p>
+</div>
+<div class="section" id="handling-validation-errors">
+<h2><a class="toc-backref" href="#id4">Handling Validation Errors</a><a class="headerlink" href="#handling-validation-errors" title="Permalink to this headline">¶</a></h2>
+<p>If there&#8217;s a validation error, a dictionary named <tt class="docutils literal"><span class="pre">tg_errors</span></tt> will be passed
+to the function, with keys for the field names that failed validation. If you
+look up the keys, such as <tt class="docutils literal"><span class="pre">tg_errors['value']</span></tt>, you&#8217;ll find an <tt class="docutils literal"><span class="pre">Invalid</span></tt>
+exception object. <tt class="docutils literal"><span class="pre">Invalid</span></tt> exception objects can be <tt class="docutils literal"><span class="pre">str()</span></tt>&#8216;d if you&#8217;d like
+to use them as user-friendly error messages or you can use the information
+contained in them to handle the error as you like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;yourpkg.templates.someform&#39;</span><span class="p">)</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">tg_errors</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;Success!&quot;</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you use form-based validation or if you pass a validation schema to the
+<tt class="docutils literal"><span class="pre">validators</span></tt> argument (see below), the values in the <tt class="docutils literal"><span class="pre">tg_errors</span></tt> will
+already be coerced into strings for your convenience. If you still need
+access to the <tt class="docutils literal"><span class="pre">Invalid</span></tt> exception object thrown by the validation schema,
+you can access it through <tt class="docutils literal"><span class="pre">cherrypy.request.validation_exception</span></tt> and
+retrieve the <tt class="docutils literal"><span class="pre">Invalid</span></tt> exceptions for the individual fields that failed
+validation through its <tt class="docutils literal"><span class="pre">error_dict</span></tt> attribute.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you omit the <tt class="docutils literal"><span class="pre">tg_errors=None</span></tt> keyword from the controller method&#8217;s
+arguments, you get told that there is no error handler function. This is
+a bit misleading as you don&#8217;t really need an error handler if you handle
+things on your own, as explained here. See the documentation on
+<a class="reference internal" href="ErrorHandling.html"><em>Error Handling</em></a> for learning more about error handlers.</p>
+</div>
+</div>
+<div class="section" id="schema-validation">
+<h2><a class="toc-backref" href="#id5">Schema Validation</a><a class="headerlink" href="#schema-validation" title="Permalink to this headline">¶</a></h2>
+<p>If you want to do multiple-field validation, reuse validators or just clean up
+your code, validation <tt class="docutils literal"><span class="pre">Schema``s</span> <span class="pre">are</span> <span class="pre">the</span> <span class="pre">way</span> <span class="pre">to</span> <span class="pre">go.</span> <span class="pre">You</span> <span class="pre">create</span> <span class="pre">a</span> <span class="pre">validation</span>
+<span class="pre">schema</span> <span class="pre">by</span> <span class="pre">inheriting</span> <span class="pre">from</span> <span class="pre">``turbogears.validators.Schema</span></tt> and pass the newly
+created <tt class="docutils literal"><span class="pre">Schema</span></tt> as the <tt class="docutils literal"><span class="pre">validators</span></tt> argument instead of passing a
+dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MySchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="n">pwd1</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">pwd2</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">chained_validators</span> <span class="o">=</span> <span class="p">[</span><span class="n">validators</span><span class="o">.</span><span class="n">FieldsMatch</span><span class="p">(</span><span class="s">&#39;pwd1&#39;</span><span class="p">,</span> <span class="s">&#39;pwd2&#39;</span><span class="p">)]</span>
+
+<span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="n">MySchema</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pwd1</span><span class="p">,</span> <span class="n">pwd2</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;There was an error&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;Password ok!&quot;</span>
+</pre></div>
+</div>
+<p>Besides noticing our brilliant security strategy, please notice the
+<tt class="docutils literal"><span class="pre">chained_validators</span></tt> part of the schema that guarantees a pair of matching
+fields.</p>
+<p>Again, for information about <tt class="docutils literal"><span class="pre">Invalid</span></tt> exception objects, creating your
+own validators, schema and FormEncode in general, refer to the <a class="reference external" href="http://formencode.org/docs/Validator.html">FormEncode
+Validator</a> documentation and don&#8217;t be afraid to check the
+<tt class="docutils literal"><span class="pre">formencode.validators</span></tt> source. It&#8217;s often more clear than the docs.</p>
+</div>
+<div class="section" id="converting-url-strings-to-python-types-manually">
+<h2><a class="toc-backref" href="#id6">Converting URL Strings to Python Types Manually</a><a class="headerlink" href="#converting-url-strings-to-python-types-manually" title="Permalink to this headline">¶</a></h2>
+<p>You can always use e.g. Python&#8217;s <tt class="docutils literal"><span class="pre">int()</span></tt> method to convert a string to an
+integer and use a try/except block to catch errors in the conversion process:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">addnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the result of x+y.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+           <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+           <span class="k">return</span> <span class="s">&quot;Input is not valid!&quot;</span>
+</pre></div>
+</div>
+<p>This isn&#8217;t that hard, but it quickly becomes unwieldy when you start converting
+large numbers of arguments. Moreover, you still have the problem of propagating
+the errors back to your users. In the end, it&#8217;s usually far simpler to use the
+validation framework.</p>
+</div>
+<div class="section" id="advanced-topics">
+<h2><a class="toc-backref" href="#id7">Advanced Topics</a><a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="providing-state">
+<h3>Providing State<a class="headerlink" href="#providing-state" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes you need access to external and possibly dynamic information in your
+validators, for example to change the outcome of the validation depending on this
+information. The <tt class="docutils literal"><span class="pre">validate_python</span></tt> and <tt class="docutils literal"><span class="pre">_to_python</span></tt> methods of all validators
+take an optional argument called <tt class="docutils literal"><span class="pre">state</span></tt> which is exactly for this purpose. The
+value of this argument should be  a <tt class="docutils literal"><span class="pre">turbogears.util.Bunch</span></tt>-like object (i.e. just
+a simple data class that has arbitrary attributes) which provides the state
+information for the validator (schema). See the <a class="reference external" href="http://formencode.org/Validator.html#state">FormEncode documentation about
+&#8216;state&#8217;</a> for more information.</p>
+<p>The <tt class="docutils literal"><span class="pre">validate</span></tt> decorator function takes a keyword argument named <tt class="docutils literal"><span class="pre">state_factory</span></tt>
+which expects a callable, which should return a Bunch object suitable to be passed
+as the <tt class="docutils literal"><span class="pre">state</span></tt> parameter to the validator schema of the form widget.</p>
+<p>Here&#8217;s a small example of how you can provide a validator with access to information
+about the current request:</p>
+<div class="highlight-python"><pre>from turbogears import util, expose, validate
+from myproject.forms import myform
+
+def state_provider():
+    return util.Bunch(request=cherrypy.request)
+
+@expose()
+@validate(form=myform, state_factory=state_provider)
+def mymethod(self, ...)
+    ...</pre>
+</div>
+</div>
+<div class="section" id="when-you-really-need-that-value-failsafe-values">
+<h3>When You Really Need That Value: <tt class="docutils literal"><span class="pre">failsafe_values</span></tt><a class="headerlink" href="#when-you-really-need-that-value-failsafe-values" title="Permalink to this headline">¶</a></h3>
+<p>When the arguments, for whatever reason, fail validation, you will receive no
+values for the failing arguments.</p>
+<p>If you would rather not get a <tt class="docutils literal"><span class="pre">tg_errors</span></tt> dict when this occurs, simply
+provide the validator with a value for its <tt class="docutils literal"><span class="pre">if_invalid</span></tt> keyword argument.</p>
+<p>If you&#8217;d like to get both a <tt class="docutils literal"><span class="pre">tg_errors</span></tt> dict (so you can do some error
+handling) and a default value, supply a dictionary to the <tt class="docutils literal"><span class="pre">failsafe_values</span></tt>
+keyword argument containing the parameter/value pairs:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="n">MySchema</span><span class="p">(),</span>
+          <span class="n">failsafe_values</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">pwd1</span><span class="o">=</span><span class="s">&#39;swordfish&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">password</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pwd1</span><span class="p">,</span> <span class="n">pwd2</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;There was an error&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;Password ok!&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="beware-of-the-recursion-guard">
+<h3>Beware of the Recursion Guard<a class="headerlink" href="#beware-of-the-recursion-guard" title="Permalink to this headline">¶</a></h3>
+<p>The validate decorator has a built-in &#8220;recursion guard&#8221; which should prevent
+unwanted recursions. Unfortunately, the current implementation (1.0.x) causes
+some side effects which may affect you:</p>
+<p>1) Parameters for methods named <tt class="docutils literal"><span class="pre">&quot;validate&quot;</span></tt> won&#8217;t get validated despite a
+correctly placed validate decorator. The only workaround is to choose a
+different name.</p>
+<p>The following example code demonstrates this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## BAD, DOES NOT WORK AS EXPECTED!</span>
+<span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">userid</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tg_errors</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;No validation, userid=</span><span class="si">%s</span><span class="s"> (type </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">userid</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">userid</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;Validation failed, userid=</span><span class="si">%s</span><span class="s"> (type </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="n">userid</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">userid</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;Validation passed, userid=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">userid</span>
+</pre></div>
+</div>
+<p>2) The validate decorator will only be called once per request. This can be a
+problem if you call other exposed methods from another method.</p>
+<p>The latter can be demonstrated with the following controller example snippet:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">## BAD, DOES NOT WORK AS EXPECTED!</span>
+<span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">String</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+   <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span>
+
+<span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># userid is not validated if the call came from foo()</span>
+    <span class="k">return</span> <span class="n">userid</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,468 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started with Elixir &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Using Routes with TurboGears" href="../RoutesIntegration.html" />
+    <link rel="prev" title="Using Alternative JavaScript/Ajax Libraries" href="../AlternativeAJAXLibraries.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../RoutesIntegration.html" title="Using Routes with TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../AlternativeAJAXLibraries.html" title="Using Alternative JavaScript/Ajax Libraries"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started with Elixir</a><ul>
+<li><a class="reference internal" href="#installing-sqlalchemy-elixir">Installing SQLAlchemy &amp; Elixir</a></li>
+<li><a class="reference internal" href="#set-the-database-uri-dburi">Set the Database URI (dburi)</a></li>
+<li><a class="reference internal" href="#define-the-data-model">Define the Data Model</a></li>
+<li><a class="reference internal" href="#defining-the-model">Defining the Model</a><ul>
+<li><a class="reference internal" href="#column-field-types">Column (Field) Types</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-the-database">Create the Database</a></li>
+<li><a class="reference internal" href="#using-the-model">Using the Model</a><ul>
+<li><a class="reference internal" href="#adding-new-data">Adding New Data</a></li>
+<li><a class="reference internal" href="#getting-a-database-record">Getting a Database Record</a><ul>
+<li><a class="reference internal" href="#getting-a-record-by-alternateid">Getting a Record by alternateID</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#selecting-records">Selecting Records</a><ul>
+<li><a class="reference internal" href="#selectby-method">SelectBy Method</a></li>
+<li><a class="reference internal" href="#count-the-number-of-selected-records">Count the number of selected records</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-a-record">Updating a Record</a></li>
+<li><a class="reference internal" href="#deleting-a-record">Deleting a Record</a></li>
+<li><a class="reference internal" href="#relationships">Relationships</a><ul>
+<li><a class="reference internal" href="#one-to-many-relationships">One-to-Many Relationships</a></li>
+<li><a class="reference internal" href="#many-to-many-relationships">Many-to-Many Relationships</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#specifying-the-table-name">Specifying the Table Name</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../AlternativeAJAXLibraries.html"
+                        title="previous chapter">Using Alternative JavaScript/Ajax Libraries</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../RoutesIntegration.html"
+                        title="next chapter">Using Routes with TurboGears</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="getting-started-with-elixir">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Getting Started with Elixir</a><a class="headerlink" href="#getting-started-with-elixir" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#getting-started-with-elixir" id="id1">Getting Started with Elixir</a><ul>
+<li><a class="reference internal" href="#installing-sqlalchemy-elixir" id="id2">Installing SQLAlchemy &amp; Elixir</a></li>
+<li><a class="reference internal" href="#set-the-database-uri-dburi" id="id3">Set the Database URI (dburi)</a></li>
+<li><a class="reference internal" href="#define-the-data-model" id="id4">Define the Data Model</a></li>
+<li><a class="reference internal" href="#defining-the-model" id="id5">Defining the Model</a></li>
+<li><a class="reference internal" href="#create-the-database" id="id6">Create the Database</a></li>
+<li><a class="reference internal" href="#using-the-model" id="id7">Using the Model</a></li>
+<li><a class="reference internal" href="#references" id="id8">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In TurboGears the model represents whatever persistent data your application works with.</p>
+<p>In practice, we usually use an ORM (object relational mapper) in our model.</p>
+<p>Object relational mappers provide a bridge between Python objects and a relational database.
+An ORM lets you use object-oriented programming style for accessing a relational database,
+and provides an abstraction layer over different database backend systems. ORMs are not designed
+to hide away the database 100%, but they go a long way towards letting you write Python and not
+worry about SQL.</p>
+<p>TurboGears 1.0 uses <a class="reference internal" href="../SQLObject/VsSQLAlchemy.html"><em>SQLObject by default</em></a>, and will default to SQLAlchemy beginning in 1.1,
+however, <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy is already well integrated</em></a> and can be used by following the short steps below.
+This alternative Getting Started document will use SQLAlchemy with the simplifying Elixir layer,
+read the standard Getting Started document if you prefer to <a class="reference internal" href="UseDatabase.html"><em>start with SQLObject</em></a>.</p>
+<div class="section" id="installing-sqlalchemy-elixir">
+<h2><a class="toc-backref" href="#id2">Installing SQLAlchemy &amp; Elixir</a><a class="headerlink" href="#installing-sqlalchemy-elixir" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>easy_install sqlalchemy
+easy_install elixir</pre>
+</div>
+<p>Then when quickstarting your TG project:</p>
+<div class="highlight-python"><pre>tg-admin quickstart --elixir</pre>
+</div>
+</div>
+<div class="section" id="set-the-database-uri-dburi">
+<h2><a class="toc-backref" href="#id3">Set the Database URI (dburi)</a><a class="headerlink" href="#set-the-database-uri-dburi" title="Permalink to this headline">¶</a></h2>
+<p>The model needs to know where to put/find your database. This is indicated in your project&#8217;s <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> file (for development) or the <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> file (for production use). There,
+you will find the parameter <tt class="docutils literal"><span class="pre">sqlalchemy.dburi</span></tt>, which controls where the database is stored.
+The value is a typical URI scheme. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">dburi</span><span class="o">=</span><span class="s">&quot;sqlite://</span><span class="si">%(current_dir_uri)s</span><span class="s">/devdata.sqlite&quot;</span>
+</pre></div>
+</div>
+<p>The default setting above specifies a <tt class="docutils literal"><span class="pre">devdata.sqlite</span></tt> SQLite database file within your project&#8217;s top directory. When you are ready to move from the default setting, you can change
+the dburi to use <a class="reference internal" href="../SQLAlchemy/Configuration.html"><em>other databases</em></a> such as MySQL, Postgres, MS SQL Server, etc.</p>
+<p>SQLAlchemy does well against a wide variety of databases. Many aspects of how the database is
+used, such as column names, table names and join table names can be customized as needed to fit
+existing databases.</p>
+</div>
+<div class="section" id="define-the-data-model">
+<h2><a class="toc-backref" href="#id4">Define the Data Model</a><a class="headerlink" href="#define-the-data-model" title="Permalink to this headline">¶</a></h2>
+<p>You define your data model in the <tt class="docutils literal"><span class="pre">model.py</span></tt> file in your project&#8217;s package.</p>
+<p>TurboGears provides two different ways to define your database:</p>
+<ol class="arabic simple">
+<li>Define tables and their relationships in Python.</li>
+<li>Get them automatically from your database.</li>
+</ol>
+<p>For clarity in your code and database portability, it is often easier to define your
+model in Python terms.</p>
+<p>Defining your model in Python requires more typing of Python code, but saves
+you from having to write SQL to create your database.</p>
+<p>To define a Python classes to be based on your database, you just do this in model.py</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">elixir</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">fromDatabase</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This only works with some databases. Check the SQLObject <a class="reference external" href="http://sqlobject.org/SQLObject.html#automatic-class-generation">Automatic Class Generation</a>
+documentation to check whether this works with your database.</p>
+</div>
+</div>
+<div class="section" id="defining-the-model">
+<span id="define-elixir-model"></span><h2><a class="toc-backref" href="#id5">Defining the Model</a><a class="headerlink" href="#defining-the-model" title="Permalink to this headline">¶</a></h2>
+<p>This Python code will define a table in your database for books, with unicode columns for
+isbn, title and description of lengths 13, 100 and 200, respectively:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">13</span><span class="p">))</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">200</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Your model objects should not be dumb data containers. They are full Python objects and can
+have methods of their own to perform more complex calculations and operations.</p>
+<div class="section" id="column-field-types">
+<h3>Column (Field) Types<a class="headerlink" href="#column-field-types" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">Field</span></tt> can inherent from one of many different field types that are then applied when
+SQLAlchemy creates your table columns. Common examples include Unicode, String, Integer,
+Float, PickleType ... See a complete list of <a class="reference external" href="http://www.sqlalchemy.org/docs/04/types.html">types available in SQLAlchemy</a></p>
+<p>In the case of class Book above, Elixir will auto-generate an id column and use it as the primary key for our Entity because we provided no primary key ourselves. If you want to specify the primary key explicitly, just pass primary_key=True to the field(s) you want to act as the primary key. In this example, an appropriate approach would be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">isbn</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-the-database">
+<h2><a class="toc-backref" href="#id6">Create the Database</a><a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h2>
+<p>To create the database from the model definition, you just need to run the following command
+from within your project&#8217;s top-level directory:</p>
+<div class="highlight-python"><pre>$ tg-admin sql create
+Creating tables at sqlite:///devdata.sqlite
+$</pre>
+</div>
+<p>This will create the tables you defined in your model. Of course, this will only work, if you
+defined the model with Python, not if you use <tt class="docutils literal"><span class="pre">fromDatabase</span> <span class="pre">=</span> <span class="pre">True</span></tt>,</p>
+<p>If you would like a more verbose method, instead of using <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt>, go
+first into the tg-admin shell (described more later) and type:</p>
+<div class="highlight-python"><pre>$tg-admin shell
+
+Python 2.4.4 (#1, Oct 18 2006, 10:34:39)
+[GCC 4.0.1 (Apple Computer, Inc. build 5341)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import model
+&gt;&gt;&gt; setup_all()
+&gt;&gt;&gt; create_all()
+2008-04-02 02:06:23,128 sqlalchemy.engine.base.Engine.0x..10 INFO PRAGMA    table_info("book_model_book")
+2008-04-02 02:06:23,129 sqlalchemy.engine.base.Engine.0x..10 INFO {}
+2008-04-02 02:06:23,132 sqlalchemy.engine.base.Engine.0x..10 INFO
+CREATE TABLE book_model_book (
+       id INTEGER NOT NULL,
+       isbn VARCHAR(13),
+       title VARCHAR(100),
+       description VARCHAR(200),
+       PRIMARY KEY (id)
+)
+
+
+2008-04-02 02:06:23,133 sqlalchemy.engine.base.Engine.0x..10 INFO {}
+2008-04-02 02:06:23,286 sqlalchemy.engine.base.Engine.0x..10 INFO COMMIT
+
+&gt;&gt;&gt;</pre>
+</div>
+</div>
+<div class="section" id="using-the-model">
+<h2><a class="toc-backref" href="#id7">Using the Model</a><a class="headerlink" href="#using-the-model" title="Permalink to this headline">¶</a></h2>
+<p>To experiment with your new model, TurboGears provides a command session for interactive database manipulation with debug logging turned on by default. From your project directory, type:</p>
+<div class="highlight-python"><pre>$tg-admin shell
+
+Python 2.4.4 (#1, Oct 18 2006, 10:34:39)
+[GCC 4.0.1 (Apple Computer, Inc. build 5341)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+&gt;&gt;&gt; import model
+&gt;&gt;&gt;</pre>
+</div>
+<div class="section" id="adding-new-data">
+<h3>Adding New Data<a class="headerlink" href="#adding-new-data" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears makes accessing your database seem very much like using any other
+Python objects.</p>
+<p>After you have created the model, you can insert a new row into your database by just
+instantiating an object from the appropriate class in your model. SQL queries are being run
+behind the scenes (shown while debug is enabled, below) as you access and change your data
+object. Assuming you have a Book <a class="reference internal" href="#define-elixir-model"><em>model defined</em></a>, here&#8217;s an example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="p">(</span><span class="n">isbn</span><span class="o">=</span><span class="s">&quot;1234567890&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;A Fistful of Yen&quot;</span><span class="p">,</span>
+<span class="go">         description=&quot;An evocative look at Japanese currency &quot;</span>
+<span class="go">                     &quot;surrounded by hands.&quot;)</span>
+<span class="go">  &lt;book.model.Book object at 0x22108b0&gt;</span>
+<span class="go">&gt;&gt;&gt;</span>
+
+
+
+<span class="go">1/QueryIns:  INSERT INTO book (isbn, description, title)</span>
+<span class="go">               VALUES (&#39;1234567890&#39;,</span>
+<span class="go">                       &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                        hands.&#39;, &#39;A Fistful of Yen&#39;)</span>
+<span class="go">  1/QueryIns-  &gt;   1</span>
+<span class="go">  1/COMMIT  :  auto</span>
+<span class="go">  1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1</span>
+<span class="go">  1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1;</span>
+<span class="go">  1/QueryOne-  &gt;   (u&#39;1234567890&#39;, u&#39;A Fistful of Yen&#39;,</span>
+<span class="go">                    &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                     hands.&#39;)</span>
+<span class="go">  1/COMMIT  :  auto</span>
+<span class="go"> &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">  description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-a-database-record">
+<h3>Getting a Database Record<a class="headerlink" href="#getting-a-database-record" title="Permalink to this headline">¶</a></h3>
+<p>You can get at an object through its primary key using the <tt class="docutils literal"><span class="pre">get</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">     &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">        description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="getting-a-record-by-alternateid">
+<h4>Getting a Record by alternateID<a class="headerlink" href="#getting-a-record-by-alternateid" title="Permalink to this headline">¶</a></h4>
+<p>When you specify that a column is an <tt class="docutils literal"><span class="pre">alternateID</span></tt>, as we did for the
+<tt class="docutils literal"><span class="pre">isbn</span></tt> field, SQLObject automatically creates a classmethod so that you can use to
+search on those values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="o">.</span><span class="n">byIsbn</span><span class="p">(</span><span class="s">&quot;1234567890&quot;</span><span class="p">)</span>
+<span class="go">    1/QueryOne:  SELECT id, isbn, title, description FROM book</span>
+<span class="go">                  WHERE isbn = &#39;1234567890&#39;</span>
+<span class="go">    1/QueryR  :  SELECT id, isbn, title, description FROM book</span>
+<span class="go">                  WHERE isbn = &#39;1234567890&#39;</span>
+<span class="go">    1/QueryOne-  &gt;   (1, u&#39;1234567890&#39;, u&#39;A Fistful of Yen&#39;,</span>
+<span class="go">                      &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                       hands.&#39;)</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">      &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">       description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="selecting-records">
+<h3>Selecting Records<a class="headerlink" href="#selecting-records" title="Permalink to this headline">¶</a></h3>
+<p>Of course, there are plenty of times when we need to do searches beyond just
+simple ID lookups. SQLObject provides a <tt class="docutils literal"><span class="pre">select()</span></tt> classmethod that lets you
+specify many queries in more Python-like terms.</p>
+<p>Your class has a special <tt class="docutils literal"><span class="pre">q</span></tt> attribute that gives you access to a placeholder for a real attribute to use in queries.</p>
+<p>For example, to query on the isbn column, you would use <tt class="docutils literal"><span class="pre">Book.q.isbn</span></tt>.  Here&#8217;s a sample query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">like</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%F</span><span class="s">istful%&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">Book</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">isbn</span><span class="o">==</span><span class="s">&quot;1234567890&quot;</span><span class="p">))</span>
+<span class="go">    1/Select  :  SELECT book.id, book.isbn, book.title, book.description</span>
+<span class="go">                  FROM book</span>
+<span class="go">                  WHERE ((book.title LIKE &#39;%Fistful%&#39;) AND</span>
+<span class="go">                        (book.isbn = &#39;1234567890&#39;))</span>
+<span class="go">    1/QueryR  :  SELECT book.id, book.isbn, book.title, book.description</span>
+<span class="go">                  FROM book</span>
+<span class="go">                  WHERE ((book.title LIKE &#39;%Fistful%&#39;) AND</span>
+<span class="go">                        (book.isbn = &#39;1234567890&#39;))</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">      [&lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">        description=&quot;&#39;An evocative loo...&#39;&quot;&gt;]</span>
+</pre></div>
+</div>
+<div class="section" id="selectby-method">
+<h4>SelectBy Method<a class="headerlink" href="#selectby-method" title="Permalink to this headline">¶</a></h4>
+<p>An alternative to .select is .selectBy. It works like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">peeps</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">selectBy</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%F</span><span class="s">istful%&quot;</span><span class="p">,</span> <span class="n">isbn</span> <span class="o">=</span> <span class="s">&quot;1234567890&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The neat thing about SelectResults is that until you start pulling data
+out of it, it&#8217;s just a placeholder for the results.</p>
+</div>
+<div class="section" id="count-the-number-of-selected-records">
+<h4>Count the number of selected records<a class="headerlink" href="#count-the-number-of-selected-records" title="Permalink to this headline">¶</a></h4>
+<p>Rather than converting the results to a list, we could have added <tt class="docutils literal"><span class="pre">.count()</span></tt> to the end of the select call in order to just retrieve the number of matching rows.</p>
+</div>
+</div>
+<div class="section" id="updating-a-record">
+<h3>Updating a Record<a class="headerlink" href="#updating-a-record" title="Permalink to this headline">¶</a></h3>
+<p>Updates are very easy: just change the class attribute!</p>
+<p>Every time you change an attribute, SQLObject will run an <tt class="docutils literal"><span class="pre">UPDATE</span> <span class="pre">SQL</span></tt> statement. Sometimes, though, you may need to change several columns at once and don&#8217;t want to run individual
+updates for each.</p>
+<p>Your instances have a <tt class="docutils literal"><span class="pre">set()</span></tt> method that lets you set them all at once. Here are examples of both styles:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">book</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;A Fistful of Foobar&quot;</span>
+<span class="go">    1/Query   :  UPDATE book SET title = &#39;A Fistful of Foobar&#39; WHERE id = 1</span>
+<span class="go">    1/QueryR  :  UPDATE book SET title = &#39;A Fistful of Foobar&#39; WHERE id = 1</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">    &gt;&gt;&gt; book.set(title=&quot;A Fistful of Yen 2: Electric Boogaloo&quot;, isbn=&quot;37&quot;)</span>
+<span class="go">    1/Query   :  UPDATE book SET isbn = &#39;37&#39;,</span>
+<span class="go">                  title = &#39;A Fistful of Yen 2: Electric Boogaloo&#39; WHERE id = 1</span>
+<span class="go">    1/QueryR  :  UPDATE book SET isbn = &#39;37&#39;,</span>
+<span class="go">                  title = &#39;A Fistful of Yen 2: Electric Boogaloo&#39; WHERE id = 1</span>
+<span class="go">    1/COMMIT  :  auto</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-record">
+<h3>Deleting a Record<a class="headerlink" href="#deleting-a-record" title="Permalink to this headline">¶</a></h3>
+<p>A clean approach is to add this method to your model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Elixir</span> <span class="kn">import</span> <span class="n">session</span>
+
+<span class="k">class</span> <span class="nc">SomeTable</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="k">def</span> <span class="nf">destroySelf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Subsequently, deleting a row is pretty simple. If you are using the object directly you would make a call to <tt class="docutils literal"><span class="pre">objname.destroySelf()</span></tt></p>
+<p>Note that by default <tt class="docutils literal"><span class="pre">destroySelf</span></tt> only removes the object in question. It does not follow references and remove them.</p>
+<p>To add this behavior you will have to add such behavior to this destroySelf method.
+Here is a sample class that does this</p>
+</div>
+<div class="section" id="relationships">
+<h3>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h3>
+<p>The relational databases allow you relating tables with each other. Most common relationships are
+One-to-One, One-to-Many, and Many-to-Many.</p>
+<div class="section" id="one-to-many-relationships">
+<h4>One-to-Many Relationships<a class="headerlink" href="#one-to-many-relationships" title="Permalink to this headline">¶</a></h4>
+<p>Elixir uses <tt class="docutils literal"><span class="pre">ManyToOne</span></tt> and <tt class="docutils literal"><span class="pre">OneToMany</span></tt> column-pairs to define a One-to-Many
+relationship.</p>
+<p>For example, Persons can have multiple books, but books can only be had by one person,
+so we can extend the <tt class="docutils literal"><span class="pre">Book</span></tt> class from the initial example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ManyToOne</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">OneToMany</span><span class="p">(</span><span class="s">&#39;Book&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="many-to-many-relationships">
+<h4>Many-to-Many Relationships<a class="headerlink" href="#many-to-many-relationships" title="Permalink to this headline">¶</a></h4>
+<p>Books can be edited by many authors, and authors can write multiple books. Elixir can relate
+these two like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">ManyToMany</span><span class="p">(</span><span class="s">&#39;Author&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Author</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">ManyToMany</span><span class="p">(</span><span class="s">&#39;Book&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="specifying-the-table-name">
+<h3>Specifying the Table Name<a class="headerlink" href="#specifying-the-table-name" title="Permalink to this headline">¶</a></h3>
+<p>There&#8217;s a special option to specify the table name that would be created in database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="n">using_options</span><span class="p">(</span><span class="n">tablename</span><span class="o">=</span><span class="s">&#39;tg_book&#39;</span><span class="p">)</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>The &#8216;tg_book&#8217; table will be created when you create the database with the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt> command.</p>
+</div>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id8">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://elixir.ematia.de">Elixir Documentation</a>
+<a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy Documentation</a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

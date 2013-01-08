@@ -1,0 +1,763 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File Upload Progress Bar &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Alternative Components" href="AlternativeComponents.html" />
+    <link rel="prev" title="File Upload Tutorial" href="FileUploadTutorial.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AlternativeComponents.html" title="Alternative Components"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FileUploadTutorial.html" title="File Upload Tutorial"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">File Upload Progress Bar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-new-turbogears-project">1. Create a new TurboGears project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-file-upload-form">2. Create a File Upload form</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uploadfilter-installation-and-configuration">3. UploadFilter Installation and Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#form-handler">4. Form Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#progress-bar-template-and-json-controller">5. Progress Bar Template and JSON Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#javascript">6. Javascript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finished">Finished!</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="file-upload-progress-bar">
+<h1><a class="toc-backref" href="#id1">File Upload Progress Bar</a><a class="headerlink" href="#file-upload-progress-bar" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#file-upload-progress-bar" id="id1">File Upload Progress Bar</a><ul>
+<li><a class="reference internal" href="#requirements" id="id2">Requirements</a></li>
+<li><a class="reference internal" href="#steps" id="id3">Steps</a></li>
+<li><a class="reference internal" href="#troubleshooting" id="id4">Troubleshooting</a></li>
+<li><a class="reference internal" href="#thanks" id="id5">Thanks</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This document describes how to add a File Upload Progress Bar to a
+project using a CherryPy filter and some Javascript.
+The goal is that when a user submits a form, progress bars should
+appear below the file inputs.</p>
+<p><em>Note that this is very different than an AJAX File Uploader,
+which will be the topic of another tutorial.</em></p>
+<p>We are going to start by using
+<tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> to start a project, and we&#8217;ll finish with a form that
+has two progress bars on it that looks like this screenshot:</p>
+<p><img alt="screenshot" src="_images/fileupload_screenshot.jpg" /></p>
+<p>Functional, but not the prettiest thing in the world - right?  To use this in an
+application, you might want to take out the transfer stats and leave just a
+progress bar with a nice background image on the progress bar instead of that
+basic blue block.</p>
+<p>Not to worry! We&#8217;re going to keep the html for the progress bar in a template
+so you can customize the look and feel of the progress bar for your application.
+We will be using the <tt class="docutils literal"><span class="pre">kid</span></tt> template engine for this tutorial, but the templates are
+very simple and easy to convert to any of the other template engines supported by
+TurboGears.</p>
+<p>The Javascript described in this example is unobtrusive, meaning that if Javascript is not
+available the form will still act like a regular html form with regular file inputs that
+will upload files to the server, but of course without the progress bars.  Writing
+unobtrusive Javascript takes a few more lines of code than usual, but I&#8217;ll be
+sure to comment it well so it&#8217;s easy to understand.</p>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial should work on TurboGears 1.0 or 1.1.  When TurboGears moves from CherryPy 2.2
+to Pylons/Paste (around TurboGears 2.0), the CherryPy filter (UploadFilter) used in this solution
+will need to be rewritten as WSGI middleware.</p>
+</div>
+<div class="section" id="steps">
+<h2><a class="toc-backref" href="#id3">Steps</a><a class="headerlink" href="#steps" title="Permalink to this headline">¶</a></h2>
+<p>The basic steps for this project are:</p>
+<ol class="arabic simple">
+<li>Create a new TurboGears project</li>
+<li>Create a form with two file inputs</li>
+<li>Install tweekgeek&#8217;s UploadFilter for CherryPy</li>
+<li>Create a controller that handles the file uploads</li>
+<li>Create a progress bar template and JSON controller method</li>
+<li>Incorporate some javascript into the form to display the progress bar</li>
+</ol>
+<div class="section" id="create-a-new-turbogears-project">
+<h3>1. Create a new TurboGears project<a class="headerlink" href="#create-a-new-turbogears-project" title="Permalink to this headline">¶</a></h3>
+<p>Type this at the command line to make your project skeleton:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart</pre>
+</div>
+<p>Let&#8217;s call the project &#8216;filedrop&#8217;:</p>
+<div class="highlight-python"><pre>Enter project name: FileDrop
+Enter package name [filedrop]:
+...</pre>
+</div>
+<p>Change to the directory created for you by <tt class="docutils literal"><span class="pre">tg-admin</span></tt>. From now on any
+path references during this tutorial will be relative to the
+project&#8217;s directory:</p>
+<div class="highlight-python"><pre>$ cd FileDrop/</pre>
+</div>
+<p>At this point your project should be operational. Make sure this is
+the case by starting the built-in web server:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>If everything worked, you should be able to browse to
+<a class="reference external" href="http://localhost:8080">http://localhost:8080</a> and see the welcome message. If that&#8217;s the case,
+you can safely stop the server using your interrupt key (<tt class="docutils literal"><span class="pre">ctrl-c</span></tt> on most systems).</p>
+<p>If it didn&#8217;t work, you should see some kind of error message
+at the command line.  If you see a bunch of text, look at the last
+error listed  and search for it on the TurboGears mailing list archives,
+and then on Google if you haven&#8217;t found an answer on the list archives.
+If all else fails (and only then!), go ahead and post to the TurboGears
+mailing list with as much information as you can get on the problem you&#8217;re having!</p>
+</div>
+<div class="section" id="create-a-file-upload-form">
+<h3>2. Create a File Upload form<a class="headerlink" href="#create-a-file-upload-form" title="Permalink to this headline">¶</a></h3>
+<p>We need to create a template with a form that has two file input fields.
+Remember that file upload forms must use <tt class="docutils literal"><span class="pre">method=POST</span></tt> and <tt class="docutils literal"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></tt>
+in order to work properly.  While we&#8217;re at it, let&#8217;s also stick a paragraph element in the template
+to hold any special messages our controllers might wish to send.</p>
+<p>Create a file named <tt class="docutils literal"><span class="pre">uploadform.kid</span></tt> in the <tt class="docutils literal"><span class="pre">filedrop/templates/</span></tt> directory like this:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'"&gt;
+  &lt;head&gt;
+    &lt;title&gt;Upload Your File Today!&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;style&gt;input {display: block; margin-top: 1em;}&lt;/style&gt;
+    &lt;div style="width: 500px; margin: 2em auto; padding: 2em; border: 1px solid #ccc"&gt;
+      &lt;h1&gt;File Upload with Progress Bar&lt;/h1&gt;
+      &lt;p py:condition="defined(message)"
+         py:content="message"
+         style="font-size: 200%; color: orange;" /&gt;
+      &lt;form action="upload_handler" method="POST" enctype="multipart/form-data"&gt;
+        &lt;input type="file" name="myfile1" /&gt;
+        &lt;input type="file" name="myfile2" /&gt;
+        &lt;input type="submit" name="submit" value="Upload" /&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>Note that the form has its <tt class="docutils literal"><span class="pre">action</span></tt> attribute set to <tt class="docutils literal"><span class="pre">upload_handler</span></tt>.  That&#8217;s
+a controller that we&#8217;ll create in step 4 to actually save the files, so you don&#8217;t
+have to worry about it just yet.</p>
+<p>Of course, we do need to add a controller that will display this form, along
+with the optional message.  Add this to the <tt class="docutils literal"><span class="pre">Root</span></tt>
+controller class of your <tt class="docutils literal"><span class="pre">filedrop/controllers.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;filedrop.templates.uploadform&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Show upload form with an optional message &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let&#8217;s make sure that worked. First start the built-in web server:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>If you browse to <a class="reference external" href="http://localhost:8080/upload">http://localhost:8080/upload</a> you should see the form
+we just added:</p>
+<p><img alt="formscreenshot" src="_images/fileupload_form_screenshot.jpg" /></p>
+<p>Problems? Check the <strong>Troubleshooting</strong> section.  Otherwise
+go ahead and stop the server again using your
+interrupt key (<tt class="docutils literal"><span class="pre">ctrl-c</span></tt> on most systems).</p>
+</div>
+<div class="section" id="uploadfilter-installation-and-configuration">
+<h3>3. UploadFilter Installation and Configuration<a class="headerlink" href="#uploadfilter-installation-and-configuration" title="Permalink to this headline">¶</a></h3>
+<p>tweekgeek (james at tweekedideas dot com) has written a CherryPy
+filter that manages http file uploads and maintains live upload
+statistics.  Using this, we can make a JSON controller that tracks
+file uploads and returns file upload statistics to our Javascript.
+The UploadFilter code needs a modification however, to work for our purposes.
+By default UploadFilter deletes the statistics on a file as soon as the transfer
+is finished.  We need to wait until <strong>all</strong> the files are transferred before
+deleting any of the statistics, so we need to change the code.  Luckily the
+code is open source so we can do this!</p>
+<p>Download the <a class="reference download internal" href="_downloads/uploadfilter.py"><tt class="xref download docutils literal"><span class="pre">modified</span> <span class="pre">version</span> <span class="pre">of</span> <span class="pre">uploadfilter.py</span></tt></a> into
+your <tt class="docutils literal"><span class="pre">filedrop</span></tt> python directory (the one that has <tt class="docutils literal"><span class="pre">model.py</span></tt> in it),
+and turn on that filter for your project
+by editing your <tt class="docutils literal"><span class="pre">filedrop/controllers.py</span></tt> file and putting
+the following lines just before the <tt class="docutils literal"><span class="pre">class</span> <span class="pre">Root(...)</span></tt> declaration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Add the UploadFilter filter to cherrypy.</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">input_filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;filedrop.uploadfilter.UploadFilter&#39;</span><span class="p">)</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">output_filters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;filedrop.uploadfilter.UploadFilter&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next we need to configure UploadFilter.  Edit your <tt class="docutils literal"><span class="pre">filedrop/config/app.cfg</span></tt>
+file and add these lines anywhere in the <tt class="docutils literal"><span class="pre">[global]</span></tt> section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Configure UploadFilter</span>
+<span class="n">upload_filter</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">upload_filter</span><span class="o">.</span><span class="n">max_concurrent</span> <span class="o">=</span> <span class="mi">10</span> <span class="c"># Allow up to 10 concurrent uploads</span>
+<span class="n">upload_filter</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="mi">20000</span>  <span class="c"># 20 meg limit per upload</span>
+<span class="n">upload_filter</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="mi">3600</span> <span class="c"># 1 hr. Excessive for most situations.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you want to allow <em>really big</em> file uploads (&gt;= ~100 MB), then
+you also need to increase the maximum requst body size for the CherryPy server.
+Add the following setting to your <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>/<tt class="docutils literal"><span class="pre">prod.cfg</span></tt>:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="c"># Set max request body size, in bytes, to 500 Mib</span>
+<span class="n">server</span><span class="o">.</span><span class="n">max_request_body_size</span> <span class="o">=</span> <span class="mi">524288000</span>
+</pre></div>
+</div>
+</div>
+<p>We should re-start the server now, to make sure there are no configuration
+problems or syntax errors. Go ahead and start the built-in web server:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>If you still see the welcome screen at <a class="reference external" href="http://localhost:8080">http://localhost:8080</a> then everything
+is OK, and you can stop the server now using the interrupt key (<tt class="docutils literal"><span class="pre">ctrl-c</span></tt> on most systems).
+If you get an error trying to start the server, check the <strong>Troubleshooting</strong> section.</p>
+</div>
+<div class="section" id="form-handler">
+<h3>4. Form Handler<a class="headerlink" href="#form-handler" title="Permalink to this headline">¶</a></h3>
+<p>When the form is submitted, we&#8217;ll need a controller ready to save those
+files.  Not only that, but we have to add a few lines of custom code.
+Remember that our project is using a modified UploadFilter, one that doesn&#8217;t
+automatically delete file statistics as each transfer is done.  That
+means that we have to write code that deletes the statistics from memory
+when <strong>all</strong> the files are done transferring.  The logical place to
+do this is in the controller that handles the form when it is submitted.
+Of course this controller should also save the files somewhere, in our example
+we&#8217;ll just save them to a directory in our project. First we&#8217;ll make that
+directory:</p>
+<div class="highlight-python"><pre>mkdir tempfiles</pre>
+</div>
+<p>And then we&#8217;ll need to edit the <tt class="docutils literal"><span class="pre">filedrop/controllers.py</span></tt> file
+and add a form handler to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">upload_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">myfile1</span><span class="p">,</span> <span class="n">myfile2</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Do something with form values and re-show the upload form. &quot;&quot;&quot;</span>
+
+    <span class="c"># Tell UploadFilter that this transfer is done.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">file_transfers</span><span class="p">[</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">][</span><span class="n">myfile1</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
+        <span class="k">del</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">file_transfers</span><span class="p">[</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">][</span><span class="n">myfile2</span><span class="o">.</span><span class="n">filename</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c"># Save any files that were uploaded (ignoring empty form fields)</span>
+    <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&quot;tempfiles&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">myfile1</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">myfile1</span><span class="o">.</span><span class="n">filename</span><span class="p">)),</span> <span class="n">myfile1</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">myfile2</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmpdir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">myfile2</span><span class="o">.</span><span class="n">filename</span><span class="p">)),</span> <span class="n">myfile2</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+    <span class="c"># Re-show the upload form, with a nice little message</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">msg</span><span class="o">=</span><span class="s">&quot;uploaded </span><span class="si">%s</span><span class="s"> and </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">myfile1</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">myfile2</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">save_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Safely save a file to the location given by filepath &quot;&quot;&quot;</span>
+    <span class="n">chunk_size</span> <span class="o">=</span> <span class="mi">8192</span>
+    <span class="c"># return if file is empty</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">file</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="c"># create new file on file system</span>
+    <span class="n">savedfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s">&quot;wb&quot;</span><span class="p">)</span>
+    <span class="c"># save data to this new file in chunks</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">chunk_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">savedfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also since we&#8217;re using the <tt class="docutils literal"><span class="pre">os</span></tt> library, we&#8217;ll need to import it
+at the top of our <tt class="docutils literal"><span class="pre">controllers.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># We use the os library to construct file paths.</span>
+<span class="kn">import</span> <span class="nn">os</span>
+</pre></div>
+</div>
+<p>Now&#8217;s a good time to test the file upload code.
+Go ahead and start the built-in web server:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>If you browse to <a class="reference external" href="http://localhost:8080/upload">http://localhost:8080/upload</a> and try uploading some files,
+they should appear in your <tt class="docutils literal"><span class="pre">tempfiles</span></tt> directory.  If so, go ahead and
+stop the server now using the interrupt key (<tt class="docutils literal"><span class="pre">ctrl-c</span></tt> on most systems).
+If you get an error trying to start the server, or if the files don&#8217;t show
+up, check the <strong>Troubleshooting</strong> section.</p>
+</div>
+<div class="section" id="progress-bar-template-and-json-controller">
+<h3>5. Progress Bar Template and JSON Controller<a class="headerlink" href="#progress-bar-template-and-json-controller" title="Permalink to this headline">¶</a></h3>
+<p>UploadFilter gives us access to all sorts of statistics on active file transfers,
+including speed (in bytes/second), total file size (in bytes), and the amount (in bytes)
+that&#8217;s been transferred so far.  Let&#8217;s make a JSON controller that our Javascript can call
+will return those statistics, but in kilobytes for easier readibility.  Go ahead and open up
+the <tt class="docutils literal"><span class="pre">filedrop/controllers.py</span></tt> file and add this to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">allow_json</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_upload_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns a dict containing stats on the active upload &quot;&quot;&quot;</span>
+
+    <span class="c"># Get stats from UploadFilter.</span>
+    <span class="c"># Firefox has a quirky behavior where the POSTed filename contains the path info</span>
+    <span class="c"># while the fileinput.value (accessed via javascript) does not contain the path info,</span>
+    <span class="c"># so look for stats in both places.</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">file_transfers</span><span class="p">[</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="ow">or</span> \
+            <span class="n">cherrypy</span><span class="o">.</span><span class="n">file_transfers</span><span class="p">[</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sanitize_filename</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+
+    <span class="c"># Assert that UploadFilter is tracking something named filename.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stats</span><span class="p">:</span>
+        <span class="c"># If there are no entries for our IP Address and Filename, then we have nothing.</span>
+        <span class="n">turbogears</span><span class="o">.</span><span class="n">flash</span><span class="p">(</span><span class="s">&quot;No active file uploads. IP: </span><span class="si">%s</span><span class="s">, FILENAME: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> \
+                          <span class="p">(</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+
+
+    <span class="c"># If the file transfer is finished, the dict should show this, avoiding the</span>
+    <span class="c"># odd results that UploadFilter will spit back after a transfer is complete.</span>
+    <span class="k">if</span> <span class="n">stats</span><span class="o">.</span><span class="n">transferred</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">upload_stats_in_kb</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">pre_sized</span><span class="p">,</span> \
+                                  <span class="n">transferred</span><span class="o">=</span><span class="n">stats</span><span class="o">.</span><span class="n">pre_sized</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">percent_done</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Convert stats to KBs and save in a new dict called upload_stats_in_kb</span>
+        <span class="n">upload_stats_in_kb</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;filename&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%9.2f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">speed</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">)</span> <span class="c"># kb/s</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%9.2f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">pre_sized</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">)</span> <span class="c"># kb</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;transferred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%9.2f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">transferred</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">)</span> <span class="c"># kb</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;eta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">eta</span><span class="p">))</span> <span class="c"># seconds to arrival</span>
+        <span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;percent_done&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">int</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">transferred</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">stats</span><span class="o">.</span><span class="n">pre_sized</span><span class="p">)</span>
+
+    <span class="c"># Return results as a dict</span>
+    <span class="k">return</span> <span class="n">upload_stats_in_kb</span>
+
+<span class="k">def</span> <span class="nf">sanitize_filename</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Removes any path info that might be inside filename, and returns results. &quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">urllib</span>
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\\</span><span class="s">&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Also since we&#8217;re using <tt class="docutils literal"><span class="pre">turbogears.flash()</span></tt>, we&#8217;ll need to import <tt class="docutils literal"><span class="pre">turbogears</span></tt>
+at the top of our <tt class="docutils literal"><span class="pre">controllers.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># We use turbogears.flash() in our get_upload_stats() controller</span>
+<span class="kn">import</span> <span class="nn">turbogears</span>
+</pre></div>
+</div>
+<p>As promised, instead of merely returning a dictionary of data and leaving the display
+of the progress bar up to the Javascript, we&#8217;ll make a template that will take the statistics
+and display them along with the progress bar.  This template is pretty self-explanatory,
+it just displays the <tt class="docutils literal"><span class="pre">filename</span></tt>, <tt class="docutils literal"><span class="pre">speed</span></tt>, <tt class="docutils literal"><span class="pre">percent_done</span></tt>, and other variables.
+Create a file named <tt class="docutils literal"><span class="pre">progressbar.kid</span></tt> in the <tt class="docutils literal"><span class="pre">filedrop/templates/</span></tt> directory like this:</p>
+<div class="highlight-python"><pre>&lt;html xmlns:py="http://purl.org/kid/ns#"&gt;
+
+&lt;span py:if="percent_done != 100"&gt;
+  &lt;strong&gt;Uploading: $filename&lt;/strong&gt;&lt;br/&gt;
+  Transferred: &lt;span style="color:red;"&gt;$transferred/$total&lt;/span&gt; KB,
+  Speed: &lt;span style="color:red;"&gt;$speed&lt;/span&gt; KB/S,
+  ETA: &lt;span style="color:red;"&gt;$eta&lt;/span&gt; Seconds &lt;br/&gt;
+&lt;/span&gt;
+
+&lt;span py:if="percent_done == 100"&gt;
+  &lt;strong&gt;Finished: $filename&lt;/strong&gt;
+&lt;/span&gt;
+
+&lt;!-- A simple progress bar. --&gt;
+&lt;div style="border:1px solid black;height:20px;width:400px;"&gt;
+  &lt;div style="background-color:navy;width:${percent_done}%;height:20px;float:left;"&gt;
+    &lt;p style="text-align: center; color: white; padding: 0; margin: 0;"&gt;${percent_done}%&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>And now we&#8217;ll need our <tt class="docutils literal"><span class="pre">get_upload_stats</span></tt> controller to pass the statistics to this
+<tt class="docutils literal"><span class="pre">progressbar</span></tt> template and return the resulting xhtml to the Javascript that we&#8217;ll put in our form.
+The code for this involves importing the <tt class="docutils literal"><span class="pre">kid</span></tt> template engine, importing the <tt class="docutils literal"><span class="pre">progressbar</span></tt>
+template we just created, and feeding it our statistics to get the resulting xhtml
+(this is called &#8216;serializing&#8217;).</p>
+<p>First let&#8217;s import <tt class="docutils literal"><span class="pre">kid</span></tt> and import our <tt class="docutils literal"><span class="pre">progressbar</span></tt> template.
+In your controller file, add these lines just before the <tt class="docutils literal"><span class="pre">class</span> <span class="pre">Root(...)</span></tt> declaration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># We use the &#39;kid&#39; template engine to format the progress bar</span>
+<span class="kn">import</span> <span class="nn">kid</span>
+<span class="n">kid</span><span class="o">.</span><span class="n">enable_import</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">filedrop.templates</span> <span class="kn">import</span> <span class="n">progressbar</span> <span class="k">as</span> <span class="n">progressbar_template</span>
+</pre></div>
+</div>
+<p>Next we&#8217;ll &#8216;serialize&#8217; the template and return the xhtml along with the stats in our
+<tt class="docutils literal"><span class="pre">get_upload_stats</span></tt> method.  In our <tt class="docutils literal"><span class="pre">filedrop/controllers.py</span></tt> file, add these lines
+just before the <tt class="docutils literal"><span class="pre">return</span></tt> statement at the end of the <tt class="docutils literal"><span class="pre">get_upload_stats</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Construct the html to display the stats visually</span>
+<span class="n">upload_stats_in_kb</span><span class="p">[</span><span class="s">&#39;progressbar_xhtml&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">progressbar_template</span><span class="o">.</span><span class="n">serialize</span><span class="p">(</span><span class="o">**</span><span class="n">upload_stats_in_kb</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Phew! That was a lot! Let&#8217;s go ahead and test this.  Open up two browser windows.
+We&#8217;ll upload files in one browser and watch the statistics come back from our JSON
+controller in the other window.  First we&#8217;ll need to start the build-in web server:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>Next browse to <a class="reference external" href="http://localhost:8080/upload">http://localhost:8080/upload</a> and try uploading some <strong>really really big files</strong>.
+Why big files?  Because we want the process to go slowly so that we can poll the <tt class="docutils literal"><span class="pre">get_upload_stats</span></tt>
+JSON controller for the upload statistics, and make sure this piece of the puzzle is working OK.
+Don&#8217;t have a big file sitting around? You can just make many copies of an audio file or something in a folder,
+and then zip them up into a single big file.  Don&#8217;t be afraid to make this file several hundred megabytes big!</p>
+<p>So now we&#8217;re uploading files.  Let&#8217;s say one of those files is called <tt class="docutils literal"><span class="pre">bigfile1.zip</span></tt>.
+While the file is uploading, use your other browser window to browse to
+<a class="reference external" href="http://localhost:8080/get_upload_stats?filename=bigfile1.zip">http://localhost:8080/get_upload_stats?filename=bigfile1.zip</a></p>
+<p>You should see a JSON response kind of like this:</p>
+<p><img alt="jsonscreenshot" src="_images/fileupload_json_screenshot.jpg" /></p>
+<p>See our statistics in there?  Neat, huh?  If you get a message saying &#8220;no active file uploads&#8221;, it&#8217;s
+likely that your upload has already finished and you should try again using bigger files.</p>
+<p>If it worked ok, stop your server again using the interrupt key (<tt class="docutils literal"><span class="pre">ctrl-c</span></tt> on most systems).
+If you got an error, maybe your upload finished before you requested the statistics?  Try again with
+bigger files.  If you got an error starting the server, check the <strong>Troubleshooting</strong>
+section.</p>
+</div>
+<div class="section" id="javascript">
+<h3>6. Javascript<a class="headerlink" href="#javascript" title="Permalink to this headline">¶</a></h3>
+<p>As expected, this project involves some javascript. First we&#8217;ll need to turn
+on MochiKit for the project.  Edit <tt class="docutils literal"><span class="pre">filedrop/config/app.cfg</span></tt> and put this
+in the <tt class="docutils literal"><span class="pre">[global]</span></tt> section:</p>
+<blockquote>
+<div>tg.include_widgets=[&#8216;turbogears.mochikit&#8217;]</div></blockquote>
+<p>The Javascript will need to unobtrusively attach itself to any forms that have file
+inputs, manipulate the DOM to insert placeholders for the progress bars right below
+each file input, and add an <tt class="docutils literal"><span class="pre">onsubmit</span></tt> event handler for the forms that
+repeatedly makes JSON calls to our <tt class="docutils literal"><span class="pre">get_upload_stats</span></tt> controller, updating
+the progress bars with each call.  I went ahead and wrote some robust Javascript
+code to do all this.  Please read through the comments in the Javascript
+to get a good idea of what&#8217;s going on.  It helps to read it in reverse order,
+as I had to create functions before they are used and thus the first thing that
+happens (attaching the form <tt class="docutils literal"><span class="pre">onsubmit</span></tt> events) is actually the last thing in the file.</p>
+<p>Go ahead and download <a class="reference download internal" href="_downloads/progressbar.js"><tt class="xref download docutils literal"><span class="pre">progressbar.js</span></tt></a> into the <tt class="docutils literal"><span class="pre">filedrop/static/javascript/</span></tt> directory.</p>
+<p>Finally of course you&#8217;ll want to update the form to use this javascript.  Edit the
+<tt class="docutils literal"><span class="pre">filedrop/templates/uploadform.kid</span></tt> and add this to the &#8216;&lt;head&gt;&#8217; section:</p>
+<div class="highlight-python"><pre>&lt;script type="text/javascript" src="/static/javascript/progressbar.js"&gt;&lt;/script&gt;</pre>
+</div>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="finished">
+<h3>Finished!<a class="headerlink" href="#finished" title="Permalink to this headline">¶</a></h3>
+<p>If everything worked, you should be able to start the server again without error:</p>
+<div class="highlight-python"><pre>$ python start-filedrop.py</pre>
+</div>
+<p>Now browse to the upload form at <tt class="docutils literal"><span class="pre">http://localhost:8080/upload</span></tt> and try uploading some files!
+You should see the progress bars and upload statistics just like those in our original screenshot:</p>
+<p><img alt="screenshot" src="_images/fileupload_screenshot.jpg" /></p>
+<p>If it didn&#8217;t work, double-check steps 1 through 6, and check the <strong>Troubleshooting</strong>
+section of this document.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2><a class="toc-backref" href="#id4">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>If you are using CherryPy &gt;= 2.3.0, please make sure that you are using an
+up-to-date version of the <a class="reference download internal" href="_downloads/uploadfilter.py"><tt class="xref download docutils literal"><span class="pre">uploadfilter.py</span></tt></a> file.
+The file should have a comment in the docstring at the top, saying that it has been
+adapted for CherryPy &gt;= 2.3.0.</p>
+<p>If you run into other problems, search the TurboGears mailing list
+for people that ran into similar problems.  For example, you might search
+for &#8220;File Upload Progress Bar problems&#8221; and read what comes up.</p>
+<p>If that doesn&#8217;t help, go ahead and send an email to the TurboGears mailing list
+and copy the author of this document &#8211; <strong>Ian Charnas, icc at case dot edu</strong>.</p>
+<p>I&#8217;ll be adding content to the <strong>Troubleshooting</strong> section as soon as I start
+seeing problem reports and get an idea of what the basic problems are that people are having.</p>
+</div>
+<div class="section" id="thanks">
+<h2><a class="toc-backref" href="#id5">Thanks</a><a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><strong>Brian Beck</strong> for letting me steal step 1 from his <a class="reference external" href="ToDoListTutorial">ToDo List Tutorial</a></li>
+<li><strong>Tweekgeek</strong> for <a class="reference external" href="http://groups-beta.google.com/group/cherrypy-devel/browse_thread/thread/c3bf693e287f030d">releasing his UploadFilter</a>
+to the world</li>
+<li><strong>Kevin Dangoor</strong> and the many other fine programmers working on TurboGears.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

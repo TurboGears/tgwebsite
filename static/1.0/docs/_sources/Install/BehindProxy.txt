@@ -1,0 +1,58 @@
+.. index:: proxies
+
+Installing TurboGears on a host behind a proxy
+==============================================
+
+You probably reached this page, because you encountered a problem when trying to install TurboGears. When you run `easy_install`_ or `tgsetup.py`_, you get something like this ::
+
+    Searching for turbogears
+    Reading http://www.turbogears.org/preview/download/index.html
+    error: Download error: (10060, 'Operation timed out')
+
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+This may mean, that you are behind a proxy and easy_install is not able to access the files it wants to download. But fear not, there is an `environment variable`_ which you can set, to tell easy_install about your proxy.
+
+.. _environment variable: http://en.wikipedia.org/wiki/Environment_variable
+
+
+Linux
+-----
+::
+
+    export http_proxy="http://your.proxy.com:yourPort"
+
+or if you need proxy authentication: ::
+
+    export http_proxy="http://user:passwd@your.proxy.com:yourPort"
+
+
+Windows
+-------
+
+tested on XP ::
+
+    set HTTP_PROXY=http://your.proxy.com:yourPort
+
+you can also use the "" in windows
+
+
+Mac
+---
+::
+
+    TODO
+
+
+Try again
+---------
+
+After setting the proxy, run the ``easy_install`` command again (you may need to log out and in again or open a new command line window for the environment change to take effect)::
+
+    easy_install -i http://www.turbogears.org/1.0/downloads/current/index TurboGears
+
+Workaround
+----------
+
+If, by some chance, you can't set the proxy or want to do an offline install, download all the eggs and run easy_install with the ``-f`` option pointing to the directory where you downloaded the packages. See also "How can I do offline installations?" in the :doc:`FAQ </FAQ>`.

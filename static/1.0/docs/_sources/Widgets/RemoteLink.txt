@@ -1,0 +1,244 @@
+.. index:: RemoteLink
+
+Wrap Ajax Operations in Widgets
+===============================
+
+.. contents::
+    :depth: 2
+
+
+Motivation
+----------
+
+``RemoteLink`` is a widget that provides basic Ajax functionality. The widget is
+inspired by the article `Crossing Borders - AJAX on Rails`_ on the IBM dvelopers
+network and the TurboGears tutorial :doc:`20 Minute Wiki Page 6 </Wiki20/Page6>`.
+
+The basic technique used in both articles is to employ Ajax to get a string
+from a server method and then update a ``DIV`` element on the page to display
+it. In the Rails example, a template helper called ``link_to_remote helper`` is
+used to encapsulate the rendering of the necessary mix of JavaScript and HTML
+markup. For the advanced TurboGears user it is easy to create a widget that
+fulfills the same purpose.
+
+In this tutorial, we'll take the welcome page from a fresh, quickstarted
+TurboGears project and add, in place of the line in the sidebar where the
+current time is shown, a link that, when clicked, gets the time from the server
+asynchronously, and then updates the time display without reloading the whole
+page.
+
+.. _crossing borders - ajax on rails:
+    http://www.ibm.com/developerworks/java/library/j-cb12056/
+
+.. _20 minute Wiki page 6: Wiki20/Page6
+
+
+Preliminary Template Changes
+----------------------------
+
+In ``welcome.kid``, we'll add a link to the URL ``/time`` with the ID
+"timelink" and also a ``DIV`` with the ID "timediv", whose contents
+get replaced with the updated time later::
+
+    - <span py:replace="now">now</span>
+    + <p><a id="timelink" href="${tg.url('/time')}">Get time</a></p>
+    + <div id="timediv" py:content="now"></div>
+
+
+The Controller Method
+---------------------
+
+So, now we got a welcome page, which has a link to ``/time``. The link works
+normally, independent of any Ajax-foo we are going to use it for. To actually
+return the current time, we nee to add a ``time`` method to the controller::
+
+    # controllers.py
+    import time
+    from turbogears import controllers, expose
+
+    class Root(controllers.RootController):
+        @expose(template=".templates.welcome")
+        def index(self):
+            return dict(now=time.ctime())
+
+        @expose()
+        def time(self):
+            import time
+            return time.ctime()
+
+
+Adding our AJAX-foo
+-------------------
+
+Again, in ``welcome.kid`` we add a line to the HTML HEAD section to bind the
+Ajax call to the "timelink" element by using the ``RemoteLink`` widget::
+
+    <head>
+      ...
+      <title>Welcome to TurboGears</title>
+      ${remote_link(target="timelink", update="timediv", href="/time")}
+    </head>
+
+It doesn't really matter, where we add the widget in the template, but to keep
+things structured, we like to keep it in the HEAD.
+
+The RemoteLink widget does three things:
+
+* Create a function that will do an XmlHttpRequest to the URL given by ``href``.
+* Connect this function to the "timelink" link.
+* Create a 'showDiv' function to update the "timediv" ``DIV`` with the
+  response from the first function.
+
+Note that 'showDiv' is the default name of the response handler function.
+If you want to use multiple RemoteLink widgets in the same page, you have to
+supply another value for the ``action`` parameter for each widget. For example::
+
+    ${remote_link(target="timelink", update="timediv", href="/time",
+        action="showTimeDiv")}
+
+We also need to pass the widget to the template from the ``index`` controller method::
+
+    ...
+    from widgets import RemoteLink
+
+    class Root(controllers.RootController):
+        @expose(template=".templates.welcome")
+        def index(self):
+            remote_link = RemoteLink()
+            return dict(now=time.ctime(), remote_link=remote_link)
+        ...
+
+
+The Widget Source
+-----------------
+
+The source for the ``RemoteLink`` widget is shown here in full. Put it
+into a file called ``widgets.py`` in your application's package::
+
+    # widgets.py
+
+    from turbogears.widgets import Widget, mochikit
+
+    class RemoteLink(Widget):
+        """When the target link is clicked, use XMLHttpRequest to get a
+        response from a remote method and use the result to update the div.
+
+        """
+        name = "RemoteLink"
+
+        javascript = [mochikit]
+
+        template = """\
+            <script type="text/javascript">
+            addLoadEvent(
+                function() {
+                    connect('${target}', 'onclick',
+                        function (e) {
+                            e.preventDefault();
+                            var d = doSimpleXMLHttpRequest('${href}');
+                            d.addCallback(${action});
+                        }
+                    );
+                }
+            );
+
+            function ${action}(result) {
+                replaceChildNodes('${update}', result.responseText);
+            }
+            </script>
+        """
+        params = ["target", "update", "href", "action"]
+        params_doc = dict(
+            action = "JS function handling the response, default is 'showDiv'",
+            href = "URL of the remote method to call",
+            target = "The link ID",
+            update = "DIV to be replaced"
+        )
+        action="showDiv"
+
+
+Template Source
+---------------
+
+Here's the minimum code you need in the ``welcome.kid`` template::
+
+    <!DOCTYPE ....>
+    <html ....>
+    <head>
+      <meta content="text/html; charset=utf-8" http-equiv="Content-Type"
+        py:replace="''"/>
+      <title>Welcome to TurboGears</title>
+      ${RemoteLink.display(time='1', target = "timelink", update="timelink",
+        href="/time", action="showTimeDiv")}
+    </head>
+    <body>
+      <div id="timelink"><a href = "#">get time</a></div>
+      <div id="timediv" py:replace="now"></div>
+    </body>
+    </html>
+
+
+Test it
+-------
+
+Start the server, open the browser and go to the welcome page at
+http://localhost:8080/. When you click the "Get time" link, you'll see that the
+current time will be shown without a reload of the whole page.
+
+
+Using Another Javascript library
+--------------------------------
+
+You can replace your RemoteLink widget's Javascript implementation easily.
+In this example I'll use jQuery_.
+
+The effort is quite minimum, you just change the widget list in the
+``javascript`` attribute to ``jquery`` (i.e. you need to have a `widget wrapper
+for jQuery`_) and then replace the template with jQuery's code::
+
+    class RemoteLink(Widget):
+        """This widget does not use a callback."""
+
+        name = "link_to_remote"
+        javascript = [jquery]
+        template = """
+            <script type="text/javascript">
+            $(function(){
+                $('#${target}').click(function(){
+                    $('#${update}').load("${href}");
+                });
+            });
+            </script>
+        """
+        params = ["target", "update", "href"]
+        params_doc = dict(
+            href = "URL of the remote method to call",
+            target = "The link ID",
+            update = "DIV to be replaced"
+        )
+
+The beauty is that when you change the javascript library in your back,
+RemoteLink widget's work manner is still exactly the same. So you don't
+have to replace the code in your multiple templates.
+
+.. _jquery: http://jquery.com/
+.. _widget wrapper for jquery: http://pypi.python.org/pypi/jquery
+
+
+Conclusion
+----------
+
+I'd like to ask if people who are JavaScript masters, could bring us more widgets
+to do basic AJAX operations, like in this Rails `PrototypeHelper`_ module.
+
+.. _prototypehelper:
+    http://api.rubyonrails.org/classes/ActionView/Helpers/PrototypeHelper.html
+
+
+Download the Example Code
+-------------------------
+
+The example code on this page is attached and can be downloaded here:
+
+:download:`RemoteLinkDemo.tar.gz <downloads/RemoteLinkDemo.tar.gz>`
+

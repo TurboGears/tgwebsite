@@ -1,0 +1,189 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears Installation on Windows &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="TurboGears Installation on Mac OS X" href="Mac.html" />
+    <link rel="prev" title="TurboGears installation on Unix-like Systems" href="Nix.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Mac.html" title="TurboGears Installation on Mac OS X"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Nix.html" title="TurboGears installation on Unix-like Systems"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TurboGears Installation on Windows</a><ul>
+<li><a class="reference internal" href="#getting-python">Getting Python</a></li>
+<li><a class="reference internal" href="#installing-turbogears">Installing TurboGears</a></li>
+<li><a class="reference internal" href="#database-drivers">Database Drivers</a></li>
+<li><a class="reference internal" href="#get-help">Get Help</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Nix.html"
+                        title="previous chapter">TurboGears installation on Unix-like Systems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Mac.html"
+                        title="next chapter">TurboGears Installation on Mac OS X</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-installation-on-windows">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">TurboGears Installation on Windows</a><a class="headerlink" href="#turbogears-installation-on-windows" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-installation-on-windows" id="id1">TurboGears Installation on Windows</a><ul>
+<li><a class="reference internal" href="#getting-python" id="id2">Getting Python</a></li>
+<li><a class="reference internal" href="#installing-turbogears" id="id3">Installing TurboGears</a></li>
+<li><a class="reference internal" href="#database-drivers" id="id4">Database Drivers</a></li>
+<li><a class="reference internal" href="#get-help" id="id5">Get Help</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-python">
+<h2><a class="toc-backref" href="#id2">Getting Python</a><a class="headerlink" href="#getting-python" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re new to Python, welcome. It&#8217;s a great language</p>
+<ol class="arabic">
+<li><p class="first">Grab the <a class="reference external" href="http://www.python.org/download/releases/2.5.4/">Python 2.5 Installer</a>.</p>
+</li>
+<li><p class="first">Run the installer.</p>
+</li>
+<li><p class="first">Add Python to your path.</p>
+<p>To do this, go to <tt class="docutils literal"><span class="pre">System</span> <span class="pre">Properties</span> <span class="pre">-&gt;</span> <span class="pre">Advanced</span> <span class="pre">-&gt;</span> <span class="pre">Environment</span> <span class="pre">Variables</span></tt>
+and add or edit the <tt class="docutils literal"><span class="pre">PATH</span></tt> variable to have <tt class="docutils literal"><span class="pre">;C:\Python25;C:\Python25\Scripts</span></tt>,
+assuming you installed Python to the default location.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The recommended Python version to use with TurboGears 1.0
+currently is <strong>2.5.x</strong>, but we still support <strong>Python 2.4.x</strong> and
+(<a class="reference internal" href="Python2.3Support.html"><em>with some restrictions</em></a>) <strong>Python 2.3.x</strong>.
+Python 2.5.x is supported from TurboGears version <strong>1.0.2</strong> onwards.</p>
+</div>
+</div>
+<div class="section" id="installing-turbogears">
+<h2><a class="toc-backref" href="#id3">Installing TurboGears</a><a class="headerlink" href="#installing-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>You can run Python from any shell if your Python scripts directory is on your path.
+By default the scripts directory is C:Python25Scripts</p>
+<ol class="arabic simple">
+<li>Open up a command line prompt (<tt class="docutils literal"><span class="pre">Start</span> <span class="pre">-&gt;</span> <span class="pre">Run</span></tt> and type <tt class="docutils literal"><span class="pre">cmd</span></tt>)</li>
+<li>Download <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> and run</li>
+</ol>
+<blockquote>
+<div><div class="highlight-python"><pre>python tgsetup.py</pre>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Make sure your installation succeeded by running <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt>.</li>
+</ol>
+<p>Once you&#8217;ve gotten TurboGears and a database driver installed, jump over to the
+<a class="reference external" href="Wiki20/Page1">20 minute wiki</a> tutorial or the <a class="reference external" href="Wiki20/Page1">getting started guide</a> to get your feet wet.</p>
+<p>Also consider signing up for the <a class="reference external" href="http://groups.google.com/group/turbogears">discussion</a> or <a class="reference external" href="http://groups.google.com/group/turbogears-announce">announcement</a> mailing list.
+We&#8217;re always happy to help people work through their problems and you might have
+something to share with us. There&#8217;s also an irc channel, <tt class="docutils literal"><span class="pre">#turbogears</span></tt> on
+<tt class="docutils literal"><span class="pre">irc.freenode.net</span></tt>.</p>
+</div>
+<div class="section" id="database-drivers">
+<h2><a class="toc-backref" href="#id4">Database Drivers</a><a class="headerlink" href="#database-drivers" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;re just doing development on your desktop, you can use pysqlite. You can
+get the latest version from the <a class="reference external" href="http://www.initd.org/tracker/pysqlite/wiki/pysqlite">pysqlite download page</a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">pysqlite</span></tt> does not work currently
+for all versions of Python. Use the binary installer for your Python version
+from the pysqlite page instead.</p>
+</div>
+<p>If you&#8217;re doing this on a production server, you&#8217;ll probably want to use MySQL
+(using the <tt class="docutils literal"><span class="pre">MySQLdb</span></tt> driver) or Postgres (using the <tt class="docutils literal"><span class="pre">psycopg2</span></tt> driver),
+though you could use <a class="reference internal" href="../Database/index.html"><em>several other databases</em></a> if you like.</p>
+</div>
+<div class="section" id="get-help">
+<h2><a class="toc-backref" href="#id5">Get Help</a><a class="headerlink" href="#get-help" title="Permalink to this headline">¶</a></h2>
+<p>For the most part, installation goes off without a hitch, but if you have
+problems, feel free to ask for <a class="reference external" href="/GettingHelp">help</a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

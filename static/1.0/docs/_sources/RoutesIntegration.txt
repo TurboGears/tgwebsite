@@ -1,0 +1,104 @@
+.. index:: Routes
+
+Using Routes with TurboGears
+============================
+
+`Routes <http://routes.groovie.org/>`_ is a Python re-implementation of the
+`Rails routes system <http://manuals.rubyonrails.com/read/book/9>`_ for
+mapping URLs to controllers/actions and generating URLs. Routes makes it
+easy to create pretty and concise URLs that are RESTful with little effort.
+This is a very simple integration of routes.
+
+
+Installing Routes
+-----------------
+
+Installing routes is extremely simple::
+
+    easy_install routes
+
+Or course, the usual caveats regarding sudo and --script-dir apply.
+
+
+The Root Controller
+-------------------
+
+Your root controller will need to look like this:::
+
+    class Root(controllers.RootController):
+
+        def __init__(self):
+            self.base_re = re.compile(
+                r'^(?P<protocol>[a-zA-Z]+)://(?P<host>.*)')
+
+            # Change the controllers here to the controllers in your app:
+            self.controllers = {'pickup': Pickup(), 'main': Main()}
+
+            # Here you need to add your own routes
+            # (http://routes.groovie.org/manual.html)
+            m.connect(':controller/:action',
+                controller='main', action='index')
+            m.connect('pickup/:id/:action',
+                controller='pickup', action='prepare',
+                requirements=dict(id='\d{1,11}'))
+
+            m.create_regs(self.controllers.keys())
+
+        def redirect(self, url):
+            # Recreated this function as the CherryPy one is deprecated
+            raise cherrypy.HTTPRedirect(turbogears.url(url), 302)
+
+        @turbogears.expose()
+        def default(self, *args, **kwargs):
+
+            base = cherrypy.request.base
+            d = self.base_re.match( base ).groupdict()
+            host = d[ 'host' ]
+            proto = d[ 'protocol' ]
+            path = cherrypy.request.path
+
+            con = request_config()
+            con.mapper = m # the Routes mapper object
+            con.host = host
+            con.protocol = proto
+            con.redirect = self.redirect
+
+            # The following line was added in order to support the "condition"
+            # parameter to a route; i.e., if you wish to specify that the route
+            # only allows certain HTTP methods like DELETE.  Without this line,
+            #  Routes doesn't see any environ info and doesn't match your path.
+            m.environ = {'REQUEST_METHOD': cherrypy.request.method}
+
+            con.mapper_dict = m.match(path)
+
+            if con.mapper_dict:
+                c = con.mapper_dict.pop('controller')
+                controller = self.controllers[c]
+                action = con.mapper_dict.pop('action', 'index')
+                try:
+                    meth = getattr(controller, action)
+                except AttributeError:
+                    try:
+                        meth = controller.default
+                    except AttributeError:
+                        raise cherrypy.NotFound(path)
+                kwargs.update(con.mapper_dict)
+                return meth(**kwargs)
+
+            raise cherrypy.NotFound(path)
+
+You will also need to add the following lines to the top of your controllers.py::
+
+    from routes import *
+    import re
+    import cherrypy
+    # Create the mapper object
+    m = Mapper()
+
+Note that you don't need to connect your controllers to the root controller as
+you would usually do. The connection of the required controller is done on an
+ad hoc basis.
+
+You may want to improve this by writing a subclassable RoutesController (which
+itself would be a subclass of RootController) and a few other bits in the TG
+internals that will allow you to enable and define routes in the .cfg files.

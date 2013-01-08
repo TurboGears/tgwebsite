@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing older versions of TurboGears &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installing From Subversion" href="FromSubversion.html" />
+    <link rel="prev" title="Downloading and installing a TurboGears beta version" href="Beta.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FromSubversion.html" title="Installing From Subversion"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Beta.html" title="Downloading and installing a TurboGears beta version"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing older versions of TurboGears</a><ul>
+<li><a class="reference internal" href="#installing-a-different-version">Installing a different version</a></li>
+<li><a class="reference internal" href="#installing-directly-from-the-svn-repository">Installing directly from the SVN repository</a></li>
+<li><a class="reference internal" href="#running-from-a-subversion-working-copy">Running from a Subversion working copy</a></li>
+<li><a class="reference internal" href="#how-to-uninstall-a-svn-working-copy">How to uninstall a SVN working copy</a></li>
+<li><a class="reference internal" href="#moving-between-svn-revisions">Moving between SVN revisions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Beta.html"
+                        title="previous chapter">Downloading and installing a TurboGears beta version</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FromSubversion.html"
+                        title="next chapter">Installing From Subversion</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="installing-older-versions-of-turbogears">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Installing older versions of TurboGears</a><a class="headerlink" href="#installing-older-versions-of-turbogears" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#installing-older-versions-of-turbogears" id="id1">Installing older versions of TurboGears</a><ul>
+<li><a class="reference internal" href="#installing-a-different-version" id="id2">Installing a different version</a></li>
+<li><a class="reference internal" href="#installing-directly-from-the-svn-repository" id="id3">Installing directly from the SVN repository</a></li>
+<li><a class="reference internal" href="#running-from-a-subversion-working-copy" id="id4">Running from a Subversion working copy</a></li>
+<li><a class="reference internal" href="#how-to-uninstall-a-svn-working-copy" id="id5">How to uninstall a SVN working copy</a></li>
+<li><a class="reference internal" href="#moving-between-svn-revisions" id="id6">Moving between SVN revisions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Sometimes the latest and greatest just won&#8217;t do. You need an old, perhaps rusty,
+but stable and well tested version of TurboGears.</p>
+<div class="section" id="installing-a-different-version">
+<h2><a class="toc-backref" href="#id2">Installing a different version</a><a class="headerlink" href="#installing-a-different-version" title="Permalink to this headline">¶</a></h2>
+<p>If you run <tt class="docutils literal"><span class="pre">easy_install</span></tt> without arguments, it will get you the lastest version
+(which is probably what you don&#8217;t want), so you will have to specify the version via:</p>
+<div class="highlight-python"><pre>easy_install PackageName==1.2.3</pre>
+</div>
+<p>Remember that you need to specify a download URL for TurboGears installations or
+easy_install will look for packages directly through the <a class="reference external" href="http://cheeseshop.python.org/pypi">Cheeseshop</a>, where some
+of the required packages can not be found.</p>
+<p>For example if we are at 1.0.9 and you want to go back to 1.0.4.4,
+on a Unix system you will have to run the following:</p>
+<div class="highlight-python"><pre>sudo easy_install -i http://www.turbogears.org/1.0/downloads/1.0.4.4/index/ \
+    --script-dir /usr/local/bin TurboGears==1.0.4.4</pre>
+</div>
+<p>Just add the correct ==&lt;version&gt; to the end of the &#8220;normal command&#8221;.</p>
+</div>
+<div class="section" id="installing-directly-from-the-svn-repository">
+<h2><a class="toc-backref" href="#id3">Installing directly from the SVN repository</a><a class="headerlink" href="#installing-directly-from-the-svn-repository" title="Permalink to this headline">¶</a></h2>
+<p>What if there are no eggs for my version? Then you will have to
+either upgrade your code or install an SVN tagged version of
+TurboGears with the following command:</p>
+<div class="highlight-python"><pre>easy_install -f http://www.turbogears.org/1.0/downloads/current/index \
+  http://svn.code.sf.net/p/turbogears1/code/tags/1.0.4.4</pre>
+</div>
+<p>Replace the version number at the end of the second URL with the TurboGears
+version you want.</p>
+<p>This method requires that you have easy_install (from <a class="reference external" href="http://peak.telecommunity.com/DevCenter/setuptools">setuptools</a>) and
+<a class="reference external" href="http://subversion.tigris.org/">Subversion</a> installed.</p>
+</div>
+<div class="section" id="running-from-a-subversion-working-copy">
+<h2><a class="toc-backref" href="#id4">Running from a Subversion working copy</a><a class="headerlink" href="#running-from-a-subversion-working-copy" title="Permalink to this headline">¶</a></h2>
+<p>Alternatively, you can run from the Subversion working copy directly:</p>
+<ol class="arabic">
+<li><p class="first">Locate the revision number from <a class="reference external" href="http://trac.turbogears.org/turbogears/browser/tags">http://trac.turbogears.org/turbogears/browser/tags</a>.</p>
+</li>
+<li><p class="first">Do a Subversion checkout or update to that revision number.</p>
+</li>
+<li><p class="first">Change into the working copy directory and run:</p>
+<div class="highlight-python"><pre>python setup.py develop</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="how-to-uninstall-a-svn-working-copy">
+<h2><a class="toc-backref" href="#id5">How to uninstall a SVN working copy</a><a class="headerlink" href="#how-to-uninstall-a-svn-working-copy" title="Permalink to this headline">¶</a></h2>
+<p>Go to your <tt class="docutils literal"><span class="pre">&lt;prefix&gt;/lib/site-package</span></tt> directory and look for a file called
+<tt class="docutils literal"><span class="pre">Turbogears.egg-link</span></tt>. If you open it you will see taht it contains the path
+of your svn working copy. Whatever is there, is what Python will think as your
+&#8220;current TurboGears install&#8221;.</p>
+<ol class="arabic simple">
+<li>delete <tt class="docutils literal"><span class="pre">Turbogears.egg-link</span></tt> from the <tt class="docutils literal"><span class="pre">site-packages</span></tt> directory.</li>
+<li>you&#8217;re done! :)</li>
+</ol>
+</div>
+<div class="section" id="moving-between-svn-revisions">
+<h2><a class="toc-backref" href="#id6">Moving between SVN revisions</a><a class="headerlink" href="#moving-between-svn-revisions" title="Permalink to this headline">¶</a></h2>
+<p>Just update your Subversion working copy, setuptools will follow you.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

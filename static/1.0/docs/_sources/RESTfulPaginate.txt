@@ -1,0 +1,70 @@
+.. index:: REST, paginate
+
+RESTful Pagination Using the Paginate Decorator
+===============================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+This is just a little hint how to get around those ugly URL query parameters
+that the ``@paginate`` decorator generates.
+
+
+The Problem
+-----------
+
+Say have this simple controller::
+
+    class Users(Controller):
+        @expose(...)
+        @paginate('users')
+        def index(self):
+            return dict(users=User.query())
+
+``${tg.paginate.get_href(page)}`` would generate an URL like this::
+
+    /users?users_tgp_no=2&users_tgp_limit=5
+
+That's not beautiful.
+
+
+The Solution
+------------
+
+But it's quite simple to achieve pagination with URLs like these::
+
+    /paginate1/page/2
+
+You just have to create an additional exposed method ``page`` that will
+"translate" the requested page into the desired kwarg and call the original
+method::
+
+    @expose()
+    def page(self, page):
+        return self.index(users_tgp_page=page)
+
+Basically that's it. But you cannot use ``paginate.get_href`` anymore. I
+generated the URLs manually in my (Genshi) template::
+
+    # Generate RESTful pagination URLs: /foo/bar/page/42
+    import cherrypy
+
+    base = cherrypy.request.path
+    if not base.endswith('/'):
+        base += '/'
+
+    current_page_path = '/page/' + str(tg.paginate.current_page) + '/'
+    if base.endswith(current_page_path):
+        base = base[:-len(current_page_path) + 1]
+
+You then just create links like this::
+
+    <a href="${base}page/$page" py:if="page != tg.paginate.current_page">$page</a>
+
+Maybe anyone can make use of this :)
+
+.. note::
+    If you want a RESTful pagination for any other method than ``index``, you
+    have to create an additional controller with an ``index`` and `page` method
+    and attach this controller to the parent.

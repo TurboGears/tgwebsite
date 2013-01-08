@@ -1,0 +1,43 @@
+.. index:: caching
+
+Caching
+=======
+
+.. contents::
+    :depth: 2
+
+
+HTTP Server Cache
+-----------------
+
+CherryPy has a `cache filter`_ that implements a HTTP/1.1-compliant
+server side cache. You can enable it for your application by setting the
+following configuration option in your application's :doc:`config file <Configuration>`
+(``app.cfg``)::
+
+    cache_filter.on = True
+
+.. note:: **Side note:** In later CherryPy versions (>= 3.0) the cache
+    filter is re-implemented as a tool and the corresponding configuration
+    settings group is called ``tools.caching``
+
+
+Caching Controller Methods
+--------------------------
+
+There's a Python Cookbook `caching decorator`_ for caching method calls.
+
+
+External Cache
+--------------
+
+.. index:: memcached
+
+memcached_ is an external process for caching any kind of data. There is a
+Python interface available through the python-memcached_ package.
+
+.. _caching decorator: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/442513
+.. _cache filter: http://www.cherrypy.org/wiki/Caching
+.. _config file: Configuration
+.. _memcached: http://www.danga.com/memcached/
+.. _python-memcached: http://www.tummy.com/Community/software/python-memcached/

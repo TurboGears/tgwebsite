@@ -1,0 +1,263 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>20 Minute Wiki Page 2 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="The 20 Minutes Wiki" href="Page1.html" />
+    <link rel="next" title="20 Minute Wiki Page 3" href="Page3.html" />
+    <link rel="prev" title="The 20 Minutes Wiki" href="Page1.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Page3.html" title="20 Minute Wiki Page 3"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Page1.html" title="The 20 Minutes Wiki"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Page1.html" accesskey="U">The 20 Minutes Wiki</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">20 Minute Wiki Page 2</a><ul>
+<li><a class="reference internal" href="#pointing-to-a-database">Pointing to a database</a></li>
+<li><a class="reference internal" href="#creating-the-tables">Creating the tables</a></li>
+<li><a class="reference internal" href="#let-s-display-a-wiki-page">Let&#8217;s display a wiki page!</a></li>
+<li><a class="reference internal" href="#let-s-check-out-that-first-page">Let&#8217;s check out that first page!</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Page1.html"
+                        title="previous chapter">The 20 Minutes Wiki</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Page3.html"
+                        title="next chapter">20 Minute Wiki Page 3</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="minute-wiki-page-2">
+<h1>20 Minute Wiki Page 2<a class="headerlink" href="#minute-wiki-page-2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pointing-to-a-database">
+<h2>Pointing to a database<a class="headerlink" href="#pointing-to-a-database" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears has a minimum of required configuration. It <em>does</em> need to know
+where your database lives if you&#8217;re not using sqlite. If you are using sqlite,
+the database is configured by default and you don&#8217;t need to do anything.</p>
+<p>If you&#8217;re not, the configuration is quite simple. The <tt class="docutils literal"><span class="pre">quickstart</span></tt> command has
+created two config files, one for &#8216;dev&#8217;elopment and one for &#8216;prod&#8217;uction.
+The config files are are more-or-less the same format as the .ini files used by
+windows apps, check the <a class="reference internal" href="../Configuration.html"><em>configuration reference</em></a> for a full listing of
+configuration options and settings. For information on how to install alternative
+database support and set up the connection, you should also read the
+<a class="reference internal" href="../Database/index.html"><em>Database Installation</em></a> and the <a class="reference internal" href="../GettingStarted/UseDatabase.html"><em>Database Getting Started</em></a> page</p>
+<p>Since we are doing development, load up <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> in your favorite editor,
+uncomment the <tt class="docutils literal"><span class="pre">sqlobject.dburi</span></tt> line that corresponds to your database and
+modify the values to match your environment. You&#8217;ll also want to comment out the
+sqlite line. You&#8217;ll also probably want to create a new database so that our wiki
+tables don&#8217;t muck up one of your other projects.</p>
+<p>With all that done, restart the web server by hitting Control-C and running the
+startup script again:</p>
+<div class="highlight-python"><pre>python start-wiki20.py</pre>
+</div>
+<p>From here on, you&#8217;ll only have to restart the server when you make a change to
+the configuration. When in development mode, CherryPy detects when you save a
+file in your project and automatically reloads itself with the new code. This
+takes around 5 seconds, so if you&#8217;re quick about saving, flipping to your
+browser, and reloading, you can get a &#8220;server not found&#8221; error in your browser.</p>
+</div>
+<div class="section" id="creating-the-tables">
+<h2>Creating the tables<a class="headerlink" href="#creating-the-tables" title="Permalink to this headline">¶</a></h2>
+<p>Since we&#8217;ve created, in Python code, the schema for our simple database and
+we&#8217;ve also told TurboGears where to look for the database, we&#8217;re ready to
+actually create our tables:</p>
+<div class="highlight-python"><pre>tg-admin sql create</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span></tt> command is a wrapper around SQLObject&#8217;s <tt class="docutils literal"><span class="pre">sqlobject-admin</span></tt>
+command. The <tt class="docutils literal"><span class="pre">create</span></tt> subcommand searches through your model and creates all
+the tables currently missing from the database.</p>
+<p>If you&#8217;re unfamiliar with Object-Relational Mappers (ORMs), then you may want
+to play around with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">sql</span></tt>, which prints the SQL commands run by
+<tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt> to your terminal instead of sending them to the
+database. Here&#8217;s what our <tt class="docutils literal"><span class="pre">Page</span></tt> model looks like in sqlite:</p>
+<div class="highlight-python"><pre>CREATE TABLE page (
+    id INTEGER PRIMARY KEY,
+    pagename VARCHAR(30) NOT NULL UNIQUE,
+    data TEXT
+);
+;;</pre>
+</div>
+</div>
+<div class="section" id="let-s-display-a-wiki-page">
+<h2>Let&#8217;s display a wiki page!<a class="headerlink" href="#let-s-display-a-wiki-page" title="Permalink to this headline">¶</a></h2>
+<p>Hard to believe it, but we&#8217;re already ready to start displaying pages. The
+first step, is to rename our template. <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> just won&#8217;t do. Rename
+the template using whatever commands do the trick for your operating system:</p>
+<div class="highlight-python"><pre>cd wiki20/templates
+mv welcome.kid page.kid
+cd ../..</pre>
+</div>
+<p>Now, let&#8217;s replace the body of the template with something more reasonable
+for a wiki page:</p>
+<pre class="literal-block">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+          &quot;<a class="reference external" href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd</a>&quot;&gt;
+&lt;html xmlns=&quot;<a class="reference external" href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&quot;
+      xmlns:py=&quot;http://purl.org/kid/ns#&quot;
+      py:extends=&quot;'master.kid'&quot;&gt;
+&lt;head&gt;
+&lt;meta content=&quot;text/html; charset=utf-8&quot;
+      http-equiv=&quot;Content-Type&quot; py:replace=&quot;''&quot;/&gt;
+&lt;title&gt; <strong>${page.pagename} - 20 Minute Wiki</strong> &lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;main_content&quot;&gt;
+        <strong>&lt;div style=&quot;float:right; width: 10em&quot;&gt;</strong>
+            <strong>Viewing &lt;span py:replace=&quot;page.pagename&quot;&gt;Page Name Goes Here&lt;/span&gt;</strong>
+            <strong>&lt;br/&gt;</strong>
+            <strong>You can return to the &lt;a href=&quot;/&quot;&gt;FrontPage&lt;/a&gt;.</strong>
+        <strong>&lt;/div&gt;</strong>
+
+        <strong>&lt;div py:replace=&quot;XML(data)&quot;&gt;Page text goes here.&lt;/div&gt;</strong>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Notice that you can open the <tt class="docutils literal"><span class="pre">page.kid</span></tt> <strong>file</strong> directly in your web browser,
+and it is still perfectly viewable. It also doesn&#8217;t add wonky directive markers,
+so it&#8217;ll pass cleanly through most current WYSIWYG editors. This can be convenient
+when you&#8217;re working with others who insist on using such editors.</p>
+<p>This template is using two Kid replacement methods, the first is the expression
+substitution syntax <tt class="docutils literal"><span class="pre">${var}</span></tt>. The python code inside (yes, real python code,
+not some weird template language) is evaluated and the result replaces the
+expression.</p>
+<p>The second is the <tt class="docutils literal"><span class="pre">py:replace</span></tt> attribute, which replaces the tag contents with
+the result of the expression. Both these will escape the results to ensure you
+produce well formed XML. The <tt class="docutils literal"><span class="pre">XML()</span></tt> function tells Kid not to escape the
+contents of the <tt class="docutils literal"><span class="pre">data</span></tt> variable.</p>
+<p>So, where do these <tt class="docutils literal"><span class="pre">page</span></tt> and <tt class="docutils literal"><span class="pre">data</span></tt> variables come from? Both are items in
+the dictionary returned by your controller. Or they will be when we add them...</p>
+<p>TurboGears greatly reduces the amount of boilerplate code you need to write, but
+it does not eliminate it. We need to hook up our <tt class="docutils literal"><span class="pre">Page</span></tt> class in our model and
+the template we just created. This is done in your controller, which is found in
+<tt class="docutils literal"><span class="pre">wiki20/controllers.py</span></tt>. We&#8217;ll replace the old <tt class="docutils literal"><span class="pre">index</span></tt> method with one that
+does something more interesting that grabbing the current time.</p>
+<pre class="literal-block">
+<strong>import turbogears</strong>
+from turbogears import controllers, expose
+<strong>from wiki20.model import Page</strong>
+<strong>from docutils.core import publish_parts</strong>
+
+class Root(controllers.RootController):
+    &#64;expose(template=&quot;<strong>wiki20.templates.page</strong>&quot;)   #1
+    def index(self <strong>, pagename=&quot;FrontPage&quot;</strong>):     #2
+        <strong>page = Page.byPagename(pagename)</strong>       #3
+        <strong>content = publish_parts(page.data,</strong>
+            <strong>writer_name=&quot;html&quot;)['html_body']</strong>   #4
+        <strong>return dict(data=content, page=page)</strong>   #5
+</pre>
+<p>That&#8217;s a lot of changes! Let&#8217;s break it down.</p>
+<p>The first few changes are imports. We first pull in the <tt class="docutils literal"><span class="pre">turbogears</span></tt>
+package, which we&#8217;ll make use of later. Next we pull in the <tt class="docutils literal"><span class="pre">Page</span></tt> from our
+model into our controller. The last change is our wiki parser. What? You
+didn&#8217;t think we were going to write a structured text parser, did you? The
+Python community has a wide range of useful modules outside of TurboGears and
+there is no sense in not making use of them.</p>
+<p>As for the rest, the changes are:</p>
+<ol class="arabic simple">
+<li>Set the template to our newly named &#8220;page&#8221;. Notice we don&#8217;t add the
+<tt class="docutils literal"><span class="pre">.kid</span></tt> extension. (line 1)</li>
+<li>Add a <tt class="docutils literal"><span class="pre">pagename</span></tt> parameter to our method with a default pagename of <tt class="docutils literal"><span class="pre">&quot;FrontPage&quot;</span></tt> (line 2)</li>
+<li>Retrieve the page from the database, this is why we added the <tt class="docutils literal"><span class="pre">alternateId</span></tt>
+in our <tt class="docutils literal"><span class="pre">Page</span></tt> class. Convenient, eh? (line 3)</li>
+<li>Format the text in Page&#8217;s <tt class="docutils literal"><span class="pre">data</span></tt> as HTML (line 4)</li>
+<li>Return a dictionary with <tt class="docutils literal"><span class="pre">page</span></tt> and <tt class="docutils literal"><span class="pre">data</span></tt> items. Notice the keys
+correspond to the variable names in our template. (line 5)</li>
+</ol>
+<p>All that in six, very readable lines. The dictionary that we&#8217;re returning at
+the end provides the data that populates the template and will be reused for
+other, more exotic purposes a bit later.</p>
+</div>
+<div class="section" id="let-s-check-out-that-first-page">
+<h2>Let&#8217;s check out that first page!<a class="headerlink" href="#let-s-check-out-that-first-page" title="Permalink to this headline">¶</a></h2>
+<p>The code is in place... Point your browser to <a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a>
+and let&#8217;s see what we&#8217;ve got!</p>
+<p>Oh, we&#8217;ve got an error. Since we&#8217;re in development mode, CherryPy gives us
+the whole traceback, which is very convenient. The traceback is telling us
+that we got a <tt class="docutils literal"><span class="pre">SQLObjectNotFound</span></tt> exception.</p>
+<p>D&#8217;oh! We forgot to put a page in the database! Let&#8217;s do something about that.</p>
+<p><a class="reference internal" href="Page1.html"><em>Go back to page 1</em></a> | <a class="reference internal" href="Page3.html"><em>Continue on page 3</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

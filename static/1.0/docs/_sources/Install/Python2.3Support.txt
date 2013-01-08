@@ -1,0 +1,54 @@
+Use TurboGears with Python 2.3
+==============================
+
+You can use Python 2.3 but TurboGears depends heavily on decorators and the
+occasional decorator sneaks into the codebase. With TurboGears 1.0.x everything
+*should* work on Python 2.3 (if not, file a bug). Later versions of TurboGears
+(like 1.1 and 2.0) will require at least Python 2.4 to easy the maintenance
+burden for the TurboGears developers.
+
+The main difference is that all decorators get transformed::
+
+    @expose(template="foo.bar.baz")
+    def foobar(self):
+       pass
+
+becomes::
+
+    [expose(template="foo.bar.baz")]
+    def foobar(self):
+        pass
+
+Alternatively, you can use::
+
+    def foobar(self):
+        pass
+    foobar = expose(template="foo.bar.baz")(foobar)
+
+
+Multiple decorators
+-------------------
+
+Sometimes you need to have multiple decorators for a function::
+
+    from turbogears import expose, error_handler, validate
+    ...
+    def foobar(self, email):
+        pass
+    foobar = expose(template="foo.bar.baz")(foobar)
+    foobar = error_handler(your_handler_function)(foobar)
+    foobar = validate(validators={"email": YourCustomValidator()}) \
+                                (foobar)
+
+You can see in the example above that functions using multiple decorators in
+Python 2.3 don't look very nice. If you use *Python 2.4* you can write the code
+above as::
+
+    from turbogears import expose, error_handler, validate
+    ...
+
+    @expose(template="foo.bar.baz")
+    @error_handler(your_handler_function)
+    @validate(validators={"email": YourCustomValidator()})
+    def foobar(self, email):
+        pass

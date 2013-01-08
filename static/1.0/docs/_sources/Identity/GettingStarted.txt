@@ -1,0 +1,263 @@
+.. index:: identity
+
+Getting Started With Identity
+=============================
+
+.. contents::
+    :depth: 2
+
+
+This tutorial shows you how to enable and use identity support in a new
+quickstart project. Please note that there is additional Identity functionality
+beyond what is covered in this tutorial. See the list at the end of this page
+for links to more information.
+
+
+Create an SQLObject Project
+---------------------------
+
+First, let's create a new project called "``identity_tutorial``", requesting
+that identity management features be included::
+
+    $ tg-admin quickstart --identity identity_tutorial
+
+Or, more briefly::
+
+    $ tg-admin quickstart -i identity_tutorial
+
+
+Accept the default package name of "``identity_tutorial``", and TurboGears will
+generate the project skeleton for you, including identity-specific data objects
+and controllers.
+
+When the project skeleton is generated the model generated in
+``identity_tutorial/identity_tutorial/model.py`` includes the necessary database
+schema definitions for maintaining identities. You might customize them as you
+can do with the other parts of the model.
+
+Make your newly created project directory the current directory and initialize
+the database to store the identity information::
+
+    $ cd identity_tutorial
+    $ tg-admin sql create
+
+
+This creates a database called "``devdata.sqlite``", that contains the empty
+tables needed for identity management.
+
+
+Create an SQLAlchemy Project
+----------------------------
+
+To generate an SQLAlchemy-based identity and data model you can use the
+following command::
+
+    $ tg-admin quickstart --identity --sqlalchemy identity_tutorial
+
+Or more briefly::
+
+    $ tg-admin quickstart -i -s identity_tutorial
+
+
+.. index:: login page
+
+Test the Login Page
+-------------------
+
+To check that everything is set up correctly so far, start the project as
+usual::
+
+    $ python start-identity_tutorial.py
+
+In your browser, visit ``http://localhost:8080/login``. You should see a login
+page with username and password fields -- login and logout methods are added to
+your project's ``controllers.py`` and appropriate templates are created because
+you requested that your project include identity management.
+
+All login attempts will fail at this stage because you haven't yet added any
+users or groups.
+
+
+.. index:: users, groups
+
+Adding a User and Group
+-----------------------
+
+When SQLObject database support is used you can use either CatWalk or the
+TurboGears shell to maintain user and group data. If you are using a different
+object-relation mapper (e.g. SQLAlchemy) you will have to use the TurboGears
+shell.
+
+.. warning:: By default the users' passwords are saved as plaintext in the
+    database. That's fine for now, but in a production environment, you'll
+    want to specify a password encryption scheme. See the
+    :doc:`configuration reference </Configuration>` section on "Visit and Identity Configuration"
+    for the ``encryption_algorithm`` setting, that enables on-the-fly password
+    encryption with different algorithms.
+
+
+.. index:: permissions
+
+Adding Permissions
+------------------
+
+Often users and groups are all you need, but as an additional level of
+indirection you may want to assign permissions to groups and then let
+your application check for the existence of the required permission instead
+of directly checking for the membership in the required group. You can
+add and assign permissions similarly to groups either using CatWalk or the
+TurboGears shell.
+
+
+.. _setup_users_using_catwalk:
+
+Using CatWalk
+~~~~~~~~~~~~~
+
+Start the TurboGears toolbox::
+
+    $ tg-admin toolbox
+
+A browser window should open automatically; if it doesn't, go to
+``http://localhost:7654/``. Select the ''CatWalk'' link and you should see the
+identity management classes listed on the left side of the page.
+
+
+Create a user
+`````````````
+
+Select "User" on the left side of the page and the user list will be shown.
+Click the "Add User+" button on the middle of the page and the edit interface
+will be shown.  Fill the user information into the fields. For example::
+
+    user_name: jdoe
+    password: xxx
+    display_name: Jane Doe
+    email_address: jdoe@example.com
+
+Click "Save". You've created your first user.
+
+
+Create an admin group
+`````````````````````
+
+Select "Group" on the left side of the page. Click the "Add Group+" button on
+the middle of the page. Enter the ``group_name`` and ``display_name``, for
+example::
+
+    group_name: admin
+    display_name: Administrators
+
+Click "Save". Now you have a group and a user; let's combine them:
+
+
+Add the new user to the admin group
+```````````````````````````````````
+
+Note that we are now in the "Browse" tab, with the new group displayed.
+
+Click the expansion triangle in front of "users". This will reveal a "Manage
+Relations" link. Click on it.
+
+CatWalk will display two lists. The list on the left-hand side shows the users
+currently assigned to this group; the list on the right-hand side contains all
+users. Select the new user on the right list and click on "Add Selected" to move
+it to the left list. Then click "Save" to confirm the change.
+
+
+Create an admin permission
+```````````````````````````
+
+Select "Permission" on the left side of the page. Click the "Add Permission+"
+button on the middle of the page. Enter the ``permission_name`` and
+``description``, for example::
+
+    permission_name: admin
+    descpription: Administer the application
+
+Click "Save". Now you have a group and a permission with the name ``admin``;
+let's combine them:
+
+
+Add the new permission to the admin group
+`````````````````````````````````````````
+
+Note that we are now in the "Browse" tab, with the new permission displayed.
+
+Click the expansion triangle in front of "groups". This will reveal a "Manage
+Relations" link. Click on it. Select the admin group on the right list and
+click on "Add Selected" to move it to the left list. Then click "Save" to
+confirm the change.
+
+
+.. _setup_users_using_the_shell:
+
+Using the Shell
+~~~~~~~~~~~~~~~
+
+If you'd rather use the shell to create the user and group, or if you're using
+SQLAlchemy, you can do this from the top-level project directory::
+
+    $ tg-admin shell
+
+Recall that your model is always imported into the shell environment as if
+you'd typed "``from model import *``".
+
+Now create the initial user::
+
+    >>> u = User(user_name=u'jdoe', email_address=u'jdoe@example.com',
+        display_name=u'Jane Doe', password=u'xxx')
+
+You will see messages indicating that the shell has loaded identity models
+and the user obejct will be created.
+
+Similarly, create the group::
+
+    >>> g = Group(group_name=u'admin', display_name=u'Administrators')
+
+Now add the user to the group. If you have a SQLObject model, use this::
+
+    >>> g.addUser(u)
+
+Or, if you are using SQLAlchemy::
+
+    >>> g.users.append(u)
+
+You can see that the user is indeed part of the group::
+
+    >>> g.users
+    [<User 1 user_name=u'jdoe' email_address=u'jdoe@example.com'
+    display_name=u'Jane Doe' password=u'xxx' created='datetime.datetime...)'>]
+
+    >>> u.groups
+    [<Group 1 group_name=u'admin' display_name=u'Administrators'
+    created='datetime.datetime...)'>]
+
+Create a permission::
+
+    >>> p = Permission(permission_name='admin',
+            description=u"Administer the application")
+
+Now, add the permission to the group. If you have a SQLObject model::
+
+   >>> g.addPermission(p)
+
+Or, if you are using SQLAlchemy::
+
+   >>> g.permissions.append(p)
+
+Now exit the shell (using ``Ctrl-Z`` on Windows, or ``Ctrl-D`` on other
+systems). Choose "yes" when you are asked whether you want to commit you
+database changes.
+
+
+Further Reading
+---------------
+
+Now that you have identity up and running, you probably want to know how to use
+it. Be sure to check out the following pages
+
+* :doc:`Using Identity <Usage>` - A tutorial on using the identity
+  system to secure your website
+* :doc:`Identity Recipes <Recipes>` - A list of useful identity tips
+  and tricks.

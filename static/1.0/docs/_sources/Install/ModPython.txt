@@ -1,0 +1,247 @@
+.. index:: mod_python
+
+Deployment behind Apache 2 + mod_python
+=======================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+A small note: It is reported that due to a bug in mod_python, version 3.2.7 or higher should be used with TurboGears.
+
+
+The Gateway Script
+------------------
+
+First download the `mod_python gateway`_ and move it to the ``<Python_Root>/site-packages`` directory.
+
+If the original site is down you can get a copy from here: :download:`modpython_gateway.py <downloads/modpython_gateway.py>`
+
+.. _mod_python gateway: http://projects.amor.org/misc/svn/modpython_gateway.py
+.. _modpython_gateway.py: /_static/1.0/modpython_gateway.py
+
+
+The Launcher Script
+-------------------
+
+For an application named *myapp*, create a ``myapp_modpython.py`` script inside ``<Python_Root>/site-packages`` containing::
+
+    import pkg_resources
+    pkg_resources.require("TurboGears")
+
+    import cherrypy
+    import turbogears
+
+    turbogears.update_config(modulename="myapp.config")
+    turbogears.update_config(configfile="/home/PUB/www/myserverorg/myapp/myapp.cfg")
+
+    from myapp.controllers import Root
+
+    cherrypy.root = Root()
+    cherrypy.server.start(initOnly=True, serverClass=None)
+
+    def fixuphandler(req):
+        return 0
+
+
+Install Your Application
+------------------------
+
+The application myapp needs to be installed in the python path for apache to be able to find it. It means that you need to do::
+
+    python setup.py install
+
+in your application root directory. For testing purposes you could also use "python setup.py develop" but this is really *NOT* the recommended way for production use.
+
+To know if your application is correctly installed on the machine you can fire-up a python shell and try the following statement::
+
+    >>> import myapp
+
+if it does not work, then your application is not in the python path and will not be visible to Apache. You MUST have you application importable this way in order to continue further.
+
+This script makes references to the production ``myapp.cfg`` file that as been put in a special directory for this purpose. This is because we want to control were apache can read/write files so we copied the sample-prod.cfg into this new path/name.
+
+Make *sure* autoreload is set to off in this configuration file::
+
+    autoreload.on = False
+
+Apache needs to be aware of the new location we want it to serve.
+
+For this you need to have mod_python installed and loaded correctly into apache and then to amend the config file to add a <Location> directive:
+
+
+Apache Configuration
+--------------------
+
+First we need to make apache aware of the new mod_python so we add theses lines in the LoadModule part of the apache.conf file::
+
+    LoadModule python_module modules/mod_python.so
+    PythonOption mod_python.mutex_directory "logs/"
+    PythonOption mod_python.mutex_locks 32
+
+At least on OpenBSD if you do not specify the last line (mutex_locks) you will get weird errors and the server will crash upon startup.
+
+Next, you'll need to modify your ``apache.conf`` to take advantage of this launcher script::
+
+    <Location /myapp>
+        SetHandler python-program
+        PythonHandler modpython_gateway::handler
+        PythonOption wsgi.application cherrypy._cpwsgi::wsgiApp
+        PythonFixupHandler myapp_modpython
+        PythonDebug on
+    </Location>
+
+The PythonHandler directive refers to the script you downloaded into site-packages (modpython_gateway.py), and the PythonFixupHandler directive corresponds to the file you created in site-packages (myapp_modpython.py).
+
+Restart Apache and visit ``/myapp`` in a browser.
+
+Please note that since you use this special location you will have to make your app aware of this using::
+
+    baseUrlFilter.on = True
+
+
+Configuring File Locations
+--------------------------
+
+
+Windows Specific Info
+~~~~~~~~~~~~~~~~~~~~~
+
+If you are a Windows user you can skip this part because most of the time apache will have full write access to the directory it needs. If your are on any nix flavor you must read this part.
+
+For serious Windows administrators you should ensure that the apache daemon which is exposed to the world does not have read/write access every directory (and shared drives!) on your system.
+
+If you begin to lock down the apache process as you MUST do on a production machine then you should definitely follow these indications.
+
+
+Setting the Egg Cache Directory
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you try to start apache right now you will receive an error like this one::
+
+    ExtractionError: Can't extract file(s) to egg cache
+
+    The following error occurred while trying to extract file(s) to the
+    Python egg cache:
+
+    [Errno 13] Permission denied: '/var/www/.python-eggs'
+
+    The Python egg cache directory is currently set to:
+
+      /var/www/.python-eggs
+
+    Perhaps your account does not have write access to this directory?
+    You can change the cache directory by setting the PYTHON_EGG_CACHE
+    environment variable to point to an accessible directory.
+
+The problem comes from the fact that mod_python needs to unzip the required eggs before your application can use them, but for this the user under which apache runs needs to have write access to the specified directory.
+
+There are diverse solutions to solve this problem.
+
+#. The first would be to give write access to the apache user to this /var/www/.python-eggs directory but this    REALLY is not a good idea.
+#. The second way is to install all eggs unzipped to avoid the need to have a directory writable by apache.
+#. The third way is to specify before running apache were the apache user should unzip the eggs.
+
+We won't talk about the first solution because it is NOT an option in a production environment.
+
+The second option to install all TurboGears dependency by specifying that you want them unzipped can be realised doing so::
+
+    easy_install -UZ kid
+
+to make sure that kid is installed unzipped intead of inside a zipped egg. Then repeat the operation for each egg that you see in the ``<Python_Root>/site-packages`` directory that is used by TurboGears.
+
+The third option is a bit different since you will set an environment variable to be picked up by apache::
+
+    mkdir -p /tmp/turbogears-eggcache 2>&1 >/dev/null
+    export PYTHON_EGG_CACHE="/tmp/turbogears-eggcache"
+    apachectl start
+
+it is your responsibility to correctly secure this /tmp/turbogears-eggcache directory to avoid any security holes.
+
+I have seen informations about using a PythonOption to set the PYTHON_EGG_CACHE but I have never been able to make it work. If someone succeeds in using a PythonOption directive inside the apache.conf file to set this variable I'll be delighted to hear about it.
+
+
+Setting the Application Log File Paths
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The config file was also edited to add all the relevant logging directives that could not be loaded from the external ``log.cfg`` file the resulting config file is::
+
+    [global]
+    sqlalchemy.dburi="mysql://tg:tg@localhost:3306/tg"
+    sqlalchemy.echo = 0
+
+    server.environment="production"
+    #server.environment="development"
+    autoreload.on = False
+
+    server.thread_pool = 30
+
+    server.webpath="/myapp"
+    tg.strict_parameters = False
+
+    # Set the following to True if you are deploying your app using mod_proxy,
+    # mod_rewrite or any other mechanism that forwards requests to your app.
+    base_url_filter.on = True
+    #base_url_filter.use_x_forwarded_host = False
+
+    [logging]
+
+    [[handlers]]
+
+    [[[access_out]]]
+    # set the filename as the first argument below
+    args="('/usr/local/apache2/logs/myapp.log',)"
+    class='FileHandler'
+    level='INFO'
+    formatter='message_only'
+
+    [[[debug_out]]]
+    class='StreamHandler'
+    level='DEBUG'
+    args='(sys.stdout,)'
+    formatter='full_content'
+
+    [[[error_out]]]
+    class='StreamHandler'
+    level='ERROR'
+    args='(sys.stdout,)'
+
+    [[loggers]]
+    [[[psfeed]]]
+    level='ERROR'
+    qualname='psfeed'
+    handlers=['error_out']
+
+    [[[access]]]
+    level='INFO'
+    qualname='turbogears.access'
+    handlers=['access_out']
+    propagate=0
+
+    [[formatters]]
+    [[[message_only]]]
+    format='*(message)s'
+
+    [[[full_content]]]
+    format='*(asctime)s *(name)s *(levelname)s *(message)s'
+
+As you can see the log file was set to some directory were Apache can write easily.
+
+
+Conclusion
+----------
+
+All this was tested on OpenBSD 4.0 using a self compiled apache 2.2.3 with mod_python-3.3.0b. It was not tested intensively since I use mod_proxy but at least was confirmed to basically _work_. I cannot comment about the database caching issues that some people seem to have encountered as I have not used this setup long enough.
+
+I have amended this document at the same time I used it to perform a 'from-scratch' installation on Windows for rewriting this document. It works for me. For the record mod_python for windows can be downloaded from here: `mod_pythonwindows`_
+
+There have been reports about `problems with using SQLObject and mod_python together`_ in the past.
+I could not verify if the problem reported on that page still persists.
+
+.. warning:: Please note that I do **not** use this setup on any machine because of performance issues.
+  I have long since switched to mod_proxy for deployment. If someone has any idea why there is such a
+  performance impact when running on mod_python, please add some information here.
+
+.. _mod_pythonwindows: http://apache.fastorama.com/dist/httpd/modpython/win/3.3.0b/
+
+.. _problems with using SQLObject and mod_python together: http://phirate.exorsus.net/wiki/doku.php?id=101_practical_turbogears_tips

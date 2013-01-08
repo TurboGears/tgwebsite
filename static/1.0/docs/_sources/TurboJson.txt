@@ -1,0 +1,71 @@
+.. index:: JSON, TurboJSON
+
+TurboJson
+=========
+
+.. contents::
+  :depth: 2
+
+
+Author:
+    Elvelind Grandin
+Maintainer:
+    Christoph Zwerschke
+Release information and download URL:
+    http://pypi.python.org/pypi/TurboJson
+SVN repository:
+    http://svn.turbogears.org/projects/TurboJson
+
+Overview
+--------
+
+TurboJson is a TurboGears support package which provides a :doc_`template engine
+plugin <TemplatePlugins>`, allowing you to easily use :doc:`JSON <JSON>` via the
+simplejson_ module with TurboGears, Buffet or other systems that support the
+``python.templating.engines`` :doc:`entry point <EntryPointList>`.
+
+
+Usage
+-----
+
+For information on using TurboJson with TurboGears see the :doc:`JSON <JSON>`
+page and :doc:`Using Alternate Templating Engines <AlternativeTemplating>`.
+TurboJson also provides the :doc:`jsonify <JsonifyDecorator>` decorator.
+
+
+Installation
+------------
+
+TurboJson will be installed autmatically when you install TurboGears 1.x. If you
+want to install it separately, use easy_install_::
+
+    [sudo] easy_install TurboJson
+
+
+Compatibility
+~~~~~~~~~~~~~
+
+TurboJson 1.1.x requires the RuleDispatch [1]_ package and is comaptible
+with TurboGears 1.0.x.
+
+Turbojson >= 1.2.x uses PEAK-Rules_ and is compatible with forthcoming
+TurboGears 1.1.x.
+
+
+References
+----------
+
+For information on simplejson, go here:
+
+    http://undefined.org/python/#simplejson
+
+For information on writing a template engine plugin, see:
+
+    :doc:`Writing a Template Engine <TemplatePlugins>`
+
+.. [1] Discontinued project. No homepage known.
+
+
+.. _simplejson: http://undefined.org/python/#simplejson
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _peak-rules: http://pypi.python.org/pypi/PEAK-Rules

@@ -1,0 +1,447 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears presentation material &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="prev" title="TuboGears Articles" href="TGArticles.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="TGArticles.html" title="TuboGears Articles"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-presentation-material">
+<h1>TurboGears presentation material<a class="headerlink" href="#turbogears-presentation-material" title="Permalink to this headline">¶</a></h1>
+<p>On this pages we collect some external documentation
+and materials (presentations, PDF, ...) used to present TurboGears.</p>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>The 20 minute Wiki</strong></li>
+<li>Author: Kevin Dangoor</li>
+<li>Date: 2005-09-18</li>
+<li>Subject: The goal of this tutorial is to give an overview of putting together an application
+with TurboGears.</li>
+<li>Link(s): <a class="reference external" href="http://www.turbogears.org/docs/wiki20/index.html">http://www.turbogears.org/docs/wiki20/index.html</a>,
+<a class="reference external" href="http://www.turbogears.org/docs/wiki20/20MinuteWiki.mov">http://www.turbogears.org/docs/wiki20/20MinuteWiki.mov</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>TurboTunes tutorial</strong></li>
+<li>Authors: Kevin Dangoor, Ronald Jaramillo</li>
+<li>Date: 2005-11-08</li>
+<li>Subject: This tutorial will show you how to implement your own music store using TurboGears.</li>
+<li>Link(s): <a class="reference external" href="http://www.turbogears.org/docs/TurboTunes/index.html">http://www.turbogears.org/docs/TurboTunes/index.html</a>,
+<a class="reference external" href="http://www.turbogears.org/docs/TurboTunes/TurboTunesTutorial.mov">http://www.turbogears.org/docs/TurboTunes/TurboTunesTutorial.mov</a>,
+<a class="reference external" href="http://www.turbogears.org/docs/TurboTunes/TurboTunes.mov">http://www.turbogears.org/docs/TurboTunes/TurboTunes.mov</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Introduction to TurboGears</strong></li>
+<li>Author(s): Mike Pirnat</li>
+<li>Date: 2005-11-06</li>
+<li>Subject: A round-up of TurboGears, its components, and some current issues (now somewhat
+out of date)</li>
+<li>Link(s): <a class="reference external" href="http://www.pirnat.com/geek/turbogears-presentation.pdf">http://www.pirnat.com/geek/turbogears-presentation.pdf</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>What Is TurboGears (Hint: Python-Based Framework for Rapid Web Development)</strong></li>
+<li>Author(s): Matthew Russell</li>
+<li>Date: 2005-08-11</li>
+<li>Subject: 1. It&#8217;s Kind of Like Rails &#8211; But with Python, 2. Similarities with Rails,
+3. A Quick Closer Look at the Stack, 4. An Interview with the Creator of TurboGears,
+5. The TurboGears Are Spinning Fast</li>
+<li>Link(s): <a class="reference external" href="http://www.macdevcenter.com/pub/a/mac/2005/11/08/turbogears.html?page=1">http://www.macdevcenter.com/pub/a/mac/2005/11/08/turbogears.html?page=1</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Basic overview of TurboGears</strong></li>
+<li>Author(s): Neil Blakey-Milner</li>
+<li>Date: 2006-09-09</li>
+<li>Subject: Basic Overview of TurboGears</li>
+<li>Link(s): <a class="reference external" href="http://nxsy.org/writings/turbogears-overview/">http://nxsy.org/writings/turbogears-overview/</a></li>
+</ul>
+<hr class="docutils" />
+<ul>
+<li><p class="first">Title: <strong>TurboGears Lecture At Py-IL: Making A Flickr Clone</strong></p>
+</li>
+<li><p class="first">Author(s): Nadav Samet</p>
+</li>
+<li><p class="first">Date: 2007-02-20</p>
+</li>
+<li><p class="first">Subject: Part I: 1. Overview of TurboGears, 2. Project Philosophy, 3. Comparison with Other Web-Application Frameworks, 4. MVC Paradigm.</p>
+<p>Part II: Webapp Development Walkthrough. Includes SQLObject Models, XHTML Templating, Forms and their Validation, File Uploads, Image Manipulation and basic AJAX (with JSON).</p>
+</li>
+<li><p class="first">Link(s): <a class="reference external" href="http://www.thesamet.com/blog/2007/02/08/making-a-flickr-killer-with-turbogears-part-1-introduction-to-turbogears/">http://www.thesamet.com/blog/2007/02/08/making-a-flickr-killer-with-turbogears-part-1-introduction-to-turbogears/</a>
+<a class="reference external" href="http://www.thesamet.com/blog/2007/02/20/making-a-flickr-killer-with-turbogears-part-2-a-flickr-clone-in-37-minutes-flat/">http://www.thesamet.com/blog/2007/02/20/making-a-flickr-killer-with-turbogears-part-2-a-flickr-clone-in-37-minutes-flat/</a></p>
+</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Using Python with TurboGears</strong></li>
+<li>Author: Daniel Rubio</li>
+<li>Date: Published November 2007</li>
+<li>Description: Tutorial on the <a class="reference external" href="http://otn.oracle.com/">Oracle Technology Network</a> on how to use TurboGears 1.0 with SQLAlchemy and an Oracle database.</li>
+<li>Link: <a class="reference external" href="http://www.oracle.com/technology/pub/articles/rubio-python-turbogears.html">http://www.oracle.com/technology/pub/articles/rubio-python-turbogears.html</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Quick web application building with TurboGears</strong></li>
+<li>Author: Christopher Arndt</li>
+<li>Date: 2007-04-14</li>
+<li>Language: English</li>
+<li>Subject: a tutorial on how to get started quickly with with the
+TurboGears web framework.</li>
+<li>Links:<ul>
+<li><a class="reference external" href="http://chrisarndt.de/talks/rupy/2007/abstract_christopher_arndt.pdf">Abstract</a></li>
+<li><a class="reference external" href="http://chrisarndt.de/talks/rupy/2007/quick_webapps_with_tg.odp">Slides (Open Document Format)</a></li>
+<li><a class="reference external" href="http://chrisarndt.de/talks/rupy/2007/quick_webapps_with_tg.pdf">Slides (PDF Format)</a></li>
+<li><a class="reference external" href="http://chrisarndt.de/projects/bookmarker/">Example code (Bookmarker application)</a></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Webanwendungen mit TurboGears</strong></li>
+<li>Author: Christopher Arndt</li>
+<li>Date: 2006-12-13</li>
+<li>Language: German</li>
+<li>Subject: Praktische Einführung in die Entwicklung von Webanwendungen mit
+TurboGears</li>
+<li>Links:<ul>
+<li><a class="reference external" href="http://chrisarndt.de/talks/tg-tutorial/webanwendungen_mit_turbogears.odp">Folien (Open Document Format)</a></li>
+<li><a class="reference external" href="http://chrisarndt.de/talks/tg-tutorial/webanwendungen_mit_turbogears.pdf">Folien (PDF Format)</a></li>
+<li><a class="reference external" href="http://chrisarndt.de/talks/tg-tutorial/">Materialien</a></li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Web RAD : Turbogears + Elixir + Genshi Tutorial</strong></li>
+<li>Author(s): Paolo Tagliaferri</li>
+<li>Date: 2008-04-20</li>
+<li>Subject: How to set up a simple application with Turbogears, Genshi and Elixir</li>
+<li>Link(s): <a class="reference external" href="http://vortexmind.net/2008-04-20-web-rad-turbogears-elixir-tutorial-part-1/">http://vortexmind.net/2008-04-20-web-rad-turbogears-elixir-tutorial-part-1/</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>TurboGears, framework de Python per aplicacions web</strong></li>
+<li>Author(s): Tomàs Reverter</li>
+<li>Date: 2009-01-29</li>
+<li>Language: Catalan</li>
+<li>Subject: Basic talk about centered in the 20 minuts wiki example</li>
+<li>Link(s): <a class="reference external" href="http://lotomas.net/2009/01/30/conferencia-sobre-turbogears-a-les-i-jornades-gpl-tarragona/">http://lotomas.net/2009/01/30/conferencia-sobre-turbogears-a-les-i-jornades-gpl-tarragona/</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>TurboGears from Start to Finish</strong></li>
+<li>Authors(s): Lukasz Szybalski</li>
+<li>Date: 2009-04-06</li>
+<li>Language: English</li>
+<li>Subject: Tutorial covering many aspects of TurboGears</li>
+<li>Link(s): <a class="reference external" href="http://lucasmanual.com/mywiki/TurboGears">http://lucasmanual.com/mywiki/TurboGears</a></li>
+</ul>
+<hr class="docutils" />
+<ul class="simple">
+<li>Title: <strong>Using Python with TurboGears</strong></li>
+<li>Authors(s): Daniel Rubio</li>
+<li>Date: 2007-11-15</li>
+<li>Language: English:</li>
+<li>Subject: TurboGears as excellent framework for Web-enabled applications backed by an Oracle database</li>
+<li><a class="reference external" href="http://www.oracle.com/technetwork/articles/rubio-python-turbogears-098695.html">http://www.oracle.com/technetwork/articles/rubio-python-turbogears-098695.html</a></li>
+</ul>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

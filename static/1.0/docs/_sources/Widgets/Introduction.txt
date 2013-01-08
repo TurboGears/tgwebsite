@@ -1,0 +1,557 @@
+Introduction To Widgets
+=======================
+
+.. contents::
+   :depth: 2
+
+
+Introduction
+------------
+
+:doc:`Widgets <Overview>` are one of the most useful features of TurboGears. This tutorial will
+use a "fooball team" example to show you how to develop a workable TurboGears
+project (`Normal Approach`_), then the tutorial will show you how to create your
+own lightweight widgets to reuse web elements (`Widget Approach`_), with a bonus
+introduction to the standard DataGrid widget.
+
+
+Advantages of Widgets
+---------------------
+
+Widgets were created to:
+
+* Ease code reuse.
+* Enforce code/template separation.
+
+
+For the User
+~~~~~~~~~~~~
+
+The user benefits from using widgets by the following aspects:
+
+* Availability of  so-called rich controls (such as SelectShuttle, TinyMCE
+  Editor, interactive AJAXian controls, etc.).
+* Having consistent, versatile form validation and input error message
+  display.
+* Efficient management of external resources (JavaScript, CSS, images, etc.),
+  which leads to fast and standard compliant pages.
+
+
+For the Programmer
+~~~~~~~~~~~~~~~~~~
+
+In object-orient programming, you wrap data and functions in a class to make
+objects have a clear interface and make code reuse easy. Classes can inherit
+from each other so those classes can share common data and behaviour and can be
+customized by adding or overwriting methods and data from the superclass(es).
+
+Widgets share the same principle: Widgets wrap all parts of a webpage's display
+components into an object that encompasses the (X)HTML/XML template, the CSS
+and Javascript, and the server logic to display and update the widget and
+handle interaction. Widgets can also be inherited and extended so they can be
+combined into :doc:`compound widgets <CompoundWidgets>` like forms or fancy AJAX-enabled controls.
+
+By providing the programmer with a consistent, simple interface and greatly
+reduced boiler plate code, widgets make modifications and page restructuring
+much easier.
+
+Since widgets are reusable, you can efficiently code repeating display elements
+of your page or use them for components that appear on many pages of your site.
+You do this by packaging and including extra widget resources (e.g. internal/
+external JavaScript code, CSS styles and stylesheets, images, etc.).
+
+Let's see a practical application of widgets!
+
+.. _compound widgets: CompoundWidgets
+
+
+The Tutorial Preparations
+-------------------------
+
+We're going to create a web application that tracks statistics for the entirely
+fictitious sport of "Fooball".
+
+Fooball is a very simple game:
+
+* Players on teams do unspecified things to score as many points as possible
+  before the end of the game.
+* The team with the most points at the end wins.
+* The player with the most points at the end gets lucrative sponsorship deals.
+  (but that's outside the scope of this tutorial)
+
+The front page will contain a list of teams and a list of all league players and
+their stats. The list of teams will contain links to individual team pages,
+each listing stats for the players on that team. Simple enough.
+
+
+Model
+~~~~~
+
+Quickstart the application using ``fooball`` for both the application and module
+name, and define our data model in ``model.py``:
+
+.. note::
+    Copy and paste the code below into the ``model.py`` file, right where it
+    says ``"# your data model"``. **Leave the existing code above in place.**
+
+::
+
+    from sqlobject import DateCol, ForeignKey, MultipleJoin
+
+    class Player(SQLObject):
+        name = StringCol(length=40, alternateID=True)
+        birthdate = DateCol(notNull=True)
+
+        team = ForeignKey('Team')
+
+        points = IntCol(default=0)
+
+    class Team(SQLObject):
+        city = StringCol(length=20, notNull=True)
+        nickname = StringCol(length=20, notNull=True, alternateID=True)
+
+        players = MultipleJoin('Player')
+
+
+From the model, you can see that teams are uniquely identified by their nickname
+(although a city can host multiple teams), and all players forever belong to
+one team (Fooball players haven't discovered free agency yet, to the delight of
+Fooball team owners).
+
+We'll create the database by changing into the top-levl project directory and
+issuing the command
+
+::
+
+    tg-admin sql create
+
+and then define some data using
+
+::
+
+    tg-admin shell
+
+You could use the :doc:`ModelDesigner </ModelDesigner>` and :doc:`CatWalk </Catwalk>` to do this, but for simplicity
+we'll use the command line tools.
+
+::
+
+    >>> import datetime
+    >>> t1 = Team(city='Pittsburgh', nickname='Ferrous Metals')
+    >>> t2 = Team(city='Seattle', nickname='Seagulls')
+    >>> Player(name='Bob Waffleburger', birthdate=datetime.date(1982,3,2),
+            team=t1, points=21)
+    <Player 1 name='Bob Waffleburger' birthdate='datetime.date(198...)' ↵
+        teamID=1 points=21>
+    >>> Player(name='Mike Handleback', birthdate=datetime.date(1975,9,25),
+            team=t2, points=10)
+    <Player 2 name='Mike Handleback' birthdate='datetime.date(197...)' ↵
+        teamID=2 points=10>
+    >>> hub.commit()
+
+Good enough for now. (Any resemblance to real teams, players, or final scores is
+purely coincidental, but I'm sure you knew that.)
+
+
+Template
+~~~~~~~~
+
+Now we'll cobble up a simple front page by editing the body of
+``/fooball/fooball/templates/welcome.kid``::
+
+    <h1>International Fooball League Stats</h1>
+
+    <h2>Teams</h2>
+
+    <table border="1">
+        <tr>
+            <th>City</th>
+            <th>Team Name</th>
+        </tr>
+        <tr py:for="team in teams">
+            <td py:content="team.city"/>
+            <td py:content="team.nickname"/>
+        </tr>
+    </table>
+
+    <h2>Players</h2>
+
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Birthdate</th>
+            <th>Team</th>
+            <th>Points</th>
+        </tr>
+        <tr py:for="player in players">
+            <td py:content="player.name"/>
+            <td py:content="player.birthdate"/>
+            <td py:content="player.team"/>
+            <td py:content="player.points"/>
+        </tr>
+    </table>
+
+Since our template uses the teams and players variables, add them to the Root
+controller's ``index`` method in ``controllers.py``::
+
+    from model import Team, Player
+
+    class Root(controllers.RootController):
+        @expose(template="fooball.templates.welcome")
+        def index(self):
+            return dict(
+                teams=Team.select(),
+                players=Player.select()
+            )
+
+
+Normal Approach
+---------------
+
+Now, start the app, and take a look at the front page:
+
+Ugh. Well, the teams look fine, but the players show an ugly SQLObject
+representation for their team name. We could fix this by changing the
+``player.team`` to ``players.team.city``, but then we'd have to make sure we do
+it everywhere we want to show a ``Player.team``. And make sure we always do it
+the same way. That's a recipe for mistakes. When programming, it's best to
+follow the maxim, "Don't Repeat Yourself".
+
+Instead, we'll tell the ``Team`` object how to display itself by adding a
+string-izing method to the class::
+
+    def __str__(self):
+        return "%s %s" % (self.city, self.nickname)
+
+And look: reuse! We can get rid of that ugly "City/Name" table by doing the same
+thing there in the ``welcome.kid`` template::
+
+    <h2>Teams</h2>
+
+    <table border="1">
+        <tr>
+            <th>Team</th>
+        </tr>
+        <tr py:for="team in teams">
+            <td py:content="team"/>
+        </tr>
+    </table>
+
+Much better. Now let's make pages for each team. A new controller method will
+do the trick::
+
+    @expose(template="fooball.templates.team")
+    def team(self, team_id, *args, **kw):
+        return dict(team=Team.get(int(team_id)))
+
+With a new template called ``team.kid``, whose body looks like this::
+
+    <h1 py:content="team"/>
+
+    <h2>Players</h2>
+
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Birthdate</th>
+            <th>Points</th>
+        </tr>
+        <tr py:for="player in team.players">
+            <td py:content="player.name"/>
+            <td py:content="player.points"/>
+            <td py:content="player.birthdate"/>
+        </tr>
+    </table>
+
+And a way to get to the team page, courtesy of a quick change to the
+``welcome.kid`` template::
+
+    <h2>Teams</h2>
+    <table border="1">
+        <tr>
+            <th>Team</th>
+        </tr>
+        <tr py:for="team in teams">
+            <td><a href="/team/${team.id}">$team</a></td>
+        </tr>
+    </table>
+
+Ok, let's look at the team page for Pittsburgh.
+
+Whoops. Haha. I don't think "Big Bob" was born on 21, and he certainly didn't
+earn 1983-03-02=1978 points. When I typed the second table, I switched the order
+of two columns.
+
+This again illustrates the "Don't Repeat Yourself" point. Every time you write
+the same code again, you run the risk of introducing bugs. And if you want to
+change the way the table looks (say, by showing 'age' instead of 'birthday', you
+have to repeat the change each time.
+
+
+Widget Approach
+---------------
+
+Rather than retype (or copy and paste) that table every time we want to show a
+grid of players, let's create a reusable widget. We'll create the simplest
+possible widget that we can use in both the front page and the team page. We'll
+add it to ``controllers.py`` for now::
+
+    from turbogears import widgets
+    from model import Team, Player
+
+    class SimpleRosterWidget(widgets.Widget):
+        template = '''
+        <table xmlns:py="http://purl.org/kid/ns#"
+          class="simpleroster"
+          border="1">
+          <tr>
+            <th>Name</th>
+            <th>Birthdate</th>
+            <th>Team</th>
+            <th>Points</th>
+          </tr>
+          <tr py:for="player in value">
+            <td py:content="player.name"/>
+            <td py:content="player.birthdate"/>
+            <td py:content="player.team"/>
+            <td py:content="player.points"/>
+          </tr>
+        </table>
+        '''
+
+And that's it. Not a drop of code to be found. You'll note that the template
+references ``value``, which is the standard TurboGears name used to apply data
+to the widget. I also added a CSS class to the widget; I like to do that because
+it's easier to apply per-widget CSS styles down the road.
+
+Let's provide the widget in the controllers::
+
+    players_widget = SimpleRosterWidget()
+
+    class Root(controllers.RootController):
+        @expose(template="fooball.templates.welcome")
+        def index(self):
+            return dict(
+                teams=Team.select(),
+                players=Player.select(),
+                players_widget=players_widget
+            )
+
+        @expose(template="fooball.templates.team")
+        def team(self, team_id, *args, **kw):
+            return dict(
+                team=Team.get(int(team_id)),
+                players_widget=players_widget
+            )
+
+And change the welcome template to use the widget::
+
+    <h2>Players</h2>
+
+    ${players_widget.display(players)}
+
+
+Template Parameters
+~~~~~~~~~~~~~~~~~~~
+
+This looks good so far. Let's do the same to the team template::
+
+    <h2>Players</h2>
+
+    ${players_widget.display(team.players)}
+
+Hmm. Well, it works, but it seems a bit silly to specify the team column for the
+team roster, since it will always be the same. We could create separate widgets
+for each page, but that defeats the reusability of widgets. So let's add a
+parameter to the SimpleRosterWidget class to disable the team column::
+
+    class SimpleRosterWidget(widgets.Widget):
+        params=['with_team']
+
+        def __init__(self, with_team=True, *args, **kw):
+            super(SimpleRosterWidget,self).__init__(*args, **kw)
+            self.with_team=with_team
+
+        template = '''
+        <table xmlns:py="http://purl.org/kid/ns#"
+          class="simpleplayer"
+          border="1">
+          <tr>
+            <th>Name</th>
+            <th>Birthdate</th>
+            <th py:if="with_team">Team</th>
+            <th>Points</th>
+          </tr>
+          <tr py:for="player in value">
+            <td py:content="player.name"/>
+            <td py:content="player.birthdate"/>
+            <td py:if="with_team" py:content="player.team"/>
+            <td py:content="player.points"/>
+          </tr>
+        </table>
+        '''
+
+There's a bit going on here:
+
+* We added a class attribute called ``params``. When TurboGears renders the
+  template, it looks for this attribute. Any attribute names in this list that
+  exist on the template instance will be added to the variables provided to the
+  template. So at render time, if the template has a with_team attribute, the
+  template will be able to access it.
+
+* We added an ``__init__``v method that calls the parent class (``Widget``, in
+  this case), and stores the ``with_team`` argument (if any). Since we don't
+  want to worry about what the base class is, we use Python's ``super``
+  function, and since we don't want to worry about what arguments might be
+  there, we use ``*args`` and ``**kw`` to pass along any extra positional or
+  keyword arguments to the base class.
+
+* Since we have added ``with_team`` to the params, we can use its value to
+  determine whether or not to display the team name:
+
+Then inside the ``team.kid`` template::
+
+    <h2>Players</h2>
+
+    ${players_widget.display(team.players, with_team=False)}
+
+Great. Now we're done.
+
+But, as Mr. Jobs is so fond of saying, there's "one more thing..."
+
+
+Use a Pre-made Widget
+---------------------
+
+Now that you've seen how to create your own table-based, customizable widget,
+I'm going to tell you not to do that. Creating your own widgets is a fast and
+easy way to create reusable and customizable user interfaces, but if you're just
+doing a simple table layout like our roster grid, the TurboGears widgets
+library already gives you a great, pre-made widget: ``DataGrid``.
+
+To use DataGrid, just change the ``index`` and ``team`` controller methods::
+
+    class Root(controllers.RootController):
+        @expose(template="fooball.templates.welcome")
+        def index(self):
+            player_fields = [
+                ('Name', 'name'),
+                ('Birth Date', 'birthdate'),
+                ('Team', 'team'),
+                ('Points', 'points')
+            ]
+            return dict(
+                teams=Team.select(),
+                players=Player.select(),
+                players_widget=widgets.DataGrid(fields=player_fields)
+            )
+
+        @expose(template="fooball.templates.team")
+        def team(self, team_id, *args, **kw):
+            player_fields = [
+                ('Name', 'name'),
+                ('Birth Date', 'birthdate'),
+                ('Points', 'points')
+            ]
+            return dict(
+                team=Team.get(int(team_id)),
+                players_widget=widgets.DataGrid(fields=player_fields)
+            )
+
+Now you can delete your ``SimpleRosterWidget``, and voila! Instant table widget:
+
+Note that we didn't need to change the Kid template at all. Like our
+``SimpleRosterWidget``, ``DataGrid`` is derived from ``widgets.Widget``. That
+means  that it gets called the same way (via the display call). It uses the
+``fields`` parameter to decide what to display. ``fields`` is a list of tuples;
+each tuple contains the header string and either a string or a callable object
+(like a function, for example).
+
+If you provide a string, the ``DataGrid`` uses it as an attribute name on data
+object. If you provide a callable object, ``DataGrid`` calls it, passing the
+data item as the only parameter. The callable can return either a string (which
+is escaped and displayed by Kid) or an ``Element`` (from the ElementTree_
+library), which is rendered and then displayed.
+
+.. _elementtree: http://effbot.org/zone/element-index.htm
+
+That's a mouthful. Let's figure it out by converting our hand-coded teams table
+on the front page to a ``DataGrid``. The nicely-styled players table is making
+it look unfashionably plain, anyway.
+
+Add this to the imports of controllers.py::
+
+    from kid import Element
+
+This imports the ``Element`` class from the kid module instead of from
+ElementTree. This way we don't have to care about the different ways to import
+different versions of the ElementTree module.
+
+Now, just before the ``Root`` class definition, add a function to create a link
+(``a``) Element from a Team object::
+
+    def makeTeamLink(team):
+        link = Element('a',href='/team/%d' % team.id)
+        link.text = team
+        return link
+
+Add the teams widget to the ``index`` controller method. Note that I'm using
+the ``makeTeamLink`` function itself as the field value for the team name, and
+not a call to the function::
+
+    class Root(controllers.RootController):
+        @expose(template="fooball.templates.welcome")
+        def index(self):
+            team_fields = [('Name', makeTeamLink)]
+            player_fields = [
+                ('Name', 'name'),
+                ('Birth Date', 'birthdate'),
+                ('Team', 'team'),
+                ('Points', 'points')
+            ]
+           return dict(
+                teams=Team.select(),
+                teams_widget=widgets.DataGrid(fields=team_fields),
+                players=Player.select(),
+                players_widget=widgets.DataGrid(fields=player_fields)
+            )
+
+Now just make one quick change to the ``welcome.kid`` template::
+
+    <h1>International Fooball League Stats</h1>
+
+    <h2>Teams</h2>
+
+    ${teams_widget.display(teams)}
+
+    <h2>Players</h2>
+
+    ${players_widget.display(players)}
+
+That's pretty. And we've taken just about all the HTML out of our controller,
+which is even better.
+
+Incidentally, if the visual style of ``DataGrid`` looks familiar, it is: it
+uses the same CSS-based styling as CatWalk. If you like that style, you get it
+for free just by using the ``DataGrid``. If not, you can always change it in
+your web app's own CSS.
+
+For example, I like links to look like links, and the default CSS fragment for
+``DataGrid`` removes the underline decoration. To fix this, just add a line to
+your application's stylesheet (you'll find it in the file ``styles.css`` in the
+``static/css`` subfolder of your project's package diretory)::
+
+    .grid td a {text-decoration:underline}
+
+
+Conclusion
+----------
+
+Widgets are a powerful addition to the TurboGears tool set. They can be complex
+to write and use (especially when you get into the ``form`` and ``fastdata``)
+libraries, but they don't have to be. Wrapping custom display elements in
+simple widgets is quick and easy, and can help you develop faster and with
+fewer errors and display inconsistencies.
+
+If you want to learn more about widgets, head over to the :doc:`Widgets Documentation
+Overview <index>`.

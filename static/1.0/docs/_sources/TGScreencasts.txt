@@ -1,0 +1,51 @@
+TurboGears Screencasts
+======================
+
+.. contents::
+    :depth: 1
+
+
+Tutorial Screencasts
+--------------------
+
+* `20 Minutes Wiki <http://showmedo.com/videos/series?name=TurboGears20MinWiki>`_ (3 screencasts)
+* `22+ screencasts on TurboGears <http://showmedo.com/videos/turbogears>`_
+
+
+TurboGears Ultimate DVD
+-----------------------
+
+A `13 episodes series of videos`_ from TurboGears author Kevin Dangoor, freely
+available on `showmedo.com <http://showmedo.com/videos/turbogears>`_
+
+.. _13 episodes series of videos:
+   http://showmedo.com/videos/series?name=IadG6S6pR
+
+
+ToolBox Utilities Screencasts
+-----------------------------
+
+* `Catwalk <http://showmedo.com/videos/series?name=CatWalk1ForTurboGears>`_
+* `admi18n <http://www.checkandshare.com/images/admi18n.mov>`_
+
+
+Related Components Screencasts
+------------------------------
+
+* `CherryPy Introduction <http://tools.cherrypy.org/wiki/InteractiveInterpreter>`_
+* `Mochikit Introduction <http://mochikit.com/screencasts/MochiKit_Intro-1>`_
+
+
+Openbook Demo Screencasts by Fred Lin
+-------------------------------------
+
+* `Making a Book Site with TurboGears <http://turbogears.org/videos/openbook/part1.swf>`_
+* `Model Designer with Catwalk <http://turbogears.org/videos/openbook/part2.swf>`_
+* `tgcrud, the TurboGears scaffold <http://turbogears.org/videos/openbook//part3.swf>`_
+
+
+Other Screencasts
+-----------------
+
+* `Building an Adobe Flex app using TG's JSON ouput <http://www.adobe.com/devnet/flex/articles/eckel_video.html>`_
+

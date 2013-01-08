@@ -1,0 +1,124 @@
+.. index:: user tracked logging
+
+User Tracked Logging
+====================
+
+A problem with production environments is that it is often very difficult to track end users through the logs. This leads to problems with tracking down production issues, particually one more complex setups.
+
+This guide shows how to put the visitID (from the visit feature) into logfiles such that, any end user request can be logged with the visit id (and hence can be greped from said logs).
+
+This approach uses a system very similer to that employeed by apache log4j.
+
+Step 1) Create an enhanced logger
+---------------------------------
+We need to create a logger that can be passed the visit id any time we need to log a message, rather than passing this ID all the time, we take a leaf out of log4j's book and use a thread local variable.
+
+
+Enhanced logger::
+
+    from logging import Logger, LogRecord
+    import threading
+
+    class MDCLogger(Logger):
+        """ This logger is a custom logger that will examine TLS
+        (Thread local storage) everytime a log message is handled
+        this allows the formatter to have additional arguments provided
+        """
+        def __init__(self, name):
+            Logger.__init__(self, name)
+
+        def makeRecord(self, *args, **kwargs):
+            return MDCRecord(*args, **kwargs)
+
+    class MDCRecord(LogRecord):
+        """ A log record that is able to respond to getting MDC
+            information, and exposing it for logging purposes """
+        def __init__(self, *args, **kwargs):
+            MDC = LoggingMDC()
+            for item in MDC:
+                setattr(self, item, MDC[item])
+
+            LogRecord.__init__(self, *args, **kwargs)
+
+    def LoggingMDC():
+        """ Utility method that will get the TLS MDC
+            (message diagnostic context) """
+        thread = threading.currentThread()
+        toReturn = None
+        try:
+            toReturn = thread.LoggingMDC
+        except AttributeError:
+            toReturn = {}
+            toReturn['request_id'] = None
+            thread.LoggingMDC = toReturn
+
+        assert toReturn is not None
+        return toReturn
+
+    MDC = LoggingMDC()
+    MDC['request_id'] = None
+
+Call this whatever you want, i put it in a file called mdclogging.py
+
+This logger works by placing a dict onto ThreadLocalStorage called LoggingMDC. If this dict does not exist a new one is created. Any variable can be placed in this (and hence retrieved later). The other classes define our enhanced logger (the one that will replace the default logger implementation) and our enhanced record (that will be used to log any additional variables.
+
+Step2 Use our logging implementation
+------------------------------------
+
+At the top of start-server.py (or however your cherrypy / turbogears instance is started) put the following lines
+
+start-server.py::
+
+    import logging
+    from mdclogging import MDCLogger
+    logging.setLoggerClass(MDCLogger)
+
+It is important that our logging implementation is enabled ''before'' the rest of the logging system has been setup, otherwise you will get mixed logging implementations within your application
+
+Step3 Put a unique ID into MDC
+------------------------------
+
+You will now need to feed the logger a unique id for each end user, one good example would be the end users IP address (which is semi-unique to an end user). You could use any source that can ID a particual user, however for ease I have picked on the visit id provided by turbogears visit tracking support.
+
+For visit tracking it turns out there is an undocumented plugin extension point that can be used to call a plugin of your own devising. To use this i wrote the following
+
+Push variables into MDC::
+
+    import mdclogging
+    class MDCLoggingVisitPlugin(object):
+        """ Binding between the visit ID and the MDC logger """
+        def record_request(self, visit):
+            MDC = mdclogging.LoggingMDC()
+            MDC['request_id'] = visit.key
+
+And in my controllers.py I put
+
+Hookup plugin to framework::
+
+    import turbogears.visit.api as visitorAPI
+    visitorAPI.enable_visit_plugin(MDCLoggingPlugin())
+
+Step4 Setup logging format
+--------------------------
+
+The final step is to put the new variable into the logging format strings where you want to see it, this is done like so
+
+Setup logging format::
+
+    [logging]
+    [[formatters]]
+    [[[full_content]]]
+    format='[*(asctime)s]-[*(levelname)s][*(request_id)s]:: *(message)s'
+
+So given lines of code that read ...
+
+Example logging call::
+
+    log.debug("hi")
+
+You should see in your production logs ...
+
+Example log output::
+
+    [2007-01-15 21:20:21,468]-[DEBUG] [works.controllers]-[137020e5197ac0b860319450a1a72d7a7679f53f]: hi
+    [2007-01-15 21:21:20,864]-[DEBUG] [works.controllers]-[867f87bf001d79c78466d65cf8e0e59537023503]: hi

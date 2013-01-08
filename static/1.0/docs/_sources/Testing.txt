@@ -1,0 +1,400 @@
+.. index:: testing
+
+Testing Your Application
+========================
+
+.. contents::
+    :depth: 2
+
+
+Test-driven development (TDD) is a powerful (and increasingly popular)
+development strategy. In TDD, you write tests before you write your code. This
+helps you to solidify in your mind what the code should be doing and ensures it
+will be structured as you want. Test driven development also encourages good
+architecture decisions such as modularization because you can't test what you
+can't access!
+
+Even if you don't write tests first, having automated tests can be a lifesaver
+when the inevitable change request comes and you have to refactor your program
+to fit the new requirements.
+
+.. index:: Nose
+
+When you install TurboGears, you also get `Nose`_ for free [#testtools]_. Nose
+(written by Jason Pellerin) is a powerful and convenient extension to the
+standard library  module `unittest`_ and comes with its own discovery-based test
+runner.
+
+.. _Nose: http://somethingaboutorange.com/mrl/projects/nose/
+.. _unittest: http://docs.python.org/lib/module-unittest.html
+
+.. [#testtools] You need to request the "testtools" option when installing
+    TurboGears to get Nose::
+
+        tgsetup.py TurboGears[testtools]
+
+
+Executing the test suite
+------------------------
+
+When using Nose, all you have to do to run your test suite is open your console
+and execute following command in your project directory::
+
+    nosetests
+
+The `nosetests`_ command will search you project for test cases (any class or
+method that has a ``test``/``Test``/``TEST`` prefix) in your project directory,
+execute all those test cases and give you a report on the outcome.
+
+.. _nosetests: http://somethingaboutorange.com/mrl/projects/nose/#usage
+
+By running your tests before you commit to source control repository (you are
+using source control, right?), you can catch unintended consequences of your
+edit before they become an issue in production. Early detection also makes
+tracking down the bug considerably simpler.
+
+When a tests produces an error, nose will try to reload you test module, thereby
+causing errors because the model will get loaded twice. If you have trouble
+finding out whcih test case is the culprit, run nose with
+
+::
+
+    nosetests -x
+
+and it will stop after the first test which fails or produces an error.
+``nosetests`` has many other useful command line options. Run
+
+::
+
+    nosetests --help
+
+to view the help message and find out more about them.
+
+
+Configuration
+~~~~~~~~~~~~~
+
+You can put test-specific configuration into the ``test.cfg`` file in your
+project directory. This allows you, for example, to have a special logging
+configuration when running tests or, the most common case, to define a
+different `dburi` for test, so your test will work with a database
+specially set up for tests or an in-memory database that will get
+wiped before/after each test.
+
+
+For more information see the :doc:`Configuration <Configuration>` page and the section on testing
+your model below.
+
+.. _configuration: Configuration
+
+
+Testing Basics
+--------------
+
+A simple test demonstration::
+
+      # This method is a demo to be tested
+      def getsum(a, b):
+          return a + b
+
+      # Test case are start with :doc:`/test`
+      def test_getsum():
+          assert 3 == getsum(1, 2)
+          assert 4 != getsum(1 ,2)
+
+As mentioned, Nose looks for modules that start with ``test``. In the above
+example, it will find the ``test_getsum()`` function and the report from
+``nosetests`` will show that one (1) test passed. By convention, test modules
+go into separate packages called "tests" located beneath the package they are
+testing, though Nose does not require this (as the above example demonstrates).
+
+Nose tries to be as unobtrusive as possible. For example you can write your
+tests using the standard Python ``assert`` statement, which raises an error
+if an expression returns ``False``, or equivalent.  The ``assert`` statement
+also takes an optional second argument, which is a human-readable
+description of the test case, e.g.::
+
+    assert 4 is getsum(1, 2), "assert that 1 + 2 == 4"
+
+This is a failing test which, when run with ``nosetests -d``, will output::
+
+    File "/path/to/file.py", line XX, in test_getsum:
+      assert 4 is getsum(1, 2), "assert that 1 + 2 == 4"
+      AssertionError: assert 4 is getsum(1, 2)
+            >>  assert 4 is getsum(1, 2), "assert that 1 + 2 == 4"
+
+The last line is the nosetests assert introspection, which will replace the
+variables on the line (there aren't any here) with the values.
+
+The only portion of assertion testing that gets a bit ugly occurs when testing
+for exceptions::
+
+    try:
+        test_int = int('five')
+        assert False, "Should have raised ValueError"
+    except ValueError, e:
+        assert "invalid literal" in str(e)
+
+
+
+TurboGears-specific Testing: the ``testutil`` Module
+----------------------------------------------------
+
+Testing web applications isn't as easy as testing other environments. There's
+the request dispatching and handling as well as the database setup and teardown.
+The ``turbogears.testutil`` module was written to facilitate testing for the
+TurboGears framework itself, but it's in the framework because it's useful for
+testing your applications as well.
+
+
+Testing Your View
+~~~~~~~~~~~~~~~~~
+
+Here's the sample ``controllers.py`` file that will be used for our examples::
+
+      from turbogears import expose
+
+      class Root:
+          @expose(html="projectname.templates.welcome")
+          def index(self, value="0"):
+              value = int(value)
+              return dict(newvalue=value*2)
+
+Here is the test module for the above controller::
+
+      from turbogears import testutil
+      from projectname.controllers import Root
+      import cherrypy
+
+      ##The template contains
+      #
+      # The new value is ${newvalue}.
+
+      # to test template
+      def test_withtemplate():
+          "Tests the output passed through a template"
+          cherrypy.root = Root()
+          testutil.create_request("/?value=27")
+          assert "The new value is 54." in cherrypy.response.body[0]
+
+
+Here we're not using any of the Nose-provided setup and teardown functionality,
+we're doing everything in our test function. The docstring provides nicer output
+for failing tests in the testrunner.
+
+In order to test out CherryPy, we need an active root object, this is created
+by setting ``cherrypy.root``::
+
+      cherrypy.root = Root()
+
+With the root created, the ``testutil.create_request`` creates a fake request
+that passes through all the CherryPy url traversal, the decorators for our
+function, template processing, etc. The request is processed and results put in
+``cherrypy.response``, but the response isn't sent anywhere.
+
+With the request processed, we test for correctness by using the ``in`` operator
+to find our modified substring in the body (``cherrypy.response.body[0]``).
+
+
+Testing Your Controller
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Continuing with our previous example, we'll write a test that calls the
+``index()`` method directly, bypassing CherryPy and our templates::
+
+
+      from turbogears import testutil
+      from projectname.controllers import Root
+      import cherrypy
+
+      # to test controller
+      def test_directcall():
+          "Tests the output of the method without the template"
+          root = Root()
+          d = testutil.call(root.index, "5")
+          assert d["newvalue"] == 10
+
+Despite not going through CherryPy, we do still need an instance of our project
+``Root``. The ``testutil.call()`` method is then used to call our function,
+which returns an object. The first argument to ``testutil.call()`` is a
+reference to the method, the remainder are ``*args`` or ``**kwargs``. The return
+value for the controller is returned by ``call`` and can be tested as shown.
+
+If your model makes use of the values in ``cherrypy.request`` or you'd like to
+check ``cherrypy.response`` in addition to the dictionary output, you can use
+the ``testutil.call_with_request()``. ``call_with_request()`` takes both a
+method reference and a ``request`` as parameters and returns a tuple of the
+method output and the response object. If you don't have a request object handy,
+use ``testutil.DummyRequest`` to create a fake one.
+
+
+Testing Your Model
+~~~~~~~~~~~~~~~~~~
+
+Testing your model is a thorny problem for unit testing, since the output is
+usually very dependent on the state of your database. This means that you'll
+probably need a separate database for testing. To make this simpler, TurboGears
+provides the ``testutil.DBTest`` class.
+
+If you inherit from this class, and you are using :doc:`SQLObject <SQLObject/index>`,
+TG will provide ``setUp()`` and ``tearDown()`` methods that create and drop all
+the tables in your model for each method. In the example below,
+``test_model_reset()`` is working on a completely empty
+database despite coming after ``test_name()``, thanks to the ``setUp()`` and
+``tearDown()`` methods inherited from ``testutil.DBTest``.
+
+
+::
+
+      from turbogears import testutil
+      ## from turbogears import database
+      ## database.set_db_uri("sqlite:///:memory:") #this is the default
+
+      from projectname import model
+
+
+      class TestMyURL(testutil.DBTest):
+          model = model
+
+          def test_name(self):
+              entry = model.MyUrl(name="TurboGears",
+                    link="http://www.turbogears.com",
+                    description="cool python web framework")
+              assert entry.name=='TurboGears'
+
+          def test_model_reset(self):
+              entry = list(model.MyUrl.select())
+              assert len(entry) is 0
+
+If you want to define your own ``setUp()`` and/or ``tearDown()`` make
+sure that you call those methods from the parent class or you'll get
+``OperationalError: no such table: ...`` exceptions.
+
+
+::
+
+    from turbogears import testutil
+    from projectname import model
+
+    class TestMyURL(testutil.DBTest):
+        model = model
+
+        def setUp(self):
+            """Pre-test setup.
+
+            Use the parent class setUp() method to create database tables,
+            then ...
+            """
+            super(TestMyURL, self).setUp()
+            # Additional set-up code
+
+
+        def tearDown(self):
+            """Post-test tear-down.
+
+            Use parent class tearDown() method to reset database
+            before next test.
+            """
+            super(TestMyURL, self).tearDown()
+            # Additional tear-down code
+
+
+BrowsingSession
+~~~~~~~~~~~~~~~
+
+For another alternative, you can use testutil's BrowsingSession class to test
+your application using a browser metaphor.  Simply create an instance and use
+the `goto` method to navigate your site.  The `response` attribute will contain
+the body of your page.   If the page sets a cookie, it will be available under
+the `cookie` attribute::
+
+    bs1 = testutil.BrowsingSession()
+    bs2 = testutil.BrowsingSession()
+    bs1.goto('/login?user_name=emma&password=secret&login=Login')
+    bs2.goto('/login?user_name=paul&password=passwd&login=Login')
+    bs1.goto('/')
+    bs2.goto('/')
+    assert 'emma' in bs1.response
+    assert 'paul' in bs2.response
+
+If your application sets an encoding in the 'Content-Type' header, the
+BrowsingSession instance will have a unicode_response attribute assigned
+as well.
+
+
+Other Functionality
+~~~~~~~~~~~~~~~~~~~
+
+Since ``testutil`` was developed to test the TurboGears framework, there are
+a number of other methods that are generally less useful outside the framework
+but are listed here for completeness:
+
+``capture_log(category)``
+    Category is the name passed to ``logging.getLogger()`` (e.g
+    ``'projectname.controllers'`` is the default controller logger). You
+    **must** call ``print_log()`` or ``get_log()`` to reset the logger when
+    you're done.
+``print_log()``
+    Prints the captured log to stdout and resets the log.
+``get_log()``
+    Returns the captured list of log messages and resets the log.
+``catch_validation_errors(widget, value)``
+    Tries to create ``widget`` using ``value``, returns a tuple of the widget
+    and the dict of Invalid instances.
+``sqlalchemy_cleanup()``
+    Completely resets all sqlalchemy functionality in TG.
+``reset_cp()``
+    Sets ``cherrypy.root`` to ``None``
+
+
+Issues With CherryPy Filters
+----------------------------
+
+When testing your TurboGears application you should be aware of some issues
+which can bite you. The main problem is that ``testutil.call(..., ...)`` won't
+trigger any CherryPy filters. These filters modify the originally requested
+object or the request parameters. The main difference between filters and
+function decorators is that filters will be executed on all exposed methods
+while decorators are specific for the decorated functionality.
+
+Some important functionality in TurboGears is implemented as a CherryPy filter,
+especially visit tracking and identity authentication. Therefore you can not
+test your login page easily. In order to test other methods which rely on
+identity for user authorization, there is a special method ``set_identity_user``
+in ``turbogears.testutil`` which can be used to set a user before using
+``testutil.call(...)``.
+
+Another catch may be the `NestedVariablesFilter`_, which is implemented as a
+filter too. You can either pass the nested dictionary to you method under test
+or use ``NestedVariables.to_python(...)`` manually before actually calling the
+real method.
+
+::
+
+      from formencode.variabledecode import NestedVariables
+      from turbogears import testutil
+
+      # first method
+      args = {'phone': [{'nr': '12345', 'area_code': '042'},
+                        {'nr': '6789', 'area_code': '021'}]
+              'name': 'Foo'}
+      result = testutil.call(self.root.save, **args)
+
+      # second method
+      args = {'phone-1.nr': '12345', 'phone-1.area_code': '042',
+              'phone-2.nr': '6789', 'phone-2.area_code': '021',
+              'name': 'Foo'}
+      args = NestedVariables.to_python(args)
+      result =  testutil.call(self.root.save, **args)
+
+
+Note you can avoid these problems by using ``testutil.create_request(...)``
+because this will create a faked request which goes through all stages
+of CherryPy's request processing as mentioned above. The disadvantage is that
+you will get only the generated output from your template engine so you can't
+easily extract all variables passed to the template.
+
+
+.. _nestedvariablesfilter:
+    http://www.formencode.org/Validator.html#http-html-form-input
+

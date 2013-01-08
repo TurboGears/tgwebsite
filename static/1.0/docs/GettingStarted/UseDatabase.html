@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Model Overview &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="A Brief Introduction to Kid Templates" href="Kid.html" />
+    <link rel="prev" title="I Wanted An Argument!" href="Arguments.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Kid.html" title="A Brief Introduction to Kid Templates"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Arguments.html" title="I Wanted An Argument!"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Model Overview</a><ul>
+<li><a class="reference internal" href="#set-the-database-uri-dburi">Set the Database URI (dburi)</a></li>
+<li><a class="reference internal" href="#define-the-data-model">Define the Data Model</a></li>
+<li><a class="reference internal" href="#create-the-database">Create the Database</a></li>
+<li><a class="reference internal" href="#using-the-model-outside-your-application">Using the Model Outside your Application</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Arguments.html"
+                        title="previous chapter">I Wanted An Argument!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Kid.html"
+                        title="next chapter">A Brief Introduction to Kid Templates</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="data-model-overview">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Data Model Overview</a><a class="headerlink" href="#data-model-overview" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#data-model-overview" id="id1">Data Model Overview</a><ul>
+<li><a class="reference internal" href="#set-the-database-uri-dburi" id="id2">Set the Database URI (dburi)</a></li>
+<li><a class="reference internal" href="#define-the-data-model" id="id3">Define the Data Model</a></li>
+<li><a class="reference internal" href="#create-the-database" id="id4">Create the Database</a></li>
+<li><a class="reference internal" href="#using-the-model-outside-your-application" id="id5">Using the Model Outside your Application</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In TurboGears the model represents whatever persistent data your application works with.</p>
+<p>In practice, we usually use an ORM (object relational mapper) in our model.</p>
+<p>Object relational mappers provide a bridge between Python objects and a relational database.
+An ORM lets you use object-oriented programming style for accessing a relational database,
+and provides an abstraction layer over different database backend systems. ORMs are not designed
+to hide away the database 100%, but they go a long way towards letting you write Python and not
+worry about SQL.</p>
+<p>TurboGears 1.0 models are typically represented using SQLObject objects, as SQLObject is
+the default ORM used by TurboGears 1.0. This Getting Started guide is therefore based on
+SQLObject. However, you can also use SQLAlchemy and this will become the default ORM
+starting with TurboGears 1.1 If you prefer this solution, please read our alternative
+Getting Started guide <a class="reference internal" href="UseElixir.html"><em>using SQLAlchemy and Elixir</em></a>.</p>
+<div class="section" id="set-the-database-uri-dburi">
+<span id="set-database-uri"></span><h2><a class="toc-backref" href="#id2">Set the Database URI (dburi)</a><a class="headerlink" href="#set-the-database-uri-dburi" title="Permalink to this headline">¶</a></h2>
+<p>You need to tell your model where to find the database by configuring the database settings.</p>
+<p>In your project&#8217;s <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> file (for development) or the <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> file (for production use)
+you&#8217;ll find the parameter <tt class="docutils literal"><span class="pre">sqlobject.dburi</span></tt>, which controls where the database is stored. The
+value is a typical URI scheme. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span><span class="o">=</span><span class="s">&quot;sqlite://</span><span class="si">%(current_dir_uri)s</span><span class="s">/devdata.sqlite&quot;</span>
+</pre></div>
+</div>
+<p>The default settings specifies a <tt class="docutils literal"><span class="pre">devdata.sqlite</span></tt> SQLite database file within your project&#8217;s top
+directory. You can change the dburi to use other <a class="reference internal" href="../Database/index.html"><em>alternative databases</em></a>
+such as MySQL, Postgres, MS SQL Server, etc.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>On the connection URI (<tt class="docutils literal"><span class="pre">sqlobject.dburi</span></tt>), You can also provide options via
+&#8220;query parameters&#8221;. Two useful options are <tt class="docutils literal"><span class="pre">debug</span></tt> and <tt class="docutils literal"><span class="pre">debugOutput</span></tt>:</p>
+<p>If you add <tt class="docutils literal"><span class="pre">?debug=1</span></tt> to your URI, each query will be output as it is run.</p>
+<p class="last">If you add <tt class="docutils literal"><span class="pre">&amp;debugOutput=1</span></tt>, you&#8217;ll also see the result of the query displayed.</p>
+</div>
+</div>
+<div class="section" id="define-the-data-model">
+<h2><a class="toc-backref" href="#id3">Define the Data Model</a><a class="headerlink" href="#define-the-data-model" title="Permalink to this headline">¶</a></h2>
+<p>You define your data model in the <tt class="docutils literal"><span class="pre">model.py</span></tt> file in your project&#8217;s package.</p>
+<p>TurboGears (i.e. SQLObject) provides two different ways to define your database:</p>
+<ol class="arabic simple">
+<li>Define tables and their relationships in Python.</li>
+<li>Get them automatically from your database.</li>
+</ol>
+<p>For clarity in your code and database portability, it is often easier to define your
+model in Python terms.</p>
+<p>Defining your model in Python requires more typing of Python code, but saves
+you from having to write SQL to create your database. Check the <a class="reference internal" href="DefineDatabase.html"><em>Model Reference</em></a> for detail.</p>
+<p>To define a Python classes to be based on your database, you just do this in model.py</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">fromDatabase</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This only works with some databases. Check the SQLObject <a class="reference external" href="http://sqlobject.org/SQLObject.html#automatic-class-generation">Automatic Class Generation</a>
+documentation to check whether this works with your database.</p>
+</div>
+</div>
+<div class="section" id="create-the-database">
+<h2><a class="toc-backref" href="#id4">Create the Database</a><a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h2>
+<p>To create the database from the model definition, you just need to run the following command
+from within your project&#8217;s top-level directory:</p>
+<div class="highlight-python"><pre>$ tg-admin sql create</pre>
+</div>
+<p>This will create tables that you&#8217;ve defined in your model. Of course, this will only work, if you
+defined the model with Python, not if you use <tt class="docutils literal"><span class="pre">fromDatabase</span> <span class="pre">=</span> <span class="pre">True</span></tt>,</p>
+</div>
+<div class="section" id="using-the-model-outside-your-application">
+<h2><a class="toc-backref" href="#id5">Using the Model Outside your Application</a><a class="headerlink" href="#using-the-model-outside-your-application" title="Permalink to this headline">¶</a></h2>
+<p>If you want to access the database from outside of your TurboGears application, for example
+for data import scripts or database maintenance, you have to load the database configuration
+properly first. Please see <a class="reference internal" href="../ModelOutsideTG.html"><em>Using Your Model Outside of TurboGears Applications</em></a>
+for an explanation.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

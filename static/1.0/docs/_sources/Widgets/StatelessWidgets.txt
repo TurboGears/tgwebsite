@@ -1,0 +1,163 @@
+StatelessWidgets
+================
+
+Widgets have been designed from the ground up to be
+`stateless objects <http://ootips.org/stateless-distributed-objects.html>`_.
+This means that a widget instance does not hold any knowledge of what happened
+previously, thus the same instance can be reused across all requests.
+
+Motivations for stateless widgets:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Performance is not the main one, basically reusing the same instance fits well
+with the way you work with TG controllers and decorators (for example you pass
+a form instance to the @validate decorator). This has also been discussed `on our mailing list
+<http://groups.google.com/group/turbogears/browse_frm/thread/74926e779c1da137/f3ad1971f7e5ab2a>`_.
+
+While writing your application there are two important rules you should keep in mind
+when working with widgets:
+
+1) Reuse widgets instances inside your application
+''''''''''''''''''''''''''''''''''''''''''''''''''
+
+To effectively share the same widget instance across all requests you should
+take care of using *only one instance* of a given widget inside your application.
+
+DO
+`````````
+::
+
+    banana_widget = BananaWidget()
+
+    class MyController(...):
+        @turbogears.expose(html="my.template")
+        def index(self):
+            return dict(widget=banana_widget)
+
+    class AnotherController(...):
+        @turbogears.expose(html="another.template")
+        def fruit(self):
+            return dict(fruit_widget=banana_widget)
+
+DON'T DO
+````````
+::
+
+    class MyController(...):
+        @turbogears.expose(html="my.template")
+        def index(self):
+            widget = BananaWidget()
+            return dict(widget=widget)
+
+    class AnotherController(...):
+        @turbogears.expose(html="another.template")
+        def fruit(self):
+            fruit_widget = BananaWidget()
+            return dict(fruit_widget=fruit_widget)
+
+DON'T DO
+````````
+::
+
+    <?py from my.widgets import BananaWidget ?>
+
+    <div py:content="BananaWidget().display()" />
+
+2) Treat widget instances as immutable after creation
+'''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Since the same widget instance is used across all requests its instance
+attributes should be immutable so that any thread has a consistent view
+of the instance. In particular, changing widget instance's attributes
+inside a request is not threadsafe.
+
+DO
+````````
+::
+
+    class BananaWidget(Widget):
+        def __init__(self, foo, **kw):
+            super(Widget, self).__init__(**kw)
+            self.foo = foo
+
+RATHER NOT:
+```````````
+::
+
+    banana_widget = BananaWidget()
+    banana_widget.foo = "bar"
+
+    class MyController(...):
+        @turbogears.expose(html="my.template")
+        def index(self):
+            return dict(widget=banana_widget)
+
+DEFINITELY NOT
+``````````````
+::
+
+    banana_widget = BananaWidget()
+
+    class MyController(...):
+        @turbogears.expose(html="my.template")
+        def index(self):
+            banana_widget.foo = "bar"
+            return dict(widget=banana_widget)
+
+
+DEFINITELY NOT
+``````````````
+::
+
+    class BananaWidget(Widget):
+        def update_params(d):
+            super(Widget, self).update_params(self, d)
+            self.bar = d["bar"]
+
+
+Whenever you see ``self.<attribute> = <value>`` in a widget class outside its
+constructor, you know you're in trouble. If two requests come in simultaneously
+and both try to render that widget at the same time, the two users might end up
+getting the same value appearing for their widget. Basically, you can't put
+*any* values that need to vary from request to request in self.
+
+If the same widget instance is being used for every requests and its
+attributes are immutable how the widget can behave differently from request
+to request?
+
+1. Define the widget's *request-independent* knowledge and behavior at construction time.
+
+2. Define the widget's *per-request* knowledge and behavior at render time.
+
+In this sense, a widget is similar to a controller's method:
+the widget appearance is defined by its template attribute, and at render time
+you send to its template (via its ``display()`` or ``render()`` methods)
+a set of parameters that are request-dependent and that the widget manipulates
+(using its ``adjust_value()`` and ``update_params()`` methods) to behave correctly.
+
+Although the widget/controller's method parallelism can help to understand
+how a widget works, it's important to remember that unlike a controller's
+method a widget is not responsible for directly responding to a given request.
+This job is always left to the controller method that interacts with the widget
+and sends request-dependent parameters to it::
+
+    banana_widget = BananaWidget()
+
+    class MyController(...):
+        @turbogears.expose(html="my.template")
+        def index(self):
+            value = "Brasilian banana"
+            return dict(banana_widget=banana_widget, banana_value=value)
+
+inside ``my/template.kid``::
+
+    <div py:content="banana_widget.display(value=banana_value)" />
+
+References
+----------
+
+This document also takes inspiration from some discussions that took place in our mailing list
+(for example `Bob Ippolito's reply <http://groups.google.com/group/turbogears/tree/browse_frm/thread/74926e779c1da137/0189b1618e09b9c4>`_
+that clearly tells why you shouldn't change an instance attribute inside a request,
+and `some replies by Kevin <http://https://groups.google.com/group/turbogears/tree/browse_frm/thread/84db7a65b100c0f0/1073c7b5eedef90e>`_)
+and `elsewhere <http:// http://ootips.org/stateless-distributed-objects.html>`_.

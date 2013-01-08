@@ -1,0 +1,295 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears installation on Unix-like Systems &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="TurboGears Installation on Windows" href="Windows.html" />
+    <link rel="prev" title="Use TurboGears with Python 2.3" href="Python2.3Support.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Windows.html" title="TurboGears Installation on Windows"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Python2.3Support.html" title="Use TurboGears with Python 2.3"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TurboGears installation on Unix-like Systems</a><ul>
+<li><a class="reference internal" href="#general-installation">General Installation</a><ul>
+<li><a class="reference internal" href="#installing-without-root-access">Installing Without root Access</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#distribution-specific-instructions">Distribution specific instructions</a><ul>
+<li><a class="reference internal" href="#centos-rhel">CentOS/RHEL</a></li>
+<li><a class="reference internal" href="#debian">Debian</a></li>
+<li><a class="reference internal" href="#fedora">Fedora</a></li>
+<li><a class="reference internal" href="#freebsd">FreeBSD</a></li>
+<li><a class="reference internal" href="#gentoo">Gentoo</a></li>
+<li><a class="reference internal" href="#opensuse">openSUSE</a></li>
+<li><a class="reference internal" href="#ubuntu-linux">Ubuntu Linux</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Python2.3Support.html"
+                        title="previous chapter">Use TurboGears with Python 2.3</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Windows.html"
+                        title="next chapter">TurboGears Installation on Windows</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-installation-on-unix-like-systems">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">TurboGears installation on Unix-like Systems</a><a class="headerlink" href="#turbogears-installation-on-unix-like-systems" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-installation-on-unix-like-systems" id="id1">TurboGears installation on Unix-like Systems</a><ul>
+<li><a class="reference internal" href="#general-installation" id="id2">General Installation</a></li>
+<li><a class="reference internal" href="#distribution-specific-instructions" id="id3">Distribution specific instructions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="general-installation">
+<h2><a class="toc-backref" href="#id2">General Installation</a><a class="headerlink" href="#general-installation" title="Permalink to this headline">¶</a></h2>
+<p>Most unices come with Python installed, but you&#8217;ll want Python &gt;= 2.4 installed
+in order to take advantage of the decorator syntax. You&#8217;ll be using a <em>lot</em> of
+decorators when writing TurboGears controller code.</p>
+<p>In order to run tgsetup.py you need Python header files installed on your system.</p>
+<p>The basic steps for installation are:</p>
+<ol class="arabic simple">
+<li>Get Python &gt;= 2.4</li>
+<li>Download <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> and run (if Python &gt;= 2.4 or is not the default, use
+<tt class="docutils literal"><span class="pre">python2.5</span></tt> or <tt class="docutils literal"><span class="pre">python2.4</span></tt> there.)</li>
+</ol>
+<blockquote>
+<div><div class="highlight-python"><pre>sudo python tgsetup.py</pre>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Make sure your installation succeeded by running <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt>.</li>
+<li>(optional) Get a DB-API compliant <a class="reference internal" href="../Database/index.html"><em>database driver</em></a>.</li>
+</ol>
+<p>These steps tend to work for the majority of people, but if they aren&#8217;t working
+for you, check the <a class="reference internal" href="Troubleshooting.html"><em>installation troubleshooting</em></a>
+page and feel free to ask for help on the mailing list.
+We&#8217;re always happy to help people work through their problems and you might have
+something to share with us.</p>
+<div class="section" id="installing-without-root-access">
+<h3>Installing Without root Access<a class="headerlink" href="#installing-without-root-access" title="Permalink to this headline">¶</a></h3>
+<p>As you can see from the use of the <tt class="docutils literal"><span class="pre">sudo</span></tt> command, the standard installation
+procedure described above, requires root privileges to install TurboGears
+system-wide. You can also install TurboGears below your home directory.
+This setup is described on the page <a class="reference internal" href="NonRoot.html"><em>How to Install TurboGears Without root Privileges</em></a>.</p>
+</div>
+</div>
+<div class="section" id="distribution-specific-instructions">
+<h2><a class="toc-backref" href="#id3">Distribution specific instructions</a><a class="headerlink" href="#distribution-specific-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="centos-rhel">
+<h3>CentOS/RHEL<a class="headerlink" href="#centos-rhel" title="Permalink to this headline">¶</a></h3>
+<p>These instructions work for both <a class="reference external" href="http://www.centos.org">CentOS</a> and <a class="reference external" href="http://www.redhat.com">Red Hat Enterprise Linux</a> (RHEL).</p>
+<p>TurboGears packages are available via EPEL (Extra Packages for Enterprise Linux).
+See <a class="reference external" href="http://fedoraproject.org/wiki/EPEL/FAQ">http://fedoraproject.org/wiki/EPEL/FAQ</a> for more information about the EPEL
+package repository. If you are not already set up to use the EPEL package
+repository, do:</p>
+<div class="highlight-python"><pre># On CentOS/RHEL 5
+rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-2.noarch.rpm
+
+# On CentOS/RHEL 4
+rpm -ivh http://download.fedora.redhat.com/pub/epel/4/i386/epel-release-4-6.noarch.rpm</pre>
+</div>
+<p>Once configured to use EPEL installing on CentOS/RHEL 5 is easy:</p>
+<div class="highlight-python"><pre>yum install TurboGears</pre>
+</div>
+<p>For CentOS/RHEL 4 it&#8217;s a bit harder due to TurboGears being in the testing repository:</p>
+<div class="highlight-python"><pre>yum install --enablerepo epel-testing TurboGears</pre>
+</div>
+<p>Please note that CentOS/RHEL 4 is in the testing repository because it hasn&#8217;t seen much use by the packagers.  If you run into bugs please report them in the <cite>Red Hat bugzilla</cite> instance, product &#8220;Fedora EPEL&#8221;, component &#8220;TurboGears&#8221; so they can fix the problems with the packages.  Also note that CentOS/RHEL 4 ships with Python version 2.3 so using TurboGears on this platform will require you to use the non-decorator syntax.</p>
+<p>Finally, due to EPEL&#8217;s update policy, the repository for EPEL 4 &amp; 5 will remain on 1.0.x versions of TurboGears even when newer versions are available.</p>
+</div>
+<div class="section" id="debian">
+<h3>Debian<a class="headerlink" href="#debian" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><pre>apt-get update
+apt-get install python-turbogears
+apt-get install sqlite
+apt-get install python-sqlite</pre>
+</div>
+<p>This will install TurboGears and all its subpackages including sqlalchemy, sqlobject etc.
+It will install SQLAlchemy as the default ORM. You should be able to repeat this
+process for testing and unstable.</p>
+<p>If you want to install using <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt> you must first install the <strong>python-dev</strong> or
+package matching your Python version.</p>
+<p>There&#8217;s also an external documentation about installing TurboGears on Debian at
+<a class="reference external" href="http://lucasmanual.com/mywiki/TurboGears#head-4ad4feb059fef51881feeac6cbc5c31aaed5c4fb">Lukasz Szybalski&#8217;s web site</a>.</p>
+</div>
+<div class="section" id="fedora">
+<h3>Fedora<a class="headerlink" href="#fedora" title="Permalink to this headline">¶</a></h3>
+<p>If you are using the latest version of Fedora, you can just enter:</p>
+<div class="highlight-python"><pre>yum install TurboGears</pre>
+</div>
+<p>Make sure to get the capitalization of TurboGears correct, otherwise yum will not find the package.</p>
+<p>In Fedora 9, python-cherrypy contains CherryPy 3 which is not compatible for TurboGears 1.0.x. Fedora ships a compatible version named python-cherrypy2. In order to run TurboGears 1.0.x on Fedora 9, you have to change your start scripts as described in the <a class="reference external" href="http://docs.fedoraproject.org/release-notes/f9/en_US/sn-WebServers.html#sn-turbogears-apps">TurboGears section of the Fedora 9 Release notes</a>. <a class="reference external" href="http://cvs.fedoraproject.org/viewcvs/rpms/python-cherrypy2/F-9/README.fedora?view=markup">README.fedora</a> in the python-cherrypy2 package contains more detailed information about the issues that can arise.</p>
+<p>Fedora 6 and earlier are past their end-of-life date so they are unsupported and the outdated TurboGears package in the Fedora 6 repository will never be updated.  You are better off upgrading to a newer version of Fedora (preferred) or following the generic installation instructions at the top of this page to get a newer version of TurboGears.</p>
+</div>
+<div class="section" id="freebsd">
+<h3>FreeBSD<a class="headerlink" href="#freebsd" title="Permalink to this headline">¶</a></h3>
+<p>If not using the port, the first line of <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt> should be changed from:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/bin/env python</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+</pre></div>
+</div>
+<p>And if several versions of Python are installed (e.g. 2.5 in addition to 2.4), give the correct version:</p>
+<div class="highlight-python"><pre>sudo python2.4 tgsetup.py</pre>
+</div>
+</div>
+<div class="section" id="gentoo">
+<h3>Gentoo<a class="headerlink" href="#gentoo" title="Permalink to this headline">¶</a></h3>
+<p>Installing TurboGears on Gentoo is much easier now, thanks to
+efforts of Rob &#8220;pythonhead&#8221; Cakebread, Lukasz &#8220;lucass&#8221; Strzygowski
+and community. There is now an ebuild available for ~amd64 and ~86.</p>
+<p>If you are running ~amd64 or ~86:</p>
+<div class="highlight-python"><pre>$ emerge turbogears</pre>
+</div>
+<p>The ebuild will pull down in all the required dependencies you need
+to get started with TurboGears. This method will allow portage to
+manage the packages installed and make updating TurboGears on your
+Gentoo system quite easy. Please note that if you use this method to
+install TurboGears and you plan to follow the most excellent
+20-Minute Wiki you do not need to execute the steps
+<tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">docutils</span></tt> and <tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">pysqlite</span></tt>. The ebuild
+will take care of these for you.</p>
+<p>If you mistakenly do both the emerge and easy_install steps,
+you will simply have an extra copy of <tt class="docutils literal"><span class="pre">tg-admin</span></tt> and
+<tt class="docutils literal"><span class="pre">sqlobject-admin</span></tt> in <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt>. You can safely remove
+these since the ebuild places them in <tt class="docutils literal"><span class="pre">/usr/bin</span></tt> as well.</p>
+<p>If you are running amd64 or 86, there are a bunch of masked packages.
+Unmask all the packages:</p>
+<div class="highlight-python"><pre>$ echo "dev-python/turbogears" &gt;&gt; /etc/portage/package.keywords
+$ echo "dev-python/setuptools" &gt;&gt; /etc/portage/package.keywords
+...(keep trying 'emerge -av turbogears' and unmasking packages
+    until emerge gives you no more warnings...)
+$ emerge -av turbogears</pre>
+</div>
+<p>It is recommended that you choose either the ebuild method or the
+setuptools method (which ever you prefer) but do not mix and match
+them.</p>
+<p>To follow the setuptools method, unmask setuptools:</p>
+<div class="highlight-python"><pre>$ echo "dev-python/setuptools" &gt;&gt; /etc/portage/package.keywords
+$ emerge -av setuptools</pre>
+</div>
+<p>then either run <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt> or <tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">TurboGears</span></tt>.</p>
+<p>Please note that portage will not manage any of the packages installed
+this way. Which may bring some conflict if some portage package
+upgrades a package TG depends on.</p>
+</div>
+<div class="section" id="opensuse">
+<h3>openSUSE<a class="headerlink" href="#opensuse" title="Permalink to this headline">¶</a></h3>
+<p>There are TurboGears RPM packages available for openSUSE. Up-to-date
+information about the openSUSE TurboGears packages can be found
+through the <a class="reference external" href="http://software.opensuse.org/search?baseproject=openSUSE%3A10.3&amp;p=1&amp;q=turbogears">openSUSE Build Service</a>.</p>
+<p>For openSUSE 10.3 and up, you can use this <a class="reference external" href="http://software.opensuse.org/ymp/devel:languages:python/openSUSE_10.3/python-turbogears.ymp">1-click install link</a>.
+This allows installation directly from the web browser.</p>
+<p>The openSUSE TurboGears packages contain a couple of modifications for better
+integration with openSUSE. In order to support CherryPy 2.x and 3.x on the
+same system, the CherryPy 2.x module was renamed to cherrypy2. This
+required changing &#8216;import cherrypy&#8217; to &#8216;import cherrypy2 as cherrypy&#8217;
+throughout the TG code. Also, for older stable distributions that shipped with
+Python 2.4. (SUSE Linux Enterprise 10, specifically), the runtime dependency
+checks  had to be removed. Basically, pkg_resources assumes that anything
+without an egg file isn&#8217;t installed, even when it is. In an RPM environment
+the package manager handles dependencies, so it&#8217;s not actually necessary for
+the program perform it&#8217;s own checks.</p>
+<p>Please note that bugs for any of these packages should be directed to
+bugzilla.novell.com.</p>
+</div>
+<div class="section" id="ubuntu-linux">
+<h3>Ubuntu Linux<a class="headerlink" href="#ubuntu-linux" title="Permalink to this headline">¶</a></h3>
+<p>Please see <a class="reference internal" href="Ubuntu.html"><em>Installation on Ubuntu</em></a> for an installation guide on the
+different versions of Ubuntu (and Kubuntu, Xubuntu, Edubuntu et al.).</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

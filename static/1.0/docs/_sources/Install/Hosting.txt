@@ -1,0 +1,48 @@
+.. index:: hosting
+
+Hosting TurboGears Applications
+===============================
+
+TurboGears applications can't be hosted with every web hosting company. Luckily, though, there are *many* good choices to choose from. The hosting companies on this page are selected to ensure:
+
+1.  Ability to run TurboGears apps
+2.  Good support
+3.  Good value
+
+Additionally, some of these companies support the TurboGears project through referral offers (when you sign up, they send some money). All things being equal, hosting companies that provide referral money are a big win for the project.
+
+If you run into problems with one of these companies, please:
+
+1.  Try to resolve the dispute with their customer service department
+2.  Failing that, send a message to the `main TurboGears mailing list`_ with a subject like "hosting problem".
+
+.. _main TurboGears mailing list: http://groups.google.com/group/turbogears
+
+Any company that is found to not run TurboGears apps well, not provide good support *or* not provide a good value will be removed from this list.
+
+One guideline when it comes to shared hosting: you should make sure that your app is friendly to a shared hosting environment. Make sure your server.environment variable is set to "production". Don't hold too many things in RAM, and avoid running expensive database queries. With accounts starting around $7 per month, these companies can't afford to have processes bogging down their servers, so tune things a bit on your computer before deploying your app.
+
+
+Top Picks
+---------
+
+* WebFaction_ Starting at $7.50 a month, WebFaction offers the easiest TurboGears hosting around. You've got to see it to believe it... a few clicks of the control panel gets you a TurboGears app running and hooked up to a URL on your site! They provide ample storage (2GB) and bandwidth (200GB/month) for most sites on their least expensive TurboGears plan. Plus, you get Trac and Subversion to help with your development. As an added incentive, WebFaction pays **50% of its profits on TurboGears hosting** back in support of TurboGears!
+
+* WestHost_ WestHost is an inexpensive Virtual Private Server (VPS) hosting company (starting at $7 per month). By providing a VPS, you're assured that you're able to run TurboGears in the best way possible for your app. It also makes it easy to deploy TurboGears in the simplest way: straight proxying. $7 per month gets you 2GB of disk space and 40GB of bandwidth use per month. With WestHost, you get more control over your (virtual) server, but you also have to do more of the work yourself. WestHost also helps support the TurboGears project when you click the link above.
+
+* NEXCESS.NET_ offers shared TurboGears web hosting starting at just $6.95 per month.  If you're looking for a TurboGears enabled virtual server (VPS), dedicated server or server cluster we can easily accomodate.  Free installation and solid support will get your TurboGears app up quick and keep it running smooth.
+
+* BlueHost_ If you need more resources for your dollar, BlueHost gives you 15GB of disk space and 400GB of bandwidth for just $7 per month. Their service is not a VPS, but they provide SSH shell access and allow people to run Ruby on Rails, which has a similar footprint to TurboGears. Additionally, there have been reports of people running TurboGears successfully here. This one provides more resources than WebFaction or WestHost, but it's not as easy as WebFaction or configurable as WestHost. Choose this one only if you really need the additional resources.
+
+* Dreamhost_ is very similar to Bluehost in that you have ssh access and can compile a local version of python, install your own eggs and fun it through FCGI, since the officially support Rails, TurboGears shouldn't have any ptoblems.
+
+* Sclicehost_ offers Xen VPS solutions with full root access and choice of distro.
+
+.. _WebFaction: http://www.webfaction.com/?affiliate=turbogears
+.. _WestHost: http://affiliates.westhost.com/z/14/CD686
+.. _NEXCESS.NET: http://www.nexcess.net/software/turbogears-web-hosting.php
+.. _BlueHost: http://www.bluehost.com/track/tazzzzz/tgorg
+.. _DreamHost: http://www.dreamhost.com/
+.. _Sclicehost: http://www.slicehost.com/
+
+**Know of another great hosting company?** This list is not trying to be complete, because there are just too many potentially usable hosting companies out there. The goal is to provide enough variety to meet the various needs that TurboGears users have.

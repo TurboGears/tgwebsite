@@ -1,0 +1,144 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing From Subversion &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Uninstalling TurboGears" href="Uninstall.html" />
+    <link rel="prev" title="Installing older versions of TurboGears" href="OldVersions.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Uninstall.html" title="Uninstalling TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="OldVersions.html" title="Installing older versions of TurboGears"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="OldVersions.html"
+                        title="previous chapter">Installing older versions of TurboGears</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Uninstall.html"
+                        title="next chapter">Uninstalling TurboGears</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="installing-from-subversion">
+<span id="index-0"></span><h1>Installing From Subversion<a class="headerlink" href="#installing-from-subversion" title="Permalink to this headline">¶</a></h1>
+<p>Installation instructions to install TurboGears from Subversion.</p>
+<ol class="arabic simple">
+<li>Make sure python.exe and Scripts/ directory from the Python installation
+are on your system PATH.</li>
+<li>Install latest setuptools:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>Download and run <a class="reference external" href="http://peak.telecommunity.com/dist/ez_setup.py">http://peak.telecommunity.com/dist/ez_setup.py</a></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Checkout TurboGears source:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>svn co svn://svn.code.sf.net/p/turbogears1/code/branches/1.0/ turbogears</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Go to turbogears/thirdparty folder and install components found there:</li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li>easy_install cherrypy</li>
+<li>easy_install kid</li>
+<li>easy_install paste</li>
+<li>easy_install sqlobject</li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Return to turbogears folder and run <tt class="docutils literal"><span class="pre">setup.py</span> <span class="pre">develop</span></tt>. This should install
+TurboGears itself along with fetch and install all extra dependencies for
+Turbogears, like RuleDispatch.</li>
+</ol>
+<p><strong>Note for Windows:</strong></p>
+<p>If you do not have a C compiler you won&#8217;t be able to install cElementTree from source.
+Instead do</p>
+<div class="highlight-python"><pre>easy_install -f http://www.turbogears.org/1.0/downloads/current/index cElementTree</pre>
+</div>
+<p>to download and install pre-packaged version from Turbogears&#8217; site.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

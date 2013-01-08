@@ -1,0 +1,126 @@
+.. index:: Debian
+
+Installing TurboGears on Debian
+===============================
+
+.. contents::
+    :depth: 2
+
+
+Just like many other Linux distributions, Debian systems use a strict package
+management system. This system "owns" all directories except those sub-trees
+like ``/usr/local, /opt, and /home`` which are dedicated for local additions.
+If a user installs files into the directories, the result is a confusing mess,
+which ultimately decreases the long-term maintainability of the system.
+Unfortunately, the current TurboGears install instructions for \*nix systems
+will deposit files into the system-wide Python library directory, which really
+ought to be left solely under the control of the package management system.
+
+Instead of those directions, there are two solutions for installing TurboGears.
+You can do it through the Debian package system (method 1). Or you can set up
+configurations so that the python packaging system will respect the boundaries
+required by Debian packaging system (method 2).
+
+
+Method One: Through the Debian Package System
+---------------------------------------------
+
+Bob Tanner, Gustavo Noronha, and Fredrik Steen are working on official
+TurboGears packages at http://alioth.debian.org/projects/pkg-turbogears/ and
+the resulting `python-turbogears package
+<http://packages.debian.org/python-turbogears>`_ has now entered the
+stable distribution (Etch).
+
+Installing TurboGears on a machine tracking testing can thus be done as follows:
+
+#. Make sure that the unstable and experimental distributions are available in
+   ``/etc/apt/sources.list``. If MIRROR is your selected
+   `mirror <http://www.debian.org/mirror/list>`_, then it should look like
+   this::
+
+        deb http://MIRROR/debian/ testing      main contrib non-free
+        deb http://MIRROR/debian/ unstable     main contrib non-free
+        deb http://MIRROR/debian/ experimental main contrib non-free
+
+#. Make APT prefer packages from testing over packages from unstable and
+   experimental by setting ``/etc/apt/preferences``::
+
+        Package: *
+        Pin: release a=testing
+        Pin-Priority: 900
+
+        Package: *
+        Pin: release a=unstable
+        Pin-Priority: 800
+
+        Package: *
+        Pin: release a=experimental
+        Pin-Priority: 700
+
+   See the ``apt_preferences(5)`` man page for information about this file.
+
+#. Install the python-turbogears package using ``apt-get``, ``aptitude`` or
+   whatever tool you prefer; this will pull in a lot of other packages from all
+   three distributions.
+
+That should be it! You now have a TurboGears installation which will
+automatically track the latest versions of all dependant packages and install
+them as needed. Whenever a dependant package is available from both testing and
+unstable, then one from testing will be preferred.
+
+
+Method Two: Using ``tgsetup.py``
+--------------------------------
+
+If you want to use Debian Sarge or Sid (unstable) and/or want to use the vanilla
+TurboGears distribution from turbogears.org, you can install TurboGears under
+``/usr/local``. (In the commands given below, ``$`` is your prompt.)
+
+#. Make sure you are a member of the 'staff' group. This group has permission to
+   write in the ``/usr/local`` tree. Debian packages set up some empty
+   directories in this tree with the correct permissions so that non-root
+   installs of supplementary modules etc can be done.
+
+   The 'id' program will show you what groups you are already a member of. If
+   'staff' is already listed then you can skip this step.
+
+   ::
+
+        $ id
+        uid=1001(me) gid=1001(mygroup) groups=24(cdrom),29(audio),1001(mygroup)
+
+   If not, add yourself to the 'staff' group::
+
+        $ sudo adduser me staff
+
+   You need to log out and in again for this to take effect.
+
+#. Install the package ``python2.4-dev``::
+
+        $ sudo apt-get install python2.4-dev
+
+#. Create a ``.pydistutils.cfg`` file in your home directory (or use  you
+   favourite text editor)::
+
+        $ cat > ~/.pydistutils.cfg << EOF
+        [install]
+        prefix = /usr/local
+
+        [easy_install]
+        site_dirs=/usr/local/lib/python$py_version_short/site-packages
+        EOF
+
+   (The use of ``$py_version_short`` in ``[easy_install]`` requires setuptools
+   >= 0.6a10, however this should not be a problem as the versions distributed
+   with TurboGears and all Debian distribution which contain a setuptools
+   package are newer than this.)
+
+   .. warning:: **Warning:** creating this file will effect all future
+       installations of Python packages through distutils or ``easy_install``,
+       i.e. the will be installed under ``/usr/local`` as well. If you don't
+       want this, remove or rename this file after installing TurboGears.
+
+#. Run ``tgsetup.py`` from the TurboGears download page::
+
+    $ wget http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+    $ python2.4 tgsetup.py

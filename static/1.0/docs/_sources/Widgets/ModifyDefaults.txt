@@ -1,0 +1,113 @@
+.. index:: widget defaults
+
+Changing Widget Defaults at Run Time
+====================================
+
+.. contents::
+    :depth: 2
+
+
+In order to modify a widget during run time one should use some special care.
+This document takes a ``SingleSelectField`` as an example to describe how some
+parameters can be changed in a widget at run time.
+
+An archive containing a fully functional project is available for those who
+want to play directly with it :)
+
+:download:`ssfdemo.zip <downloads/ssfdemo.zip>`
+
+First quickstart a new project and call it "ssfdemo", then edit
+``ssfdemo/ssfdemo/controllers.py`` and add the following imports at the top in
+order to be able to use them during this example::
+
+    import random
+    import turbogears as tg
+    from turbogears.widgets import SingleSelectField, TableForm, WidgetsList
+
+Then create a field list containing our ``SingleSelectField``::
+
+    class FormFields(WidgetsList):
+        single_select = SingleSelectField(
+            label = _('Preferred Framework'),
+            name = 'pref',
+            options = [
+                (0, 'The obscure one in Ruby'),
+                (1, 'TurboGears'),
+                (2, 'The one with that guitar player name'),
+                (3, 'Pylons'),
+                (4, 'Web.py'),
+                (5, 'Zope3'),
+                (6, 'Zope2'),
+                (7, 'Twisted+Nevow'),
+                (8, 'Something super secret'),
+            ],
+        )
+
+Please note the name we have assigned to the ``SingleSelectField``:
+``pref``. Now we will use this field list. Ok, this list may be overkill
+because there is only one element, but in real life your forms will generally
+contain more than one field.
+
+Next, we just have to use this list of widgets into our container widget::
+
+    form = TableForm(
+        name = 'form',
+        fields = FormFields(),
+        action = tg.url('post_handler'),
+        submit_text = _('Vote')
+    )
+
+We declared a form of name "form", which uses our list of previously declared
+fields. Now amend the index method so it looks like this::
+
+    def index(self):
+        pref = random.randint(0, 8)
+        return dict(form=form, pref=pref}
+
+The only thing we do here is to send our form *and* some contextual data, in that
+case a randomly choosen id. This data will be the one used to set the default
+value of our ``SingleSelectField``.
+
+But first we need to declare our ``post_handler`` because we made a reference
+to it in our form declaration. Here is a really simple form handler that will
+only print out the id that has been selected::
+
+    @expose()
+    def post_handler(self, pref):
+        return "You have chosen: %s" % pref
+
+Note that the second argument of this method is the same as the name attribute
+of our ``SingleSelectField``.
+
+Now you can save the controllers.py file and edit the
+``ssfdemo/ssfdemo/templates/welcome.kid`` file. The easiest way to achieve our
+goal is to remove nearly everything from this ``welcome.kid`` file and make it
+look like this::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#"
+      py:extends="'master.kid'">
+    <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"
+      py:replace="''"/>
+    <title>Welcome to SingleSelectFieldDemo</title>
+    </head>
+    <body>
+      <div id="getting_started">
+        ${form.display(value=dict(pref=pref))}
+      </div>
+    </body>
+    </html>
+
+The important part here is::
+
+    ${form.display(value=dict(pref=pref))}
+
+With this line we display the form but with amended values. It says: change the
+attribute named ``value`` on the sub-widget named ``pref`` by applying the
+content of ``pref`` to it. ``pref`` is the integer we randomly generated.
+
+Save the file and test the result. Make sure to Shift-Reload the page in order
+to really update it.

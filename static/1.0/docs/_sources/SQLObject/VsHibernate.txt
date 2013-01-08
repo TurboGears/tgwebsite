@@ -1,0 +1,26 @@
+.. index:: Hibernate
+
+Hibernate vs SqlObject
+======================
+
+.. contents::
+    :depth: 2
+
+
+Hibernate is likely the most powerful open source OR mapper. Since it's a Java library, it has its hands tied in some respects (and they've worked around this via bytecode manipulation at times). SQLObject has decent power, but there are some parts that are not quite as rich as they are in Hibernate.
+
+Quite a few people using Python today have previous experience with Hibernate. If we can gather up notes on the areas where Hibernate wins, that can sketch out a roadmap to bring the same power (likely with less code) to SQLObject.
+
+Lazy Updates
+------------
+
+Hibernate allows you to instantiate and update objects without any SQL being executed. This is a blessing and a curse. By being able to do this, you can prevent quite a few extra SQL queries being run against your database (only to be rolled back later). The curse, however, is that SQLObject will need to have much more sophisticated transaction handling.
+
+SQLObject has lazy updates, see http://www.sqlobject.org/SQLObject.html#lazy-updates This does not extend to new object initialization, however.
+
+New Contender
+-------------
+
+`SQLAlchemy`_ has a more Hibernate-like method of operation. More on :doc:`TurboGears support of SQLAlchemy </SQLAlchemy/index>`.
+
+.. _SQLAlchemy: http://www.sqlalchemy.org/

@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject Overview &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLObject Quick Guide" href="QuickGuide.html" />
+    <link rel="prev" title="The DB-URI" href="../DbUri.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="QuickGuide.html" title="SQLObject Quick Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../DbUri.html" title="The DB-URI"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject Overview</a><ul>
+<li><a class="reference internal" href="#sqlobject-concept">SQLObject Concept</a><ul>
+<li><a class="reference internal" href="#fully-hidden">Fully Hidden</a></li>
+<li><a class="reference internal" href="#semi-hidden">Semi Hidden</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#fully-exposed">Fully Exposed</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-problems">Common Problems</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../DbUri.html"
+                        title="previous chapter">The DB-URI</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="QuickGuide.html"
+                        title="next chapter">SQLObject Quick Guide</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-overview">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">SQLObject Overview</a><a class="headerlink" href="#sqlobject-overview" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlobject-overview" id="id1">SQLObject Overview</a><ul>
+<li><a class="reference internal" href="#sqlobject-concept" id="id2">SQLObject Concept</a></li>
+<li><a class="reference internal" href="#common-problems" id="id3">Common Problems</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="sqlobject-concept">
+<h2><a class="toc-backref" href="#id2">SQLObject Concept</a><a class="headerlink" href="#sqlobject-concept" title="Permalink to this headline">¶</a></h2>
+<p>From the SQLObject web site:</p>
+<blockquote>
+<div><p><em>SQLObject is a popular Object Relational Manager for providing an object interface to your database,
+with tables as classes, rows as instances, and columns as attributes.</em></p>
+<p><em>SQLObject includes a Python-object-based query language that makes SQL more abstract, and provides
+substantial database independence for applications.</em></p>
+</div></blockquote>
+<p>SQLObject provides three &#8220;groups&#8221; of interfaces. Based on how much SQL is &#8220;hidden&#8221; from the user.</p>
+<div class="section" id="fully-hidden">
+<h3>Fully Hidden<a class="headerlink" href="#fully-hidden" title="Permalink to this headline">¶</a></h3>
+<p>This is the normal and preferred use of SQLObject. in this method instances are plain Python objects.
+It is the one is explained in the <a class="reference internal" href="../GettingStarted/DefineDatabase.html"><em>TGGuide</em></a>
+and <a class="reference external" href="http://www.sqlobject.org/SQLObject.html">the SQLObject site</a></p>
+</div>
+<div class="section" id="semi-hidden">
+<h3>Semi Hidden<a class="headerlink" href="#semi-hidden" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<p>SQLObject provides <a class="reference external" href="http://www.sqlobject.org/SQLBuilder.html">sqlbuilder</a>,
+which is a pythonic SQL-like query engine is the suggested for those complex
+queries that join multiple tables, or cases where more advanced SQL is need
+for example LIKE constrains or calling database built-in functions. The basic
+usage is also explained in our <a class="reference internal" href="QuickGuide.html"><em>quick guide</em></a>.</p>
+</div>
+<div class="section" id="fully-exposed">
+<h3>Fully Exposed<a class="headerlink" href="#fully-exposed" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<p>When you need to embrace the full power of SQL, you&#8217;ll need <tt class="docutils literal"><span class="pre">queryAll()</span></tt>. Remember this will
+bypass SQLObject and go directly to the DB2.0 api driver, so you will need to take care of
+writing SQL that works across all databases yourself, or make it very clear your app only works
+only on your chosen SQL engine. <a class="reference internal" href="DirectSQL.html"><em>Check out a working sample</em></a>.</p>
+</div>
+</div>
+<div class="section" id="common-problems">
+<h2><a class="toc-backref" href="#id3">Common Problems</a><a class="headerlink" href="#common-problems" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p><strong>How can I work with foreign keys?</strong></p>
+<p>A <a class="reference internal" href="ForeignKeys.html"><em>code example</em></a> will probably make this clearer.</p>
+<p><strong>How do I select some fields from a table?</strong></p>
+<p>SQLObject is not a query wrapper. Try to get used to the <em>object oriented</em> way.</p>
+<p><strong>I really need to see what&#8217;s going on, show me the SQL!</strong></p>
+<p><a class="reference internal" href="Debug.html"><em>Turn on</em></a> debugging and see the SQL flow.</p>
+<p><strong>What other things do I need to account for?</strong></p>
+<p>See the list of <a class="reference internal" href="Gotchas.html"><em>SQLObject &#8220;gotcha&#8217;s&#8221;</em></a>.</p>
+<p><strong>I don&#8217;t like the SQL queries SQLObject generates, they could be optimized doing &lt;insert here&gt;...</strong></p>
+<p>Then you will probably want to hop over to <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a> which lets you get dirty on the SQL.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+.. index:: widget packages
+
+Widget Packages
+===============
+
+.. contents::
+    :depth: 2
+
+.. note::
+    This information mostly comes from Kevin Dangoor's devcast at
+    http://www.turbogears.org/videos/.
+
+
+Widget Resources
+----------------
+
+Most widgets use resources to control various aspects of themselves. For
+example, in the TurboGears widget library (the files in `turbogears/widgets/`_)
+there is a widget named CalendarDatePicker that displays a JavaScript-enhanced
+calendar. The widget uses the following resource files:
+
+* The CSS file ``turbogears/widgets/static/calendar/calendar-system.css``
+
+* The Javascript file ``turbogears/widgets/static/calendar/calendar.js``
+
+* The Javascript file ``turbogears/widgets/static/calendar/calendar-setup.js``
+
+* Plus some more locale-specific Javascript files located in
+  ``turbogears/widgets/static/calendar/lang``
+
+The DataGrid widget uses:
+
+* The CSS file ``turbogears/widgets/static/grid.css``
+
+* The KID template ``turbogears/widgets/templates/datagrid.kid``
+
+.. _turbogears/widgets/:
+    http://trac.turbogears.org/browser/branches/1.0/turbogears/widgets
+
+
+When you build your own widgets it is likely that you will also need to use
+resource files. You specify which resource files your widget requires by using
+the attributes ``css``, ``javascript`` and ``template`` in your widget class.
+
+::
+
+    from turbogears.widgets import CSSLink, JSLink, Widget, mochikit
+
+    class ComboBox(Widget):
+        css = CSSLink("package.name", "combo.css")
+        javascript = [mochikit, JSLink("package.name", "combo.js")]
+        template = "package.name.templates.combo"
+
+
+Using ``pkg_resources``
+-----------------------
+
+Note that you do not retrieve resource files using a normal file path, instead
+you use TurboGears packaging system, which is an abstraction on top of a
+regular file system. Its usefulness comes from being able to specify a URL by
+using a package name plus a filename and not have to bother with where exactly
+the file is mounted on your web server. It can also be confusing because the
+file has three "locations" - the path on your disk, the mounted path on your
+web server and the name of the package it belongs to.
+
+In this example, the ComboBox widget requests the three files ``combo.css``,
+``combo.js`` and ``combo.kid``. ``package.name`` is the name of the package
+where you have put your resource files. You must first create a package by
+registering it. Say that you have a normal directory tree for your project
+looking like this::
+
+    pkgname/
+        static/
+            css/
+            images/
+            javascript/
+        templates/
+        test/
+    projname.egg-info
+
+Lets also say that you want to package the stuff inside the static directory.
+One way to do it would be to make three packages: ``foobar.css`` for the
+stylesheets, ``foobar.javascript`` for the javascripts and ``foobar.images``
+for the images. You accomplish that by first obtaining a filename for a
+resource and then registering it as a directory. Write this in your
+``controllers.py`` file: ::
+
+    import os.path
+    import pkg_resources
+
+    pkg_path = pkg_resources.resource_filename(__name__,
+        os.path.join("static", "javascript"))
+    register_static_directory("foobar.javascript", pkg_path)
+    pkg_path = pkg_resources.resource_filename(__name__,
+        os.path.join("static", "css"))
+    register_static_directory("foobar.css", pkg_path)
+    pkg_path = pkg_resources.resource_filename(__name__,
+        os.path.join("static", "images"))
+    register_static_directory("foobar.images", pkg_path)
+
+.. note::
+    See the `pkg_resources documentation`_ for more information on how to use
+    the ``pkg_resources`` module.
+
+.. _pkg_resources documentation:
+    http://peak.telecommunity.com/DevCenter/PkgResources
+
+Now you can define resource files using your packages::
+
+    l = CSSLink("foobar.css", "combo.css")
+    js = JSLink("foobar.javascript", "foobar.js")
+
+You can also browse your package by going to the url
+``http://localhost:8080/tg_widgets/foobar.javascript/``.
+
+.. note::
+    pkg_resources probably also contains heaps more useful functionality and it
+    would be good if someone who knows about can write it down here.

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Starting Up The Server &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="TurboGears Configuration" href="../Configuration.html" />
+    <link rel="prev" title="Are you ready to gear up?" href="../QuickStart.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Configuration.html" title="TurboGears Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../QuickStart.html" title="Are you ready to gear up?"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Starting Up The Server</a><ul>
+<li><a class="reference internal" href="#accessing-the-application">Accessing the Application</a></li>
+<li><a class="reference internal" href="#automatically-restart">Automatically Restart</a></li>
+<li><a class="reference internal" href="#stop-the-server">Stop the Server</a></li>
+<li><a class="reference internal" href="#using-a-different-server-configuration">Using a Different Server Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../QuickStart.html"
+                        title="previous chapter">Are you ready to gear up?</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Configuration.html"
+                        title="next chapter">TurboGears Configuration</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="starting-up-the-server">
+<span id="index-0"></span><h1>Starting Up The Server<a class="headerlink" href="#starting-up-the-server" title="Permalink to this headline">¶</a></h1>
+<p>As soon as you have <a class="reference internal" href="../TgAdmin.html#tgadmin-quickstart"><em>quickstarted</em></a> a project, you are
+ready to fire up CherryPy&#8217;s built-in server and get moving! To run the server
+for development you should:</p>
+<ol class="arabic">
+<li><p class="first">Switch to the top level directory of your newly created project. If, for
+example, your project is called &#8220;<tt class="docutils literal"><span class="pre">MyTGApp</span></tt>&#8221;, open a command line and
+then do:</p>
+<div class="highlight-python"><pre>$ cd /path/to/MyTGApp</pre>
+</div>
+</li>
+<li><p class="first">Run the provided <em>start script</em> called <tt class="docutils literal"><span class="pre">start-&lt;pkg-name&gt;.py</span></tt> with Python.
+E.g., if your application&#8217;s package name is &#8220;<tt class="docutils literal"><span class="pre">mytgapp</span></tt>&#8221;, then run:</p>
+<div class="highlight-python"><pre>python start-mytgapp.py</pre>
+</div>
+</li>
+</ol>
+<p>You will then see console messages telling you that the server has started up
+and on which port it is listening.</p>
+<div class="section" id="accessing-the-application">
+<h2>Accessing the Application<a class="headerlink" href="#accessing-the-application" title="Permalink to this headline">¶</a></h2>
+<p>By default, the CherryPy server for your quickstarted TurboGears project
+listens on port 8080, so you should see the standard welcome page by pointing
+your browser at <a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p><strong>Mac Bonjour Support</strong></p>
+<p class="last">On the Mac, you&#8217;ll be able to see your development site in safari&#8217;s Bonjour
+bookmarks.</p>
+</div>
+</div>
+<div class="section" id="automatically-restart">
+<h2>Automatically Restart<a class="headerlink" href="#automatically-restart" title="Permalink to this headline">¶</a></h2>
+<p>The server watches for changes to files in your project and will automatically restart if it sees any.</p>
+</div>
+<div class="section" id="stop-the-server">
+<h2>Stop the Server<a class="headerlink" href="#stop-the-server" title="Permalink to this headline">¶</a></h2>
+<p>You can stop the server at any time by pressing <tt class="docutils literal"><span class="pre">Control-C</span></tt> (in the console).</p>
+</div>
+<div class="section" id="using-a-different-server-configuration">
+<h2>Using a Different Server Configuration<a class="headerlink" href="#using-a-different-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>The start script accepts one optional argument on the command line, which
+specifies the path to an alternate server configuration file to use. If no file
+is given, it will look for <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> in the current directory, if a
+<tt class="docutils literal"><span class="pre">setup.py</span></tt> file is also present (development mode). If not, it will then look
+for <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> in the current directory and, finally, if this is not found
+also, it will look for <tt class="docutils literal"><span class="pre">config/default.cfg</span></tt> within the application&#8217;s
+<a class="reference internal" href="../Install/DeployWithAnEgg.html"><em>egg</em></a>.</p>
+<p>Please refer to the <a class="reference internal" href="../Configuration.html"><em>configuration</em></a> documentation for a reference
+of the server settings that you can use in the deployment configuration files.</p>
+<p><a class="reference internal" href="../TgAdmin.html"><em>Previous: Create a new project</em></a> :
+<a class="reference internal" href="BigPicture.html"><em>Next: The Big Picture</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

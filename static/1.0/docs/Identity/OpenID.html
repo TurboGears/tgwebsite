@@ -1,0 +1,474 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OpenID Authentication with TurboGears Identity &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Testing Your Application" href="../Testing.html" />
+    <link rel="prev" title="Identity Failure URL" href="FailureURL.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Testing.html" title="Testing Your Application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FailureURL.html" title="Identity Failure URL"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">OpenID Authentication with TurboGears Identity</a><ul>
+<li><a class="reference internal" href="#what-is-openid">What is OpenID?</a></li>
+<li><a class="reference internal" href="#integrating-openid-with-turbogears-identity">Integrating OpenID with TurboGears Identity</a></li>
+<li><a class="reference internal" href="#start-to-integrate">Start to integrate</a></li>
+<li><a class="reference internal" href="#tutorial-creating-a-turbogears-application-with-openid-support">Tutorial - Creating a TurboGears Application with OpenID support</a></li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="FailureURL.html"
+                        title="previous chapter">Identity Failure URL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Testing.html"
+                        title="next chapter">Testing Your Application</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="openid-authentication-with-turbogears-identity">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">OpenID Authentication with TurboGears Identity</a><a class="headerlink" href="#openid-authentication-with-turbogears-identity" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#openid-authentication-with-turbogears-identity" id="id1">OpenID Authentication with TurboGears Identity</a><ul>
+<li><a class="reference internal" href="#what-is-openid" id="id2">What is OpenID?</a></li>
+<li><a class="reference internal" href="#integrating-openid-with-turbogears-identity" id="id3">Integrating OpenID with TurboGears Identity</a></li>
+<li><a class="reference internal" href="#start-to-integrate" id="id4">Start to integrate</a></li>
+<li><a class="reference internal" href="#tutorial-creating-a-turbogears-application-with-openid-support" id="id5">Tutorial - Creating a TurboGears Application with OpenID support</a></li>
+<li><a class="reference internal" href="#notes" id="id6">Notes</a></li>
+<li><a class="reference internal" href="#references" id="id7">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-is-openid">
+<h2><a class="toc-backref" href="#id2">What is OpenID?</a><a class="headerlink" href="#what-is-openid" title="Permalink to this headline">¶</a></h2>
+<p>OpenID is an authentication mechanism favouring single-sign-on on the web. If your website implements OpenID authentication (as a client), your site doesn&#8217;t need to store passwords and ask for simple registration information of your users. If someone has an OpenID (anybody can get an OpenID for free by registering at OpenID provider sites like <a class="reference external" href="http://www.myopenid.com">http://www.myopenid.com</a>), he can directly login through this, and your site can access his information.</p>
+<p>More information about OpenID can be found at:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://openid.net/">http://openid.net/</a></li>
+<li><a class="reference external" href="http://www.openidenabled.com/">http://www.openidenabled.com/</a></li>
+</ul>
+</div>
+<div class="section" id="integrating-openid-with-turbogears-identity">
+<h2><a class="toc-backref" href="#id3">Integrating OpenID with TurboGears Identity</a><a class="headerlink" href="#integrating-openid-with-turbogears-identity" title="Permalink to this headline">¶</a></h2>
+<p>Here we are going to discuss about how to integrate OpenID (client part) with TurboGears identity management.</p>
+<p>It is easy to integrate OpenID authentication with the identity framework in a TurboGears application with some tricks. But before we understand how the integration would work, we must understand some TurboGears identity basics.</p>
+<p>Let&#8217;s understand what exactly happens when we call a controller method requiring authentication. Say you have a controller method like this:</p>
+<div class="highlight-python"><pre>@expose()
+@identity.require(identity.not_anonymous())
+def some_url(self, param1, param2)
+    return "Hi " + param1 + param2</pre>
+</div>
+<p>To call this, you need to invoke <tt class="docutils literal"><span class="pre">http://xyz:8080/some_url?param1=x&amp;param2=y.</span></tt> Now, if you are not authenticated, you will be redirected to the login page, where you give your user name and password. When you press the &#8220;Login&#8221; button in the login form, what is actually invoked is:</p>
+<div class="highlight-python"><pre>http://xyz:8080/some_url?param1=x&amp;param2=y&amp;user_name=your_name&amp;
+password=your_password&amp;login=Login.</pre>
+</div>
+<p>(all on one line)</p>
+<p>You might like to have a look at <tt class="docutils literal"><span class="pre">login.kid</span></tt> to have an understanding on this.</p>
+<p>Now let&#8217;s talk about an interesting rule TurboGears follows. Whenever TurboGears sees an url having <tt class="docutils literal"><span class="pre">user_name</span></tt>, <tt class="docutils literal"><span class="pre">password</span></tt> and <tt class="docutils literal"><span class="pre">login</span></tt> parameters, it removes these parameters, after using them if needed.</p>
+<p>So, if you invoke:</p>
+<div class="highlight-python"><pre>http://xyz:8080/some_url?param1=x&amp;param2=y&amp;user_name=your_name&amp;
+password=your_password&amp;login=Login</pre>
+</div>
+<p>(all on one line again)</p>
+<p>after the authentication taking place, what actually <tt class="docutils literal"><span class="pre">some_url</span></tt> will see is only <tt class="docutils literal"><span class="pre">param1</span></tt> and <tt class="docutils literal"><span class="pre">param2</span></tt>. And, if the authentication fails, you will be redirected to the login page again.</p>
+<p>Having understood this, let&#8217;s now have a minimal understanding how OpenID authentication works in general.</p>
+<p>Very briefly, OpenID authentication is done in two steps:</p>
+<ol class="arabic simple">
+<li>After getting the OpenID of the user, you call his OpenID site with his name and some other parameters. Let&#8217;s name the method to call the OpenID site <tt class="docutils literal"><span class="pre">login_begin</span></tt>.</li>
+<li>From the OpenID site, you receive authentication information and additional data. Let&#8217;s name the method to receive this data <tt class="docutils literal"><span class="pre">login_finish</span></tt>.</li>
+</ol>
+</div>
+<div class="section" id="start-to-integrate">
+<h2><a class="toc-backref" href="#id4">Start to integrate</a><a class="headerlink" href="#start-to-integrate" title="Permalink to this headline">¶</a></h2>
+<p>So, to integrate TurboGears identity and OpenID authentication, we need to do the following:</p>
+<ol class="arabic">
+<li><p class="first">Change the login form to post to <tt class="docutils literal"><span class="pre">login_begin</span></tt> instead of <tt class="docutils literal"><span class="pre">${previous_url}</span></tt>.
+Your <tt class="docutils literal"><span class="pre">login.kid</span></tt> will now have:</p>
+<div class="highlight-python"><pre>&lt;form action="/login_begin" method="POST"&gt;</pre>
+</div>
+</li>
+<li><p class="first">Introduce <tt class="docutils literal"><span class="pre">previous_url</span></tt> as a hidden field, so that its value is preserved.
+Add this line to the login form:</p>
+<div class="highlight-python"><pre>&lt;input type="hidden" name="previous_url" value="${previous_url}"/&gt;</pre>
+</div>
+</li>
+<li><p class="first">Change the id and name of the <tt class="docutils literal"><span class="pre">user_name</span></tt> field to <tt class="docutils literal"><span class="pre">openid_url</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;input type="text" id="openid_url" name="openid_url"/&gt;</pre>
+</div>
+</li>
+<li><p class="first">Change the type of password field to hidden:</p>
+<div class="highlight-python"><pre>&lt;input type="hidden" id="password" name="password"/&gt;</pre>
+</div>
+</li>
+<li><p class="first">Write the method <tt class="docutils literal"><span class="pre">login_begin</span></tt>.</p>
+</li>
+<li><p class="first">Write the method <tt class="docutils literal"><span class="pre">login_finish</span></tt>. In <tt class="docutils literal"><span class="pre">login</span> <span class="pre">finish</span></tt>, if OpenID authentication
+succeeds, you need to set a random password for the user.</p>
+</li>
+</ol>
+<p>You may not be able to digest all this now, until you see the tutorial and read through the source code given below.</p>
+</div>
+<div class="section" id="tutorial-creating-a-turbogears-application-with-openid-support">
+<h2><a class="toc-backref" href="#id5">Tutorial - Creating a TurboGears Application with OpenID support</a><a class="headerlink" href="#tutorial-creating-a-turbogears-application-with-openid-support" title="Permalink to this headline">¶</a></h2>
+<p>Follow these steps below to have an OpenID enabled TurboGears application. This tutorial uses SQLAlchemy and sqlite.</p>
+<ol class="arabic simple">
+<li>Install SQLAlchemy and sqlite (with pysqlite) on your machine if not already installed.</li>
+<li>Install the python library for OpenID support from <a class="reference external" href="http://www.openidenabled.com/openid/libraries/python/downloads">here</a>. Download the combo pack - latest version. (This code was tested using Python OpenID 1.2.0 Combo and works well with leading OpenID servers, although I am not aware which specification of OpenID it implements.)</li>
+</ol>
+<ol class="arabic" start="3">
+<li><p class="first">Create a TurboGears application by the command:</p>
+<div class="highlight-python"><pre>tg-admin quickstart -i -s -t tgbig</pre>
+</div>
+<p>Specify project name and package name as <tt class="docutils literal"><span class="pre">tgopenid</span></tt>.</p>
+</li>
+<li><p class="first">In <tt class="docutils literal"><span class="pre">root.py</span></tt> of the controllers package, ensure that the User class is imported from <tt class="docutils literal"><span class="pre">model.py</span></tt> by having the line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">tgopenid.model</span> <span class="kn">import</span> <span class="n">User</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">For OpenID support, we need some imports and utility functions. These are described below. Have these just above the Root class in <tt class="docutils literal"><span class="pre">root.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#########################################################</span>
+<span class="c"># Added for OpenID support</span>
+<span class="c">#########################################################</span>
+
+<span class="kn">import</span> <span class="nn">turbogears</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">flash</span>
+<span class="kn">from</span> <span class="nn">pysqlite2</span> <span class="kn">import</span> <span class="n">dbapi2</span> <span class="k">as</span> <span class="n">sqlite</span>
+<span class="kn">from</span> <span class="nn">openid.consumer</span> <span class="kn">import</span> <span class="n">consumer</span>
+<span class="kn">from</span> <span class="nn">openid.store</span> <span class="kn">import</span> <span class="n">sqlstore</span>
+<span class="kn">from</span> <span class="nn">openid.cryptutil</span> <span class="kn">import</span> <span class="n">randomString</span>
+<span class="kn">from</span> <span class="nn">yadis.discover</span> <span class="kn">import</span> <span class="n">DiscoveryFailure</span>
+<span class="kn">from</span> <span class="nn">urljr.fetchers</span> <span class="kn">import</span> <span class="n">HTTPFetchingError</span>
+
+<span class="c"># Utility functions</span>
+
+<span class="k">def</span> <span class="nf">_flatten</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">inner_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a dictionary like this:</span>
+<span class="sd">        {&#39;a&#39;:1, &#39;b&#39;:2, &#39;openid&#39;: {&#39;i&#39;:1, &#39;j&#39;:2}, &#39;c&#39;: 4},</span>
+<span class="sd">    flattens it to have:</span>
+<span class="sd">        {&#39;a&#39;:1, &#39;b&#39;:2, &#39;openid.i&#39;:1, &#39;openid.j&#39;:2, &#39;c&#39;:4}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">inner_dict</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">inner_dict</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">dictionary</span><span class="p">[</span><span class="n">inner_dict</span> <span class="o">+</span><span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+
+<span class="k">def</span> <span class="nf">_prefix_keys</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+    <span class="s">&quot; Prefixes the keys of dictionary with prefix &quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">prefix</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+<span class="k">def</span> <span class="nf">_get_openid_store_connection</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a connection to the database used</span>
+<span class="sd">    by openid library</span>
+<span class="sd">    Is it needed to close the connection? If yes, where to close it?</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&quot;openid.db&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_openid_consumer</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns an openid consumer object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">cherrypy</span> <span class="kn">import</span> <span class="n">session</span>
+
+    <span class="n">con</span> <span class="o">=</span> <span class="n">_get_openid_store_connection</span><span class="p">()</span>
+    <span class="n">store</span> <span class="o">=</span> <span class="n">sqlstore</span><span class="o">.</span><span class="n">SQLiteStore</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+    <span class="n">session</span><span class="p">[</span><span class="s">&#39;openid_tray&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;openid_tray&#39;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">return</span> <span class="n">consumer</span><span class="o">.</span><span class="n">Consumer</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s">&#39;openid_tray&#39;</span><span class="p">],</span> <span class="n">store</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    if kw is something like</span>
+<span class="sd">        {&#39;previous_url&#39; : &#39;some_controller_url&#39;,</span>
+<span class="sd">         &#39;openid_url&#39;   : &#39;an_openid.myopenid.com&#39;,</span>
+<span class="sd">         &#39;password&#39;     : &#39;some_password&#39;,</span>
+<span class="sd">         &#39;login&#39;        : &#39;Login&#39;,</span>
+<span class="sd">         &#39;param1&#39;       : &#39;param1&#39;</span>
+<span class="sd">         &#39;param2&#39;       : &#39;param2&#39;</span>
+<span class="sd">        }</span>
+<span class="sd">    the value returned is:</span>
+<span class="sd">        http://xyz:8080/come_controller_url?</span>
+<span class="sd">        user_name=an_openid.myopenid.com&amp;</span>
+<span class="sd">        password=some_password&amp;login=Login&amp;param1=param1&amp;param2=param2</span>
+<span class="sd">    (on a single line)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kw</span><span class="p">[</span><span class="s">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;openid_url&#39;</span><span class="p">)</span>
+    <span class="n">previous_url</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;previous_url&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">previous_url</span><span class="p">,</span> <span class="n">kw</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>Inside the Root controller class, at the bottom, write the code for
+login_begin and login_finish as below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">login_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c"># openid_url was not provided by the user</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Please enter your openid url&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+
+    <span class="n">oidconsumer</span> <span class="o">=</span> <span class="n">_get_openid_consumer</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">oidconsumer</span><span class="o">.</span><span class="n">begin</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">])</span>
+    <span class="k">except</span> <span class="n">HTTPFetchingError</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;HTTPFetchingError retrieving identity URL (</span><span class="si">%s</span><span class="s">): </span><span class="si">%s</span><span class="s">&#39;</span> \
+          <span class="o">%</span> <span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="o">.</span><span class="n">why</span><span class="p">)))</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+    <span class="k">except</span> <span class="n">DiscoveryFailure</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;DiscoveryFailure Error retrieving identity URL (</span><span class="si">%s</span><span class="s">): </span><span class="si">%s</span><span class="s">&#39;</span> \
+          <span class="o">%</span> <span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">req</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&#39;No OpenID services found for </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> \
+              <span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">],))</span>
+            <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c"># Add server.webpath variable</span>
+            <span class="c"># in your configuration file for turbogears.url to</span>
+            <span class="c"># produce full complete urls</span>
+            <span class="c"># e.g. server.webpath=&quot;http://localhost:8080&quot;</span>
+
+            <span class="n">trust_root</span> <span class="o">=</span> <span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+            <span class="n">return_to</span> <span class="o">=</span> <span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/login_finish&#39;</span><span class="p">,</span>
+              <span class="n">_prefix_keys</span><span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="s">&#39;app_data&#39;</span><span class="p">))</span>
+
+            <span class="c"># As we want also to fetch nickname and email</span>
+            <span class="c"># of the user from the server,</span>
+            <span class="c"># we have added the line below</span>
+            <span class="n">req</span><span class="o">.</span><span class="n">addExtensionArg</span><span class="p">(</span><span class="s">&#39;sreg&#39;</span><span class="p">,</span> <span class="s">&#39;optional&#39;</span><span class="p">,</span> <span class="s">&#39;nickname,email&#39;</span><span class="p">)</span>
+            <span class="n">req</span><span class="o">.</span><span class="n">addExtensionArg</span><span class="p">(</span><span class="s">&#39;sreg&#39;</span><span class="p">,</span> <span class="s">&#39;policy_url&#39;</span><span class="p">,</span>
+              <span class="s">&#39;http://www.google.com&#39;</span><span class="p">)</span>
+
+            <span class="n">redirect_url</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">redirectURL</span><span class="p">(</span><span class="n">trust_root</span><span class="p">,</span> <span class="n">return_to</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">redirect_url</span><span class="p">)</span>
+
+<span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">login_finish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle the redirect from the OpenID server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">app_data</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;app_data&#39;</span><span class="p">)</span>
+    <span class="c"># As consumer.complete needs a single flattened dictionery,</span>
+    <span class="c"># we have to flatten kw. See flatten&#39;s doc string</span>
+    <span class="c"># for what it exactly does</span>
+    <span class="n">_flatten</span><span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="s">&#39;openid&#39;</span><span class="p">)</span>
+    <span class="n">_flatten</span><span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="s">&#39;openid.sreg&#39;</span><span class="p">)</span>
+
+    <span class="n">oidconsumer</span> <span class="o">=</span> <span class="n">_get_openid_consumer</span><span class="p">()</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">oidconsumer</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">info</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">consumer</span><span class="o">.</span><span class="n">FAILURE</span> <span class="ow">and</span> <span class="n">info</span><span class="o">.</span><span class="n">identity_url</span><span class="p">:</span>
+        <span class="c"># In the case of failure, if info is non-None, it is the</span>
+        <span class="c"># URL that we were verifying. We include it in the error</span>
+        <span class="c"># message to help the user figure out what happened.</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Verification of </span><span class="si">%s</span><span class="s"> failed. </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> \
+          <span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">identity_url</span><span class="p">,</span> <span class="n">info</span><span class="o">.</span><span class="n">message</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">app_data</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">info</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">consumer</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">:</span>
+        <span class="c"># Success means that the transaction completed without</span>
+        <span class="c"># error. If info is None, it means that the user cancelled</span>
+        <span class="c"># the verification.</span>
+
+        <span class="c"># This is a successful verification attempt.</span>
+
+        <span class="c"># identity url may be like http://yourid.myopenid.com/</span>
+        <span class="c"># strip it to yourid.myopenid.com</span>
+        <span class="n">user_name</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">identity_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c"># get sreg information about the user</span>
+        <span class="n">user_info</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">extensionResponse</span><span class="p">(</span><span class="s">&#39;sreg&#39;</span><span class="p">)</span>
+
+        <span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get_by</span><span class="p">(</span><span class="n">user_name</span><span class="o">=</span><span class="n">user_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">u</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># new user, not found in database</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user_name</span><span class="o">=</span><span class="n">user_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;email&#39;</span> <span class="ow">in</span> <span class="n">user_info</span><span class="p">:</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">email_address</span> <span class="o">=</span> <span class="n">user_info</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s">&#39;nickname&#39;</span> <span class="ow">in</span> <span class="n">user_info</span><span class="p">:</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">display_name</span> <span class="o">=</span> <span class="n">user_info</span><span class="p">[</span><span class="s">&#39;nickname&#39;</span><span class="p">]</span>
+        <span class="n">u</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">randomString</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span>
+          <span class="s">&quot;abcdefghijklmnopqrstuvwxyz0123456789&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">u</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Error saving user: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span>
+        <span class="n">app_data</span><span class="p">[</span><span class="s">&#39;openid_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_name</span>
+        <span class="n">app_data</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">password</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">_get_previous_url</span><span class="p">(</span><span class="o">**</span><span class="n">app_data</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">info</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">consumer</span><span class="o">.</span><span class="n">CANCEL</span><span class="p">:</span>
+        <span class="c"># cancelled</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Verification cancelled&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># Either we don&#39;t understand the code or there is no</span>
+        <span class="c"># openid_url included with the error. Give a generic</span>
+        <span class="c"># failure message. The library should supply debug</span>
+        <span class="c"># information in a log.</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Verification failed&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="n">turbogears</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic" start="6">
+<li><p class="first">To test your program, add a method as below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@identity.require</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">not_anonymous</span><span class="p">())</span>
+<span class="k">def</span> <span class="nf">whoami</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Your openid_url: &quot;</span> <span class="o">+</span> <span class="n">u</span><span class="o">.</span><span class="n">user_name</span> <span class="o">+</span> \
+           <span class="s">&quot;</span><span class="se">\n</span><span class="s">Your email_address: &quot;</span> <span class="o">+</span> <span class="n">u</span><span class="o">.</span><span class="n">email_address</span> <span class="o">+</span> \
+           <span class="s">&quot;</span><span class="se">\n</span><span class="s">Your nickname: &quot;</span> <span class="o">+</span> <span class="n">u</span><span class="o">.</span><span class="n">display_name</span> <span class="o">+</span> \
+           <span class="s">&quot;</span><span class="se">\n</span><span class="s">The following parameters were supplied by you: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change <tt class="docutils literal"><span class="pre">login.kid</span></tt> as discussed in the previous section.</p>
+</li>
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">session_filter.on</span> <span class="pre">=</span> <span class="pre">True</span></tt> under the <em>global</em> section in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>. OpenID implementation needs session support.</p>
+</li>
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">server.webpath=&quot;http://localhost:8080&quot;</span></tt> under the <em>global</em> section in <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>. It is needed to build full urls in <tt class="docutils literal"><span class="pre">login_begin</span></tt>.</p>
+</li>
+<li><p class="first">You need a database, called <tt class="docutils literal"><span class="pre">openid_store</span></tt> for OpenID to run. This typically should be different from your application database. To create an OpenID database, run the <tt class="docutils literal"><span class="pre">createstore.py</span></tt> script given below in the project root directory (wherever you have <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># createstore.py</span>
+<span class="kn">from</span> <span class="nn">pysqlite2</span> <span class="kn">import</span> <span class="n">dbapi2</span> <span class="k">as</span> <span class="n">sqlite</span>
+<span class="kn">from</span> <span class="nn">openid.store</span> <span class="kn">import</span> <span class="n">sqlstore</span>
+
+<span class="n">con</span> <span class="o">=</span> <span class="n">sqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;openid.db&#39;</span><span class="p">)</span>
+<span class="n">store</span> <span class="o">=</span> <span class="n">sqlstore</span><span class="o">.</span><span class="n">SQLiteStore</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">createTables</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">In <tt class="docutils literal"><span class="pre">model.py</span></tt>, increase the size of the <tt class="docutils literal"><span class="pre">user_name</span></tt> field in <tt class="docutils literal"><span class="pre">users_table</span></tt> from 16 to 255:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Column</span><span class="p">(</span><span class="s">&#39;user_name&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">255</span><span class="p">),</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the database for your application by <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt>.</p>
+</li>
+<li><p class="first">Test your application! An obvious test case is to try <tt class="docutils literal"><span class="pre">http://localhost:8080/whoami?a=1</span></tt></p>
+</li>
+</ol>
+</div>
+<div class="section" id="notes">
+<h2><a class="toc-backref" href="#id6">Notes</a><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>The sample application is attached as <a class="reference download internal" href="../_downloads/tgopenid.tar.gz"><tt class="xref download docutils literal"><span class="pre">tgopenid.tar.gz</span></tt></a>.</li>
+<li>Find attached a tg-admin command <a class="reference download internal" href="../_downloads/createopenidstore-0.1-py2.4.egg"><tt class="xref download docutils literal"><span class="pre">createopenidstore</span></tt></a>.
+This command looks for a file configured as &#8216;openid_store&#8217;, and if this does not exist
+runs the command given as createstore.py in 10. above.</li>
+<li>If you develop an application using OpenID, it might be time consuming while testing
+the authentication with a live OpenID server like <a class="reference external" href="http://www.myopenid.com/">http://www.myopenid.com/</a>. To save time,
+you may like to run server.py at <tt class="docutils literal"><span class="pre">python-openid-x.x.x/examples</span></tt> folder in the Python library
+you downloaded from <a class="reference external" href="http://www.openidenabled.com/openid/libraries/python/downloads">http://www.openidenabled.com/openid/libraries/python/downloads</a> and run it
+using the command <tt class="docutils literal"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">--port</span> <span class="pre">7999</span></tt>. Then, while logging in from your application,
+you can use OpenID url as <tt class="docutils literal"><span class="pre">http://localhost:7999/some_user_name</span></tt>.</li>
+<li><a class="reference external" href="http://nxsy.org/tgopenidlogin---an-openid-consumer-for-turbogears-applications">TGOpenIDLogin</a> may be an even better solutiong than the one presented above.</li>
+</ol>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id7">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.openidenabled.com/resources/repos/python/openid/examples/consumer.py">http://www.openidenabled.com/resources/repos/python/openid/examples/consumer.py</a></li>
+<li><a class="reference external" href="http://recursivethought.googlecode.com/svn/oididentity/trunk">http://recursivethought.googlecode.com/svn/oididentity/trunk</a></li>
+<li><a class="reference external" href="http://www.alleged.org.uk/pdc/2006/02/10.html">http://www.alleged.org.uk/pdc/2006/02/10.html</a></li>
+<li><a class="reference external" href="http://www.alleged.org.uk/pdc/2006/03/06.html#e20060306-filepic">http://www.alleged.org.uk/pdc/2006/03/06.html#e20060306-filepic</a></li>
+<li><a class="reference external" href="http://www.openidenabled.com/">http://www.openidenabled.com/</a></li>
+<li><a class="reference external" href="http://groups.google.co.in/group/turbogears/browse_thread/thread/dfc3523e6f1cfec/d5e38d3e3f77ecfd">http://groups.google.co.in/group/turbogears/browse_thread/thread/dfc3523e6f1cfec/d5e38d3e3f77ecfd</a></li>
+<li><a class="reference external" href="http://nxsy.org/tgopenidlogin---an-openid-consumer-for-turbogears-applications">http://nxsy.org/tgopenidlogin&#8212;an-openid-consumer-for-turbogears-applications</a></li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

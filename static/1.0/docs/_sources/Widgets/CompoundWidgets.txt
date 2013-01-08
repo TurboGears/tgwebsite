@@ -1,0 +1,84 @@
+.. index:: CompoundWidget
+
+Implementing and using CompoundWidgets
+======================================
+
+.. contents::
+  :depth: 2
+
+Introduction
+------------
+
+In this section I'll describe how to build compound widgets and use them. For the time being, here's a commented CompoundWidget demo TG widget's package. To install::
+
+    $ tar xvjf compounddemo.X.Y.tar.bz2
+    $ cd compounddemo
+    $ [sudo] python setup.py develop
+    $ tg-admin toolbox
+
+And watch the examples at the toolbox's widget browser. You can also download & install
+one of the provided eggs::
+
+    $ [sudo] easy_install compounddemo-X.Y-py2.N.egg
+    $ tg-admin toolbox
+
+
+How was the egg built?
+----------------------
+
+``tg-admin`` can create the skeleton of a widget's egg like this: ::
+
+    tg-admin quickstart -t tgwidget compounddemo
+
+It's the best way to reuse widgets among projects and to modularize your apps for easier maintenance. Best of all, they are easily re-distributed.
+
+Once you install the resulting egg just import the widgets in your app and enjoy. ::
+
+    from compounddemo import MyCompound
+
+    w = MyCompound()
+
+
+Example project
+---------------
+
+This demo widget's package aims to show how to create a custom
+CompoundWidget and a CompoundFormField for reusing view code amongst
+templates and forms.
+
+It covers:
+
+    How to define child widget's (which, of course, can also be compound).
+    How to initialize them at the constructor to implement a facade pattern.
+    How to override their params and value at display time.
+
+It doesnt cover (yet):
+
+    How to deal with input conversion/facading. Take a look at the
+    SelectShuttle's code for an example: http://cheeseshop.python.org/pypi/Select-Shuttle/
+
+
+**Q.**
+
+When to choose a CompoundWidget or a CompoundFormField as a base class?
+
+**A.**
+
+You should use a CompoundFormField whenever the widget is intended for use
+in a form, this is, a widget that we expect to generate input for our app
+*inside* a form that's going to be submitted.
+
+Use a CompoundWidget otherwise, this is, widgets like a an Ajax search field
+or any other kind of widget that might generate input but noy by means of
+form submission, like in AJAX requests.
+
+Feel free to use and modify this code for any purpose in any way you like.
+
+Download
+~~~~~~~~
+
+* :download:`compounddemo-1.0.1.tar.bz2 <downloads/compounddemo-1.0.1.tar.bz2>`
+* :download:`compounddemo-1.0.1.zip <downloads/compounddemo-1.0.1.zip>`
+* :download:`compounddemo-1.0.1-py2.4.egg <downloads/compounddemo-1.0.1-py2.4.egg>`
+* :download:`compounddemo-1.0.1-py2.5.egg <downloads/compounddemo-1.0.1-py2.5.egg>`
+

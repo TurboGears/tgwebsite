@@ -1,0 +1,75 @@
+.. index:: Kid, TurboKid
+
+TurboKid
+========
+
+.. contents::
+  :depth: 2
+
+
+Author:
+    Kevin Dangoor
+Maintainer:
+    Christoph Zwerschke
+Release information and download URL:
+    http://pypi.python.org/pypi/TurboKid
+SVN repository:
+    http://svn.turbogears.org/projects/TurboKid
+
+
+Overview
+--------
+
+TurboKid is a TurboGears support package which provides a ;doc:`template engine
+plug-in <TemplatePlugins>` for the `Kid templating engine`_, allowing you to use
+Kid with TurboGears, Buffet or other systems that support the
+``python.templating.engines`` :doc:`entry point <EntryPointList>`.
+
+
+Usage
+-----
+
+For information on using TurboKid and Kid templates with TurboGears see the
+the :doc:`Kid getting started guide <GettingStarted/Kid>` and the documentation
+on the :doc:`expose decorator <ExposeDecorator>`.
+
+
+Installation
+------------
+
+Kid is the default templating language for TurboGears 1.0 and so TurboKid will
+be installed automatically when you install TurboGears 1.0.x.
+
+The current TurboGears 1.1 release uses the Genshi_ templating language
+as default, so it does not require Kid or TurboKid anymore.
+
+If you therefore need to install TurboKid separately, use easy_install_::
+
+    [sudo] easy_install TurboKid
+
+
+Compatibility
+~~~~~~~~~~~~~
+
+The latest TurboKid release is compatible with both TurboGears 1.0.x and the
+current TurboGears 1.1 releases.
+
+
+Configuration
+-------------
+
+For a list of templating engine options supported by TurboKid, please see the
+TurboGears :doc:`configuration reference <Configuration>`.
+
+
+References
+----------
+
+For information on writing a template engine plug-in, see:
+
+    :doc:`Writing a Template Engine <TemplatePlugins>`
+
+
+.. _kid templating engine: http://kid-templating.org/
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _genshi: http://genshi.edgewall.org/

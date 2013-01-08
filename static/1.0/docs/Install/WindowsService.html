@@ -1,0 +1,261 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running TurboGears as a Windows Service &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Integrated Windows Authentication" href="IntegratedWindowsAuthentication.html" />
+    <link rel="prev" title="Proxying through IIS" href="BehindIIS.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="IntegratedWindowsAuthentication.html" title="Integrated Windows Authentication"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BehindIIS.html" title="Proxying through IIS"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running TurboGears as a Windows Service</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#installation-instructions">Installation Instructions</a><ul>
+<li><a class="reference internal" href="#download-service-py">1. Download <tt class="docutils literal"><span class="pre">service.py</span></tt></a></li>
+<li><a class="reference internal" href="#edit-service-py">2. Edit <tt class="docutils literal"><span class="pre">service.py</span></tt></a></li>
+<li><a class="reference internal" href="#control-your-service">3. Control your Service</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BehindIIS.html"
+                        title="previous chapter">Proxying through IIS</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="IntegratedWindowsAuthentication.html"
+                        title="next chapter">Integrated Windows Authentication</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="running-turbogears-as-a-windows-service">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Running TurboGears as a Windows Service</a><a class="headerlink" href="#running-turbogears-as-a-windows-service" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#running-turbogears-as-a-windows-service" id="id1">Running TurboGears as a Windows Service</a><ul>
+<li><a class="reference internal" href="#prerequisites" id="id2">Prerequisites</a></li>
+<li><a class="reference internal" href="#installation-instructions" id="id3">Installation Instructions</a></li>
+<li><a class="reference internal" href="#notes" id="id4">Notes</a></li>
+<li><a class="reference internal" href="#troubleshooting" id="id5">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><a class="toc-backref" href="#id2">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="https://sourceforge.net/projects/pywin32/">pywin32 package</a> (previous known as win32all) with <a class="reference external" href="http://starship.python.net/crew/mhammond/win32/">win32all docs</a>
+avaiable at Mark Hammond&#8217;s Starship Python site.</p>
+<p>This must be installed before the Windows service functionality can be used.</p>
+</div>
+<div class="section" id="installation-instructions">
+<h2><a class="toc-backref" href="#id3">Installation Instructions</a><a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="download-service-py">
+<h3>1. Download <tt class="docutils literal"><span class="pre">service.py</span></tt><a class="headerlink" href="#download-service-py" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">service.py</span></tt> is an <a class="reference download internal" href="../_downloads/service.py"><tt class="xref download docutils literal"><span class="pre">attachment</span></tt></a> for this page.</p>
+<p><strong>Note:</strong> this file <em>does not</em> have to be in the same directory as the TG
+application code.</p>
+</div>
+<div class="section" id="edit-service-py">
+<h3>2. Edit <tt class="docutils literal"><span class="pre">service.py</span></tt><a class="headerlink" href="#edit-service-py" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">service.py</span></tt> contains a user&#8217;s &#8220;USER EDIT SECTION&#8221; which may need to be
+edited. If <tt class="docutils literal"><span class="pre">service.py</span></tt> is located in the TG application&#8217;s base directory,
+then the default values do not need to be changed.  A description of each
+variable follows:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">_svc_name_</span></tt></dt>
+<dd><p class="first">Name of the service (used in the Windows registry).</p>
+<p class="last"><em>Default:</em> The capitalized name of the directory where the <tt class="docutils literal"><span class="pre">service.py</span></tt>
+file is located.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">_svc_display_name_</span></tt></dt>
+<dd><p class="first">Name that will be displayed in the Windows Services management console.</p>
+<p class="last"><em>Default:</em> The capitalized name of the directory where the <tt class="docutils literal"><span class="pre">service.py</span></tt>
+file is located.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">code_dir</span></tt></dt>
+<dd><p class="first">Base directory of the TG application code. This should be the same
+directory where the <tt class="docutils literal"><span class="pre">*appname*-start.py</span></tt>, <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>, or <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>
+files are located.</p>
+<p class="last"><em>Default:</em> The directory where the <tt class="docutils literal"><span class="pre">service.py</span></tt> file is located.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">root_class</span></tt></dt>
+<dd><p class="first">The fully qualified name of the main TG class.  For example, if you were
+enabling the <a class="reference external" href="Wiki20/Page1">20 Minute Wiki</a> tutorial as a Windows service, then the
+fully qualified class name would be &#8216;wiki20.controllers.Root&#8217;.</p>
+<p class="last"><em>Default:</em> <tt class="docutils literal"><span class="pre">*packagename*.controllers.Root</span></tt></p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">config_module</span></tt></dt>
+<dd><p class="first">The name of the configuration module.</p>
+<p class="last"><em>Default:</em> <tt class="docutils literal"><span class="pre">*packagename*.config</span></tt></p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">log_dir</span></tt></dt>
+<dd><p class="first">The location for the app&#8217;s stdout and stderr log files.</p>
+<p class="last"><em>Default:</em> <tt class="docutils literal"><span class="pre">code_dir</span></tt></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="control-your-service">
+<h3>3. Control your Service<a class="headerlink" href="#control-your-service" title="Permalink to this headline">¶</a></h3>
+<p>Open a command prompt and navigate to the directory where <tt class="docutils literal"><span class="pre">service.py</span></tt> is
+located.  Use the following commands to install/start/stop/remove your service:</p>
+<div class="highlight-python"><pre>service.py                        (Lists all available options)
+service.py install                (Installs the service with a manual startup )
+service.py --startup auto install (Installs the service with auto startup)
+
+service.py start                  (Starts the service)
+service.py stop                   (Stops the service)
+service.py remove                 (Removes the service)</pre>
+</div>
+<p>The service should now be accessible and controllable from the Window Services
+management console.</p>
+</div>
+</div>
+<div class="section" id="notes">
+<h2><a class="toc-backref" href="#id4">Notes</a><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p class="first">The autoreload functionality does not work when a CherryPy application is
+run as a Windows service (it crashes the service).  Therefore, the code will
+disable the autoreload functionality before the server is started.</p>
+</li>
+<li><p class="first">When the Python code runs as a Windows service, the current directory is
+automatically set to <tt class="docutils literal"><span class="pre">C:\&lt;python-install-dir&gt;\lib\site-packages\win32</span></tt>.
+<tt class="docutils literal"><span class="pre">service.py</span></tt> uses the <tt class="docutils literal"><span class="pre">code_dir</span></tt> value to reset the current directory to
+the base directory of the TG application.</p>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">stdout</span></tt> and <tt class="docutils literal"><span class="pre">stderr</span></tt> output is redirected to two files
+(<tt class="docutils literal"><span class="pre">stdout.log</span></tt> and <tt class="docutils literal"><span class="pre">stderr.log</span></tt>).  <tt class="docutils literal"><span class="pre">stdout</span></tt> and <tt class="docutils literal"><span class="pre">stderr</span></tt> must be
+redirected because when running as a service, they don&#8217;t have a valid file
+to write to.  So, when Windows attempts to flush <tt class="docutils literal"><span class="pre">stdout</span></tt> or stderr, the
+service crashes and the following entry is found in the Windows Event
+Application Logs:</p>
+<div class="highlight-python"><pre>The instance's SvcRun() method failed
+  File "C:\Python24\lib\site-packages\win32\lib\win32serviceutil.py", line 742, in SvcRun
+    self.SvcDoRun()
+  File "C:\Documents and Settings\&lt;user&gt;\Desktop\service.py", line 80, in SvcDoRun
+    self.tg_init()
+  File "C:\Documents and Settings\&lt;user&gt;\Desktop\service.py", line 115, in tg_init
+    print 'try to crash the buffer over and over again...'
+exceptions.IOError: (9, 'Bad file descriptor')</pre>
+</div>
+</li>
+<li><p class="first">The CherryPy site also lists a similar method of creating a <a class="reference external" href="http://docs.cherrypy.org/cherrypy22-as-windows-service">CherryPy Windows service</a>.</p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="troubleshooting">
+<h2><a class="toc-backref" href="#id5">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<p>Use the Windows Event Viewer, the <tt class="docutils literal"><span class="pre">stdout</span></tt>, and the <tt class="docutils literal"><span class="pre">stderr</span></tt> log files to locate
+problems with your application.</p>
+<p>If you need to have more than one service, for multiple applications, I found I needed to rename service.py, to a different file name for each application. Not doing this meant the services interfered with each other.</p>
+<p>If your service stops when you log off Windows, try the following modification to the code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#...snip...</span>
+
+<span class="c"># -- END USER EDIT SECTION</span>
+<span class="n">stop_event</span> <span class="o">=</span> <span class="n">win32event</span><span class="o">.</span><span class="n">CreateEvent</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">SvcDoRun</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Called when the Windows Service runs. &quot;&quot;&quot;</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">ReportServiceStatus</span><span class="p">(</span><span class="n">win32service</span><span class="o">.</span><span class="n">SERVICE_START_PENDING</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tg_init</span><span class="p">()</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ReportServiceStatus</span><span class="p">(</span><span class="n">win32service</span><span class="o">.</span><span class="n">SERVICE_RUNNING</span><span class="p">)</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">init_only</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">win32event</span><span class="o">.</span><span class="n">WaitForSingleObject</span><span class="p">(</span><span class="n">TGWindowsService</span><span class="o">.</span><span class="n">stop_event</span><span class="p">,</span> <span class="n">win32event</span><span class="o">.</span><span class="n">INFINITE</span><span class="p">)</span>
+
+<span class="c">#...snip...</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+.. index:: DataController
+
+DataController
+==============
+
+DataController is a main module in :doc:`FastData <index>`.
+
+DataController is a fast method of providing CRUD (Create, Read, Update, Delete) functionality.
+
+You can use this simple function to provide CRUD and customize the DataController's presentation with CSS.
+
+
+Install TGFastData
+------------------
+
+FastData has been split from TurboGears core and is now a plugin.
+
+Before you can take advantage of DataController, you need to install the FastData plugin first.
+
+::
+
+  $ sudo easy_install -f http://www.turbogears.org/download/index.html TGFastData
+
+Use DataController
+------------------
+
+controllers.py::
+
+  from turbogears import controllers
+  from tgfastdata import DataController
+  from model import MyModelClass
+
+  class MyApp(controllers.RootController):
+      mycrud = DataController(MyModelClass) # provides a quick
+                                            # and dirty CatWalk-like
+                                            # CRUD interface for your MyModelClass
+
+
+Note:
+
+TGFastData is still in development, it currently only supports the
+:doc:`SQLObject </SQLObject/index>` database provider.

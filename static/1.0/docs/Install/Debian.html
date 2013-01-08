@@ -1,0 +1,230 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing TurboGears on Debian &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="TurboGears Installation on Ubuntu Linux" href="Ubuntu.html" />
+    <link rel="prev" title="TurboGears Installation on Mac OS X" href="Mac.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Ubuntu.html" title="TurboGears Installation on Ubuntu Linux"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Mac.html" title="TurboGears Installation on Mac OS X"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing TurboGears on Debian</a><ul>
+<li><a class="reference internal" href="#method-one-through-the-debian-package-system">Method One: Through the Debian Package System</a></li>
+<li><a class="reference internal" href="#method-two-using-tgsetup-py">Method Two: Using <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Mac.html"
+                        title="previous chapter">TurboGears Installation on Mac OS X</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Ubuntu.html"
+                        title="next chapter">TurboGears Installation on Ubuntu Linux</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="installing-turbogears-on-debian">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Installing TurboGears on Debian</a><a class="headerlink" href="#installing-turbogears-on-debian" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#installing-turbogears-on-debian" id="id1">Installing TurboGears on Debian</a><ul>
+<li><a class="reference internal" href="#method-one-through-the-debian-package-system" id="id2">Method One: Through the Debian Package System</a></li>
+<li><a class="reference internal" href="#method-two-using-tgsetup-py" id="id3">Method Two: Using <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Just like many other Linux distributions, Debian systems use a strict package
+management system. This system &#8220;owns&#8221; all directories except those sub-trees
+like <tt class="docutils literal"><span class="pre">/usr/local,</span> <span class="pre">/opt,</span> <span class="pre">and</span> <span class="pre">/home</span></tt> which are dedicated for local additions.
+If a user installs files into the directories, the result is a confusing mess,
+which ultimately decreases the long-term maintainability of the system.
+Unfortunately, the current TurboGears install instructions for *nix systems
+will deposit files into the system-wide Python library directory, which really
+ought to be left solely under the control of the package management system.</p>
+<p>Instead of those directions, there are two solutions for installing TurboGears.
+You can do it through the Debian package system (method 1). Or you can set up
+configurations so that the python packaging system will respect the boundaries
+required by Debian packaging system (method 2).</p>
+<div class="section" id="method-one-through-the-debian-package-system">
+<h2><a class="toc-backref" href="#id2">Method One: Through the Debian Package System</a><a class="headerlink" href="#method-one-through-the-debian-package-system" title="Permalink to this headline">¶</a></h2>
+<p>Bob Tanner, Gustavo Noronha, and Fredrik Steen are working on official
+TurboGears packages at <a class="reference external" href="http://alioth.debian.org/projects/pkg-turbogears/">http://alioth.debian.org/projects/pkg-turbogears/</a> and
+the resulting <a class="reference external" href="http://packages.debian.org/python-turbogears">python-turbogears package</a> has now entered the
+stable distribution (Etch).</p>
+<p>Installing TurboGears on a machine tracking testing can thus be done as follows:</p>
+<ol class="arabic">
+<li><p class="first">Make sure that the unstable and experimental distributions are available in
+<tt class="docutils literal"><span class="pre">/etc/apt/sources.list</span></tt>. If MIRROR is your selected
+<a class="reference external" href="http://www.debian.org/mirror/list">mirror</a>, then it should look like
+this:</p>
+<div class="highlight-python"><pre>deb http://MIRROR/debian/ testing      main contrib non-free
+deb http://MIRROR/debian/ unstable     main contrib non-free
+deb http://MIRROR/debian/ experimental main contrib non-free</pre>
+</div>
+</li>
+<li><p class="first">Make APT prefer packages from testing over packages from unstable and
+experimental by setting <tt class="docutils literal"><span class="pre">/etc/apt/preferences</span></tt>:</p>
+<div class="highlight-python"><pre>Package: *
+Pin: release a=testing
+Pin-Priority: 900
+
+Package: *
+Pin: release a=unstable
+Pin-Priority: 800
+
+Package: *
+Pin: release a=experimental
+Pin-Priority: 700</pre>
+</div>
+<p>See the <tt class="docutils literal"><span class="pre">apt_preferences(5)</span></tt> man page for information about this file.</p>
+</li>
+<li><p class="first">Install the python-turbogears package using <tt class="docutils literal"><span class="pre">apt-get</span></tt>, <tt class="docutils literal"><span class="pre">aptitude</span></tt> or
+whatever tool you prefer; this will pull in a lot of other packages from all
+three distributions.</p>
+</li>
+</ol>
+<p>That should be it! You now have a TurboGears installation which will
+automatically track the latest versions of all dependant packages and install
+them as needed. Whenever a dependant package is available from both testing and
+unstable, then one from testing will be preferred.</p>
+</div>
+<div class="section" id="method-two-using-tgsetup-py">
+<h2><a class="toc-backref" href="#id3">Method Two: Using <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt></a><a class="headerlink" href="#method-two-using-tgsetup-py" title="Permalink to this headline">¶</a></h2>
+<p>If you want to use Debian Sarge or Sid (unstable) and/or want to use the vanilla
+TurboGears distribution from turbogears.org, you can install TurboGears under
+<tt class="docutils literal"><span class="pre">/usr/local</span></tt>. (In the commands given below, <tt class="docutils literal"><span class="pre">$</span></tt> is your prompt.)</p>
+<ol class="arabic">
+<li><p class="first">Make sure you are a member of the &#8216;staff&#8217; group. This group has permission to
+write in the <tt class="docutils literal"><span class="pre">/usr/local</span></tt> tree. Debian packages set up some empty
+directories in this tree with the correct permissions so that non-root
+installs of supplementary modules etc can be done.</p>
+<p>The &#8216;id&#8217; program will show you what groups you are already a member of. If
+&#8216;staff&#8217; is already listed then you can skip this step.</p>
+<div class="highlight-python"><pre>$ id
+uid=1001(me) gid=1001(mygroup) groups=24(cdrom),29(audio),1001(mygroup)</pre>
+</div>
+<p>If not, add yourself to the &#8216;staff&#8217; group:</p>
+<div class="highlight-python"><pre>$ sudo adduser me staff</pre>
+</div>
+<p>You need to log out and in again for this to take effect.</p>
+</li>
+<li><p class="first">Install the package <tt class="docutils literal"><span class="pre">python2.4-dev</span></tt>:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install python2.4-dev</pre>
+</div>
+</li>
+<li><p class="first">Create a <tt class="docutils literal"><span class="pre">.pydistutils.cfg</span></tt> file in your home directory (or use  you
+favourite text editor):</p>
+<div class="highlight-python"><pre>$ cat &gt; ~/.pydistutils.cfg &lt;&lt; EOF
+[install]
+prefix = /usr/local
+
+[easy_install]
+site_dirs=/usr/local/lib/python$py_version_short/site-packages
+EOF</pre>
+</div>
+<p>(The use of <tt class="docutils literal"><span class="pre">$py_version_short</span></tt> in <tt class="docutils literal"><span class="pre">[easy_install]</span></tt> requires setuptools
+&gt;= 0.6a10, however this should not be a problem as the versions distributed
+with TurboGears and all Debian distribution which contain a setuptools
+package are newer than this.)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>Warning:</strong> creating this file will effect all future
+installations of Python packages through distutils or <tt class="docutils literal"><span class="pre">easy_install</span></tt>,
+i.e. the will be installed under <tt class="docutils literal"><span class="pre">/usr/local</span></tt> as well. If you don&#8217;t
+want this, remove or rename this file after installing TurboGears.</p>
+</div>
+</li>
+<li><p class="first">Run <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt> from the TurboGears download page:</p>
+<div class="highlight-python"><pre>$ wget http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+$ python2.4 tgsetup.py</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

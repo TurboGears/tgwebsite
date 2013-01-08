@@ -1,0 +1,34 @@
+SQLObject direct SQL
+====================
+
+Sometimes, you just need the power of real SQL. If you plan on using SQL, use
+``sqlmeta`` to force SQLObject to use your table names and ID names. This will
+save you misery in case SQLObject does not use the name that you expect.
+
+::
+
+    class DataTable(SQLObject):
+
+        class sqlmeta:
+            table = "data_table"
+            idName = "primary_id"
+
+        miscField = StringCol()
+        dtCreated = DateTimeCol(default=datetime.now)
+
+        def dict_record_count(self):
+            sql = "select count(*) from data_table "
+            result = self._connection.queryAll(sql)
+            return result
+
+Note how you pick up the connection from TurboGears.
+
+An alternative to specifying the table name in ``sqlmeta`` is to read the table
+name given by SQLObject from ``sqlmeta``. So the SQL assignment might be::
+
+        def dict_record_count(self):
+            sql = "select count(*) from %s"  % self.sqlmeta.table
+            return self._connection.queryAll(sql)
+
+This can be handy if you're adding these hand made SQL statements well after
+implementation.

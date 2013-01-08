@@ -1,0 +1,337 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Wrap Ajax Operations in Widgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Implementing and using CompoundWidgets" href="CompoundWidgets.html" />
+    <link rel="prev" title="RemoteForm Widget Tutorial" href="RemoteForm.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CompoundWidgets.html" title="Implementing and using CompoundWidgets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="RemoteForm.html" title="RemoteForm Widget Tutorial"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Wrap Ajax Operations in Widgets</a><ul>
+<li><a class="reference internal" href="#motivation">Motivation</a></li>
+<li><a class="reference internal" href="#preliminary-template-changes">Preliminary Template Changes</a></li>
+<li><a class="reference internal" href="#the-controller-method">The Controller Method</a></li>
+<li><a class="reference internal" href="#adding-our-ajax-foo">Adding our AJAX-foo</a></li>
+<li><a class="reference internal" href="#the-widget-source">The Widget Source</a></li>
+<li><a class="reference internal" href="#template-source">Template Source</a></li>
+<li><a class="reference internal" href="#test-it">Test it</a></li>
+<li><a class="reference internal" href="#using-another-javascript-library">Using Another Javascript library</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-code">Download the Example Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="RemoteForm.html"
+                        title="previous chapter">RemoteForm Widget Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="CompoundWidgets.html"
+                        title="next chapter">Implementing and using CompoundWidgets</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="wrap-ajax-operations-in-widgets">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Wrap Ajax Operations in Widgets</a><a class="headerlink" href="#wrap-ajax-operations-in-widgets" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#wrap-ajax-operations-in-widgets" id="id1">Wrap Ajax Operations in Widgets</a><ul>
+<li><a class="reference internal" href="#motivation" id="id2">Motivation</a></li>
+<li><a class="reference internal" href="#preliminary-template-changes" id="id3">Preliminary Template Changes</a></li>
+<li><a class="reference internal" href="#the-controller-method" id="id4">The Controller Method</a></li>
+<li><a class="reference internal" href="#adding-our-ajax-foo" id="id5">Adding our AJAX-foo</a></li>
+<li><a class="reference internal" href="#the-widget-source" id="id6">The Widget Source</a></li>
+<li><a class="reference internal" href="#template-source" id="id7">Template Source</a></li>
+<li><a class="reference internal" href="#test-it" id="id8">Test it</a></li>
+<li><a class="reference internal" href="#using-another-javascript-library" id="id9">Using Another Javascript library</a></li>
+<li><a class="reference internal" href="#conclusion" id="id10">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-code" id="id11">Download the Example Code</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="motivation">
+<h2><a class="toc-backref" href="#id2">Motivation</a><a class="headerlink" href="#motivation" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">RemoteLink</span></tt> is a widget that provides basic Ajax functionality. The widget is
+inspired by the article <a class="reference external" href="http://www.ibm.com/developerworks/java/library/j-cb12056/">Crossing Borders - AJAX on Rails</a> on the IBM dvelopers
+network and the TurboGears tutorial <a class="reference internal" href="../Wiki20/Page6.html"><em>20 Minute Wiki Page 6</em></a>.</p>
+<p>The basic technique used in both articles is to employ Ajax to get a string
+from a server method and then update a <tt class="docutils literal"><span class="pre">DIV</span></tt> element on the page to display
+it. In the Rails example, a template helper called <tt class="docutils literal"><span class="pre">link_to_remote</span> <span class="pre">helper</span></tt> is
+used to encapsulate the rendering of the necessary mix of JavaScript and HTML
+markup. For the advanced TurboGears user it is easy to create a widget that
+fulfills the same purpose.</p>
+<p>In this tutorial, we&#8217;ll take the welcome page from a fresh, quickstarted
+TurboGears project and add, in place of the line in the sidebar where the
+current time is shown, a link that, when clicked, gets the time from the server
+asynchronously, and then updates the time display without reloading the whole
+page.</p>
+</div>
+<div class="section" id="preliminary-template-changes">
+<h2><a class="toc-backref" href="#id3">Preliminary Template Changes</a><a class="headerlink" href="#preliminary-template-changes" title="Permalink to this headline">¶</a></h2>
+<p>In <tt class="docutils literal"><span class="pre">welcome.kid</span></tt>, we&#8217;ll add a link to the URL <tt class="docutils literal"><span class="pre">/time</span></tt> with the ID
+&#8220;timelink&#8221; and also a <tt class="docutils literal"><span class="pre">DIV</span></tt> with the ID &#8220;timediv&#8221;, whose contents
+get replaced with the updated time later:</p>
+<div class="highlight-python"><pre>- &lt;span py:replace="now"&gt;now&lt;/span&gt;
++ &lt;p&gt;&lt;a id="timelink" href="${tg.url('/time')}"&gt;Get time&lt;/a&gt;&lt;/p&gt;
++ &lt;div id="timediv" py:content="now"&gt;&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="section" id="the-controller-method">
+<h2><a class="toc-backref" href="#id4">The Controller Method</a><a class="headerlink" href="#the-controller-method" title="Permalink to this headline">¶</a></h2>
+<p>So, now we got a welcome page, which has a link to <tt class="docutils literal"><span class="pre">/time</span></tt>. The link works
+normally, independent of any Ajax-foo we are going to use it for. To actually
+return the current time, we nee to add a <tt class="docutils literal"><span class="pre">time</span></tt> method to the controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># controllers.py</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">now</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">())</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">time</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-our-ajax-foo">
+<h2><a class="toc-backref" href="#id5">Adding our AJAX-foo</a><a class="headerlink" href="#adding-our-ajax-foo" title="Permalink to this headline">¶</a></h2>
+<p>Again, in <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> we add a line to the HTML HEAD section to bind the
+Ajax call to the &#8220;timelink&#8221; element by using the <tt class="docutils literal"><span class="pre">RemoteLink</span></tt> widget:</p>
+<div class="highlight-python"><pre>&lt;head&gt;
+  ...
+  &lt;title&gt;Welcome to TurboGears&lt;/title&gt;
+  ${remote_link(target="timelink", update="timediv", href="/time")}
+&lt;/head&gt;</pre>
+</div>
+<p>It doesn&#8217;t really matter, where we add the widget in the template, but to keep
+things structured, we like to keep it in the HEAD.</p>
+<p>The RemoteLink widget does three things:</p>
+<ul class="simple">
+<li>Create a function that will do an XmlHttpRequest to the URL given by <tt class="docutils literal"><span class="pre">href</span></tt>.</li>
+<li>Connect this function to the &#8220;timelink&#8221; link.</li>
+<li>Create a &#8216;showDiv&#8217; function to update the &#8220;timediv&#8221; <tt class="docutils literal"><span class="pre">DIV</span></tt> with the
+response from the first function.</li>
+</ul>
+<p>Note that &#8216;showDiv&#8217; is the default name of the response handler function.
+If you want to use multiple RemoteLink widgets in the same page, you have to
+supply another value for the <tt class="docutils literal"><span class="pre">action</span></tt> parameter for each widget. For example:</p>
+<div class="highlight-python"><pre>${remote_link(target="timelink", update="timediv", href="/time",
+    action="showTimeDiv")}</pre>
+</div>
+<p>We also need to pass the widget to the template from the <tt class="docutils literal"><span class="pre">index</span></tt> controller method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">...</span>
+<span class="kn">from</span> <span class="nn">widgets</span> <span class="kn">import</span> <span class="n">RemoteLink</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">remote_link</span> <span class="o">=</span> <span class="n">RemoteLink</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">now</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">ctime</span><span class="p">(),</span> <span class="n">remote_link</span><span class="o">=</span><span class="n">remote_link</span><span class="p">)</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-widget-source">
+<h2><a class="toc-backref" href="#id6">The Widget Source</a><a class="headerlink" href="#the-widget-source" title="Permalink to this headline">¶</a></h2>
+<p>The source for the <tt class="docutils literal"><span class="pre">RemoteLink</span></tt> widget is shown here in full. Put it
+into a file called <tt class="docutils literal"><span class="pre">widgets.py</span></tt> in your application&#8217;s package:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># widgets.py</span>
+
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">mochikit</span>
+
+<span class="k">class</span> <span class="nc">RemoteLink</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;When the target link is clicked, use XMLHttpRequest to get a</span>
+<span class="sd">    response from a remote method and use the result to update the div.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;RemoteLink&quot;</span>
+
+    <span class="n">javascript</span> <span class="o">=</span> <span class="p">[</span><span class="n">mochikit</span><span class="p">]</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">        &lt;script type=&quot;text/javascript&quot;&gt;</span>
+<span class="s">        addLoadEvent(</span>
+<span class="s">            function() {</span>
+<span class="s">                connect(&#39;${target}&#39;, &#39;onclick&#39;,</span>
+<span class="s">                    function (e) {</span>
+<span class="s">                        e.preventDefault();</span>
+<span class="s">                        var d = doSimpleXMLHttpRequest(&#39;${href}&#39;);</span>
+<span class="s">                        d.addCallback(${action});</span>
+<span class="s">                    }</span>
+<span class="s">                );</span>
+<span class="s">            }</span>
+<span class="s">        );</span>
+
+<span class="s">        function ${action}(result) {</span>
+<span class="s">            replaceChildNodes(&#39;${update}&#39;, result.responseText);</span>
+<span class="s">        }</span>
+<span class="s">        &lt;/script&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;target&quot;</span><span class="p">,</span> <span class="s">&quot;update&quot;</span><span class="p">,</span> <span class="s">&quot;href&quot;</span><span class="p">,</span> <span class="s">&quot;action&quot;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="s">&quot;JS function handling the response, default is &#39;showDiv&#39;&quot;</span><span class="p">,</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="s">&quot;URL of the remote method to call&quot;</span><span class="p">,</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="s">&quot;The link ID&quot;</span><span class="p">,</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="s">&quot;DIV to be replaced&quot;</span>
+    <span class="p">)</span>
+    <span class="n">action</span><span class="o">=</span><span class="s">&quot;showDiv&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="template-source">
+<h2><a class="toc-backref" href="#id7">Template Source</a><a class="headerlink" href="#template-source" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s the minimum code you need in the <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> template:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE ....&gt;
+&lt;html ....&gt;
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type"
+    py:replace="''"/&gt;
+  &lt;title&gt;Welcome to TurboGears&lt;/title&gt;
+  ${RemoteLink.display(time='1', target = "timelink", update="timelink",
+    href="/time", action="showTimeDiv")}
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="timelink"&gt;&lt;a href = "#"&gt;get time&lt;/a&gt;&lt;/div&gt;
+  &lt;div id="timediv" py:replace="now"&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+</div>
+<div class="section" id="test-it">
+<h2><a class="toc-backref" href="#id8">Test it</a><a class="headerlink" href="#test-it" title="Permalink to this headline">¶</a></h2>
+<p>Start the server, open the browser and go to the welcome page at
+<a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a>. When you click the &#8220;Get time&#8221; link, you&#8217;ll see that the
+current time will be shown without a reload of the whole page.</p>
+</div>
+<div class="section" id="using-another-javascript-library">
+<h2><a class="toc-backref" href="#id9">Using Another Javascript library</a><a class="headerlink" href="#using-another-javascript-library" title="Permalink to this headline">¶</a></h2>
+<p>You can replace your RemoteLink widget&#8217;s Javascript implementation easily.
+In this example I&#8217;ll use <a class="reference external" href="http://jquery.com/">jQuery</a>.</p>
+<p>The effort is quite minimum, you just change the widget list in the
+<tt class="docutils literal"><span class="pre">javascript</span></tt> attribute to <tt class="docutils literal"><span class="pre">jquery</span></tt> (i.e. you need to have a <a class="reference external" href="http://pypi.python.org/pypi/jquery">widget wrapper
+for jQuery</a>) and then replace the template with jQuery&#8217;s code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">RemoteLink</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This widget does not use a callback.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;link_to_remote&quot;</span>
+    <span class="n">javascript</span> <span class="o">=</span> <span class="p">[</span><span class="n">jquery</span><span class="p">]</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">        &lt;script type=&quot;text/javascript&quot;&gt;</span>
+<span class="s">        $(function(){</span>
+<span class="s">            $(&#39;#${target}&#39;).click(function(){</span>
+<span class="s">                $(&#39;#${update}&#39;).load(&quot;${href}&quot;);</span>
+<span class="s">            });</span>
+<span class="s">        });</span>
+<span class="s">        &lt;/script&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;target&quot;</span><span class="p">,</span> <span class="s">&quot;update&quot;</span><span class="p">,</span> <span class="s">&quot;href&quot;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">href</span> <span class="o">=</span> <span class="s">&quot;URL of the remote method to call&quot;</span><span class="p">,</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="s">&quot;The link ID&quot;</span><span class="p">,</span>
+        <span class="n">update</span> <span class="o">=</span> <span class="s">&quot;DIV to be replaced&quot;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>The beauty is that when you change the javascript library in your back,
+RemoteLink widget&#8217;s work manner is still exactly the same. So you don&#8217;t
+have to replace the code in your multiple templates.</p>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id10">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>I&#8217;d like to ask if people who are JavaScript masters, could bring us more widgets
+to do basic AJAX operations, like in this Rails <a class="reference external" href="http://api.rubyonrails.org/classes/ActionView/Helpers/PrototypeHelper.html">PrototypeHelper</a> module.</p>
+</div>
+<div class="section" id="download-the-example-code">
+<h2><a class="toc-backref" href="#id11">Download the Example Code</a><a class="headerlink" href="#download-the-example-code" title="Permalink to this headline">¶</a></h2>
+<p>The example code on this page is attached and can be downloaded here:</p>
+<p><a class="reference download internal" href="../_downloads/RemoteLinkDemo.tar.gz"><tt class="xref download docutils literal"><span class="pre">RemoteLinkDemo.tar.gz</span></tt></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

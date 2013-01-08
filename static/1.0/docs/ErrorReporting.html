@@ -1,0 +1,633 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Custom Error Reporting &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Zeroconf support in TurboGears" href="ZeroConfSupport.html" />
+    <link rel="prev" title="Scheduling Tasks with TurboGears" href="Scheduler.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ZeroConfSupport.html" title="Zeroconf support in TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Scheduler.html" title="Scheduling Tasks with TurboGears"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Custom Error Reporting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#method-1-controller-wide-handlers-with-dispatch-error">Method 1: Controller-wide Handlers with dispatch_error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-2-method-specific-handlers-with-exception-handler">Method 2: Method-specific Handlers with exception_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-3-application-wide-catch-all-with-cherrypy-filter">Method 3: Application-wide Catch-all with CherryPy Filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Custom Error Reporting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#method-1-controller-wide-handlers-with-dispatch-error">Method 1: Controller-wide Handlers with dispatch_error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-2-method-specific-handlers-with-exception-handler">Method 2: Method-specific Handlers with exception_handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-3-application-wide-catch-all-with-cherrypy-filter">Method 3: Application-wide Catch-all with CherryPy Filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="custom-error-reporting">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Custom Error Reporting</a><a class="headerlink" href="#custom-error-reporting" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#custom-error-reporting" id="id1">Custom Error Reporting</a><ul>
+<li><a class="reference internal" href="#method-1-controller-wide-handlers-with-dispatch-error" id="id2">Method 1: Controller-wide Handlers with dispatch_error</a></li>
+<li><a class="reference internal" href="#method-2-method-specific-handlers-with-exception-handler" id="id3">Method 2: Method-specific Handlers with exception_handler</a></li>
+<li><a class="reference internal" href="#method-3-application-wide-catch-all-with-cherrypy-filter" id="id4">Method 3: Application-wide Catch-all with CherryPy Filter</a></li>
+<li><a class="reference internal" href="#references" id="id5">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>We&#8217;re not perfect. Sometimes we don&#8217;t catch every exception, even after piles of testing.
+This is why it&#8217;s a good idea to be notified if disaster strikes and one of your pages bombs
+out. This is especially a good idea during so-called &#8220;beta testing&#8221; (otherwise known as
+&#8220;releasing unfinished product&#8221;) since you can&#8217;t always rely on your users informing you of
+such problems.</p>
+<p>There are several approaches to the problem, depending on whether you want to catch exceptions
+in a specific controller or method or application wide.</p>
+<div class="section" id="method-1-controller-wide-handlers-with-dispatch-error">
+<h2><a class="toc-backref" href="#id2">Method 1: Controller-wide Handlers with dispatch_error</a><a class="headerlink" href="#method-1-controller-wide-handlers-with-dispatch-error" title="Permalink to this headline">¶</a></h2>
+<p>You can set a controller method as the handler for specific exceptions using the
+<tt class="docutils literal"><span class="pre">errorhandling.dispatch_error</span></tt> decorator. The following example code shows how to
+catch any exception that occurs in the same controller and return a custom error page.
+You could also send and email to the programmer in this method, but this is not covered
+here. See the code from method two or check out the Python library reference for examples
+on how to send email from your code.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">YourController</span><span class="p">(</span><span class="n">controller</span><span class="o">.</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="o">...</span>
+
+    <span class="nd">@turbogears.errorhandling.dispatch_error.when</span><span class="p">(</span>
+      <span class="s">&quot;tg_exceptions is not None&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">unhandled_exception</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tg_source</span><span class="p">,</span> <span class="n">tg_errors</span><span class="p">,</span> <span class="n">tg_exception</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># Spam me here, whatever</span>
+            <span class="n">programmer_notified</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">pass</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">programmer_notified</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">tg_template</span><span class="o">=</span><span class="s">&quot;.templates.unhandled_exception&quot;</span><span class="p">,</span>
+                <span class="n">title</span><span class="o">=</span><span class="s">&quot;500 Internal error&quot;</span><span class="p">,</span>
+                <span class="n">programmer_notified</span><span class="o">=</span><span class="n">programmer_notified</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And a matching example template (called <tt class="docutils literal"><span class="pre">unhandled_exception.kid</span></tt> if you follow the
+code above):</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC"-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://purl.org/kid/ns#"
+  py:extends="'master.kid'"&gt;
+
+&lt;head&gt;
+  &lt;title py:content="title"&gt;Title&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  &lt;h1&gt;Oops! An error occured&lt;/h1&gt;
+
+  &lt;p&gt;Something went wonky and we weren't expecting it. Sorry about that.&lt;/p&gt;
+
+  &lt;p&gt;This is commonly known as an &amp;quot;Error 500  &amp;quot; or
+    &amp;quot;Internal Server Error&amp;quot;. It means we messed up.&lt;/p&gt;
+
+  &lt;p py:if="programmer_notified"&gt;A programmer has been notified and
+    will try to fix the problem as soon as possible.&lt;/p&gt;
+
+  &lt;p py:if="not programmer_notified"&gt;The problem was actually so bad that
+    we couldn't even send an E-mail to our team to sort the problem out!
+    If you keep getting this message, please send us an E-mail with some
+    information about what you were doing when this happened, so we can
+    try and smooth things over :-)&lt;/p&gt;
+
+  &lt;p&gt;Our sincerest apologies,&lt;/p&gt;
+
+  &lt;!--! No &lt;em&gt;because this is just convention !--&gt;
+  &lt;p style="font-style: italic"&gt;-The Team&lt;/p&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>Normally, you don&#8217;t really want to hide exceptions while you&#8217;re developing, so you may
+want to comment out the <tt class="docutils literal"><span class="pre">&#64;turbogears.errorhandling.dispatch_error</span></tt> decorator
+until people are going to start visiting the site while you&#8217;re not sitting over the
+server output.</p>
+<p>Bear in mind that this method supresses exception output in the log, so there is a chance
+that the exception could be lost forever.</p>
+</div>
+<div class="section" id="method-2-method-specific-handlers-with-exception-handler">
+<h2><a class="toc-backref" href="#id3">Method 2: Method-specific Handlers with exception_handler</a><a class="headerlink" href="#method-2-method-specific-handlers-with-exception-handler" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">turbogears.controllers.exception_handler</span></tt> decorator can be used to set
+exception handlers for each method. See the code below for a usage example.</p>
+<p>Readers should also check out the <a class="reference internal" href="ErrorHandling.html"><em>ErrorHandling</em></a> page
+for more information on the <tt class="docutils literal"><span class="pre">exception_handler</span></tt> decorator.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;An error occured&quot;</span>
+
+    <span class="nd">@turbogears.expose</span><span class="p">()</span>
+    <span class="nd">@turbogears.controllers.exception_handler</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="s">&quot;ValueError&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="method-3-application-wide-catch-all-with-cherrypy-filter">
+<h2><a class="toc-backref" href="#id4">Method 3: Application-wide Catch-all with CherryPy Filter</a><a class="headerlink" href="#method-3-application-wide-catch-all-with-cherrypy-filter" title="Permalink to this headline">¶</a></h2>
+<p>If you have multiple controllers, you may want to use the same error handler for all of them.
+For this, you need to make use of a CherryPy filter instead of TurboGears specifics. You set
+the filter on your root controller and it will apply to all methods served by CherryPy.</p>
+<p>The following code has pretty much everything you need to provide a custom error page, and
+send an email to someone with the error. You will need to set the email settings in your
+configuration file (see docstring for class <tt class="docutils literal"><span class="pre">ErrorCatcher</span></tt>), but other than that it should
+be enough to sub-class your root controller from the <tt class="docutils literal"><span class="pre">ErrorCatcher</span></tt> class.</p>
+<p>You can download an <a class="reference download internal" href="_downloads/ErrorTest-1.0.2.tar.gz"><tt class="xref download docutils literal"><span class="pre">example</span> <span class="pre">project</span></tt></a> which showcases an
+enhanced version of the <tt class="docutils literal"><span class="pre">ErrorCatcher</span></tt> controller shown in the code below. Tested with
+<strong>TurboGears &gt;= 1.0.4.x</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">StringIO</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">identity</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">turbomail</span>
+    <span class="n">has_turbomail</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">has_turbomail</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ErrorCatcher&#39;</span><span class="p">]</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;turbogears.controllers&quot;</span><span class="p">)</span>
+
+<span class="n">ERROR_MAIL_TMPL</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">----------URL----------</span>
+
+<span class="si">%(url)s</span><span class="s"></span>
+
+<span class="s">----------DATA:----------</span>
+
+<span class="si">%(data)s</span><span class="s"></span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="k">class</span> <span class="nc">ErrorCatcher</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for RootControllers that catches errors in production mode.</span>
+
+<span class="sd">    Sends an email to the admin, when an error occurs. Does not send email</span>
+<span class="sd">    on 404 errors unless the &#39;error_catcher.send_email_on_404&#39; configuration</span>
+<span class="sd">    option is set to True.</span>
+
+<span class="sd">    For email sending to work, at least the configuration options</span>
+<span class="sd">    &#39;error_catcher.sender_email&#39; and &#39;error_catcher.admin_email&#39; must be</span>
+<span class="sd">    set to valid email addresses.</span>
+
+<span class="sd">    See docstring for method &#39;send_exception_email&#39; for more email related</span>
+<span class="sd">    configuration information.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_error_codes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="bp">None</span><span class="p">:</span> <span class="s">u&#39;General Error&#39;</span><span class="p">,</span>
+        <span class="mi">400</span><span class="p">:</span> <span class="s">u&#39;400 - Bad Request&#39;</span><span class="p">,</span>
+        <span class="mi">401</span><span class="p">:</span> <span class="s">u&#39;401 - Unauthorized&#39;</span><span class="p">,</span>
+        <span class="mi">403</span><span class="p">:</span> <span class="s">u&#39;403 - Forbidden&#39;</span><span class="p">,</span>
+        <span class="mi">404</span><span class="p">:</span> <span class="s">u&#39;404 - Not Found&#39;</span><span class="p">,</span>
+        <span class="mi">500</span><span class="p">:</span> <span class="s">u&#39;500 - Internal Server Error&#39;</span><span class="p">,</span>
+        <span class="mi">501</span><span class="p">:</span> <span class="s">u&#39;501 - Not Implemented&#39;</span><span class="p">,</span>
+        <span class="mi">502</span><span class="p">:</span> <span class="s">u&#39;502 - Bad Gateway&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">_error_templates</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="bp">None</span><span class="p">:</span> <span class="s">&#39;.templates.unhandled_exception&#39;</span><span class="p">,</span>
+        <span class="mi">404</span><span class="p">:</span> <span class="s">&#39;.templates.404_exception&#39;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">admin_group_name</span> <span class="o">=</span> <span class="s">&#39;admin&#39;</span>
+    <span class="n">output_format</span> <span class="o">=</span> <span class="s">&#39;html&#39;</span>
+    <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;text/html&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ErrorCatcher</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sender_email</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.sender_email&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">admin_email</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.admin_email&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smtp_host</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.smtp_host&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smtp_user</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.smtp_user&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">smtp_passwd</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.smtp_passwd&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">cp_on_http_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle HTTP errors by sending an error page and email.&quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cherrypy</span><span class="o">.</span><span class="n">_cputil</span><span class="o">.</span><span class="n">_cp_on_http_error</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_error_message</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;CherryPy </span><span class="si">%s</span><span class="s"> error (</span><span class="si">%s</span><span class="s">) for request &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span>
+              <span class="n">error_msg</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">404</span><span class="p">:</span>
+                <span class="n">buf</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+                <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">buf</span><span class="p">)</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="n">buf</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+                <span class="n">buf</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="s">&#39;404 error&#39;</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="n">status</span><span class="p">,</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message</span><span class="p">,</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="n">error_msg</span><span class="p">,</span>
+                <span class="n">admin</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">admin_group_name</span><span class="p">),</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="n">url</span><span class="p">,</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="n">details</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">status</span> <span class="o">!=</span> <span class="mi">404</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;error_catcher.send_email_on_404&#39;</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">send_exception_email</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;email_sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;Error email failed: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&#39;email_sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="s">&#39;email_sent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_error_page</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="c"># don&#39;t catch SystemExit</span>
+        <span class="k">except</span> <span class="ne">StandardError</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;Error handler failed: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+
+    <span class="c"># Hook in error handler for production only</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;server.environment&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s">&#39;production&#39;</span><span class="p">:</span>
+        <span class="n">_cp_on_http_error</span> <span class="o">=</span> <span class="n">cp_on_http_error</span>
+
+    <span class="k">def</span> <span class="nf">send_error_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send error page using matching template from self._error_templates.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">body</span> <span class="o">=</span> <span class="n">controllers</span><span class="o">.</span><span class="n">_process_output</span><span class="p">(</span>
+            <span class="n">data</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_error_templates</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_templates</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">None</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output_format</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">content_type</span><span class="p">,</span>
+            <span class="bp">None</span>
+        <span class="p">)</span>
+        <span class="n">cherrypy</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;Content-Length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">cherrypy</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">body</span> <span class="o">=</span> <span class="n">body</span>
+
+    <span class="k">def</span> <span class="nf">send_exception_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send an email with the error info to the admin.</span>
+
+<span class="sd">        Uses TurboMail if installed and activated, otherwise tries to send</span>
+<span class="sd">        email with the smtplib module. The SMTP settings can be configured</span>
+<span class="sd">        with the following configuration settings:</span>
+
+<span class="sd">        error_catcher.smtp_host   - Mail server to connect to</span>
+<span class="sd">                                    (default &#39;localhost&#39;)</span>
+<span class="sd">        error_catcher.smtp_user   - User name for SMTP authentication.</span>
+<span class="sd">                                    If unset no SMTP login is performed.</span>
+<span class="sd">        error_catcher.smtp_passwd - Password for SMTP authentication</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sender_email</span> <span class="ow">or</span> <span class="ow">not</span>  <span class="bp">self</span><span class="o">.</span><span class="n">admin_email</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;Configuration error: could not send error&#39;</span>
+              <span class="s">&#39;because sender and/or admin email address is not set.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span>
+
+        <span class="n">subject</span> <span class="o">=</span>  <span class="s">&#39;</span><span class="si">%d</span><span class="s"> ERROR on the Server&#39;</span> <span class="o">%</span> <span class="n">status</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">ERROR_MAIL_TMPL</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">has_turbomail</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;mail.on&#39;</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">turbomail</span><span class="o">.</span><span class="n">Message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">admin_email</span><span class="p">,</span> <span class="n">subject</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">plain</span> <span class="o">=</span> <span class="n">text</span>
+            <span class="n">turbomail</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">email.MIMEMultipart</span> <span class="kn">import</span> <span class="n">MIMEMultipart</span>
+            <span class="kn">from</span> <span class="nn">email.MIMEText</span> <span class="kn">import</span> <span class="n">MIMEText</span>
+            <span class="kn">from</span> <span class="nn">email.Utils</span> <span class="kn">import</span> <span class="n">formatdate</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">MIMEMultipart</span><span class="p">()</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;From&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sender_email</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;To&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">admin_email</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;Date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formatdate</span><span class="p">(</span><span class="n">localtime</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">msg</span><span class="p">[</span><span class="s">&#39;Subject&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subject</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">MIMEText</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_send_email_smtp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender_email</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">admin_email</span><span class="p">,</span>
+              <span class="n">msg</span><span class="o">.</span><span class="n">as_string</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_send_email_smtp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_addr</span><span class="p">,</span> <span class="n">to_addr</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send email via SMTP.&quot;&quot;&quot;</span>
+
+        <span class="kn">import</span> <span class="nn">smtplib</span>
+        <span class="n">smtp</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smtp_host</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp_user</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp_passwd</span><span class="p">:</span>
+            <span class="n">smtp</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">smtp_user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">smtp_passwd</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">from_addr</span><span class="p">,</span> <span class="n">to_addr</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+        <span class="n">smtp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_error_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string error for HTTP status code.&quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_codes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">default</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_codes</span><span class="p">[</span><span class="bp">None</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id5">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_frm/thread/61a48b1f7fdfe354/de325500f437f632?lnk=gst&amp;q=custom+500&amp;rnum=1#de325500f437f632">Custom Error Pages</a> on the TurboGears mailing list.</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/ba80c6d7ecc4a349/5522ae1cfceab877?lnk=gst&amp;q=_cp_on_error&amp;rnum=3#5522ae1cfceab877">Exception Reporting</a> on the TurboGears mailing list.</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/e7c103acb7b786ab/263115b72e9dfcd4?lnk=gst&amp;q=exception_handler&amp;rnum=5#263115b72e9dfcd4">Defining an Error Handler</a> <em>for a particular exception</em> on the TurboGears mailing list.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

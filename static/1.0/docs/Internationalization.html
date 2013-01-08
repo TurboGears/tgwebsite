@@ -1,0 +1,597 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Internationalizing your application &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Tips for Using Non-ASCII Characters in TurboGears" href="UnicodeTips.html" />
+    <link rel="prev" title="The jsonify Decorator" href="JsonifyDecorator.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="UnicodeTips.html" title="Tips for Using Non-ASCII Characters in TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="JsonifyDecorator.html" title="The jsonify Decorator"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Internationalizing your application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#set-up-the-configuration">Set up the configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#format-your-strings">Format your strings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#wrap-your-strings">1. Wrap your strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#localize-dates-and-numbers">2. Localize Dates and Numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#localization-of-javascript">3. Localization of JavaScript</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#collect-your-strings">Collect your strings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#translate-your-messages">Translate your messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compile-the-message-catalogs">Compile the message catalogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tips-and-hints">Tips And Hints</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#finding-the-user-locale">Finding the user locale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handling-international-utf-8-form-data">Handling international (UTF-8) form data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#form-error-messages">Form error messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#custom-validators-with-localized-error-messages">Custom validators with localized error messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#doing-i18n-without-using-turbogears-session-module">Doing i18n without using TurboGears session module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="internationalizing-your-application">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Internationalizing your application</a><a class="headerlink" href="#internationalizing-your-application" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#internationalizing-your-application" id="id1">Internationalizing your application</a><ul>
+<li><a class="reference internal" href="#set-up-the-configuration" id="id2">Set up the configuration</a></li>
+<li><a class="reference internal" href="#format-your-strings" id="id3">Format your strings</a></li>
+<li><a class="reference internal" href="#collect-your-strings" id="id4">Collect your strings</a></li>
+<li><a class="reference internal" href="#translate-your-messages" id="id5">Translate your messages</a></li>
+<li><a class="reference internal" href="#compile-the-message-catalogs" id="id6">Compile the message catalogs</a></li>
+<li><a class="reference internal" href="#tips-and-hints" id="id7">Tips And Hints</a></li>
+<li><a class="reference internal" href="#references" id="id8">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>To internationalize your application, you have to:</p>
+<ul class="simple">
+<li>Set up the configuration</li>
+<li>Format your strings</li>
+<li>Collect your strings</li>
+<li>Translate your messages</li>
+<li>Compile the message catalogs</li>
+</ul>
+<div class="section" id="set-up-the-configuration">
+<h2><a class="toc-backref" href="#id2">Set up the configuration</a><a class="headerlink" href="#set-up-the-configuration" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Add &#8220;session_filter.on = True&#8221; and &#8220;i18n.run_template_filter = True&#8221; description in app.cfg:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">session_filter</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">i18n</span><span class="o">.</span><span class="n">run_template_filter</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add i18n.set_session_locale in class method:</p>
+<div class="highlight-python"><pre>@expose(....)
+def index(...)
+    turbogears.i18n.set_session_locale('tw')</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="format-your-strings">
+<h2><a class="toc-backref" href="#id3">Format your strings</a><a class="headerlink" href="#format-your-strings" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="wrap-your-strings">
+<h3>1. Wrap your strings<a class="headerlink" href="#wrap-your-strings" title="Permalink to this headline">¶</a></h3>
+<p>All text strings you want translated should be included in the <tt class="docutils literal"><span class="pre">_()</span></tt>
+function. This function is builtin to turbogears, so you don&#8217;t need to import
+it specifically into your module, if you have already called <tt class="docutils literal"><span class="pre">import</span>
+<span class="pre">turbogears</span></tt>. The <tt class="docutils literal"><span class="pre">_()</span></tt> and all formatting functions return unicode strings.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span>
+
+<span class="k">class</span> <span class="nc">Controller</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">Root</span><span class="p">):</span>
+  <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;myapp.templates.welcome&quot;</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Welcome&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If you want to explicitly pass in the locale in the <tt class="docutils literal"><span class="pre">_()</span></tt> call, you can do
+this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Welcome&quot;</span><span class="p">,</span> <span class="s">&quot;de&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Handling text strings in Kid templates is somewhat easier. If you set the
+cherrypy configuration setting <tt class="docutils literal"><span class="pre">i18n.run_template_filter</span></tt> to <tt class="docutils literal"><span class="pre">True</span></tt>, all
+text inside your Kid templates will be passed through <tt class="docutils literal"><span class="pre">_()</span></tt> automatically.
+The user locale (see below) can be overriden in your template by using the
+<tt class="docutils literal"><span class="pre">lang</span></tt> attribute. For example:</p>
+<div class="highlight-python"><pre>&lt;div&gt;
+  &lt;p&gt;Welcome&lt;/p&gt;
+  &lt;p lang="de"&gt;Welcome&lt;/p&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>The first &#8220;Welcome&#8221; will be translated using the user locale setting, the
+second using the German locale. Assuming your user locale is English, you would
+see:</p>
+<div class="highlight-python"><pre>&lt;div&gt;
+  &lt;p&gt;Welcome&lt;/p&gt;
+  &lt;p lang="de"&gt;Willkommen&lt;/p&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>However, attribute values are not translated and so have to be handled
+explicitly by using the <tt class="docutils literal"><span class="pre">_()</span></tt> call:</p>
+<div class="highlight-python"><pre>&lt;img py:attrs="src=_('flag_icon_gb.bmp')" /&gt;</pre>
+</div>
+<p>Note that text inside widget templates, etc. will also be translated.</p>
+</div>
+<div class="section" id="localize-dates-and-numbers">
+<h3>2. Localize Dates and Numbers<a class="headerlink" href="#localize-dates-and-numbers" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">turbogears.i18n</span></tt> package has a number of useful functions for handling
+date, location and number formats. Data for these formats is contained in
+Python modules under <tt class="docutils literal"><span class="pre">turbogears/i18n/data</span></tt>, for example the module for
+Danish is <tt class="docutils literal"><span class="pre">turbogears/i18n/data/da.py</span></tt>. The functions include:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">format_date</span></tt></dt>
+<dd>returns a localized date string</dd>
+<dt><tt class="docutils literal"><span class="pre">get_countries</span></tt></dt>
+<dd>returns a list of tuples, with the international country code and localized
+name (e.g. (&#8220;AU&#8221;, &#8220;Australia&#8221;))</dd>
+<dt><tt class="docutils literal"><span class="pre">format_currency</span></tt></dt>
+<dd>returns a formatted currency value (e.g. in German 56.89 &gt; 56,89)</dd>
+</dl>
+<p>All have full docstrings explaining parameters and provide sophisticated
+control over formatting.</p>
+<p>Ensure any date or number strings are formatted using the <tt class="docutils literal"><span class="pre">turbogears.i18n</span></tt>
+formatting functions.</p>
+</div>
+<div class="section" id="localization-of-javascript">
+<h3>3. Localization of JavaScript<a class="headerlink" href="#localization-of-javascript" title="Permalink to this headline">¶</a></h3>
+<p>Since TG 1.0.4 and in the 1.1 branch, it&#8217;s possible to localize JavaScript as well. To do so,
+encapsulate the strings in your <tt class="docutils literal"><span class="pre">.js</span></tt>-files in <tt class="docutils literal"><span class="pre">_()</span></tt>-calls as described above. This will make
+them subject to the collection process, as with other file-types as well.</p>
+<p>The messages then appear in the <tt class="docutils literal"><span class="pre">.po</span></tt>-files as normal texts. Translate them as you desire, compile, and then
+invoke the new command</p>
+<p><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span> <span class="pre">create_js_messages</span></tt></p>
+<p>The result are <tt class="docutils literal"><span class="pre">messages-&lt;language&gt;.js</span></tt>-files in your static javascript folder. To handle these properly
+at runtime, you need to include a widget in each rendered page. You can achieve this using</p>
+<p><tt class="docutils literal"><span class="pre">tg.include_widgets</span> <span class="pre">=</span> <span class="pre">['turbogears.jsi18nwidget']</span></tt></p>
+<p>This will define the needed <tt class="docutils literal"><span class="pre">_()</span></tt> via including <tt class="docutils literal"><span class="pre">i18n.js</span></tt>.</p>
+<p>If for whatever reason the location for the <tt class="docutils literal"><span class="pre">messages-&lt;language&gt;.js</span></tt>-files is to be changed, you
+can use the <tt class="docutils literal"><span class="pre">--js-base-dir</span></tt>-option to the <tt class="docutils literal"><span class="pre">create_js_messages</span></tt>-command. But then you have to make sure
+that the <tt class="docutils literal"><span class="pre">js</span></tt>-files are included properly. That can be done using the</p>
+<p><tt class="docutils literal"><span class="pre">turbogears.widgets.base.jsi18nwidget.register_package_provider(self,</span> <span class="pre">package=None,</span> <span class="pre">directory=None,</span> <span class="pre">domain=None)</span></tt></p>
+<p>method, where <tt class="docutils literal"><span class="pre">directory</span></tt> is the path that defaults to <tt class="docutils literal"><span class="pre">static/javascript</span></tt> and package is the package name
+registered as static directory - default is the current project&#8217;s base package. With <tt class="docutils literal"><span class="pre">domain</span></tt> you can change the name of the catalogs, default is <tt class="docutils literal"><span class="pre">messages</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="collect-your-strings">
+<h2><a class="toc-backref" href="#id4">Collect your strings</a><a class="headerlink" href="#collect-your-strings" title="Permalink to this headline">¶</a></h2>
+<p>To collect your strings, you have to create your message catalogs in the right
+directory structure for all your text strings and supported languages.</p>
+<p>By default, <tt class="docutils literal"><span class="pre">_()</span></tt> looks for subdirectory &#8220;locales&#8221; and domain &#8220;messages&#8221; in
+your project directory. You can override these settings in your config file by
+setting <tt class="docutils literal"><span class="pre">i18n.locale_dir</span></tt> and <tt class="docutils literal"><span class="pre">i18n.domain</span></tt> respectively.</p>
+<p>If a language file(.mo) is not found, the <tt class="docutils literal"><span class="pre">_()</span></tt> call will return the plain
+text string.</p>
+<p>TurboGears ships with a suite of tools that help you to build and maintain
+message catalogs for translation. One is &#8220;admi18n&#8221; from the <a class="reference internal" href="Toolbox.html"><em>Toolbox</em></a> and
+another is part of <a class="reference internal" href="TgAdmin.html#tgadmin-i18n"><em>tg-admin i18n</em></a> command.</p>
+<p>To collect the strings from your code an templates, using the <tt class="docutils literal"><span class="pre">tg-admin</span></tt>
+command, run the following in your project&#8217;s top-level directory:</p>
+<div class="highlight-python"><pre>tg-admin i18n collect</pre>
+</div>
+</div>
+<div class="section" id="translate-your-messages">
+<h2><a class="toc-backref" href="#id5">Translate your messages</a><a class="headerlink" href="#translate-your-messages" title="Permalink to this headline">¶</a></h2>
+<p>For every language that you want to support, now run the following in your
+project&#8217;s top-level directory:</p>
+<div class="highlight-python"><pre>tg-admin i18n add &lt;lang&gt;</pre>
+</div>
+<p>and replace <tt class="docutils literal"><span class="pre">&lt;lang&gt;</span></tt> with the two-letter code of the language. This will
+create a subdirectory in the <tt class="docutils literal"><span class="pre">locales</span></tt> directory, named after the language
+code. In  this directory, under the <tt class="docutils literal"><span class="pre">LC_MESSAGES</span></tt> sub-directory, you will
+find several <tt class="docutils literal"><span class="pre">*.po</span></tt> files, which you need to translate by filling in the
+<tt class="docutils literal"><span class="pre">msgstr</span></tt> for every <tt class="docutils literal"><span class="pre">msgid</span></tt>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><tt class="docutils literal"><span class="pre">*.po</span></tt> files should be saved with UTF-8 encoding and no byte-order
+marker (BOM) at the start of the file, or the compiling of the message
+catalogs will fail.</p>
+</div>
+</div>
+<div class="section" id="compile-the-message-catalogs">
+<h2><a class="toc-backref" href="#id6">Compile the message catalogs</a><a class="headerlink" href="#compile-the-message-catalogs" title="Permalink to this headline">¶</a></h2>
+<p>After you have collected the messages into <tt class="docutils literal"><span class="pre">*.po</span></tt> files and translated them,
+run the following command  in your project&#8217;s top-level directory to convert
+the <tt class="docutils literal"><span class="pre">*.po</span></tt> files into the binary mesage catalogs (file extension <tt class="docutils literal"><span class="pre">.mo</span></tt>):</p>
+<div class="highlight-python"><pre>tg-admin i18n compile</pre>
+</div>
+</div>
+<div class="section" id="tips-and-hints">
+<h2><a class="toc-backref" href="#id7">Tips And Hints</a><a class="headerlink" href="#tips-and-hints" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="finding-the-user-locale">
+<h3>Finding the user locale<a class="headerlink" href="#finding-the-user-locale" title="Permalink to this headline">¶</a></h3>
+<p>The default locale function, <tt class="docutils literal"><span class="pre">urbogears.i18n.util._get_locale</span></tt>, can be
+overriden by your own callable using the config setting <tt class="docutils literal"><span class="pre">i18n.get_locale</span></tt>.
+The default function finds the locale setting in the following order:</p>
+<ol class="arabic simple">
+<li>By looking for a session value. By default this is <tt class="docutils literal"><span class="pre">locale</span></tt>, but can be
+changed in the config setting <tt class="docutils literal"><span class="pre">i18n.session_key</span></tt>.</li>
+<li>By looking in the HTTP Accept-Language header for the most preferred
+language.</li>
+<li>By using the default locale (config setting <tt class="docutils literal"><span class="pre">i18n.default_locale</span></tt>,
+by default &#8220;en&#8221;).</li>
+</ol>
+</div>
+<div class="section" id="handling-international-utf-8-form-data">
+<h3>Handling international (UTF-8) form data<a class="headerlink" href="#handling-international-utf-8-form-data" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears automatically sets correct charset info in Content-Type HTTP header
+and it just works (usually).</p>
+<p>If you prefer you may add the following to your HTML (kid) templates to enforce
+it:</p>
+<div class="highlight-python"><pre>&lt;meta content="text/html; charset=UTF-8" http-equiv="content-type" /&gt;</pre>
+</div>
+<p>When the browser sends unicode data in a request (via a textarea, for example),
+CherryPy gives you the string as is.</p>
+<p>By default TurboGears uses a CherryPy filter to decode all of the incoming
+request parameters into unicode strings using a given encoding. In most cases
+you would just keep it that way.</p>
+<p>To get Kid to work, you may want to tweak <tt class="docutils literal"><span class="pre">kid.encoding</span></tt> option (which
+defaults to utf8) though using utf-8 is advised.</p>
+</div>
+<div class="section" id="form-error-messages">
+<h3>Form error messages<a class="headerlink" href="#form-error-messages" title="Permalink to this headline">¶</a></h3>
+<p>For translation of FormEncode messages be sure to use a recent version of TurboGears, since
+version &gt;= 1.0.2 automatically requires FormEncode &gt;= 0.7.0, which brings support for i18n.</p>
+<p><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span> <span class="pre">add</span></tt> also installs the <tt class="docutils literal"><span class="pre">FormEncode.mo</span></tt> and <tt class="docutils literal"><span class="pre">TurboGears.mo</span></tt> files into
+the project locale directory.</p>
+</div>
+<div class="section" id="custom-validators-with-localized-error-messages">
+<h3>Custom validators with localized error messages<a class="headerlink" href="#custom-validators-with-localized-error-messages" title="Permalink to this headline">¶</a></h3>
+<p>If you write custom validators and use <tt class="docutils literal"><span class="pre">_(&quot;...&quot;)</span></tt> to localize your messages
+you will get a TypeError exception when starting your app (<tt class="docutils literal"><span class="pre">&quot;TypeError:</span> <span class="pre">Error</span>
+<span class="pre">when</span> <span class="pre">calling</span> <span class="pre">the</span> <span class="pre">metaclass</span> <span class="pre">bases</span> <span class="pre">-</span> <span class="pre">expected</span> <span class="pre">string</span> <span class="pre">or</span> <span class="pre">buffer&quot;</span></tt>).</p>
+<p>You need to add a small &#8220;i18n hack&#8221; to your validator as <a class="reference external" href="http://groups.google.com/group/turbogears/msg/61831c58b4684ac4">demonstrated by Christoph Zwerschke</a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">NoWar</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">FancyValidator</span><span class="p">):</span>
+     <span class="k">def</span> <span class="nf">_</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="k">return</span> <span class="n">s</span>
+     <span class="n">gettextargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;domain&#39;</span><span class="p">:</span> <span class="s">&#39;messages&#39;</span><span class="p">}</span>
+     <span class="n">messages</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;war&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Don&#39;t mention the war!&quot;</span><span class="p">)}</span>
+
+     <span class="k">def</span> <span class="nf">validate_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+         <span class="k">if</span> <span class="s">&#39;war&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+             <span class="k">raise</span> <span class="n">validators</span><span class="o">.</span><span class="n">Invalid</span><span class="p">(</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="p">(</span><span class="s">&#39;war&#39;</span><span class="p">,</span> <span class="n">state</span><span class="p">),</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note that you need at least TurboGears 1.0.2 and FormEncode 0.7 for
+localized error messages.</p>
+</div>
+<div class="section" id="doing-i18n-without-using-turbogears-session-module">
+<h3>Doing i18n without using TurboGears session module<a class="headerlink" href="#doing-i18n-without-using-turbogears-session-module" title="Permalink to this headline">¶</a></h3>
+<p>You don&#8217;t need to use the session module from turbogears to get translated
+messages. You can insert a custom function which returns a locale string like
+&#8220;de&#8221; into the TurboGears config which controls which locale is used when
+TurboGears needs to translated something.</p>
+<p>The configuration change should take place in the start-up code created by
+<tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> (i.e. the <tt class="docutils literal"><span class="pre">start</span></tt> function in <tt class="docutils literal"><span class="pre">commands.py</span></tt> in your
+project&#8217;s package directory). Assuming a very simple scenario where you support
+only one language, this may be as easy as this:</p>
+<div class="highlight-python"><pre>[...]
+from &lt;package&gt;.controllers import Root
+
+turbogears.config.update({'i18n.get_locale' : lambda: "de"})
+
+turbogears.start_server(Root())</pre>
+</div>
+<p>After this modification, all localized strings should be displayed in German.</p>
+</div>
+<div class="section" id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears versions prior to 1.0.2 exhibited a bug in Kid in relation to <tt class="docutils literal"><span class="pre">i18n.run_template_filters</span></tt>, which kills server performance. (See
+<a class="reference external" href="http://trac.turbogears.org/ticket/1296">ticket 1296</a> on the TurboGears Trac for an explanation and a simple fix.)
+If you use i18n, be sure to use the latest TurboGears version.</p>
+</div>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id8">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>See the mailing list post <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/9536b5fd925ebe78/2e994c3005997c87?lnk=gst&amp;ampq=i18n&amp;amprnum=2#2e994c3005997c87">Internationalization, i18n</a> for some more background information.</li>
+<li>See also the <a class="reference internal" href="FAQ.html"><em>FAQ</em></a> entry &#8220;How do I activate localization for my TurboGears project?&#8221;</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,260 @@
+.. index:: controller
+
+Controller Getting Started Guide
+================================
+
+.. contents::
+    :depth: 2
+
+
+The Controller
+--------------
+
+The nerve center of Turbo Gears is **the controller**. All HTTP requests arrive
+here first. The controller acts on the request and can call upon other TurboGears
+components (the template engines, database layers, etc.) as its logic directs.
+
+When the TurboGears server receives an HTTP request, the requested URL is mapped
+as a call to your controller code located in ``controllers.py``. Page names map
+to functions within the controller class.
+
+For example:
+
+================================== ======================
+URL                                Maps to
+================================== ======================
+``http://localhost:8080/index``    ``Root.index()``
+``http://localhost:8080/mypage``   ``Root.mypage()``
+================================== ======================
+
+
+Quick Example
+-------------
+
+Suppose using ``tg-admin quickstart`` you generate a TurboGears project named
+"gs". Your default controller code would be created in the file
+``gs/gs/controllers.py``.
+
+Modify the default ``controllers.py`` to read as follows::
+
+ from turbogears import controllers, expose
+
+ class Root(controllers.RootController):
+     @expose()
+     def index(self):
+         return "<h1>Hello World</h1>"
+
+     @expose()
+     def default(self, *args, **kw):
+         return "This page is not ready"
+
+It is important that you indent the lines in the same way as above.
+
+When you load the root URL ``http://localhost:8080/index`` in your web
+browser, you'll see a page with the message "Hello World" on it. In
+addition, any of `these URLs`_ will return the same result.
+
+
+Implementing a Catch-All URL via the ``default()`` Method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+URLs not explicitly mapped to other methods of the controller will be directed
+to the method named ``default()``. With the above example, requesting any URL
+besides ``/index``, for example ``http://localhost:8080/hello``, will return the
+message "This page is not ready".
+
+
+Adding More Pages
+~~~~~~~~~~~~~~~~~
+
+When you are ready to add another page to your site, for example at the URL
+
+   ``http://localhost:8080/anotherpage``
+
+add another method to class Root as follows::
+
+    @expose()
+    def anotherpage(self):
+        return "<h1>There are more pages in my website</h1>"
+
+Now, the URL ``/anotherpage`` will return
+
+**There are more pages in my website**
+
+
+Line by Line Explanation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    from turbogears import controllers, expose
+
+First you need to import the required modules from the TurboGears package.
+
+``Controller`` classes and the :doc:`expose decorator </ExposeDecorator>` are
+the basis of TurboGears controllers.::
+
+  class Root(controllers.RootController):
+
+The required standard name for the root controller class of a TurboGears
+application is ``Root`` and it should be inherited from ``RootController``
+class (from the ``controllers`` module, which we just imported). It is
+thereby specified as the request handler class for the website's root.
+
+In TurboGears (and CherryPy, on which TurboGears 1.x builds), the web site is
+represented by a tree of controller objects and their methods, and a TurboGears
+website always grows out from the ``Root`` class.
+
+We look at the methods of the ``Root`` class next::
+
+    def index(self):
+        return "<h1>Hello World</h1>"
+
+.. _these urls:
+.. _three urls:
+
+The ``index`` method is the start point of any TurboGears/CherryPy class. When
+you access a URL like
+
+* http://localhost:8080
+* http://localhost:8080/
+* http://localhost:8080/index
+
+they are all mapped to the ``Root.index()`` method.
+
+If a URL is requested that does not map to a specific method, the
+``default()`` method of the controller class is called::
+
+    def default(self):
+        return "This page is not ready"
+
+
+In this example, all pages except the `three URLs`_ listed above will map to the
+default method.
+
+As you can see from the examples, the response to a given URL is determined by
+the method it maps to.
+
+::
+
+    @expose()
+
+The ``@expose()`` seen before each controller method directs TurboGears to make
+the method accessible through the web server. Methods in the controller class
+that are *not* "exposed" can not be called directly by requesting a URL from the
+server.
+
+There is much more to @expose(). It will be our access to TurboGears'
+sophisticated rendering features that we will explore shortly.
+
+
+Exposing Your Website
+---------------------
+
+As shown above, controller methods return the data of your website. So far, we
+have returned this data as literal strings. You could produce a whole site by
+returning only strings containing raw HTML from your controller methods but it
+would be difficult to maintain, since Python code and HTML code would not be
+cleanly separated.
+
+
+Using a Template
+~~~~~~~~~~~~~~~~
+
+To enable a cleaner solution, data from your TurboGears controller can be
+returned as strings, **or** as a dictionary.
+
+With ``@expose()``, a dictionary can be passed from the controller to a template
+which fills in its placeholder keys with the dictionary values and then returns
+the filled template output to the browser.
+
+.. note:: Because Python 2.3 doesn't support decorator syntax, you
+    have to use ``[@expose()]`` instead of ``@expose()`` with Python 2.3. For
+    more details on the ``@expose`` decorator, see the :doc:`expose decorator </ExposeDecorator>` page.
+
+
+Example Use of Templates
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+A simple template file called ``sample`` could be made like
+this::
+
+    <html>
+      <head>
+    <title>TurboGears Templating Example</title>
+      </head>
+      <body>
+          <h2>I just want to say that ${person} should be the next
+            ${office} of the United States.</h2>
+      </body>
+    </html>
+
+By adding a method to the controller like this ...
+
+::
+
+    @expose(template="gs.templates.sample")
+    def example(self):
+        mydata = {'person':'Tony Blair','office':'President'}
+        return mydata
+
+... the following is made possible:
+
+* The web user goes to ``http://localhost:8080/example``.
+* The ``example`` method is called.
+* The method ``example`` returns a Python ``dict``.
+* @expose processes the dict through the template file named
+  ``sample.kid``. [#]_
+* The dict values are substituted into the final web response.
+* The web user sees a marked up page saying:
+
+**I just want to say that Tony Blair should be the next President
+of the United States.**
+
+Template files can thus house all markup information, maintaining clean
+separation from controller code.
+
+
+Where to Find Templates
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In TurboGears, template files are collected together in the ``templates``
+sub-package, i.e. in the folder named ``templates`` below your application's
+main package directory, in this case, ``./gs/gs/templates`` and referred to
+in @expose by the syntax ``[packagename].templates.[filenameroot]``, as in
+the example.
+
+
+Intelligent Templates
+~~~~~~~~~~~~~~~~~~~~~
+
+In the above `Example Use of Templates`_, our template used the ``mydata``
+values simply as direct content replacement strings. Templates are much more
+capable than this. They can run their own Python code snippets to aid in
+rendering, such as obeying conditionals or iterating through lists. To learn
+more, read :doc:`Getting Started with Kid <Kid>`.
+
+
+Passing Arguments to the Controller
+-----------------------------------
+
+In typical Pythonic elegance, arguments can be passed to the controller methods
+from the web browser.  To learn how, read :doc:`I wanted an argument <Arguments>`.
+
+
+Subdividing
+-----------
+
+The example above shows your controller methods all contained within the single
+Root class. Your controller can :doc:`grow </CreatingBigApplications>` into
+multiple sub-classes, and from there into multiple modules and files.
+See :doc:`Creating Big Applications </CreatingBigApplications>`.
+
+
+Footnotes
+---------
+
+.. [#] Note that the suffix on a template file depends on the template engine
+    employed. TurboGears allows :doc:`choice </AlternativeTemplating>`.
+    For example, the current default Kid template files end in ``.kid``
+    (as in this example), while Genshi files end in ``.html``.

@@ -1,0 +1,53 @@
+.. index:: request, response, cherrypy,request, cherrypy.response
+
+Access Request/Response Information
+===================================
+
+.. contents::
+    :depth: 2
+
+
+Request information
+-------------------
+
+The ``cherrypy.request`` object contains request-related objects::
+
+    from cherrypy import request
+
+The available information includes:
+
+Remote URL:
+    ``request.browser_url``
+Remote host:
+    ``request.remote_host``
+Remote port:
+    ``request.remote_port``
+HTTP request headers:
+    ``request.headers``
+
+and so on, see the CherryPy Documentation on the `request object`_
+for more information.
+
+.. _request object: http://cherrypy.org/wiki/RequestObject
+
+
+Response information
+--------------------
+
+The ``cherrypy.response`` object contains response-related objects::
+
+    from cherrypy import response
+
+For example, you can set the following response properties:
+
+HTTP response headers:
+    ``response.headers``
+Response body:
+    ``response.body``
+HTTP response status code:
+    ``request.status``
+
+and so on, see the CherryPy Documentation on the `response object`_
+for more information.
+
+.. _response object: http://cherrypy.org/wiki/ResponseObject

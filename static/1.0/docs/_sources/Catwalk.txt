@@ -1,0 +1,81 @@
+.. index:: CatWalk
+
+CatWalk
+=======
+
+.. contents::
+    :depth: 2
+
+
+What is CatWalk?
+----------------
+
+CatWalk is a single page (buzzword compliant) AJAX application build on top of
+TurboGears. With it you can easily interact with your application data model and
+manage your data. Think of it as phpMyAdmin or pgAdmin at the ORM level instead
+of the RDBMS. It is database agnostic, all it's information is pulled out of
+SQLObject - not from the underlying data store.
+
+
+Use CatWalk
+-----------
+
+There are two main ways in which you can access CatWalk. The preferred method is to
+:doc:`open it directly from the toolbox <Toolbox>`.
+
+You may instead want to mount CatWalk as a controller, though this may
+compromise data security. For example::
+
+    from turbogears.toolbox.catwalk import CatWalk
+    import model
+
+    class Root(controllers.Root):
+         catwalk = CatWalk(model)
+
+         # Your controllers here
+
+
+You may then access CatWalk from the browser, like so:
+``http://example.org/catwalk``.
+
+
+Constraining access with identity
+---------------------------------
+
+If your application is on a network, and you mount CatWalk as a controller, everybody
+on that network will be able to access CatWalk as well. To constrain access to
+it, you can use TurboGears' :doc:`identity <Identity/index>`.
+
+Once you have set up and configured :doc:`identity <Identity/index>`, you can constrain access to CatWalk
+using rules relevant for your setup. For example, in the following application there
+is an "admin" group and access to CatWalk is granted only to it's members::
+
+    from turbogears.toolbox.catwalk import CatWalk
+    from turbogears import identity
+    import model
+
+    class Root(controllers.Root):
+         catwalk = CatWalk(model)
+         catwalk = identity.SecureObject(catwalk,identity.in_group('admin'))
+
+.. _identity: Identity
+
+User interface overview
+-----------------------
+
+.. image:: images/catwalk_overview.png
+
+1.  the left column lists all the SQLObject classes described in your model
+2.  the grid widget lists the records available for the selected class and
+    lets you remove or edit a record
+3.  you can add a new record as well
+4.  fields for joins display the number of related records (if any)
+
+.. image:: images/catwalk_configure_columns.png
+
+CatWalk lets you configure the order of the columns by dragging and dropping.
+You can toggle their visibility as well.
+
+.. image:: images/catwalk_detail_view.png
+
+The detail view lets you edit a record and manage its relations in context.

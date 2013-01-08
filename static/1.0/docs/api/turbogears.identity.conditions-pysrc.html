@@ -1,0 +1,1132 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.identity.conditions</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.identity-module.html" onclick="show_private();">Package&nbsp;identity</a> ::
+        Module&nbsp;conditions
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.identity.conditions-module.html" onclick="show_private();">Module turbogears.identity.conditions</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Definition of the identity predicates."""</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"># declare what should be exported</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line">    <tt class="py-string">'All'</tt><tt class="py-op">,</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line">    <tt class="py-string">'Any'</tt><tt class="py-op">,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line">    <tt class="py-string">'NotAny'</tt><tt class="py-op">,</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-string">'CompoundPredicate'</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line">    <tt class="py-string">'IdentityPredicateHelper'</tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">    <tt class="py-string">'Predicate'</tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-string">'SecureObject'</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">    <tt class="py-string">'SecureResource'</tt><tt class="py-op">,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-string">'from_host'</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">    <tt class="py-string">'from_any_host'</tt><tt class="py-op">,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-string">'in_all_groups'</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">    <tt class="py-string">'in_any_group'</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-string">'in_group'</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-string">'has_all_permissions'</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt class="py-string">'has_any_permission'</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-string">'has_permission'</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-string">'not_anonymous'</tt><tt class="py-op">,</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">    <tt class="py-string">'require'</tt><tt class="py-op">,</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-op">]</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">types</tt> <tt class="py-keyword">import</tt> <tt class="py-name">MethodType</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">request</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.config=turbogears.command.i18n.InternationalizationTool-class.html#config,Module turbogears.config=turbogears.config-module.html,Variable turbogears.testutil.TGTest.config=turbogears.testutil.TGTest-class.html#config"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-1', 'config', 'link-1');">config</a></tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-2', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module turbogears.decorator=turbogears.decorator-module.html,Function turbogears.decorator.decorator()=turbogears.decorator-module.html#decorator"><a title="turbogears.decorator
+turbogears.decorator.decorator" class="py-name" href="#" onclick="return doclink('link-3', 'decorator', 'link-3');">decorator</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Function turbogears.decorator.weak_signature_decorator()=turbogears.decorator-module.html#weak_signature_decorator"><a title="turbogears.decorator.weak_signature_decorator" class="py-name" href="#" onclick="return doclink('link-4', 'weak_signature_decorator', 'link-4');">weak_signature_decorator</a></tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-5', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module turbogears.util=turbogears.util-module.html"><a title="turbogears.util" class="py-name" href="#" onclick="return doclink('link-6', 'util', 'link-6');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Function turbogears.util.match_ip()=turbogears.util-module.html#match_ip"><a title="turbogears.util.match_ip" class="py-name" href="#" onclick="return doclink('link-7', 'match_ip', 'link-7');">match_ip</a></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-8', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Variable turbogears.command.quickstart.quickstart.identity=turbogears.command.quickstart.quickstart-class.html#identity,Variable turbogears.command.quickstart.update.identity=turbogears.command.quickstart.update-class.html#identity,Package turbogears.identity=turbogears.identity-module.html"><a title="turbogears.command.quickstart.quickstart.identity
+turbogears.command.quickstart.update.identity
+turbogears.identity" class="py-name" href="#" onclick="return doclink('link-9', 'identity', 'link-9');">identity</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Module turbogears.identity.exceptions=turbogears.identity.exceptions-module.html"><a title="turbogears.identity.exceptions" class="py-name" href="#" onclick="return doclink('link-10', 'exceptions', 'link-10');">exceptions</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-11" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-11', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="turbogears.command.quickstart.quickstart.identity
+turbogears.command.quickstart.update.identity
+turbogears.identity" class="py-name" href="#" onclick="return doclink('link-12', 'identity', 'link-9');">identity</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Module turbogears.command.base=turbogears.command.base-module.html,Module turbogears.filters.base=turbogears.filters.base-module.html,Module turbogears.identity.base=turbogears.identity.base-module.html,Module turbogears.toolbox.base=turbogears.toolbox.base-module.html,Module turbogears.view.base=turbogears.view.base-module.html,Module turbogears.widgets.base=turbogears.widgets.base-module.html"><a title="turbogears.command.base
+turbogears.filters.base
+turbogears.identity.base
+turbogears.toolbox.base
+turbogears.view.base
+turbogears.widgets.base" class="py-name" href="#" onclick="return doclink('link-13', 'base', 'link-13');">base</a></tt> <tt class="py-keyword">import</tt> <tt id="link-14" class="py-name" targets="Variable turbogears.identity.base.current=turbogears.identity.base-module.html#current,Variable turbogears.identity.current=turbogears.identity-module.html#current,Function turbogears.visit.api.current()=turbogears.visit.api-module.html#current"><a title="turbogears.identity.base.current
+turbogears.identity.current
+turbogears.visit.api.current" class="py-name" href="#" onclick="return doclink('link-14', 'current', 'link-14');">current</a></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="Predicate"></a><div id="Predicate-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="Predicate-toggle" onclick="return toggle('Predicate');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.Predicate-class.html">Predicate</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Predicate-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Predicate-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-docstring">"""Generic base class for testing true or false for a condition."""</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="Predicate.eval_with_object"></a><div id="Predicate.eval_with_object-def"><a name="L42"></a><tt class="py-lineno"> 42</tt> <a class="py-toggle" href="#" id="Predicate.eval_with_object-toggle" onclick="return toggle('Predicate.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.Predicate-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Predicate.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Predicate.eval_with_object-expanded"><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-docstring">"""Determine whether predicate is True or False for the given object."""</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">NotImplementedError</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="Predicate.append_error_message"></a><div id="Predicate.append_error_message-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="Predicate.append_error_message-toggle" onclick="return toggle('Predicate.append_error_message');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.Predicate-class.html#append_error_message">append_error_message</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Predicate.append_error_message-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Predicate.append_error_message-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-15" class="py-name" targets="Variable turbogears.widgets.forms.Form.errors=turbogears.widgets.forms.Form-class.html#errors"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-15', 'errors', 'link-15');">errors</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-16', 'errors', 'link-15');">errors</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Variable turbogears.identity.conditions.All.error_message=turbogears.identity.conditions.All-class.html#error_message,Variable turbogears.identity.conditions.Any.error_message=turbogears.identity.conditions.Any-class.html#error_message,Variable turbogears.identity.conditions.NotAny.error_message=turbogears.identity.conditions.NotAny-class.html#error_message,Variable turbogears.identity.conditions.from_any_host.error_message=turbogears.identity.conditions.from_any_host-class.html#error_message,Variable turbogears.identity.conditions.from_host.error_message=turbogears.identity.conditions.from_host-class.html#error_message,Variable turbogears.identity.conditions.has_any_permission.error_message=turbogears.identity.conditions.has_any_permission-class.html#error_message,Variable turbogears.identity.conditions.has_permission.error_message=turbogears.identity.conditions.has_permission-class.html#error_message,Variable turbogears.identity.conditions.in_any_group.error_message=turbogears.identity.conditions.in_any_group-class.html#error_message,Variable turbogears.identity.conditions.in_group.error_message=turbogears.identity.conditions.in_group-class.html#error_message,Variable turbogears.identity.conditions.not_anonymous.error_message=turbogears.identity.conditions.not_anonymous-class.html#error_message"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-17', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"> </tt>
+<a name="CompoundPredicate"></a><div id="CompoundPredicate-def"><a name="L52"></a><tt class="py-lineno"> 52</tt> <a class="py-toggle" href="#" id="CompoundPredicate-toggle" onclick="return toggle('CompoundPredicate');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.CompoundPredicate-class.html">CompoundPredicate</a><tt class="py-op">(</tt><tt class="py-base-class">Predicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CompoundPredicate-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CompoundPredicate-expanded"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-docstring">"""A predicate composed of other predicates."""</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="CompoundPredicate.__init__"></a><div id="CompoundPredicate.__init__-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="CompoundPredicate.__init__-toggle" onclick="return toggle('CompoundPredicate.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.CompoundPredicate-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">predicates</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CompoundPredicate.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CompoundPredicate.__init__-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">predicates</tt> <tt class="py-op">=</tt> <tt class="py-name">predicates</tt> </tt>
+</div></div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="All"></a><div id="All-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="All-toggle" onclick="return toggle('All');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.All-class.html">All</a><tt class="py-op">(</tt><tt class="py-base-class">CompoundPredicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="All-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="All-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-docstring">"""Logical 'and' of all sub-predicates.</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    This compound predicate evaluates to true only if all of its sub-predicates</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">    evaluate to true for the given input.</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">    <tt id="link-18" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-18', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"One of the predicates denied access"</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="All.eval_with_object"></a><div id="All.eval_with_object-def"><a name="L68"></a><tt class="py-lineno"> 68</tt> <a class="py-toggle" href="#" id="All.eval_with_object-toggle" onclick="return toggle('All.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.All-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="All.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="All.eval_with_object-expanded"><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return true if all sub-predicates evaluate to true.</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">predicates</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Method turbogears.identity.conditions.All.eval_with_object()=turbogears.identity.conditions.All-class.html#eval_with_object,Method turbogears.identity.conditions.Any.eval_with_object()=turbogears.identity.conditions.Any-class.html#eval_with_object,Method turbogears.identity.conditions.NotAny.eval_with_object()=turbogears.identity.conditions.NotAny-class.html#eval_with_object,Method turbogears.identity.conditions.Predicate.eval_with_object()=turbogears.identity.conditions.Predicate-class.html#eval_with_object,Method turbogears.identity.conditions.from_host.eval_with_object()=turbogears.identity.conditions.from_host-class.html#eval_with_object,Method turbogears.identity.conditions.has_permission.eval_with_object()=turbogears.identity.conditions.has_permission-class.html#eval_with_object,Method turbogears.identity.conditions.in_group.eval_with_object()=turbogears.identity.conditions.in_group-class.html#eval_with_object,Method turbogears.identity.conditions.not_anonymous.eval_with_object()=turbogears.identity.conditions.not_anonymous-class.html#eval_with_object"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-19', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-20', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method turbogears.identity.conditions.Predicate.append_error_message()=turbogears.identity.conditions.Predicate-class.html#append_error_message"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-21', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-22', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div></div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="Any"></a><div id="Any-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="Any-toggle" onclick="return toggle('Any');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.Any-class.html">Any</a><tt class="py-op">(</tt><tt class="py-base-class">CompoundPredicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Any-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Any-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-docstring">"""Logical 'or' of all sub-predicates.</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">    This compound predicate evaluates to true if any one of its sub-predicates</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    evaluates to true for the given input.</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt id="link-23" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-23', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"No predicate was able to grant access"</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="Any.eval_with_object"></a><div id="Any.eval_with_object-def"><a name="L87"></a><tt class="py-lineno"> 87</tt> <a class="py-toggle" href="#" id="Any.eval_with_object-toggle" onclick="return toggle('Any.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.Any-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Any.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Any.eval_with_object-expanded"><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return true if any sub-predicate evaluates to true."""</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">predicates</tt><tt class="py-op">:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-24', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-25', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-26', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="NotAny"></a><div id="NotAny-def"><a name="L96"></a><tt class="py-lineno"> 96</tt> <a class="py-toggle" href="#" id="NotAny-toggle" onclick="return toggle('NotAny');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.NotAny-class.html">NotAny</a><tt class="py-op">(</tt><tt class="py-base-class">CompoundPredicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NotAny-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NotAny-expanded"><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-docstring">"""Locigal 'nor' of all sub-predicates.</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">    A compound predicate that evaluates to true only if no sub-predicates</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">    evaluate to true for the given input.</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt id="link-27" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-27', 'error_message', 'link-17');">error_message</a></tt><tt class="py-op">=</tt> <tt class="py-string">"One of the predicates did not deny access"</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="NotAny.eval_with_object"></a><div id="NotAny.eval_with_object-def"><a name="L105"></a><tt class="py-lineno">105</tt> <a class="py-toggle" href="#" id="NotAny.eval_with_object-toggle" onclick="return toggle('NotAny.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.NotAny-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NotAny.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="NotAny.eval_with_object-expanded"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return true if no sub-predicates evaluate to true."""</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">predicates</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-28', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt id="link-29" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-29', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-30', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-31" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-31', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div></div><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="IdentityPredicateHelper"></a><div id="IdentityPredicateHelper-def"><a name="L114"></a><tt class="py-lineno">114</tt> <a class="py-toggle" href="#" id="IdentityPredicateHelper-toggle" onclick="return toggle('IdentityPredicateHelper');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.IdentityPredicateHelper-class.html">IdentityPredicateHelper</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IdentityPredicateHelper-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="IdentityPredicateHelper-expanded"><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-docstring">"""A mix-in helper class for Identity Predicates."""</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="IdentityPredicateHelper.__nonzero__"></a><div id="IdentityPredicateHelper.__nonzero__-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="IdentityPredicateHelper.__nonzero__-toggle" onclick="return toggle('IdentityPredicateHelper.__nonzero__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.IdentityPredicateHelper-class.html#__nonzero__">__nonzero__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IdentityPredicateHelper.__nonzero__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="IdentityPredicateHelper.__nonzero__-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-32', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt id="link-33" class="py-name"><a title="turbogears.identity.base.current
+turbogears.identity.current
+turbogears.visit.api.current" class="py-name" href="#" onclick="return doclink('link-33', 'current', 'link-14');">current</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="in_group"></a><div id="in_group-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="in_group-toggle" onclick="return toggle('in_group');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_group-class.html">in_group</a><tt class="py-op">(</tt><tt class="py-base-class">Predicate</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_group-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="in_group-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for requiring a group."""</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt id="link-34" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-34', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Not member of group: %(group_name)s"</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"> </tt>
+<a name="in_group.__init__"></a><div id="in_group.__init__-def"><a name="L125"></a><tt class="py-lineno">125</tt> <a class="py-toggle" href="#" id="in_group.__init__-toggle" onclick="return toggle('in_group.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_group-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">group_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_group.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="in_group.__init__-expanded"><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name" targets="Variable turbogears.identity.soprovider.TG_Group.group_name=turbogears.identity.soprovider.TG_Group-class.html#group_name"><a title="turbogears.identity.soprovider.TG_Group.group_name" class="py-name" href="#" onclick="return doclink('link-35', 'group_name', 'link-35');">group_name</a></tt> <tt class="py-op">=</tt> <tt id="link-36" class="py-name"><a title="turbogears.identity.soprovider.TG_Group.group_name" class="py-name" href="#" onclick="return doclink('link-36', 'group_name', 'link-35');">group_name</a></tt> </tt>
+</div><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="in_group.eval_with_object"></a><div id="in_group.eval_with_object-def"><a name="L128"></a><tt class="py-lineno">128</tt> <a class="py-toggle" href="#" id="in_group.eval_with_object-toggle" onclick="return toggle('in_group.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_group-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">identity</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_group.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="in_group.eval_with_object-expanded"><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="turbogears.identity.soprovider.TG_Group.group_name" class="py-name" href="#" onclick="return doclink('link-37', 'group_name', 'link-35');">group_name</a></tt> <tt class="py-keyword">in</tt> <tt id="link-38" class="py-name"><a title="turbogears.command.quickstart.quickstart.identity
+turbogears.command.quickstart.update.identity
+turbogears.identity" class="py-name" href="#" onclick="return doclink('link-38', 'identity', 'link-9');">identity</a></tt><tt class="py-op">.</tt><tt id="link-39" class="py-name" targets="Variable turbogears.identity.saprovider.SqlAlchemyIdentity.groups=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#groups,Variable turbogears.identity.soprovider.SqlObjectIdentity.groups=turbogears.identity.soprovider.SqlObjectIdentity-class.html#groups,Variable turbogears.identity.soprovider.TG_Permission.groups=turbogears.identity.soprovider.TG_Permission-class.html#groups,Variable turbogears.identity.soprovider.TG_User.groups=turbogears.identity.soprovider.TG_User-class.html#groups"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.groups
+turbogears.identity.soprovider.SqlObjectIdentity.groups
+turbogears.identity.soprovider.TG_Permission.groups
+turbogears.identity.soprovider.TG_User.groups" class="py-name" href="#" onclick="return doclink('link-39', 'groups', 'link-39');">groups</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-40', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-41', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="in_all_groups"></a><div id="in_all_groups-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="in_all_groups-toggle" onclick="return toggle('in_all_groups');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_all_groups-class.html">in_all_groups</a><tt class="py-op">(</tt><tt class="py-base-class">All</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_all_groups-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="in_all_groups-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for requiring membership in a number of groups."""</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"> </tt>
+<a name="in_all_groups.__init__"></a><div id="in_all_groups.__init__-def"><a name="L138"></a><tt class="py-lineno">138</tt> <a class="py-toggle" href="#" id="in_all_groups.__init__-toggle" onclick="return toggle('in_all_groups.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_all_groups-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">groups</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_all_groups.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="in_all_groups.__init__-expanded"><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-name">group_predicates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-42" class="py-name" targets="Class turbogears.identity.conditions.in_group=turbogears.identity.conditions.in_group-class.html"><a title="turbogears.identity.conditions.in_group" class="py-name" href="#" onclick="return doclink('link-42', 'in_group', 'link-42');">in_group</a></tt><tt class="py-op">(</tt><tt class="py-name">g</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">g</tt> <tt class="py-keyword">in</tt> <tt id="link-43" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.groups
+turbogears.identity.soprovider.SqlObjectIdentity.groups
+turbogears.identity.soprovider.TG_Permission.groups
+turbogears.identity.soprovider.TG_User.groups" class="py-name" href="#" onclick="return doclink('link-43', 'groups', 'link-39');">groups</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-44" class="py-name" targets="Class turbogears.identity.conditions.in_all_groups=turbogears.identity.conditions.in_all_groups-class.html"><a title="turbogears.identity.conditions.in_all_groups" class="py-name" href="#" onclick="return doclink('link-44', 'in_all_groups', 'link-44');">in_all_groups</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method turbogears.command.i18n.InternationalizationTool.__init__()=turbogears.command.i18n.InternationalizationTool-class.html#__init__,Method turbogears.command.info.InfoCommand.__init__()=turbogears.command.info.InfoCommand-class.html#__init__,Method turbogears.command.kid2genshi.Kid2Genshi.__init__()=turbogears.command.kid2genshi.Kid2Genshi-class.html#__init__,Method turbogears.command.quickstart.quickstart.__init__()=turbogears.command.quickstart.quickstart-class.html#__init__,Method turbogears.command.quickstart.update.__init__()=turbogears.command.quickstart.update-class.html#__init__,Method turbogears.database.AutoConnectHub.__init__()=turbogears.database.AutoConnectHub-class.html#__init__,Method turbogears.database.PackageHub.__init__()=turbogears.database.PackageHub-class.html#__init__,Method turbogears.feed.feed.FeedController.__init__()=turbogears.feed.feed.FeedController-class.html#__init__,Method turbogears.filters.base.VirtualPathFilter.__init__()=turbogears.filters.base.VirtualPathFilter-class.html#__init__,Method turbogears.filters.safemultipart.MultipartWrapper.__init__()=turbogears.filters.safemultipart.MultipartWrapper-class.html#__init__,Method turbogears.i18n.pygettext.pygettext.TokenEater.__init__()=turbogears.i18n.pygettext.pygettext.TokenEater-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Domain.__init__()=turbogears.i18n.sagettext.model.TG_Domain-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Message.__init__()=turbogears.i18n.sagettext.model.TG_Message-class.html#__init__,Method turbogears.i18n.tg_gettext.lazystring.__init__()=turbogears.i18n.tg_gettext.lazystring-class.html#__init__,Method turbogears.identity.conditions.CompoundPredicate.__init__()=turbogears.identity.conditions.CompoundPredicate-class.html#__init__,Method turbogears.identity.conditions.SecureObject.__init__()=turbogears.identity.conditions.SecureObject-class.html#__init__,Method turbogears.identity.conditions.from_any_host.__init__()=turbogears.identity.conditions.from_any_host-class.html#__init__,Method turbogears.identity.conditions.from_host.__init__()=turbogears.identity.conditions.from_host-class.html#__init__,Method turbogears.identity.conditions.has_all_permissions.__init__()=turbogears.identity.conditions.has_all_permissions-class.html#__init__,Method turbogears.identity.conditions.has_any_permission.__init__()=turbogears.identity.conditions.has_any_permission-class.html#__init__,Method turbogears.identity.conditions.has_permission.__init__()=turbogears.identity.conditions.has_permission-class.html#__init__,Method turbogears.identity.conditions.in_all_groups.__init__()=turbogears.identity.conditions.in_all_groups-class.html#__init__,Method turbogears.identity.conditions.in_any_group.__init__()=turbogears.identity.conditions.in_any_group-class.html#__init__,Method turbogears.identity.conditions.in_group.__init__()=turbogears.identity.conditions.in_group-class.html#__init__,Method turbogears.identity.exceptions.IdentityFailure.__init__()=turbogears.identity.exceptions.IdentityFailure-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentity.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentityProvider-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentity.__init__()=turbogears.identity.soprovider.SqlObjectIdentity-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__()=turbogears.identity.soprovider.SqlObjectIdentityProvider-class.html#__init__,Method turbogears.identity.visitor.IdentityVisitPlugin.__init__()=turbogears.identity.visitor.IdentityVisitPlugin-class.html#__init__,Method turbogears.paginate'.Paginate.__init__()=turbogears.paginate%27.Paginate-class.html#__init__,Method turbogears.paginate'.attrwrapper.__init__()=turbogears.paginate%27.attrwrapper-class.html#__init__,Method turbogears.paginate'.itemwrapper.__init__()=turbogears.paginate%27.itemwrapper-class.html#__init__,Method turbogears.scheduler.IntervalTask.__init__()=turbogears.scheduler.IntervalTask-class.html#__init__,Method turbogears.scheduler.MonthdayTask.__init__()=turbogears.scheduler.MonthdayTask-class.html#__init__,Method turbogears.scheduler.Scheduler.__init__()=turbogears.scheduler.Scheduler-class.html#__init__,Method turbogears.scheduler.Task.__init__()=turbogears.scheduler.Task-class.html#__init__,Method turbogears.scheduler.ThreadedScheduler.__init__()=turbogears.scheduler.ThreadedScheduler-class.html#__init__,Method turbogears.scheduler.WeekdayTask.__init__()=turbogears.scheduler.WeekdayTask-class.html#__init__,Method turbogears.testutil.BrowsingSession.__init__()=turbogears.testutil.BrowsingSession-class.html#__init__,Method turbogears.toolbox.admi18n.Internationalization.__init__()=turbogears.toolbox.admi18n.Internationalization-class.html#__init__,Method turbogears.toolbox.base.Toolbox.__init__()=turbogears.toolbox.base.Toolbox-class.html#__init__,Method turbogears.toolbox.base.WidgetBrowser.__init__()=turbogears.toolbox.base.WidgetBrowser-class.html#__init__,Method turbogears.toolbox.catwalk.CatWalk.__init__()=turbogears.toolbox.catwalk.CatWalk-class.html#__init__,Method turbogears.toolbox.designer.Designer.__init__()=turbogears.toolbox.designer.Designer-class.html#__init__,Method turbogears.toolbox.shell.WebConsole.__init__()=turbogears.toolbox.shell.WebConsole-class.html#__init__,Method turbogears.util.DictObj.__init__()=turbogears.util.DictObj-class.html#__init__,Method turbogears.view.base.UserAgent.__init__()=turbogears.view.base.UserAgent-class.html#__init__,Method turbogears.view.base.cycle.__init__()=turbogears.view.base.cycle-class.html#__init__,Method turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__()=turbogears.view.genshisupport.TGGenshiTemplatePlugin-class.html#__init__,Method turbogears.visit.api.BaseVisitManager.__init__()=turbogears.visit.api.BaseVisitManager-class.html#__init__,Method turbogears.visit.api.Visit.__init__()=turbogears.visit.api.Visit-class.html#__init__,Method turbogears.visit.api.VisitFilter.__init__()=turbogears.visit.api.VisitFilter-class.html#__init__,Method turbogears.visit.savisit.SqlAlchemyVisitManager.__init__()=turbogears.visit.savisit.SqlAlchemyVisitManager-class.html#__init__,Method turbogears.visit.sovisit.SqlObjectVisitManager.__init__()=turbogears.visit.sovisit.SqlObjectVisitManager-class.html#__init__,Method turbogears.widgets.base.CompoundWidget.__init__()=turbogears.widgets.base.CompoundWidget-class.html#__init__,Method turbogears.widgets.base.JSLink.__init__()=turbogears.widgets.base.JSLink-class.html#__init__,Method turbogears.widgets.base.JSSource.__init__()=turbogears.widgets.base.JSSource-class.html#__init__,Method turbogears.widgets.base.Link.__init__()=turbogears.widgets.base.Link-class.html#__init__,Method turbogears.widgets.base.MetaDescription.__init__()=turbogears.widgets.base.MetaDescription-class.html#__init__,Method turbogears.widgets.base.Source.__init__()=turbogears.widgets.base.Source-class.html#__init__,Method turbogears.widgets.base.Widget.__init__()=turbogears.widgets.base.Widget-class.html#__init__,Method turbogears.widgets.base.WidgetsList.__init__()=turbogears.widgets.base.WidgetsList-class.html#__init__,Method turbogears.widgets.big_widgets.AjaxGrid.__init__()=turbogears.widgets.big_widgets.AjaxGrid-class.html#__init__,Method turbogears.widgets.big_widgets.CalendarDatePicker.__init__()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.Column.__init__()=turbogears.widgets.datagrid.DataGrid.Column-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.__init__()=turbogears.widgets.datagrid.DataGrid-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__()=turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html#__init__,Method turbogears.widgets.forms.CheckBox.__init__()=turbogears.widgets.forms.CheckBox-class.html#__init__,Method turbogears.widgets.forms.FormField.__init__()=turbogears.widgets.forms.FormField-class.html#__init__,Method turbogears.widgets.forms.InputWidget.__init__()=turbogears.widgets.forms.InputWidget-class.html#__init__,Method turbogears.widgets.forms.SelectionField.__init__()=turbogears.widgets.forms.SelectionField-class.html#__init__,Method turbogears.widgets.links.SyntaxHighlighter.__init__()=turbogears.widgets.links.SyntaxHighlighter-class.html#__init__,Method turbogears.widgets.links.Tabber.__init__()=turbogears.widgets.links.Tabber-class.html#__init__,Method turbogears.widgets.meta.MetaWidget.__init__()=turbogears.widgets.meta.MetaWidget-class.html#__init__"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-45', '__init__', 'link-45');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">group_predicates</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="in_any_group"></a><div id="in_any_group-def"><a name="L143"></a><tt class="py-lineno">143</tt> <a class="py-toggle" href="#" id="in_any_group-toggle" onclick="return toggle('in_any_group');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_any_group-class.html">in_any_group</a><tt class="py-op">(</tt><tt class="py-base-class">Any</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_any_group-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="in_any_group-expanded"><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for requiring membership in at least one group."""</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">    <tt id="link-46" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-46', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Not member of any group: %(group_list)s"</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"> </tt>
+<a name="in_any_group.__init__"></a><div id="in_any_group.__init__-def"><a name="L147"></a><tt class="py-lineno">147</tt> <a class="py-toggle" href="#" id="in_any_group.__init__-toggle" onclick="return toggle('in_any_group.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.in_any_group-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">groups</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="in_any_group.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="in_any_group.__init__-expanded"><a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">group_list</tt> <tt class="py-op">=</tt> <tt class="py-string">", "</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.groups
+turbogears.identity.soprovider.SqlObjectIdentity.groups
+turbogears.identity.soprovider.TG_Permission.groups
+turbogears.identity.soprovider.TG_User.groups" class="py-name" href="#" onclick="return doclink('link-47', 'groups', 'link-39');">groups</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-name">group_predicates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-48" class="py-name"><a title="turbogears.identity.conditions.in_group" class="py-name" href="#" onclick="return doclink('link-48', 'in_group', 'link-42');">in_group</a></tt><tt class="py-op">(</tt><tt class="py-name">g</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">g</tt> <tt class="py-keyword">in</tt> <tt id="link-49" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.groups
+turbogears.identity.soprovider.SqlObjectIdentity.groups
+turbogears.identity.soprovider.TG_Permission.groups
+turbogears.identity.soprovider.TG_User.groups" class="py-name" href="#" onclick="return doclink('link-49', 'groups', 'link-39');">groups</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-50" class="py-name" targets="Class turbogears.identity.conditions.in_any_group=turbogears.identity.conditions.in_any_group-class.html"><a title="turbogears.identity.conditions.in_any_group" class="py-name" href="#" onclick="return doclink('link-50', 'in_any_group', 'link-50');">in_any_group</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-51', '__init__', 'link-45');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">group_predicates</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="not_anonymous"></a><div id="not_anonymous-def"><a name="L153"></a><tt class="py-lineno">153</tt> <a class="py-toggle" href="#" id="not_anonymous-toggle" onclick="return toggle('not_anonymous');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.not_anonymous-class.html">not_anonymous</a><tt class="py-op">(</tt><tt class="py-base-class">Predicate</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="not_anonymous-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="not_anonymous-expanded"><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking whether current visitor is anonymous."""</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">    <tt id="link-52" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-52', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Anonymous access denied"</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"> </tt>
+<a name="not_anonymous.eval_with_object"></a><div id="not_anonymous.eval_with_object-def"><a name="L157"></a><tt class="py-lineno">157</tt> <a class="py-toggle" href="#" id="not_anonymous.eval_with_object-toggle" onclick="return toggle('not_anonymous.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.not_anonymous-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">identity</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="not_anonymous.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="not_anonymous.eval_with_object-expanded"><a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-53" class="py-name"><a title="turbogears.command.quickstart.quickstart.identity
+turbogears.command.quickstart.update.identity
+turbogears.identity" class="py-name" href="#" onclick="return doclink('link-53', 'identity', 'link-9');">identity</a></tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Variable turbogears.identity.saprovider.SqlAlchemyIdentity.anonymous=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#anonymous,Variable turbogears.identity.soprovider.SqlObjectIdentity.anonymous=turbogears.identity.soprovider.SqlObjectIdentity-class.html#anonymous"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.anonymous
+turbogears.identity.soprovider.SqlObjectIdentity.anonymous" class="py-name" href="#" onclick="return doclink('link-54', 'anonymous', 'link-54');">anonymous</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-55', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-56', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+</div></div><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="has_permission"></a><div id="has_permission-def"><a name="L164"></a><tt class="py-lineno">164</tt> <a class="py-toggle" href="#" id="has_permission-toggle" onclick="return toggle('has_permission');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_permission-class.html">has_permission</a><tt class="py-op">(</tt><tt class="py-base-class">Predicate</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_permission-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="has_permission-expanded"><a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking whether visitor has a particular permission."""</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">    <tt id="link-57" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-57', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Permission denied: %(permission_name)s"</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="has_permission.__init__"></a><div id="has_permission.__init__-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="has_permission.__init__-toggle" onclick="return toggle('has_permission.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_permission-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">permission_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_permission.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="has_permission.__init__-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Variable turbogears.identity.soprovider.TG_Permission.permission_name=turbogears.identity.soprovider.TG_Permission-class.html#permission_name"><a title="turbogears.identity.soprovider.TG_Permission.permission_name" class="py-name" href="#" onclick="return doclink('link-58', 'permission_name', 'link-58');">permission_name</a></tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name"><a title="turbogears.identity.soprovider.TG_Permission.permission_name" class="py-name" href="#" onclick="return doclink('link-59', 'permission_name', 'link-58');">permission_name</a></tt> </tt>
+</div><a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"> </tt>
+<a name="has_permission.eval_with_object"></a><div id="has_permission.eval_with_object-def"><a name="L171"></a><tt class="py-lineno">171</tt> <a class="py-toggle" href="#" id="has_permission.eval_with_object-toggle" onclick="return toggle('has_permission.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_permission-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">identity</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_permission.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="has_permission.eval_with_object-expanded"><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">        <tt class="py-docstring">"""Determine whether the visitor has the specified permission."""</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="turbogears.identity.soprovider.TG_Permission.permission_name" class="py-name" href="#" onclick="return doclink('link-60', 'permission_name', 'link-58');">permission_name</a></tt> <tt class="py-keyword">in</tt> <tt id="link-61" class="py-name"><a title="turbogears.command.quickstart.quickstart.identity
+turbogears.command.quickstart.update.identity
+turbogears.identity" class="py-name" href="#" onclick="return doclink('link-61', 'identity', 'link-9');">identity</a></tt><tt class="py-op">.</tt><tt id="link-62" class="py-name" targets="Variable turbogears.identity.saprovider.SqlAlchemyIdentity.permissions=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#permissions,Variable turbogears.identity.soprovider.SqlObjectIdentity.permissions=turbogears.identity.soprovider.SqlObjectIdentity-class.html#permissions,Variable turbogears.identity.soprovider.TG_Group.permissions=turbogears.identity.soprovider.TG_Group-class.html#permissions,Variable turbogears.identity.soprovider.TG_User.permissions=turbogears.identity.soprovider.TG_User-class.html#permissions"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.permissions
+turbogears.identity.soprovider.SqlObjectIdentity.permissions
+turbogears.identity.soprovider.TG_Group.permissions
+turbogears.identity.soprovider.TG_User.permissions" class="py-name" href="#" onclick="return doclink('link-62', 'permissions', 'link-62');">permissions</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-63', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-64', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"> </tt>
+<a name="has_all_permissions"></a><div id="has_all_permissions-def"><a name="L179"></a><tt class="py-lineno">179</tt> <a class="py-toggle" href="#" id="has_all_permissions-toggle" onclick="return toggle('has_all_permissions');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_all_permissions-class.html">has_all_permissions</a><tt class="py-op">(</tt><tt class="py-base-class">All</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_all_permissions-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="has_all_permissions-expanded"><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking whether the visitor has all permissions."""</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="has_all_permissions.__init__"></a><div id="has_all_permissions.__init__-def"><a name="L182"></a><tt class="py-lineno">182</tt> <a class="py-toggle" href="#" id="has_all_permissions.__init__-toggle" onclick="return toggle('has_all_permissions.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_all_permissions-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">permissions</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_all_permissions.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="has_all_permissions.__init__-expanded"><a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-name">permission_predicates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-65" class="py-name" targets="Class turbogears.identity.conditions.has_permission=turbogears.identity.conditions.has_permission-class.html"><a title="turbogears.identity.conditions.has_permission" class="py-name" href="#" onclick="return doclink('link-65', 'has_permission', 'link-65');">has_permission</a></tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt id="link-66" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.permissions
+turbogears.identity.soprovider.SqlObjectIdentity.permissions
+turbogears.identity.soprovider.TG_Group.permissions
+turbogears.identity.soprovider.TG_User.permissions" class="py-name" href="#" onclick="return doclink('link-66', 'permissions', 'link-62');">permissions</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-67" class="py-name" targets="Class turbogears.identity.conditions.has_all_permissions=turbogears.identity.conditions.has_all_permissions-class.html"><a title="turbogears.identity.conditions.has_all_permissions" class="py-name" href="#" onclick="return doclink('link-67', 'has_all_permissions', 'link-67');">has_all_permissions</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-68" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-68', '__init__', 'link-45');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">permission_predicates</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"> </tt>
+<a name="has_any_permission"></a><div id="has_any_permission-def"><a name="L187"></a><tt class="py-lineno">187</tt> <a class="py-toggle" href="#" id="has_any_permission-toggle" onclick="return toggle('has_any_permission');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_any_permission-class.html">has_any_permission</a><tt class="py-op">(</tt><tt class="py-base-class">Any</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_any_permission-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="has_any_permission-expanded"><a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking whether visitor has at least one permission."""</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt id="link-69" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-69', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"No matching permissions: %(permission_list)s"</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"> </tt>
+<a name="has_any_permission.__init__"></a><div id="has_any_permission.__init__-def"><a name="L191"></a><tt class="py-lineno">191</tt> <a class="py-toggle" href="#" id="has_any_permission.__init__-toggle" onclick="return toggle('has_any_permission.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.has_any_permission-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">permissions</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="has_any_permission.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="has_any_permission.__init__-expanded"><a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">permission_list</tt> <tt class="py-op">=</tt> <tt class="py-string">', '</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-70" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.permissions
+turbogears.identity.soprovider.SqlObjectIdentity.permissions
+turbogears.identity.soprovider.TG_Group.permissions
+turbogears.identity.soprovider.TG_User.permissions" class="py-name" href="#" onclick="return doclink('link-70', 'permissions', 'link-62');">permissions</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-name">permission_predicates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-71" class="py-name"><a title="turbogears.identity.conditions.has_permission" class="py-name" href="#" onclick="return doclink('link-71', 'has_permission', 'link-65');">has_permission</a></tt><tt class="py-op">(</tt><tt class="py-name">p</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt id="link-72" class="py-name"><a title="turbogears.identity.saprovider.SqlAlchemyIdentity.permissions
+turbogears.identity.soprovider.SqlObjectIdentity.permissions
+turbogears.identity.soprovider.TG_Group.permissions
+turbogears.identity.soprovider.TG_User.permissions" class="py-name" href="#" onclick="return doclink('link-72', 'permissions', 'link-62');">permissions</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-73" class="py-name" targets="Class turbogears.identity.conditions.has_any_permission=turbogears.identity.conditions.has_any_permission-class.html"><a title="turbogears.identity.conditions.has_any_permission" class="py-name" href="#" onclick="return doclink('link-73', 'has_any_permission', 'link-73');">has_any_permission</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-74', '__init__', 'link-45');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">permission_predicates</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"> </tt>
+<a name="_remoteHost"></a><div id="_remoteHost-def"><a name="L197"></a><tt class="py-lineno">197</tt> <a class="py-toggle" href="#" id="_remoteHost-toggle" onclick="return toggle('_remoteHost');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions-module.html#_remoteHost">_remoteHost</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_remoteHost-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_remoteHost-expanded"><a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">headers</tt><tt class="py-op">.</tt><tt id="link-75" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-75', 'get', 'link-75');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'X-Forwarded-For'</tt><tt class="py-op">,</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">headers</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-76', 'get', 'link-75');">get</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">            <tt class="py-string">'Remote-Addr'</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">rsplit</tt><tt class="py-op">(</tt><tt class="py-string">','</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">None</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-77" class="py-name" targets="Class turbogears.identity.exceptions.RequestRequiredException=turbogears.identity.exceptions.RequestRequiredException-class.html"><a title="turbogears.identity.exceptions.RequestRequiredException" class="py-name" href="#" onclick="return doclink('link-77', 'RequestRequiredException', 'link-77');">RequestRequiredException</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"> </tt>
+<a name="from_host"></a><div id="from_host-def"><a name="L205"></a><tt class="py-lineno">205</tt> <a class="py-toggle" href="#" id="from_host-toggle" onclick="return toggle('from_host');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.from_host-class.html">from_host</a><tt class="py-op">(</tt><tt class="py-base-class">Predicate</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="from_host-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="from_host-expanded"><a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking whether the visitor's host is a permitted host.</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">    Note: We never want to announce what the list of allowed hosts is, because</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">    it is way too easy to spoof an IP address in a TCP/IP packet.</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">    <tt id="link-78" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-78', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Access from this host is not permitted."</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"> </tt>
+<a name="from_host.__init__"></a><div id="from_host.__init__-def"><a name="L214"></a><tt class="py-lineno">214</tt> <a class="py-toggle" href="#" id="from_host.__init__-toggle" onclick="return toggle('from_host.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.from_host-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">host</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="from_host.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="from_host.__init__-expanded"><a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">host</tt> <tt class="py-op">=</tt> <tt class="py-name">host</tt> </tt>
+</div><a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line"> </tt>
+<a name="from_host.eval_with_object"></a><div id="from_host.eval_with_object-def"><a name="L217"></a><tt class="py-lineno">217</tt> <a class="py-toggle" href="#" id="from_host.eval_with_object-toggle" onclick="return toggle('from_host.eval_with_object');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.from_host-class.html#eval_with_object">eval_with_object</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">errors</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="from_host.eval_with_object-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="from_host.eval_with_object-expanded"><a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">        <tt class="py-docstring">"""Match the visitor's host against the criteria."""</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-name">ip</tt> <tt class="py-op">=</tt> <tt class="py-name">_remoteHost</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">ip</tt> <tt class="py-keyword">and</tt> <tt id="link-79" class="py-name"><a title="turbogears.util.match_ip" class="py-name" href="#" onclick="return doclink('link-79', 'match_ip', 'link-7');">match_ip</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">host</tt><tt class="py-op">,</tt> <tt class="py-name">ip</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="turbogears.identity.conditions.Predicate.append_error_message" class="py-name" href="#" onclick="return doclink('link-80', 'append_error_message', 'link-21');">append_error_message</a></tt><tt class="py-op">(</tt><tt id="link-81" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-81', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div></div><a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line"> </tt>
+<a name="from_any_host"></a><div id="from_any_host-def"><a name="L226"></a><tt class="py-lineno">226</tt> <a class="py-toggle" href="#" id="from_any_host-toggle" onclick="return toggle('from_any_host');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.from_any_host-class.html">from_any_host</a><tt class="py-op">(</tt><tt class="py-base-class">Any</tt><tt class="py-op">,</tt> <tt class="py-base-class">IdentityPredicateHelper</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="from_any_host-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="from_any_host-expanded"><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">    <tt class="py-docstring">"""Predicate for checking the visitor against a number of allowed hosts."""</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">    <tt id="link-82" class="py-name"><a title="turbogears.identity.conditions.All.error_message
+turbogears.identity.conditions.Any.error_message
+turbogears.identity.conditions.NotAny.error_message
+turbogears.identity.conditions.from_any_host.error_message
+turbogears.identity.conditions.from_host.error_message
+turbogears.identity.conditions.has_any_permission.error_message
+turbogears.identity.conditions.has_permission.error_message
+turbogears.identity.conditions.in_any_group.error_message
+turbogears.identity.conditions.in_group.error_message
+turbogears.identity.conditions.not_anonymous.error_message" class="py-name" href="#" onclick="return doclink('link-82', 'error_message', 'link-17');">error_message</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Access from this host is not permitted."</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"> </tt>
+<a name="from_any_host.__init__"></a><div id="from_any_host.__init__-def"><a name="L230"></a><tt class="py-lineno">230</tt> <a class="py-toggle" href="#" id="from_any_host.__init__-toggle" onclick="return toggle('from_any_host.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.from_any_host-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">hosts</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="from_any_host.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="from_any_host.__init__-expanded"><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">        <tt class="py-name">host_predicates</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-83" class="py-name" targets="Class turbogears.identity.conditions.from_host=turbogears.identity.conditions.from_host-class.html"><a title="turbogears.identity.conditions.from_host" class="py-name" href="#" onclick="return doclink('link-83', 'from_host', 'link-83');">from_host</a></tt><tt class="py-op">(</tt><tt class="py-name">h</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">h</tt> <tt class="py-keyword">in</tt> <tt class="py-name">hosts</tt><tt class="py-op">]</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-84" class="py-name" targets="Class turbogears.identity.conditions.from_any_host=turbogears.identity.conditions.from_any_host-class.html"><a title="turbogears.identity.conditions.from_any_host" class="py-name" href="#" onclick="return doclink('link-84', 'from_any_host', 'link-84');">from_any_host</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-85', '__init__', 'link-45');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">host_predicates</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"> </tt>
+<a name="require"></a><div id="require-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="require-toggle" onclick="return toggle('require');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions-module.html#require">require</a><tt class="py-op">(</tt><tt class="py-param">predicate</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="require-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="require-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-docstring">"""Function decorator checking requirements for the current user.</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">    This function decorator checks whether the current user is a member</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line"><tt class="py-docstring">    of the groups specified and has the permissions required.</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">entangle</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">require</tt><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">,</tt> <tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">                <tt id="link-86" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-86', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">predicate</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">                        <tt class="py-keyword">or</tt> <tt class="py-name">predicate</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-87', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt id="link-88" class="py-name"><a title="turbogears.identity.base.current
+turbogears.identity.current
+turbogears.visit.api.current" class="py-name" href="#" onclick="return doclink('link-88', 'current', 'link-14');">current</a></tt><tt class="py-op">,</tt> <tt id="link-89" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-89', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                    <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt id="link-90" class="py-name" targets="Variable turbogears.identity.exceptions.IdentityConfigurationException.args=turbogears.identity.exceptions.IdentityConfigurationException-class.html#args"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-90', 'args', 'link-90');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt id="link-91" class="py-name" targets="Class turbogears.identity.exceptions.IdentityException=turbogears.identity.exceptions.IdentityException-class.html"><a title="turbogears.identity.exceptions.IdentityException" class="py-name" href="#" onclick="return doclink('link-91', 'IdentityException', 'link-91');">IdentityException</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                <tt id="link-92" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-92', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">e</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-93" class="py-name" targets="Class turbogears.identity.exceptions.IdentityFailure=turbogears.identity.exceptions.IdentityFailure-class.html"><a title="turbogears.identity.exceptions.IdentityFailure" class="py-name" href="#" onclick="return doclink('link-93', 'IdentityFailure', 'link-93');">IdentityFailure</a></tt><tt class="py-op">(</tt><tt id="link-94" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-94', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">        <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">_require</tt> <tt class="py-op">=</tt> <tt class="py-name">predicate</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-95" class="py-name" targets="Function turbogears.identity.conditions.require()=turbogears.identity.conditions-module.html#require"><a title="turbogears.identity.conditions.require" class="py-name" href="#" onclick="return doclink('link-95', 'require', 'link-95');">require</a></tt> </tt>
+</div><a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-96" class="py-name"><a title="turbogears.decorator.weak_signature_decorator" class="py-name" href="#" onclick="return doclink('link-96', 'weak_signature_decorator', 'link-4');">weak_signature_decorator</a></tt><tt class="py-op">(</tt><tt class="py-name">entangle</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"> </tt>
+<a name="_check_method"></a><div id="_check_method-def"><a name="L258"></a><tt class="py-lineno">258</tt> <a class="py-toggle" href="#" id="_check_method-toggle" onclick="return toggle('_check_method');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions-module.html#_check_method">_check_method</a><tt class="py-op">(</tt><tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">fn</tt><tt class="py-op">,</tt> <tt class="py-param">predicate</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_check_method-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_check_method-expanded"><a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">_wrapper</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">        <tt id="link-97" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-97', 'errors', 'link-15');">errors</a></tt><tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt><tt class="py-op">.</tt><tt id="link-98" class="py-name"><a title="turbogears.identity.conditions.All.eval_with_object
+turbogears.identity.conditions.Any.eval_with_object
+turbogears.identity.conditions.NotAny.eval_with_object
+turbogears.identity.conditions.Predicate.eval_with_object
+turbogears.identity.conditions.from_host.eval_with_object
+turbogears.identity.conditions.has_permission.eval_with_object
+turbogears.identity.conditions.in_group.eval_with_object
+turbogears.identity.conditions.not_anonymous.eval_with_object" class="py-name" href="#" onclick="return doclink('link-98', 'eval_with_object', 'link-19');">eval_with_object</a></tt><tt class="py-op">(</tt><tt id="link-99" class="py-name"><a title="turbogears.identity.base.current
+turbogears.identity.current
+turbogears.visit.api.current" class="py-name" href="#" onclick="return doclink('link-99', 'current', 'link-14');">current</a></tt><tt class="py-op">,</tt> <tt id="link-100" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-100', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt id="link-101" class="py-name"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-101', 'args', 'link-90');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-102" class="py-name"><a title="turbogears.identity.exceptions.IdentityFailure" class="py-name" href="#" onclick="return doclink('link-102', 'IdentityFailure', 'link-93');">IdentityFailure</a></tt><tt class="py-op">(</tt><tt id="link-103" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-103', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">    <tt class="py-name">_wrapper</tt><tt class="py-op">.</tt><tt class="py-name">exposed</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">_wrapper</tt> </tt>
+</div><a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"> </tt>
+<a name="SecureResource"></a><div id="SecureResource-def"><a name="L269"></a><tt class="py-lineno">269</tt> <a class="py-toggle" href="#" id="SecureResource-toggle" onclick="return toggle('SecureResource');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureResource-class.html">SecureResource</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureResource-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SecureResource-expanded"><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="SecureResource.__getattribute__"></a><div id="SecureResource.__getattribute__-def"><a name="L271"></a><tt class="py-lineno">271</tt> <a class="py-toggle" href="#" id="SecureResource.__getattribute__-toggle" onclick="return toggle('SecureResource.__getattribute__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureResource-class.html#__getattribute__">__getattribute__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureResource.__getattribute__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SecureResource.__getattribute__-expanded"><a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-104" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-104', 'name', 'link-104');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">'_cp'</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt id="link-105" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-105', 'name', 'link-104');">name</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'require'</tt><tt class="py-op">:</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name" targets="Method turbogears.identity.conditions.SecureObject.__getattribute__()=turbogears.identity.conditions.SecureObject-class.html#__getattribute__,Method turbogears.identity.conditions.SecureResource.__getattribute__()=turbogears.identity.conditions.SecureResource-class.html#__getattribute__"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-106', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-107" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-107', 'name', 'link-104');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">            <tt id="link-108" class="py-name" targets="Variable turbogears.view.base.cycle.value=turbogears.view.base.cycle-class.html#value"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-108', 'value', 'link-108');">value</a></tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-109" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-109', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-110" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-110', 'name', 'link-104');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">                <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-111" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-111', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'require'</tt><tt class="py-op">)</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">                <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt id="link-112" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-112', 'config', 'link-1');">config</a></tt><tt class="py-op">.</tt><tt id="link-113" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-113', 'get', 'link-75');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'identity.require'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">predicate</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">(</tt><tt class="py-string">"SecureResource requires a 'require'"</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">                    <tt class="py-string">" attribute either on the controller class itself"</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">                    <tt class="py-string">" or in the config file"</tt><tt class="py-op">)</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">            <tt id="link-114" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-114', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-115" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-115', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">MethodType</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">                    <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt id="link-116" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-116', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-string">'exposed'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">_check_method</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-117" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-117', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt><tt class="py-op">)</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt id="link-118" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-118', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-119" class="py-name" targets="Module turbogears.controllers=turbogears.controllers-module.html"><a title="turbogears.controllers" class="py-name" href="#" onclick="return doclink('link-119', 'controllers', 'link-119');">controllers</a></tt> <tt class="py-keyword">import</tt> <tt id="link-120" class="py-name" targets="Class turbogears.controllers.Controller=turbogears.controllers.Controller-class.html"><a title="turbogears.controllers.Controller" class="py-name" href="#" onclick="return doclink('link-120', 'Controller', 'link-120');">Controller</a></tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-121" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-121', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt id="link-122" class="py-name"><a title="turbogears.controllers.Controller" class="py-name" href="#" onclick="return doclink('link-122', 'Controller', 'link-120');">Controller</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-123" class="py-name" targets="Class turbogears.identity.conditions.SecureObject=turbogears.identity.conditions.SecureObject-class.html"><a title="turbogears.identity.conditions.SecureObject" class="py-name" href="#" onclick="return doclink('link-123', 'SecureObject', 'link-123');">SecureObject</a></tt><tt class="py-op">(</tt><tt id="link-124" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-124', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt><tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">            <tt class="py-comment"># Some other property</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-125" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-125', 'value', 'link-108');">value</a></tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt id="link-126" class="py-name"><a title="turbogears.identity.exceptions.IdentityException" class="py-name" href="#" onclick="return doclink('link-126', 'IdentityException', 'link-91');">IdentityException</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">            <tt id="link-127" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-127', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">e</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-128" class="py-name"><a title="turbogears.identity.exceptions.IdentityFailure" class="py-name" href="#" onclick="return doclink('link-128', 'IdentityFailure', 'link-93');">IdentityFailure</a></tt><tt class="py-op">(</tt><tt id="link-129" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-129', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"> </tt>
+<a name="SecureObject"></a><div id="SecureObject-def"><a name="L298"></a><tt class="py-lineno">298</tt> <a class="py-toggle" href="#" id="SecureObject-toggle" onclick="return toggle('SecureObject');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureObject-class.html">SecureObject</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureObject-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SecureObject-expanded"><a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line"> </tt>
+<a name="SecureObject.__init__"></a><div id="SecureObject.__init__-def"><a name="L300"></a><tt class="py-lineno">300</tt> <a class="py-toggle" href="#" id="SecureObject.__init__-toggle" onclick="return toggle('SecureObject.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureObject-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">,</tt> <tt class="py-param">require</tt><tt class="py-op">,</tt> <tt class="py-param">exclude</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureObject.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SecureObject.__init__-expanded"><a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_object</tt> <tt class="py-op">=</tt> <tt class="py-name">obj</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_require</tt> <tt class="py-op">=</tt> <tt id="link-130" class="py-name"><a title="turbogears.identity.conditions.require" class="py-name" href="#" onclick="return doclink('link-130', 'require', 'link-95');">require</a></tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_exclude</tt> <tt class="py-op">=</tt> <tt class="py-name">exclude</tt> </tt>
+</div><a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"> </tt>
+<a name="SecureObject.__getattribute__"></a><div id="SecureObject.__getattribute__-def"><a name="L305"></a><tt class="py-lineno">305</tt> <a class="py-toggle" href="#" id="SecureObject.__getattribute__-toggle" onclick="return toggle('SecureObject.__getattribute__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureObject-class.html#__getattribute__">__getattribute__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureObject.__getattribute__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SecureObject.__getattribute__-expanded"><a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-131" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-131', 'name', 'link-104');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-string">'_object'</tt><tt class="py-op">,</tt> <tt class="py-string">'_require'</tt><tt class="py-op">,</tt> <tt class="py-string">'_exclude'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-132" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-132', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-133" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-133', 'name', 'link-104');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">            <tt class="py-name">obj</tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-134" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-134', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'_object'</tt><tt class="py-op">)</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">            <tt id="link-135" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-135', 'value', 'link-108');">value</a></tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt id="link-136" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-136', 'name', 'link-104');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">            <tt id="link-137" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-137', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">            <tt class="py-name">predicate</tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-138" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-138', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'_require'</tt><tt class="py-op">)</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-139" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-139', 'name', 'link-104');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">object</tt><tt class="py-op">.</tt><tt id="link-140" class="py-name"><a title="turbogears.identity.conditions.SecureObject.__getattribute__
+turbogears.identity.conditions.SecureResource.__getattribute__" class="py-name" href="#" onclick="return doclink('link-140', '__getattribute__', 'link-106');">__getattribute__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'_exclude'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-141" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-141', 'value', 'link-108');">value</a></tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-142" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-142', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">MethodType</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                    <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt id="link-143" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-143', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-string">'exposed'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">_check_method</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt id="link-144" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-144', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt><tt class="py-op">)</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">            <tt class="py-keyword">from</tt> <tt id="link-145" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-145', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-146" class="py-name"><a title="turbogears.controllers" class="py-name" href="#" onclick="return doclink('link-146', 'controllers', 'link-119');">controllers</a></tt> <tt class="py-keyword">import</tt> <tt id="link-147" class="py-name"><a title="turbogears.controllers.Controller" class="py-name" href="#" onclick="return doclink('link-147', 'Controller', 'link-120');">Controller</a></tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-148" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-148', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt id="link-149" class="py-name"><a title="turbogears.controllers.Controller" class="py-name" href="#" onclick="return doclink('link-149', 'Controller', 'link-120');">Controller</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-150" class="py-name"><a title="turbogears.identity.conditions.SecureObject" class="py-name" href="#" onclick="return doclink('link-150', 'SecureObject', 'link-123');">SecureObject</a></tt><tt class="py-op">(</tt><tt id="link-151" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-151', 'value', 'link-108');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">predicate</tt><tt class="py-op">)</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">            <tt class="py-comment"># Some other property</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-152" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-152', 'value', 'link-108');">value</a></tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt id="link-153" class="py-name"><a title="turbogears.identity.exceptions.IdentityException" class="py-name" href="#" onclick="return doclink('link-153', 'IdentityException', 'link-91');">IdentityException</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">            <tt id="link-154" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-154', 'errors', 'link-15');">errors</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">e</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-155" class="py-name"><a title="turbogears.identity.exceptions.IdentityFailure" class="py-name" href="#" onclick="return doclink('link-155', 'IdentityFailure', 'link-93');">IdentityFailure</a></tt><tt class="py-op">(</tt><tt id="link-156" class="py-name"><a title="turbogears.widgets.forms.Form.errors" class="py-name" href="#" onclick="return doclink('link-156', 'errors', 'link-15');">errors</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"> </tt>
+<a name="SecureObject.__setattr__"></a><div id="SecureObject.__setattr__-def"><a name="L327"></a><tt class="py-lineno">327</tt> <a class="py-toggle" href="#" id="SecureObject.__setattr__-toggle" onclick="return toggle('SecureObject.__setattr__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.identity.conditions.SecureObject-class.html#__setattr__">__setattr__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SecureObject.__setattr__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SecureObject.__setattr__-expanded"><a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-157" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-157', 'name', 'link-104');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-string">'_object'</tt><tt class="py-op">,</tt> <tt class="py-string">'_require'</tt><tt class="py-op">,</tt> <tt class="py-string">'_exclude'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">            <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-158" class="py-name"><a title="turbogears.identity.conditions.SecureObject" class="py-name" href="#" onclick="return doclink('link-158', 'SecureObject', 'link-123');">SecureObject</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-159" class="py-name" targets="Method turbogears.identity.conditions.SecureObject.__setattr__()=turbogears.identity.conditions.SecureObject-class.html#__setattr__,Method turbogears.widgets.base.Widget.__setattr__()=turbogears.widgets.base.Widget-class.html#__setattr__"><a title="turbogears.identity.conditions.SecureObject.__setattr__
+turbogears.widgets.base.Widget.__setattr__" class="py-name" href="#" onclick="return doclink('link-159', '__setattr__', 'link-159');">__setattr__</a></tt><tt class="py-op">(</tt><tt id="link-160" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-160', 'name', 'link-104');">name</a></tt><tt class="py-op">,</tt> <tt id="link-161" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-161', 'value', 'link-108');">value</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">            <tt class="py-name">setattr</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_object</tt><tt class="py-op">,</tt> <tt id="link-162" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-162', 'name', 'link-104');">name</a></tt><tt class="py-op">,</tt> <tt id="link-163" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-163', 'value', 'link-108');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

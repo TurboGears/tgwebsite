@@ -1,0 +1,239 @@
+.. index:: AjaxGrid
+
+Ajax Grid Widget
+================
+
+**Note:** This has been written up after a mailing list `post
+<http://groups.google.com/group/turbogears/browse_thread/thread/fb6c3611b49af727/3d4d4ad72610b638#3d4d4ad72610b638>`_
+by Steve Bergman.
+
+
+An Easy Example
+~~~~~~~~~~~~~~~
+
+Using ``AjaxGrid`` is really quite simple.
+For first-timers, here is an easy example:
+
+
+1. Quickstart a project
+-----------------------
+
+Quickstart a project to try out a simple example::
+
+    tg-admin quickstart AjaxGridDemo
+
+
+2. Create the controllers
+-------------------------
+
+Edit ``controllers.py`` to look like the following::
+
+    from datetime import datetime
+
+    from turbogears import controllers, expose
+    from turbogears.widgets import AjaxGrid
+
+    grid = AjaxGrid(refresh_url='gettime')
+
+
+    class Root(controllers.RootController):
+
+        @expose(template='.templates.grid')
+        def index(self):
+            return dict(grid=grid)
+
+        @expose(format='json')
+        def gettime(self):
+            # Fake a row of results
+            date = datetime.today()
+            hour = date.strftime('%H')
+            minute = date.strftime('%M')
+            second = date.strftime('%S')
+            return dict(
+                headers=['Hour', 'Minute', 'Second'],
+                rows=[[hour, minute, second]])
+
+
+3. Create the template
+----------------------
+
+Create a template ``grid.kid`` in the ``templates`` directory and make it
+look like this::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'">
+    <head>
+      <meta http-equiv="content-type"
+        content="text/html; charset=utf-8" py:replace="''"/>
+      <title>AjaxGrid Example</title>
+    </head>
+    <body>
+      <div py:replace="grid.display()"/>
+    </body>
+    </html>
+
+
+4. Try it out
+-------------
+
+Start your project and try it out. You should get a single row with the current
+hour, minute, and second. It should update when you click 'Update'.
+
+What happens is that the ``AjaxGrid`` calls the ``gettime()`` controller specified
+in the ``refresh_url`` parameter and displays the returned JSON data as a grid.
+
+
+Using Parameters
+~~~~~~~~~~~~~~~~
+
+You can let AjaxGrid pass parameters to the controller specified in ``refresh_url``.
+For example, let's add a parameter ``format`` for choosing between the 12-hour
+and the 24-hour clock format when displaying the time in our simple example.
+
+
+1. Default parameters
+---------------------
+
+Slightly change the controller to include a ``format`` parameter as follows::
+
+    @expose(format='json')
+    def gettime(self, format='24h'):
+        date = datetime.today()
+        hour = date.strftime(format == '12h' and '%I %p' or '%H')
+        minute = date.strftime('%M')
+        second = date.strftime('%S')
+        return dict(
+            headers=['Hour', 'Minute', 'Second'],
+            rows=[[hour, minute, second]])
+
+Without further change, the time will still be displayed with 24-hour clock
+format because this has been chosen as the default value for the ``format`` parameter.
+
+But you can define a different default value for the ``format`` parameter without
+changing the default value for the ``format`` parameter in the controller, by
+telling the ``AjaxGrid`` to use default parameters like this::
+
+    grid = AjaxGrid(refresh_url='gettime', defaults=dict(format='12h'))
+
+The AjaxGrid will now call the ``gettime()`` controller with the format
+parameter set to ``12h`` resulting in a 12-hour clock output.
+
+
+2. Dynamic parameters
+---------------------
+
+Maybe you want to pass parameters to the ``refresh_url`` controller that are
+dependent on another widget, e.g. a ``SelectList``. In this case, you need to
+define a custom update link instead of the default one. You can suppress the
+default update link by setting the ``refresh_text`` parameter to ``None``
+(normally, you can choose the text for the update link with this parameter).
+Let's do this and also choose a prefix for the ``AjaxGrid`` id attribute::
+
+    grid = AjaxGrid(refresh_url='gettime', refresh_text=None,
+       id='time', defaults=dict(format='24h'))
+
+Now, we add a selector for the clock format and a custom update button to our
+``grid.kid`` Kid template, so that it looks like this::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'">
+    <head>
+      <meta http-equiv="content-type"
+        content="text/html; charset=utf-8" py:replace="''"/>
+      <title>Ajaxgrid Example</title>
+    </head>
+    <body>
+      <select onchange="$$(time_AjaxGrid).refresh({format: this.value})"
+          id="format">
+        <option value="12h">12-hour clock</option>
+        <option value="24h" selected="selected">24-hour clock</option>
+      </select>
+      <button onclick="$$(time_AjaxGrid).refresh({format: $$('format').value})">
+        Update
+      </button>
+      <div py:replace="grid.display()"/>
+    </body>
+    </html>
+
+Since ``AjaxGrid`` is based on MochiKit, we can use the MochiKit ``$()`` function
+without having to care that MochiKit is loaded, but note that the ``$`` characters
+need to be escaped here by doubling them because otherwise they will be interpreted
+by Kid as signifying string substitutions.
+
+
+An Example Using Results from the Database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Our simple example showed displayed only one row that has been computed and
+not read from a database. But displaying results from database queries is not
+much different. As an example, we show how to display the values in the ``visit``
+table in an updateable grid.
+
+
+1. Quickstart a project
+-----------------------
+
+Quickstart a new project with an Identity model::
+
+    tg-admin quickstart -i AjaxGridVisitDemo
+    cd AjaxGridVisitDemo
+    tg-admin sql create
+
+
+2. Create the controllers
+-------------------------
+
+Edit ``controllers.py`` to look like the following::
+
+    from turbogears import controllers, expose
+    from turbogears.widgets import AjaxGrid
+
+    from model import Visit
+
+    grid = AjaxGrid(refresh_url='getvisits')
+
+
+    class Root(controllers.RootController):
+
+        @expose(template='.templates.grid')
+        def index(self):
+            return dict(grid=grid)
+
+        @expose(format='json')
+        def getvisits(self):
+            return dict(
+                headers=('Key', 'Created', 'Expiry'),
+                rows=[(v.visit_key, v.created, v.expiry)
+                    for v in Visit.select()])
+
+
+3. Create the template
+----------------------
+
+We can use exactly the same template ``grid.kid`` as in our first simple example::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'">
+    <head>
+      <meta http-equiv="content-type"
+        content="text/html; charset=utf-8" py:replace="''"/>
+      <title>AjaxGrid Example</title>
+    </head>
+    <body>
+      <div py:replace="grid.display()"/>
+    </body>
+    </html>
+
+
+4. Try it out
+-------------
+
+Start your project and try it out. You should get one row for your current
+visit. Connect with a different browser instance and click 'Update'. The grid
+should now display a new row repesenting the view with the other browser.

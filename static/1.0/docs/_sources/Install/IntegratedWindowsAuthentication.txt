@@ -1,0 +1,47 @@
+.. index:: integrated windows authentication, IWA
+
+Integrated Windows Authentication
+---------------------------------
+
+Integrated Windows Authentication (IWA) is an authentication system for web applications, where the web site automatically associates with the user's Windows logon ID. This is more convenient for users than remembering and entering a password, and reduces administration for the site manager. It is generally only possible on Intranets, as the web server must be in a domain that has a trust relationship with the client's domain.
+
+On a technical level the, web browser conducts NTLM authentication over a series of HTTP requests. The protocol is a Microsoft extension and not strictly HTTP compliant. However, some third-party software supports NTLM-over-HTTP, including Firefox as a client and an Apache extension as a server. Low level details of the protocol are documented at http://www.innovation.ch/personal/ronald/ntlm.html One significant point is that the connection is authenticated, not each request. If HTTP keep-alive is enabled (and it usually is), the second and subsequent requests will not have authentication headers.
+
+TurboGears can be used with IWA; there are two reasonable options for deployment:
+ * :doc:`IIS <BehindIIS>` as the web server.
+ * :doc:`Apache <BehindApache>` as the web server, with `mod_auth_sspi <http://sourceforge.net/projects/mod-auth-sspi>`_ to perform authentication.
+
+IIS
+---
+
+Setup the application using :doc:`these instructions <BehindIIS>`.
+
+
+Apache
+------
+
+Details of configuring Apache for IWA will depend on deployment choices, e.g. reverse proxy, mod_python, mod_wsgi, etc. It is possible for Apache on Unix to support IWA, although this appears somewhat harder to set up.
+
+
+Application Interface
+---------------------
+
+If using IIS as described above, the user ID will appear to the application as: ::
+
+    cherrypy.request.headers['Remote-User']
+
+Currently (Aug 2007) IWA does not integrate with the :doc:`Identity module </Identity/index>`, so it is necessary for applications to implement their own access control.
+
+The recommended approach is to create a CherryPy filter to perform authorization; I use the name NtlmAuthFilter. The before_request_body is the most appropriate filter hook to use. The filter can be incorporated with a controller by setting _cp_filters. This must be set explicitly on all controllers; nested controllers do not inherit this from their parents. Also, be aware that any TurboGears standard filters that are needed, such as NestedVariablesFilter, must be manually specified.
+
+
+Reverse Proxy Considerations
+----------------------------
+
+Careful consideration is required for using IWA in a reverse proxy configuration. The NTLM authentication takes place between the browser and front-end web server. The front-end server needs to pass the user ID to the back-end application. The current recommended method is to have the front-end web server pass this in the "Remote-User" header (a non-standard HTTP header). A security concern with this is that anyone who can directly access the back-end application can supply a false identity.
+
+The main protection against this is to ensure the back-end application only listens on the localhost interface, by including the following in the configuration: ::
+
+    server.socket_host='127.0.0.1'
+
+This prevents attacks over the network, although a user on the same box could still bypass security. If this is unacceptable, one option is to have the front-end web server authenticate to the back-end application, using a fixed secret.

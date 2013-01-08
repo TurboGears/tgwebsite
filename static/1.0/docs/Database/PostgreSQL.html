@@ -1,0 +1,225 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PostgreSQL &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Database Installation" href="index.html" />
+    <link rel="next" title="Firebird" href="Firebird.html" />
+    <link rel="prev" title="Using a MySQL database" href="MySQL.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Firebird.html" title="Firebird"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="MySQL.html" title="Using a MySQL database"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Database Installation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PostgreSQL</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#postgresql-setup">PostgreSQL Setup</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#mac">Mac</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-dsn">The DSN</a></li>
+<li><a class="reference internal" href="#using-a-unix-domain-socket">Using a Unix domain socket</a></li>
+<li><a class="reference internal" href="#known-issues">Known issues</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="MySQL.html"
+                        title="previous chapter">Using a MySQL database</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Firebird.html"
+                        title="next chapter">Firebird</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="postgresql">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">PostgreSQL</a><a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#postgresql" id="id1">PostgreSQL</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#postgresql-setup" id="id3">PostgreSQL Setup</a></li>
+<li><a class="reference internal" href="#the-dsn" id="id4">The DSN</a></li>
+<li><a class="reference internal" href="#using-a-unix-domain-socket" id="id5">Using a Unix domain socket</a></li>
+<li><a class="reference internal" href="#known-issues" id="id6">Known issues</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>PostgreSQL is somewhat less familiar than <a class="reference internal" href="MySQL.html"><em>MySQL</em></a> to many people, but offers a lot of
+advantages over most other Open Source databases.</p>
+<p>Here&#8217;s a quick guide to using PostgreSQL with Turbogears.</p>
+</div>
+<div class="section" id="postgresql-setup">
+<h2><a class="toc-backref" href="#id3">PostgreSQL Setup</a><a class="headerlink" href="#postgresql-setup" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>You will need <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwo">psycopg2</a> if you&#8217;re going to use Unicode, otherwise either
+psycopg or psycopg2 will do it. We recommend using psycopg2 because of
+other features besides unicode.</p>
+<p>Installation options (recommended first):</p>
+<ol class="arabic simple">
+<li>Use your package manager</li>
+<li>Look for binaries at the <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall">install page</a></li>
+<li>Build it yourself using <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall">these instructions</a>.</li>
+</ol>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>Download and use the installer from <a class="reference external" href="http://www.stickpeople.com/projects/python/win-psycopg/index.html">here</a>.</p>
+</div>
+<div class="section" id="mac">
+<h3>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports:</p>
+<div class="highlight-python"><pre>$ sudo port install postgresql8</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>$ sudo port install portgresql7</pre>
+</div>
+<p>If you are using a different installation of PosgresSQL, for example the <a class="reference external" href="http://www.postgresql.org/download/macosx">One click
+installer</a>, and you need to install the <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwo">psycopg2</a> package for Python support, please
+read this blog article about <a class="reference external" href="http://blog.jonypawks.net/2008/06/20/installing-psycopg2-on-os-x/">Installing psycopg2 on OS X</a>, which explains an easy
+fix to an compilation problem on OS X.</p>
+</div>
+</div>
+<div class="section" id="the-dsn">
+<h2><a class="toc-backref" href="#id4">The DSN</a><a class="headerlink" href="#the-dsn" title="Permalink to this headline">¶</a></h2>
+<p>The basic form of a DSN for using PostgreSQL is as follows:</p>
+<div class="highlight-python"><pre>postgres://user:passwd@host:5432/dbname</pre>
+</div>
+<p>The default port for PostgreSQL is <tt class="docutils literal"><span class="pre">5432</span></tt>, but may vary depending on configuration.
+If your postgres server is listening on its default port, this can be absent from the
+DSN, making it simpler:</p>
+<div class="highlight-python"><pre>postgres://user:passwd@host/dbname</pre>
+</div>
+</div>
+<div class="section" id="using-a-unix-domain-socket">
+<h2><a class="toc-backref" href="#id5">Using a Unix domain socket</a><a class="headerlink" href="#using-a-unix-domain-socket" title="Permalink to this headline">¶</a></h2>
+<p>As long as you don&#8217;t require remote access, using a local socket has a lot of advantages over
+TCP sockets:</p>
+<ul class="simple">
+<li>Up to 25% faster</li>
+<li>Easier to secure (uses filesystem permissions)</li>
+<li>Doesn&#8217;t waste a TCP port</li>
+</ul>
+<p>With PostgreSQL, if the hostname starts with a /, then the hostname is taken to be an absolute
+path to a Unix domain socket rather than a hostname.  However, there are (as of this writing),
+bugs in the DSN parser for SQLObject that fails to separate the socket path from the database
+name.  A DSN like this works around that issue:</p>
+<div class="highlight-python"><pre>postgres:///dbname?host=/path/to/socket</pre>
+</div>
+<p>Note that I&#8217;m not specifying a username or password.  If you are sharing the socket with many
+users, you will want to do so, but if you are running your own instance of PostgreSQL (which I
+recommend) then you can forgo database-level authentication schemes and just use Unix file
+permissions to restrict access.</p>
+<p>If there is no local user matching the database user, you would normally configure
+the Postgres server via the <tt class="docutils literal"><span class="pre">pg_hba.conf</span></tt> file to require a password for this user.</p>
+<p>When connecting via a unix domain socket you can specify the username and
+password like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">dburi</span><span class="o">=</span><span class="s">&quot;postgres:///dbname?user=mydbuser&amp;password=XXXXXX&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h2><a class="toc-backref" href="#id6">Known issues</a><a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Catwalk has a bug that causes a hang the first time the application is started with Catwalk
+mounted. The workaround is fairly straightforward: simply create the requisite Catwalk
+tables by hand then re-run the application.</p>
+<p>The required SQL (at the time of this writing) is:</p>
+<div class="highlight-python"><pre>CREATE TABLE catwalk_state_table (
+    id SERIAL PRIMARY KEY NOT NULL,
+    state BYTEA
+);</pre>
+</div>
+<p>Use the <tt class="docutils literal"><span class="pre">psql</span></tt> command to run this query and you&#8217;ll be set.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

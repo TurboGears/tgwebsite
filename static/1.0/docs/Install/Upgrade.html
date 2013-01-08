@@ -1,0 +1,656 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears 1.0 Upgrade Guide &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Downloading and installing a TurboGears beta version" href="Beta.html" />
+    <link rel="prev" title="Installation Troubleshooting" href="Troubleshooting.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Beta.html" title="Downloading and installing a TurboGears beta version"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Troubleshooting.html" title="Installation Troubleshooting"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TurboGears 1.0 Upgrade Guide</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#updating-from-1-0-8-to-1-0-9">Updating from 1.0.8 to 1.0.9</a></li>
+<li><a class="reference internal" href="#updating-from-1-0-7-to-1-0-8">Updating from 1.0.7 to 1.0.8</a><ul>
+<li><a class="reference internal" href="#xhtml-content-type">XHTML Content Type</a></li>
+<li><a class="reference internal" href="#widget-forms">Widget Forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-from-1-0-6-to-1-0-7">Updating from 1.0.6 to 1.0.7</a><ul>
+<li><a class="reference internal" href="#identity-exceptions">Identity exceptions</a></li>
+<li><a class="reference internal" href="#id1">XHTML Content Type</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-from-1-0-5-to-1-0-6">Updating from 1.0.5 to 1.0.6</a><ul>
+<li><a class="reference internal" href="#paginate-decorator-parameter-changes">Paginate decorator parameter changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-from-1-0-4-to-1-0-5">Updating from 1.0.4 to 1.0.5</a><ul>
+<li><a class="reference internal" href="#json-response-encoding">JSON response encoding</a></li>
+<li><a class="reference internal" href="#json-response-content-type">JSON response content type</a></li>
+<li><a class="reference internal" href="#package-name-in-configuration">Package name in configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-from-1-0-3-to-1-0-4">Updating from 1.0.3 to 1.0.4</a></li>
+<li><a class="reference internal" href="#updating-from-1-0-1-to-1-0-2">Updating from 1.0.1 to 1.0.2</a></li>
+<li><a class="reference internal" href="#upgrading-from-sqlalchemy-0-3-to-0-4">Upgrading from SQLAlchemy 0.3 to 0.4</a></li>
+<li><a class="reference internal" href="#updating-from-0-9a6-to-1-0-x">Updating from 0.9a6+ to 1.0.x</a></li>
+<li><a class="reference internal" href="#updating-from-0-9a5-to-0-9a6">Updating from 0.9a5 to 0.9a6</a></li>
+<li><a class="reference internal" href="#updating-from-0-9x-to-0-9a5">Updating from 0.9x to 0.9a5</a></li>
+<li><a class="reference internal" href="#updating-from-0-9a1-to-0-9a2">Updating from 0.9a1 to 0.9a2</a></li>
+<li><a class="reference internal" href="#updating-from-0-8-to-0-9">Updating from 0.8 to 0.9</a><ul>
+<li><a class="reference internal" href="#upgrade-project-files-and-configuration-files">Upgrade Project Files and Configuration Files</a></li>
+<li><a class="reference internal" href="#make-static-file-paths-absolute">Make Static File Paths Absolute</a></li>
+<li><a class="reference internal" href="#methods-must-explicitly-allow-json">Methods Must Explicitly Allow JSON</a></li>
+<li><a class="reference internal" href="#changing-from-std-to-tg-in-your-templates">Changing from <tt class="docutils literal"><span class="pre">std.</span></tt> to <tt class="docutils literal"><span class="pre">tg.</span></tt> in your templates</a></li>
+<li><a class="reference internal" href="#other-incompatibilities">Other Incompatibilities</a></li>
+<li><a class="reference internal" href="#deprecated-items">Deprecated Items</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-from-0-5-to-0-8">Updating from 0.5 to 0.8</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Troubleshooting.html"
+                        title="previous chapter">Installation Troubleshooting</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Beta.html"
+                        title="next chapter">Downloading and installing a TurboGears beta version</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-1-0-upgrade-guide">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id4">TurboGears 1.0 Upgrade Guide</a><a class="headerlink" href="#turbogears-1-0-upgrade-guide" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-1-0-upgrade-guide" id="id4">TurboGears 1.0 Upgrade Guide</a></li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to upgrade TurboGears itself is to download the latest
+<a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a>  and run it! This will update all of the parts of the TurboGears
+installation that need updating.</p>
+<p>Backwards incompatible changes in new TurboGears versions might make it
+necessary to update your existing TurboGears applications, so that they work
+correctly with the new TurboGears version. These necessary changes are
+addressed in the remainder of this guide.</p>
+</div>
+<div class="section" id="updating-from-1-0-8-to-1-0-9">
+<h2>Updating from 1.0.8 to 1.0.9<a class="headerlink" href="#updating-from-1-0-8-to-1-0-9" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of changes in the 1.0.8 release which might affect existing
+applications. For a detailed list of changes, see the
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-9"><em>1.0.9 changelog</em></a>.</p>
+<p><em>No incompatible changes are known to exist in 1.0.9.</em></p>
+</div>
+<div class="section" id="updating-from-1-0-7-to-1-0-8">
+<h2>Updating from 1.0.7 to 1.0.8<a class="headerlink" href="#updating-from-1-0-7-to-1-0-8" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of changes in the 1.0.8 release which might affect existing
+applications. For a detailed list of changes, see the
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-8"><em>1.0.8 changelog</em></a>.</p>
+<div class="section" id="xhtml-content-type">
+<h3>XHTML Content Type<a class="headerlink" href="#xhtml-content-type" title="Permalink to this headline">¶</a></h3>
+<p>In TG 1.0.7 XHTML templates were delivered with a content type of
+<tt class="docutils literal"><span class="pre">&quot;application/xhtml+xml&quot;</span></tt>. In TG 1.0.8 this was changed back to
+<tt class="docutils literal"><span class="pre">&quot;text/html&quot;</span></tt> due to compatibility issues with the Internet Explorer.</p>
+</div>
+<div class="section" id="widget-forms">
+<h3>Widget Forms<a class="headerlink" href="#widget-forms" title="Permalink to this headline">¶</a></h3>
+<p>Hidden form fields in widget forms are now always put in an invisible <tt class="docutils literal"><span class="pre">div</span></tt>
+elements since they must be contained in a block-level element to be valid
+(X)HTML. This might effect your CSS selectors.</p>
+</div>
+</div>
+<div class="section" id="updating-from-1-0-6-to-1-0-7">
+<h2>Updating from 1.0.6 to 1.0.7<a class="headerlink" href="#updating-from-1-0-6-to-1-0-7" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of changes in the 1.0.7 release which might affect existing
+applications. For a detailed list of changes, see the.
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-7"><em>1.0.7 changelog</em></a>.</p>
+<div class="section" id="identity-exceptions">
+<h3>Identity exceptions<a class="headerlink" href="#identity-exceptions" title="Permalink to this headline">¶</a></h3>
+<p>The standard controller method <tt class="docutils literal"><span class="pre">Root.login</span></tt> handling the URl given by
+<tt class="docutils literal"><span class="pre">identity.failure_url</span></tt> (<tt class="docutils literal"><span class="pre">/login</span></tt>) now returns the proper HTTP status code
+<tt class="docutils literal"><span class="pre">&quot;401</span> <span class="pre">Unauthorized&quot;</span></tt> instead of <tt class="docutils literal"><span class="pre">&quot;403</span> <span class="pre">Forbidden&quot;</span></tt>. Please note that this
+change is reverted in TG 1.1 so that in case of an <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt>
+exception the 401 status is only returned if HTTP Basic Authentication is
+enabled, in which case a <tt class="docutils literal"><span class="pre">WWW-Authenticate</span></tt> header is sent along with the 401
+response. otherwise a 403 response code is sent again.</p>
+<p>These changes might especially affect any AJAX error callbacks in your JavaScript
+code, e.g. when using the MochiKit <tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> function.</p>
+</div>
+<div class="section" id="id1">
+<h3>XHTML Content Type<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>In TG &lt; 1.0.7 XHTML templates were delivered with a content type of
+<tt class="docutils literal"><span class="pre">&quot;text/html&quot;</span></tt>, while TG 1.0.7 uses <tt class="docutils literal"><span class="pre">&quot;application/xhtml+xml&quot;</span></tt>. Please note
+that this change was reverted in TG 1.0.8 due to compatibility issues with the
+Internet Explorer.</p>
+</div>
+</div>
+<div class="section" id="updating-from-1-0-5-to-1-0-6">
+<h2>Updating from 1.0.5 to 1.0.6<a class="headerlink" href="#updating-from-1-0-5-to-1-0-6" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of changes in the 1.0.6 release which might affect existing
+applications. For a detailed list of changes, see the
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-6"><em>1.0.6 changelog</em></a>.</p>
+<div class="section" id="paginate-decorator-parameter-changes">
+<h3>Paginate decorator parameter changes<a class="headerlink" href="#paginate-decorator-parameter-changes" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>What has changed:</dt>
+<dd>The <tt class="docutils literal"><span class="pre">allow_limit_override</span></tt> parameter to the paginate decorator has
+been deprecated in favor of the new parameters <tt class="docutils literal"><span class="pre">max_limit</span></tt>.</dd>
+<dt>How to update:</dt>
+<dd>Change <tt class="docutils literal"><span class="pre">allow_limit=True</span></tt> parameter in your paginate decorators to
+<tt class="docutils literal"><span class="pre">max_limit=None</span></tt> and <tt class="docutils literal"><span class="pre">allow_limit_override=False</span></tt> to
+<tt class="docutils literal"><span class="pre">max_limit=0</span></tt>.</dd>
+<dt>Trac ticket:</dt>
+<dd>See <a class="reference external" href="http://trac.turbogears.org/ticket/1908">ticket #1908</a> for more
+information.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="updating-from-1-0-4-to-1-0-5">
+<h2>Updating from 1.0.4 to 1.0.5<a class="headerlink" href="#updating-from-1-0-4-to-1-0-5" title="Permalink to this headline">¶</a></h2>
+<p>Here is a list of changes in 1.0.5 which might affect existing
+applications. For a detailed list of changes, see the
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-5"><em>1.0.5 changelog</em></a>.</p>
+<div class="section" id="json-response-encoding">
+<h3>JSON response encoding<a class="headerlink" href="#json-response-encoding" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>What has changed:</dt>
+<dd>The default encoding of JSON responses used to be ASCII with non-ascii
+values escaped. It is now <tt class="docutils literal"><span class="pre">UTF-8</span></tt>.</dd>
+<dt>How to update:</dt>
+<dd>If your application relies on the old behavior, you can set
+<tt class="docutils literal"><span class="pre">json.ensure_ascii=True</span></tt> in your application&#8217;s configuration.</dd>
+<dt>Trac ticket:</dt>
+<dd>See <a class="reference external" href="http://trac.turbogears.org/ticket/1480">ticket #1480</a> for more
+information.</dd>
+</dl>
+</div>
+<div class="section" id="json-response-content-type">
+<h3>JSON response content type<a class="headerlink" href="#json-response-content-type" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>What has changed:</dt>
+<dd>The default content type for JSON was changed from <tt class="docutils literal"><span class="pre">text/javascript</span></tt>
+to <tt class="docutils literal"><span class="pre">application/json</span></tt>.</dd>
+<dt>How to update:</dt>
+<dd>Check the JSON response handling callbacks in your JavaScript code whether
+they check for a response content type of <tt class="docutils literal"><span class="pre">text/javascript</span></tt> explicitly
+and change them to check for <tt class="docutils literal"><span class="pre">application/json</span></tt> instead or both.</dd>
+<dt>Trac ticket:</dt>
+<dd>See <a class="reference external" href="http://trac.turbogears.org/ticket/1842">ticket #1842</a> for more
+information.</dd>
+</dl>
+</div>
+<div class="section" id="package-name-in-configuration">
+<h3>Package name in configuration<a class="headerlink" href="#package-name-in-configuration" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>What has changed:</dt>
+<dd><tt class="docutils literal"><span class="pre">app.cfg</span></tt> in new quickstarted projects now sets the package name.
+This makes it easier for the i18n framework to find the locales.</dd>
+<dt>How to update:</dt>
+<dd>Add <tt class="docutils literal"><span class="pre">package</span> <span class="pre">=</span> <span class="pre">&quot;&lt;yourpackage&gt;&quot;</span></tt> to your application&#8217;s <tt class="docutils literal"><span class="pre">app.cfg</span></tt> file
+and substitute <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;</span></tt> with the package name of your
+application.</dd>
+<dt>Trac ticket:</dt>
+<dd>See <a class="reference external" href="http://trac.turbogears.org/ticket/1631">ticket #1631</a> for more
+information.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="updating-from-1-0-3-to-1-0-4">
+<h2>Updating from 1.0.3 to 1.0.4<a class="headerlink" href="#updating-from-1-0-3-to-1-0-4" title="Permalink to this headline">¶</a></h2>
+<p>Release 1.0.4 is only a minor release, so there are no incompatible changes.</p>
+<p>There is however a change that affects only the start script of newly
+quickstarted projects, old projects will still work as they are with 1.0.4.
+If you still want to update an old project to the new behavior, do the following.</p>
+<ol class="arabic">
+<li><p class="first">Quickstart a new project <strong>with the same name and settings</strong> as your old project
+somewhere in a temporary directory. Substitute <tt class="docutils literal"><span class="pre">&lt;project&gt;</span></tt> and <tt class="docutils literal"><span class="pre">&lt;package&gt;</span></tt>
+with your actual project resp. package name below.</p>
+</li>
+<li><p class="first">From the new project, copy the file <tt class="docutils literal"><span class="pre">&lt;project&gt;/&lt;package&gt;/commands.py</span></tt> to
+the corresponding location in your old project.</p>
+</li>
+<li><p class="first">From the new project, copy the file <tt class="docutils literal"><span class="pre">&lt;project&gt;/start-&lt;project&gt;.py</span></tt> to
+the corresponding location in your old project, overwriting the existing start
+script.</p>
+</li>
+<li><p class="first">Open the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file in your old project with an editor and change the
+following (again substituting <tt class="docutils literal"><span class="pre">&lt;package&gt;</span></tt> with the actual package name):</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Delete the following line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">scripts</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;start-&lt;package&gt;.py&quot;</span><span class="p">],</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Add the following to the end of the parameters of the <tt class="docutils literal"><span class="pre">setup()</span></tt> call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">entry_points</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;console_scripts&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;start-&lt;package&gt; = &lt;package&gt;.commands:start&#39;</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p>Other things you should do when upgrading:</p>
+<ol class="arabic simple">
+<li>Update your <tt class="docutils literal"><span class="pre">model.py</span></tt> file to align with the <tt class="docutils literal"><span class="pre">model.py</span></tt> boiler plate code
+in the new project. If you are using SQLAlchemy, you should now import and use
+<tt class="docutils literal"><span class="pre">metadata</span></tt> and <tt class="docutils literal"><span class="pre">mapper</span></tt> from <tt class="docutils literal"><span class="pre">turbogears.database</span></tt> instead of <tt class="docutils literal"><span class="pre">sqlalchemy.orm</span></tt>
+(you have to use this mapper at least for the TurboGears identity tables).</li>
+<li>Take over possibly missing logger configuration from the config files
+<tt class="docutils literal"><span class="pre">&lt;project&gt;/dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">&lt;project&gt;/test.cfg</span></tt>.</li>
+</ol>
+<p>For more information, please see the
+<a class="reference internal" href="../ChangeLog.html#changelog-1-0-4"><em>1.0.4 changelog</em></a>.</p>
+</div>
+<div class="section" id="updating-from-1-0-1-to-1-0-2">
+<h2>Updating from 1.0.1 to 1.0.2<a class="headerlink" href="#updating-from-1-0-1-to-1-0-2" title="Permalink to this headline">¶</a></h2>
+<p>A new setting <tt class="docutils literal"><span class="pre">identity.saprovider.model.visit</span></tt> resp. <tt class="docutils literal"><span class="pre">identity.soprovider.model.visit</span></tt>
+has been added to the config. You may want to include this in the <tt class="docutils literal"><span class="pre">app.cfg</span></tt> file of your
+existing projects to make sure the identity provider picks up the class from your model file.
+Otherwise it will use a default class which may not match the one in your model file.</p>
+</div>
+<div class="section" id="upgrading-from-sqlalchemy-0-3-to-0-4">
+<h2>Upgrading from SQLAlchemy 0.3 to 0.4<a class="headerlink" href="#upgrading-from-sqlalchemy-0-3-to-0-4" title="Permalink to this headline">¶</a></h2>
+<p>When your project uses SQLAlchemy and you want to upgrade from version 0.3.x to 0.4.x,
+you need to change a few import statements. There are no TurboGears specific changes.</p>
+<p>Add the following line to <tt class="docutils literal"><span class="pre">model.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">relation</span><span class="p">,</span> <span class="n">create_session</span>
+</pre></div>
+</div>
+<p>(Leaving <tt class="docutils literal"><span class="pre">from</span> <span class="pre">sqlalchemy</span> <span class="pre">import</span> <span class="pre">*</span></tt> as is should also work.)</p>
+<p>To <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy.exceptions</span> <span class="kn">import</span> <span class="n">SQLError</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updating-from-0-9a6-to-1-0-x">
+<h2>Updating from 0.9a6+ to 1.0.x<a class="headerlink" href="#updating-from-0-9a6-to-1-0-x" title="Permalink to this headline">¶</a></h2>
+<p>These instructions cover updating existing TurboGears projects that were started
+with TurboGears versions 0.9a6-1.0b2 to work with TurboGears version 1.0.x, up to
+and including the latest release 1.0.4.</p>
+<p><em>To be done...</em></p>
+</div>
+<div class="section" id="updating-from-0-9a5-to-0-9a6">
+<h2>Updating from 0.9a5 to 0.9a6<a class="headerlink" href="#updating-from-0-9a5-to-0-9a6" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">i18n.runTemplateFilter in the config file has been renamed i18n.run_template_filter
+(<a class="reference external" href="http://trac.turbogears.org/ticket/796">#796</a>)</p>
+</li>
+<li><p class="first">For people using <a class="reference internal" href="../FastData/index.html"><em>FastData</em></a> (experimental): <tt class="docutils literal"><span class="pre">get_add_url</span></tt>,
+<tt class="docutils literal"><span class="pre">get_edit_url</span></tt> and <tt class="docutils literal"><span class="pre">get_delete_url</span></tt> all are passed the row instead of the ID now,
+allowing you to use something other than the ID if desired.</p>
+</li>
+<li><p class="first">In widgets, if you were using a dictionary as <tt class="docutils literal"><span class="pre">params</span></tt> be aware that now the dictionary
+is not updated at construction or display/render time but simply replaced with the new one.
+If you were using it to provide default attributes for your widget, take a look at how the
+<tt class="docutils literal"><span class="pre">TableForm</span></tt> does that.</p>
+</li>
+<li><p class="first">QUICKSTART: quickstart projects that used identity would generate a table called <tt class="docutils literal"><span class="pre">user</span></tt>,
+which is invalid for some databases. The new quickstart <tt class="docutils literal"><span class="pre">model.py</span></tt> generates tables
+called tg_user. (<a class="reference external" href="http://trac.turbogears.org/ticket/805">#805</a></p>
+<p>If you have an old project with a <tt class="docutils literal"><span class="pre">model.py</span></tt> generated by a previous version,
+change the table name of the <tt class="docutils literal"><span class="pre">User</span></tt> object to <tt class="docutils literal"><span class="pre">tg_user</span></tt> by adding the following
+in the class definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+    <span class="n">table</span><span class="o">=</span><span class="s">&quot;tg_user&quot;</span>
+</pre></div>
+</div>
+<p>for SQLObject models. The SQLAlchemy model structure has changed several times since then, so
+you should probably just generate a new project and copy the identity classes from there.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="updating-from-0-9x-to-0-9a5">
+<h2>Updating from 0.9x to 0.9a5<a class="headerlink" href="#updating-from-0-9x-to-0-9a5" title="Permalink to this headline">¶</a></h2>
+<p>Identity has changed to use PEP 8 (Python standard coding convention) style
+names. <a class="reference external" href="http://trac.turbogears.org/ticket/737">SQL migration scripts</a> are available to help convert your database to
+the new names.</p>
+<p>Additionally, your identity login screen must have a button that is named
+&#8220;login&#8221; or another name specified in the identity.form.submit configuration
+variable.</p>
+</div>
+<div class="section" id="updating-from-0-9a1-to-0-9a2">
+<h2>Updating from 0.9a1 to 0.9a2<a class="headerlink" href="#updating-from-0-9a1-to-0-9a2" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears 0.9 introduced a new config file format that allowed you to do
+basically anything that can be done in Python. The modules looked mostly like
+INI files, but were actually Python modules being executed in a slightly
+altered namespace.</p>
+<p>It turns out that this had issues with Python 2.3, and some other minor issues
+that arose because these files ended in .py, but were not truly importable
+Python modules.</p>
+<p>For these reasons, TurboGears has switched back to the original CherryPy-style
+config file in 0.9a2. The configuration change that persists between TurboGears
+0.8 and 0.9 is that configuration is now split between two files: a deployment
+config file (<tt class="docutils literal"><span class="pre">dev.cfg</span></tt>, <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>) and a package config file:
+<tt class="docutils literal"><span class="pre">yourpackagename/app.cfg</span></tt>.</p>
+<p>There are a few minor, manual steps required to shift to the old/new config
+format if you were using 0.9 prior to 0.9a2:</p>
+<ol class="arabic">
+<li><p class="first">Rename <tt class="docutils literal"><span class="pre">devcfg.py</span></tt> to <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>.</p>
+</li>
+<li><p class="first">Rename <tt class="docutils literal"><span class="pre">prodcfg.py</span></tt> to <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>.</p>
+</li>
+<li><p class="first">mkdir <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config</span></tt>.</p>
+</li>
+<li><p class="first">Create an empty file in <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config</span></tt> called <tt class="docutils literal"><span class="pre">__init__.py</span></tt> (to
+make <tt class="docutils literal"><span class="pre">yourpackage/config</span></tt> a proper Python package).</p>
+</li>
+<li><p class="first">Rename <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config.py</span></tt> to &#8220;&lt;yourpackage&gt;/config/app.cfg&#8221;.</p>
+</li>
+<li><p class="first">Edit your <tt class="docutils literal"><span class="pre">start-&lt;yourproject&gt;</span></tt>.py file:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Change the references to <tt class="docutils literal"><span class="pre">devcfg.py</span></tt> to <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>.</li>
+<li>Change the references to <tt class="docutils literal"><span class="pre">prodcfg.py</span></tt> to <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>.</li>
+<li>Change the references to <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;.config</span></tt> to
+<tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;.config.app</span></tt></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> to add <tt class="docutils literal"><span class="pre">[global]</span></tt> at the top of the file.</p>
+</li>
+<li><p class="first">Edit <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config/app.cfg</span></tt>:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Add <tt class="docutils literal"><span class="pre">[global]</span></tt> at the top of the file</p>
+</li>
+<li><p class="first">Change any <tt class="docutils literal"><span class="pre">path(&quot;something&quot;)</span></tt> to <tt class="docutils literal"><span class="pre">[something]</span></tt> (note the removal of
+quotes)</p>
+</li>
+<li><p class="first">Change calls to <tt class="docutils literal"><span class="pre">absfile</span></tt> to use <tt class="docutils literal"><span class="pre">%(top_level_dir)s</span></tt>. This diff will
+give you an idea of the necessary change:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="o">-</span><span class="n">static_filter</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="n">absfile</span><span class="p">(</span><span class="s">&quot;${package}&quot;</span><span class="p">,</span> <span class="s">&quot;static&quot;</span><span class="p">)</span>
+<span class="o">+</span><span class="n">static_filter</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(top_level_dir)s</span><span class="s">/static&quot;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="updating-from-0-8-to-0-9">
+<h2>Updating from 0.8 to 0.9<a class="headerlink" href="#updating-from-0-8-to-0-9" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of changes that will need to be made to your project in
+order to upgrade to TurboGears 0.9.</p>
+<div class="section" id="upgrade-project-files-and-configuration-files">
+<h3>Upgrade Project Files and Configuration Files<a class="headerlink" href="#upgrade-project-files-and-configuration-files" title="Permalink to this headline">¶</a></h3>
+<p>One of the big changes in 0.9 is how configuration files work. Configuration
+files are now python modules, which provide a great deal of flexibility. The
+old configuration files will still work, but all ongoing development is going
+to be in the new format, and migration is relatively painless. The easiest way
+to add the new configuration files is to run the following command (in the base
+directory of your project):</p>
+<div class="highlight-python"><pre>tg-admin update</pre>
+</div>
+<p>Running this command is going to try and upgrade (and overwrite!) existing
+files, so be careful! tg-admin will prompt you with &#8216;Y/n/d/b&#8217; before
+overwriting anything. Y is yes (overwrite), n is no (don&#8217;t overwrite), d will
+show you a diff of the new and old file, and b will make a backup of your
+existing file before overwriting. Briefly, files that are going to be updated
+are:</p>
+<ul class="simple">
+<li><strong>controllers.py</strong> Some methods have been added for the new Identity feature,
+and turbogears.controllers.RootController is used instead of the deprecated
+version. It is probably easiest to say &#8216;n&#8217; (don&#8217;t overwrite). Later, if you
+like, you can create a new project (using &#8216;tg-admin quickstart&#8217;) to get a
+pure version of controllers.py and merge in these changes.</li>
+<li><strong>model.py</strong> You can probably leave this alone (answer &#8216;n&#8217;). The only change
+is   to import some files for Identity, and you can copy this import from a
+newly quickstarted project later if you plan on using Identity.</li>
+<li><strong>master.kid</strong> Changes to this file aren&#8217;t critical, so &#8216;n&#8217; is probably a
+safe choice. Again, there are Identity specific changes that you may want to
+merge in later.</li>
+<li><strong>setup.py</strong> This one you should probably answer &#8216;b&#8217; (backup). If you have
+made changes (which isn&#8217;t likely), you can merge them in later.</li>
+<li><strong>dev.cfg</strong> and <strong>prod.cfg</strong> The config files have been separated out into
+deployment config (held in these two files which you originally had) and an
+application config that would be the same regardless of where the application
+is deployed. You don&#8217;t need to make this transition if you don&#8217;t want to. You
+can safely press &#8220;n&#8221; to leave these files alone.</li>
+</ul>
+<p>A new config file will be placed in <tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config/app.cfg</span></tt>.
+Configuration items that are applicable to both development and production now
+go into app.cfg. The reason for this is that it allows your project to be
+conveniently packaged as an egg if you choose to do so, with the project
+specific configuration intact.</p>
+<p><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">update</span></tt> does not overwrite your old <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> or <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>.
+You can call <tt class="docutils literal"><span class="pre">&lt;yourprojectname&gt;-start.py</span></tt> to start up your project using the
+old config files, or you can use <tt class="docutils literal"><span class="pre">start-&lt;yourprojectname&gt;.py</span></tt> to start using
+the new configuration files. Migration to the new files should be
+straightforward, and is probably as simple as copying the database
+configurations from the old files to the new ones. Once you have fully migrated
+to 0.9, you should delete <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>, <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>, and
+<tt class="docutils literal"><span class="pre">yourprojectname-start.py</span></tt>.</p>
+</div>
+<div class="section" id="make-static-file-paths-absolute">
+<h3>Make Static File Paths Absolute<a class="headerlink" href="#make-static-file-paths-absolute" title="Permalink to this headline">¶</a></h3>
+<p>CherryPy 2.2 requires that paths to static files be absolute. While you might
+think this would prevent projects from being deployed on different machines,
+TurboGears provides a function &#8216;absfile&#8217; to help maintain portability. If your
+package name is &#8216;bigboy&#8217;, in 0.8 you would say:</p>
+<div class="highlight-python"><pre># &lt;=0.8 usage only
+[/static]
+staticFilter.on = True
+staticFilter.dir = "static"</pre>
+</div>
+<p>Now, you must now specify:</p>
+<div class="highlight-python"><pre># 0.9 usage
+[/static]
+staticFilter.on = True
+staticFilter.dir = "%(top_level_dir)s/static"</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">top_level_dir</span></tt> is the directory where the top level of your project is
+located. You can also use <tt class="docutils literal"><span class="pre">package_dir</span></tt> which is the same directory the
+config file is located in.</p>
+<p><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">update</span></tt> should take care of the <tt class="docutils literal"><span class="pre">/static</span></tt> and <tt class="docutils literal"><span class="pre">/favicon.ico</span></tt>
+cases (in the new config files), but if you have any custom static files or
+folders, you will need to make a change to make sure that the file paths are
+absolute.</p>
+</div>
+<div class="section" id="methods-must-explicitly-allow-json">
+<h3>Methods Must Explicitly Allow JSON<a class="headerlink" href="#methods-must-explicitly-allow-json" title="Permalink to this headline">¶</a></h3>
+<p>In order to prevent accidentally exposing information that perhaps everyone
+shouldn&#8217;t see, exposed methods no longer automatically provide JSON output when
+the url contains &#8216;tg_format=json&#8217;. Instead, you must explicitly state when a
+method is going to provide JSON output. This can be done two different ways:</p>
+<ol class="arabic">
+<li><p class="first">Enable JSON in app.cfg If you would like to have the same behavior as existed
+in v0.8 (i.e. JSON output is always exposed), you can globally enable it in
+your app.cfg with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tg</span><span class="o">.</span><span class="n">allow_json</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enable JSON only for specific methods If you would like to only let specific
+methods return JSON (which is probably smart from a security perspective),
+you can do so using the <tt class="docutils literal"><span class="pre">allow_json</span></tt> parameter in the
+<tt class="docutils literal"><span class="pre">&#64;turbogears.expose</span></tt> decorator, like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># This method can return html or json, depending on the url that is called</span>
+<span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;.templates.my_pretty_view&quot;</span><span class="p">,</span> <span class="n">allow_json</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pretty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&quot;msg&quot;</span><span class="p">:</span><span class="s">&quot;I&#39;m so pretty.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Or, if you really only care to have JSON output for a method, you can use the
+<tt class="docutils literal"><span class="pre">format</span></tt> parameter, like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># This method only returns json;</span>
+<span class="c">#&#39;tg_format=json&#39; isn&#39;t necessary in the url.</span>
+<span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&quot;json&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">modestly_hot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&quot;msg&quot;</span><span class="p">:</span><span class="s">&quot;I&#39;m only sorta hot. I don&#39;t mess around.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="changing-from-std-to-tg-in-your-templates">
+<h3>Changing from <tt class="docutils literal"><span class="pre">std.</span></tt> to <tt class="docutils literal"><span class="pre">tg.</span></tt> in your templates<a class="headerlink" href="#changing-from-std-to-tg-in-your-templates" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">std</span></tt> object that appears in your template namespace that holds useful
+values and functions has been renamed <tt class="docutils literal"><span class="pre">tg</span></tt>. You should be able to do a search
+and replace in your template files to swap <tt class="docutils literal"><span class="pre">std.</span></tt> with <tt class="docutils literal"><span class="pre">tg.</span></tt>.</p>
+</div>
+<div class="section" id="other-incompatibilities">
+<h3>Other Incompatibilities<a class="headerlink" href="#other-incompatibilities" title="Permalink to this headline">¶</a></h3>
+<p>There are a couple other changes that probably won&#8217;t impact most projects, but
+will cause things to not work if you are using them.</p>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">server.webpath</span></tt> configuration variable will not only properly set
+outgoing URLs, but will also &#8220;fix&#8221; incoming URLs if TurboGears is running at
+some path underneath another webserver. If you were previously running a
+CherryPy filter to handle this, you no longer need to.</li>
+<li>Previously, if you were using a FormEncode Schema for validation for an
+exposed method, validation would fail if a value was missing but the method
+had a default value for that parameter. Now, if that value is missing, the
+method will get called with the default just as it is normally called in
+Python.</li>
+</ul>
+</div>
+<div class="section" id="deprecated-items">
+<h3>Deprecated Items<a class="headerlink" href="#deprecated-items" title="Permalink to this headline">¶</a></h3>
+<p>The following items will work in 0.9, but will be changing in the future. You
+should migrate away from any usage of these items as you are able to.</p>
+<ul class="simple">
+<li>For clarity&#8217;s sake, <tt class="docutils literal"><span class="pre">turbogears.controllers.Root</span></tt> is now
+<tt class="docutils literal"><span class="pre">turbogears.controllers.RootController</span></tt>.</li>
+<li>Error handling has been greatly improved. Use of the <tt class="docutils literal"><span class="pre">validation_error</span></tt>
+method has been deprecated. It will still be called if it exists, but a
+DeprecationWarning will be displayed.</li>
+<li><tt class="docutils literal"><span class="pre">turbogears.tests.util</span></tt> has been moved to <tt class="docutils literal"><span class="pre">turbogears.testutil</span></tt>.</li>
+<li>CherryPy has a list of names that are deprecated in order to comply with
+PEP-8.</li>
+<li><tt class="docutils literal"><span class="pre">expose(html=...)</span></tt> is now deprecated in favor of <tt class="docutils literal"><span class="pre">expose(template=...)</span></tt>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="updating-from-0-5-to-0-8">
+<h2>Updating from 0.5 to 0.8<a class="headerlink" href="#updating-from-0-5-to-0-8" title="Permalink to this headline">¶</a></h2>
+<p>0.8 has a number of minor backwards incompatible changes. There are only two
+such changes that you&#8217;ll likely need to take action on.</p>
+<p>The primary one is the renaming of the <tt class="docutils literal"><span class="pre">turbogears*</span></tt> variables. You&#8217;ll want
+to do project wide search/replace for these values.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="53%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Search for</th>
+<th class="head">Replace with</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>turbogearshtml</td>
+<td>tg_template</td>
+</tr>
+<tr class="row-odd"><td>turbogearsfmt</td>
+<td>tg_format</td>
+</tr>
+<tr class="row-even"><td>turbogearsflash</td>
+<td>tg_flash</td>
+</tr>
+<tr class="row-odd"><td>turbogearsjs</td>
+<td>tg_js</td>
+</tr>
+</tbody>
+</table>
+<p>The other noticeable change that you&#8217;ll come across is that
+<tt class="docutils literal"><span class="pre">turbogears-admin.py</span></tt> has been renamed to <tt class="docutils literal"><span class="pre">tg-admin</span></tt>. Note that in addition
+to the base name change, you no longer need to add the <tt class="docutils literal"><span class="pre">.py</span></tt> on the end.</p>
+<p>Though they are less likely to pose problems for you, you may wish to check out
+the complete <a class="reference internal" href="../ChangeLog.html"><em>changelog</em></a> for additional changes.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

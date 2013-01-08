@@ -1,0 +1,193 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deploying TurboGears &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Hosting TurboGears Applications" href="Hosting.html" />
+    <link rel="prev" title="Firebird" href="../Database/Firebird.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Hosting.html" title="Hosting TurboGears Applications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Database/Firebird.html" title="Firebird"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deploying TurboGears</a><ul>
+<li><a class="reference internal" href="#where-to-deploy">Where to Deploy</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#autostarting">Autostarting</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Database/Firebird.html"
+                        title="previous chapter">Firebird</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Hosting.html"
+                        title="next chapter">Hosting TurboGears Applications</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="deploying-turbogears">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Deploying TurboGears</a><a class="headerlink" href="#deploying-turbogears" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deploying-turbogears" id="id1">Deploying TurboGears</a></li>
+</ul>
+</div>
+<div class="section" id="where-to-deploy">
+<h2>Where to Deploy<a class="headerlink" href="#where-to-deploy" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>Python isn&#8217;t as widely available on commodity hosting as other environments
+(read PHP) are. If you don&#8217;t have your own server, take a look at our list of
+<a class="reference internal" href="Hosting.html"><em>hosting companies</em></a> for top picks.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>Before you configure your server, you need to install your application on the
+target server. To make this easy for yourself and others, you should use
+Python eggs:</p>
+<ul class="simple">
+<li><a class="reference internal" href="DeployWithAnEgg.html"><em>Deploying your Application with an Egg and Easy Install</em></a></li>
+</ul>
+<p>Normally, you don&#8217;t have root access on rented hosting space. Here are some
+ways to install TurboGears into your home directory:</p>
+<ul class="simple">
+<li><a class="reference internal" href="NonRoot.html"><em>Installing TurboGears Without root Privileges</em></a></li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>There are many ways to run a TurboGears application. Before deployment, make
+sure you go over the <a class="reference internal" href="../Configuration.html"><em>Runtime Configuration</em></a> to setup your application for
+maximum performance.</p>
+<p>Next, you should decide how to deploy your application. Here are a few sample
+configurations. If it all possible, we recommend using either a setup with
+mod_wsgi or a reverse proxy, since these are most easy to set up, widely-used
+and proven configurations:</p>
+<ul class="simple">
+<li><a class="reference internal" href="BehindApache.html"><em>Deploying TurboGears Using Apache as a Reverse Proxy</em></a></li>
+<li><a class="reference internal" href="BehindNginx.html"><em>Deploying TurboGears Using Nginx as a Reverse Proxy</em></a></li>
+<li><a class="reference internal" href="ModPython.html"><em>Deploying TurboGears Using Apache and mod_python</em></a></li>
+<li><a class="reference internal" href="LightTPD.html"><em>Deploying TurboGears Using LightTPD</em></a></li>
+<li><a class="reference internal" href="BehindIIS.html"><em>Deploying TurboGears Using IIS</em></a></li>
+<li><a class="reference internal" href="WindowsService.html"><em>Running TurboGears as a Windows Service</em></a></li>
+<li><a class="reference internal" href="IntegratedWindowsAuthentication.html"><em>Integrated Windows Authentication</em></a></li>
+<li><a class="reference external" href="http://lucasmanual.com/mywiki/TurboGears#InstallTurbogearswithApache">Install Turbogears Using Apache and mod_wsgi</a></li>
+<li><a class="reference external" href="http://www.python.org/pypi/tg2exe">Distributing TurboGears as a Standalone Windows Application: tg2exe</a></li>
+</ul>
+<p>Please also consider <a class="reference internal" href="NumberOfThreads.html"><em>how many threads are appropriate</em></a>
+to be used in your deployment.</p>
+<p>If you run the TurboGears/CherryPy server behind a proxy, you also might want
+to read the following:</p>
+<ul class="simple">
+<li><a class="reference internal" href="RedirectHttpsRequests.html"><em>Making HTTPS Redirects Work With a Reverse Proxy</em></a></li>
+<li><a class="reference external" href="http://thraxil.org/users/anders/posts/2006/09/13/TurboGears-Deployment-with-supervisord-and-workingenv-py/">TurboGears Deployment with supervisord and workingenv</a></li>
+</ul>
+</div>
+<div class="section" id="autostarting">
+<h2>Autostarting<a class="headerlink" href="#autostarting" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>If want to use TurboGears standalone (or behind a proxy like Apache&#8217;s mod_proxy),
+you need to make sure that the TurboGears server is started automatically.
+On Unix like system you can treat your app like every other system daemon by adding
+a custom <a class="reference external" href="http://en.wikipedia.org/wiki/Init">init</a> script which starts the server automatically when your system boots.
+Some <a class="reference internal" href="InitScripts.html"><em>examples for init scripts</em></a> have been contributed to this documentation.</p>
+<p>We also recommend using the <a class="reference external" href="http://supervisord.org">Supervisor</a> system for starting your TurboGears
+application since it has some additional advantages and features.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+.. index:: IIS
+
+Proxying through IIS
+--------------------
+
+In some environments it is preferable to use IIS instead of :doc:`Apache <BehindApache>`. This arrangement allows TurboGears to run alongside Microsoft technologies such as ASP.Net, it has good support for :doc:`Integrated Windows Authentication <IntegratedWindowsAuthentication>`, and in some oranisations it is a politically easier sell.
+
+At present (Aug 2007) the only viable option is a reverse proxy deployment, although in the future it may be possible to use Python through `ASP <http://support.microsoft.com/kb/276494>`_, `ISAPI <http://sourceforge.net/projects/pyisapie/>`_, or even `IronPython <http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython>`_. A number of reverse proxies are available for IIS. `IIS Reverse Proxy <http://code.google.com/p/iisproxy/>`_ is free, and was developed specifically for deploying TurboGears applications in this manner.
+
+Setup IIS Reverse Proxy using the instructions in the README.txt. Edit web.config to point the proxyUrl to the TurboGears application. The application itself can be run as a Windows service, using :doc:`these instructions <WindowsService>`.
+
+In many deployments it is desirable to run the TurboGears application in a directory that is not the root, e.g. http://mysite.com/tgapp/page. If the IIS virtual directory is /tgapp, edit web.config so the BackEndSite is something like http://localhost:8081/tgapp, and configure the TG app so server.webpath='/tgapp'. This will make sure all links are consistently in the non-root directory, without any link rewriting. For this to work properly, it is necessary to always use relative URLs inside the TG application.
+
+There appear to be two outstanding issues with this implementation using server.webpath in TG <= 1.0.5:
+
+* If you are using Identity, the default templates don't respect server.webpath.  To work around this, edit login.kid and replace action="${previous_url}" with action="${tg.url(previous_url)}".
+
+* The turbogears.redirect function doesn't seem to respect server.webpath when you're using relative paths.  For example, if you have a nested controller in your Root controller, and you reference that controller without the trailing slash, TurboGears will redirect to a URL with the trailing slash, but without server.webpath.

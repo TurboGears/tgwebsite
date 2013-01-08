@@ -1,0 +1,47 @@
+.. index:: sessions, cherrypy.session
+
+Using Sessions in TurboGears
+============================
+
+To use sessions in TurboGears, you must first enable sessions in your config files (``dev.cfg``, ``prod.cfg``) by adding this line to the global section::
+
+  session_filter.on = True
+
+To demonstrate sessions, we'll build a simple counter::
+
+    import cherrypy
+
+    @turbogears.expose(html="myproject.templates.counter")
+    def counter(self):
+        # Session variable initialization (or recall if exists)
+        cherrypy.session['count'] = cherrypy.session.get('count', 0)
+
+        # Variable assignment
+        cherrypy.session['count'] = cherrypy.session['count'] + 1
+
+        #Return the value to your template
+        return dict(counter=cherrypy.session['count'])
+
+And the counter kid template (nothing special here, just for convenience)::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+        py:extends="'master.kid'">
+        <head>
+            <meta content="text/html; charset=utf-8" http-equiv="Content-Type" py:replace="''"/>
+            <title>Counters in TurboGears</title>
+        </head>
+        <body>
+            <div id="header">&nbsp;</div>
+            <div id="main_content">
+                <div id="counter_block">The count is: ${counter}</div>
+            </div>
+        </body>
+    </html>
+
+Refreshing the page should cause the counter to increase.
+
+The CherryPy site offers additional `details of session configuration`_.
+
+.. _details of session configuration: http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3490116
+

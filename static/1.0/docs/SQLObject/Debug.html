@@ -1,0 +1,134 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject Debugging &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Optimization" href="../Optimization.html" />
+    <link rel="prev" title="Dummy Kid Template for Debugging" href="../DummyTemplate.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Optimization.html" title="Optimization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../DummyTemplate.html" title="Dummy Kid Template for Debugging"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject Debugging</a><ul>
+<li><a class="reference internal" href="#sqlobject-has-a-debug-mode">SQLObject has a debug mode</a><ul>
+<li><a class="reference internal" href="#add-database-parameters">Add database parameters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../DummyTemplate.html"
+                        title="previous chapter">Dummy Kid Template for Debugging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Optimization.html"
+                        title="next chapter">Optimization</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-debugging">
+<h1>SQLObject Debugging<a class="headerlink" href="#sqlobject-debugging" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sqlobject-has-a-debug-mode">
+<h2>SQLObject has a debug mode<a class="headerlink" href="#sqlobject-has-a-debug-mode" title="Permalink to this headline">¶</a></h2>
+<p>In your config file where you have your database connection string add
+<tt class="docutils literal"><span class="pre">?debug=True</span></tt> to it and in the shell you will see the SQL flow, for example:</p>
+<div class="highlight-python"><pre>mysql://host/database?debug=True</pre>
+</div>
+<div class="section" id="add-database-parameters">
+<h3>Add database parameters<a class="headerlink" href="#add-database-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Parameters are:</p>
+<div class="highlight-python"><pre>debug (default: False)
+debugOutput (default: False)
+cache (default: True)
+autoCommit (default: True)
+debugThreading (default: False)
+logger (default: None)
+loglevel (default: None)</pre>
+</div>
+<p>If you set <tt class="docutils literal"><span class="pre">debugOutput</span></tt> then you will also see the return values of the
+queries. If you set <tt class="docutils literal"><span class="pre">debugThreading</span></tt> then the name of the thread that is
+executing the query will also be shown.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

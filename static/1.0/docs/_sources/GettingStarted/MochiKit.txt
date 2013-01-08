@@ -1,0 +1,61 @@
+.. index:: MochiKit
+
+A Brief Introduction to MochiKit
+================================
+
+While TurboGears is a Python-based megaframework, a modern webapp *has* to use
+JavaScript to provide a good user experience. JavaScript includes some of the
+conveniences that we, as Python programmers, are used to: built-in dictionaries
+(hashes) and listish arrays, regular expressions, functions as objects that can
+be passed around, etc. JavaScript also lacks a number of the tools that we're
+used to. The basic JavaScript library also does not include everything you'd
+need for a complete app.
+
+MochiKit fills in a lot of the gaps in a way that is both natural for Python
+and JavaScript. It is broken down into several packages, but you can have
+immediate access to all of its functionality by adding one line to your page's
+``<HEAD>``::
+
+  <script src="${tg.tg_js}/MochiKit.js"/>
+
+
+Your templates automatically get the ``tg.tg_js`` variable, and MochiKit is
+automatically made available as a static file from the server. When you load
+MochiKit this way, you're getting everything from the MochiKit modules.
+MochiKit includes:
+
+``Async``
+  manage asynchronous tasks (including AJAX/XMLHttpRequest)
+``Base``
+  functional programming and useful comparisons
+``DOM``
+  painless DOM manipulation API
+``DateTime``
+  "what time is it anyway?"
+``Format``
+  string formatting goes here
+``Iter``
+  itertools for JavaScript; iteration made HARD, and then easy
+``Logging``
+  we're all tired of alert()
+
+MochiKit includes so much functionality, that this module breakdown makes it
+much easier to follow (and work with, if you're making improvements to it).
+
+`MochiKit's documentation`_ is very good, so there's no reason to duplicate it
+here. To get an idea what each module has to offer, take a look at the
+introductory material at the top of each module's documentation.
+
+It is worth skimming through the function reference as well, because each
+module has features that will make your life easier. For example, you know from
+the synopsis that ``MochiKit.Base`` offers features like ``map`` and
+``repr``... but did you know that it also has functions for putting together
+and parsing HTTP query strings?
+
+.. _MochiKit's documentation: http://www.mochikit.com/doc/html/MochiKit/index.html
+
+On the last page of the :doc:`20min wiki tutorial </Wiki20/Page6>` you find
+an example how MochiKit can be used to pep up a TurboGears application.
+
+
+:doc:`Previous: Template Variables You Get for Free </StdVars>`

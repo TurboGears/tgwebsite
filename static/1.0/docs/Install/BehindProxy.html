@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installing TurboGears on a host behind a proxy &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installation Troubleshooting" href="Troubleshooting.html" />
+    <link rel="prev" title="Offline Installation" href="Offline.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Troubleshooting.html" title="Installation Troubleshooting"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Offline.html" title="Offline Installation"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installing TurboGears on a host behind a proxy</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#mac">Mac</a></li>
+<li><a class="reference internal" href="#try-again">Try again</a></li>
+<li><a class="reference internal" href="#workaround">Workaround</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Offline.html"
+                        title="previous chapter">Offline Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Troubleshooting.html"
+                        title="next chapter">Installation Troubleshooting</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="installing-turbogears-on-a-host-behind-a-proxy">
+<span id="index-0"></span><h1>Installing TurboGears on a host behind a proxy<a class="headerlink" href="#installing-turbogears-on-a-host-behind-a-proxy" title="Permalink to this headline">¶</a></h1>
+<p>You probably reached this page, because you encountered a problem when trying to install TurboGears. When you run <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall">easy_install</a> or <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a>, you get something like this</p>
+<div class="highlight-python"><pre>Searching for turbogears
+Reading http://www.turbogears.org/preview/download/index.html
+error: Download error: (10060, 'Operation timed out')</pre>
+</div>
+<p>This may mean, that you are behind a proxy and easy_install is not able to access the files it wants to download. But fear not, there is an <a class="reference external" href="http://en.wikipedia.org/wiki/Environment_variable">environment variable</a> which you can set, to tell easy_install about your proxy.</p>
+<div class="section" id="linux">
+<h2>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>export http_proxy="http://your.proxy.com:yourPort"</pre>
+</div>
+<p>or if you need proxy authentication:</p>
+<div class="highlight-python"><pre>export http_proxy="http://user:passwd@your.proxy.com:yourPort"</pre>
+</div>
+</div>
+<div class="section" id="windows">
+<h2>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>tested on XP</p>
+<div class="highlight-python"><pre>set HTTP_PROXY=http://your.proxy.com:yourPort</pre>
+</div>
+<p>you can also use the &#8220;&#8221; in windows</p>
+</div>
+<div class="section" id="mac">
+<h2>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TODO</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="try-again">
+<h2>Try again<a class="headerlink" href="#try-again" title="Permalink to this headline">¶</a></h2>
+<p>After setting the proxy, run the <tt class="docutils literal"><span class="pre">easy_install</span></tt> command again (you may need to log out and in again or open a new command line window for the environment change to take effect):</p>
+<div class="highlight-python"><pre>easy_install -i http://www.turbogears.org/1.0/downloads/current/index TurboGears</pre>
+</div>
+</div>
+<div class="section" id="workaround">
+<h2>Workaround<a class="headerlink" href="#workaround" title="Permalink to this headline">¶</a></h2>
+<p>If, by some chance, you can&#8217;t set the proxy or want to do an offline install, download all the eggs and run easy_install with the <tt class="docutils literal"><span class="pre">-f</span></tt> option pointing to the directory where you downloaded the packages. See also &#8220;How can I do offline installations?&#8221; in the <a class="reference internal" href="../FAQ.html"><em>FAQ</em></a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

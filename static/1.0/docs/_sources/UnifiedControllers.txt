@@ -1,0 +1,130 @@
+Unified Form Data Validation
+============================
+
+In TurboGears, the most common solution to requiring and processing a form is
+to produce two controller methods: one to populate and return a widget - usually
+a Form descendant - and another to perform the validation and desired action.
+Additionally, validation of a form requires that it be defined globally - or at
+least in a way that can be passed to the @validate decorator. You end up with a
+structure similar to the following::
+
+    form = MyForm(fields=MyFields())
+
+    class MyController(Controller):
+
+        @expose('.templates.genericform')
+        def edit(self, **kw):
+            stock_data = dict(name="Willy")
+            stock_data.update(kw)
+            return dict(title="Foo Bar",
+                form=form, data=stock_data, action='save')
+
+        @expose()
+        @validate(form)
+        @error_handler(edit)
+        def save(self, **kw):
+            # Perform some action with the data in kw.
+            flash("Some success message.")
+            redirect('edit')
+
+This is a very common idiom used in TurboGears applications, and it's
+actually not so bad. However, you may not like the separation into two
+different controller methods with different URLs passing the data to each
+other. Also, you may want to use runtime-created form widgets based on the
+user input. You can actually have dynamically created forms by passing a
+callable to the ``@validate()`` decorator, but this is not so straightforward
+any more. So here is an alternative way of structuring things that you may
+prefer, because it uses only one controller at one URL and makes it somewhat
+easier to use dynamically created forms::
+
+    class MyController(Controller):
+
+        @expose('.templates.genericform')
+        def edit(self, **kw):
+
+            # Forms can be defined anywhere in the controller
+            #   method before the @validate decorator.
+            # Or, you can still use a global one to not have
+            #  to re-process the form on each call.
+
+            form = MyForm(fields=MyFields())
+
+            if kw:
+
+                @validate(form=form)
+                def check(self, tg_errors=None, **kw):
+                    return tg_errors, kw
+                errors, data = check(self, **kw)
+
+                if errors:
+                    flash("Some error message.")
+                else:
+                    # Perform some action with the data in data.
+                    # kw still contains the raw data.
+                    flash("Some success message.")
+                    redirect('edit')
+
+            else:
+                data = dict(...)
+
+            return dict(title="Foo Bar", form=form, data=data)
+
+
+Generic Form Template
+---------------------
+
+The above examples used ``project.templates.genericform``.
+This template is small, simple, and robust enough for many applications
+and nearly any form. The content of this template is::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+        py:extends="'master.kid'">
+    <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type" py:replace="''"/>
+    <title py:content="title">Generic Form</title>
+    </head>
+    <body>
+
+    <p py:if="defined('description')" py:content="description"/>
+
+    <form py:if="not defined('action') and defined('data')"
+          py:replace="form(data)"/>
+    <form py:if="not defined('action') and not defined('data')"
+          py:replace="form()"/>
+    <form py:if="defined('action') and defined('data')"
+          py:replace="form(data, action=action)"/>
+    <form py:if="defined('action') and not defined('data')"
+          py:replace="form(action=action)"/>
+
+    <pre py:if="defined('debug')" py:content="debug"/>
+
+    </body>
+    </html>
+
+You can pass the following variables to the template:
+
+``title``
+  The title of the page / form.
+  Examples include "Updating ...", "Creating ...", etc. *Required.*
+
+``description``
+  Any block of text to appear above the form.  *Optional.*
+
+``form``
+  Any widget object, usually a descendant of Form, e.g. TableForm. *Required.*
+
+``data``
+  Default data to pass to and populate the widget.  *Optional.*
+
+``action``
+  The location the form should submit its data to.
+  If not a descendant of a Form, do not pass this variable. *Optional.*
+
+``debug``
+  Display preformatted debugging information below the form.
+  E.g. used to display the ``repr()`` of something.  *Optional.*
+
+Feel free to re-use this template in your own applications!
+

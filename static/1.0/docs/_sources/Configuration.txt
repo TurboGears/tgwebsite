@@ -1,0 +1,483 @@
+.. index:: configuration
+
+TurboGears Configuration
+========================
+
+.. contents::
+  :depth: 2
+
+
+TurboGears is designed to get running with a minimum of trouble and very little
+external configuration. For many applications, the only thing that will need to
+change from the basic ``tg quickstart`` configuration is the location of the
+database.
+
+
+Configuration Layout
+--------------------
+
+A quickstarted application comes with five configuration files:
+
+ * ``dev.cfg``
+ * ``sample-prod.cfg``
+ * ``test.cfg``
+ * ``<package_name>/config/app.cfg``
+ * ``<package_name>/config/log.cfg``
+
+The ``dev.cfg`` file is the deployment configuration used while you are
+developing your application.
+
+The ``sample-prod.cfg`` contains appropriate settings for a "real" deployment.
+We recommend that you rename this file to ``prod.cfg`` and tweak the settings
+before deploying an application.
+
+The ``test.cfg`` file is used when you run the test suite of your project.
+See :doc:`Testing Your Application <Testing>` for more information about test suites.
+
+Of these three files, only one will be used at a time, depending on how you
+:doc:`start the server <GettingStarted/Server>`, that's why they are located
+in the top-directory and not in your application's package.
+
+The ``app.cfg`` holds options that are always the same regardless of the
+environment your program runs in. While ``dev.cfg`` and ``prod.cfg`` are mostly
+concerned with database config strings, ports, and auto-reloading, ``app.cfg``
+contains encoding, output, and identity settings.
+
+The ``log.cfg`` holds logging configuration that is independent of of the environment
+your program runs in, e.g. different log handlers and log formatting profiles.
+Environment-specific logging configuration should go into ``dev.cfg`` or ``prod.cfg``.
+See the :doc:`logging documentation <LoggingSystem>` for more information on how logging works.
+
+Running the server using ``start-*appname*.py`` will use the ``dev.cfg`` config
+file by default. You can change this by passing the path to another config file
+as a command line parameter::
+
+    python start-*appname*.py prod.cfg
+
+
+Configuration Syntax and Sections
+---------------------------------
+
+The syntax is an extended version of the standard INI/ConfigParser format.
+The main extensions are an increased importance of sections and the addition
+some pre-defined variables for string interpolation, to reduce the number of
+hard coded file paths. If want to know more about this format, you can
+refer to the `ConfigObj`_ documentation.
+
+.. _ConfigObj: http://www.voidspace.org.uk/python/configobj.html
+
+The ``[global]`` section of the config file is intended for settings that apply
+server-wide and at start-up time. CherryPy also uses path-based config sections
+that are for setting filters and settings that apply only to one part of your
+site. The example below, will set ``tg.allow_json`` *only* for the
+``/admin`` part of the site.
+
+::
+
+    [/admin]
+    tg.allow_json = True
+
+Like with the ConfigParser format, you can also use string interpolation, to refer
+to values of one configuration setting in the value of another setting within the
+config file. See the ConfigObj documentation on `string interpolation`_ for more
+information on this.
+
+There are three pre-defined variables for string interpolation. The first is
+``current_dir_uri``, which is the absolute file system path to the current working
+directory.  This is primarily used in the default sqlite's dburi but can be used
+elsewhere::
+
+    sqlobject.dburi = "sqlite://%(current_dir_uri)s/devdata.sqlite"
+
+The second is ``package_dir``, the absolute file system path to the package containing
+the configuration of your application (the location of the ``config`` directory and
+the ``controllers.py`` module in a quickstarted project). It is used primarily in
+``app.cfg`` to get a working filepath to the static content when the project is moved
+to a different server. Then there is also ``top_level_dir`` which is the directory of
+the top level package of your application (which is usually the same as ``package_dir``
+unless your application is a subpackage of a larger package).
+
+.. _string interpolation:
+    http://www.voidspace.org.uk/python/configobj.html#string-interpolation
+
+
+Retrieving Config Variables From Your Application
+-------------------------------------------------
+
+Retrieving values is done using the ``turbogears.config.get('key'[,default])`` function::
+
+    >>> from turbogears import config
+    >>> config.get('sqlobject.dburi','sqlite:///:memory:') #second value is optional default value
+    'sqlite:///:memory:'
+
+
+Accessing Config Variables Within the Template
+----------------------------------------------
+
+In your templates the ``turbogears.config.get`` function is available as ``tg-config``,
+so you can do something like this::
+
+    ${tg.config('myproject.mysetting', 'default')}
+
+Alternatively, you can pass the ``config`` object as part of your template dictionary::
+
+    from turbogears import config
+
+        #...
+        def ...(self, ...)
+            return dict(config=config)
+
+Or, if you prefer, you can import ``config`` in your Kid template::
+
+   <?python from turbogears import config ?>
+
+In both cases, the syntax for retrieving configuration settings is the same as in your
+controller code.
+
+
+CherryPy Configuration Reference
+--------------------------------
+
+TurboGears uses CherryPy's configuration system. This document doesn't cover
+the CherryPy settings and conventions in detail, but here is a short list of
+the most common options.
+
+``autoreload.package`` -- ``"*packagename*"``
+  The Cherrypy's autoreload functionality takes care of restarting the server
+  if *any* of the modules that have been imported changes. This is very handy
+  for development but could cause huge resources usage in production since it
+  requires checking quite a few files and is not compatible with zipped Egg
+  files. TurboGears adds this config parameter to specify one your appplication
+  base package.
+
+``server.environment``
+  Can be either ``"development"`` or ``"production``. The ``development``
+  option enables a variety of error reporting tools as well as auto-reloading
+  while ``production`` turns them all off in the interest of performance. See
+  See item `1.3.2.1. server.environment`_ in the CherryPy docs for details.
+
+.. _1.3.2.1. server.environment:
+  http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3471036
+
+``server.log_file``
+  Path to the log file, if this is empty, no logging to disk takes place.
+
+``server.log_to_screen``
+  Sends the server log to screen. Keep it off in production for improved
+  performance.
+
+``server.socket_file``  - ``""``
+  For when you're proxying CherryPy locally and want to listen on a named pipe.
+  If you use this, you **must** also set ``server.socket_port`` to ``None``,
+  leaving ``server.socket_port`` unset will not work.
+
+``server.socket_host`` -- ``""``
+  This setting binds CherryPy to a particular ip address. This isn't usually
+  necessary, as CherryPy will listen for any incoming connections by default.
+  The exception is when your application is running on a system which has both
+  a IPv4 and IPv6 network stack. By default the CherryPy server will only listen
+  on the IPv6 interfaces. Normally, to listen on all IPv4 interfaces, you would
+  set ``server.socket_host = '0.0.0.0'`` but unfortunately, due to a bug in
+  CherryPy <= 3.0, this causes an error on some systems. The workaround is to
+  set ``server.socket_host`` to a specific interface address and run your
+  application behind a reverse proxy that listens on all interfaces and forwards
+  requests to your application.
+
+``server.socket_port`` -- ``8080``
+  CherryPy listens on this port for incoming HTTP connections.
+
+``server.webpath``
+  Specifies the root of the site for use when generating URLs. Use this if your
+  whole TurboGears instance is not at the root of your webserver. So if your
+  application was located at ``/turbogears/my_app`` rather than ``/my_app``,
+  you would set ``server.webpath = "/turbogears/"``.
+
+  **Note**: Despite the name, this option is a TurboGears extension to CherryPy
+  and is used with the :doc:`tg.url() function <GettingStarted/URLs>`.
+
+For a more complete treatment of CherryPy options, we defer you to the CherryPy
+site, specifically section 1.3 `an overview of the configuration system`_ and
+section 1.3.2 `reference of some configuration options`_.
+
+.. _an overview of the configuration system:
+  http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3467720
+.. _reference of some configuration options:
+  http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3440093
+
+
+TurboGears ``dev.cfg`` and ``prod.cfg`` Configuration Reference
+---------------------------------------------------------------
+
+``sqlobject.dburi``
+  The SQLObject URI that identifies the database to use for this application.
+  The general form of the URI is
+  ``databasetype://username:password@hostname:port/databasename``.
+
+  If you put ``:doc:`/notrans``` in front of the URI, the automatic database
+  transactions will be turned off.
+
+  Note that for **sqlite**, the format is more like that of a ``file:// URL:
+  sqlite:///absolute_path_to_file``.
+
+  Also note that on Windows systems, sqlite used | instead of : As of
+  Turbogears 0.9a6, it is smart enough to undestand both ways. For example:
+  ``sqlite:///d|databases/foo.db`` and ``sqlite:///d:databases/foo.db`` are
+  both valid points to ``D:\databases\foo.db``.
+
+  Note to **MySQL** users: If you use a different socket than
+  ``/tmp/mysql.sock``, you may specify which socket to use by adding a
+  ``unix_socket`` argument to the dburi. i.e.,
+  ``mysql://user:pass@host:port/db?unix_socket=/path/to/mysql.sock``.
+
+``tg.bonjour``
+  This setting enables/disables :doc:`Zeroconf <ZeroConfSupport>` (aka Bonjour)
+  support for the server. You can set this to the name under which your application
+  should appear in the Zeroconf service list or to a boolean false value (empty
+  string, ``None``, ``False``, ``0``) to disable registering the TurboGears
+  server with zeroconf on startup. If it is not set, the server will be
+  registered with Zeroconf only if ``server.environment`` is set to
+  ``"development"`` and the name will be your application's top-level
+  package name.
+
+``tg.fancy_exception`` -- ``False``
+  When ``True``, exceptions will present an extended traceback with both
+  ``locals()`` and an ``eval()`` input provided for each level of the stack. This
+  is disabled by default because it allows the person viewing the trace to
+  **remotely evaluate arbitrary code** on your server. Enable with due care.
+
+``tg.strict_parameters`` -- ``False``
+  When ``True``, TurboGears raises an error when a controller is passed an
+  unexpected parameter. This is useful because it helps you catch typos in your
+  code. In a production environment, mistyping a url or passing a bad parameter
+  in a query string returns a 404 or 200, respectively.
+
+
+Turbogears ``app.cfg`` Configuration Reference
+----------------------------------------------
+
+``kid.outputformat``
+  Sets the default output format used when rendering Kid templates. By default,
+  TurboGears will tell Kid to produce HTML files, which is optimum for most web
+  applications. If your application needs to output XHTML or XML, you can set
+  that here. There is `more information about the available output methods`_.
+
+.. _more information about the available output methods:
+    http://kid-templating.org/guide.html#common-output-methods
+
+``kid.encoding`` -- ``"utf-8"``
+  Sets the output encoding for kid templates.
+
+``tg.allow_json`` -- ``False``
+  When this is set to ``False``, calling a function with ``?tg_format=json``
+  will not work by it's own. You need to set ``allow_json`` to ``True`` in the
+  ``expose()`` decorator or set the ``default_format='json'``.
+
+``tg.content_type`` -- ``"text/html"``
+  This is the IETF mime-type of the template output. The most common reason to
+  change this is to add an encoding, e.g.
+  ``tg.content_type = "text/html; encoding=utf-8"``.
+
+``tg.defaultview`` -- ``"kid"``
+  Determines which template engine to use by default. If this is not set, Kid
+  will be used to render the templates you specify in your controller. The
+  template engine is identified by the file extension used.
+
+  See the :doc:`alternative templating <AlternativeTemplating>` section for an
+  overview of non-Kid options.
+
+``tg.ignore_parameters`` -- ``[]``
+  List of names of parameters which shall not be passed to the controllers
+  when ``tg.strict_parameters`` is set (besides ``tg_random``, ``tg_format``
+  which are never passed anyway). For instance, since the ``ext.js`` JavaScript
+  library uses the parameter name ``_dc`` ("don't care") to avoid caching problems,
+  similar to how ``tg_random`` is used, you could set this to ``['_dc']``.
+
+``tg.include_widgets`` -- ``[]``
+  This option automatically includes the listed widgets in all pages on the
+  site. This is primarily useful for javascript libraries that have been
+  packaged as widgets, such as the ``tg.mochikit``.
+
+  **Note:** This option has replaced the ``tg.mochikit_all`` option from older
+  TurboGears releases. To achieve the same effect, you'll want to set
+  ``tg.include_widgets = ['turbogears.mochikit']``.
+
+``tg.mochikit_suppress`` -- ``False``
+  Setting this to ``True`` will prevent the inclusion of the MochiKit version
+  1.3.1, that comes shipped with TurboGears, in the (X)HTML template output.
+  This allows to include your own custom mochikit versions.
+
+``tg.scheduler`` -- ``False``
+  The TurboGears :doc:`Scheduler <Scheduler>` thread/process will be started at server startup
+  if this is set to ``True``.
+
+``tg.sitetemplate``
+  TurboGears applications that are intended to be reused should make sure that
+  every page template ultimately extends sitetemplate. This config variable
+  lets you set which template is used as the sitetemplate. The value should be
+  of the form ``*packagename*.templates.templatename``, including the quotes.
+
+
+Visit and Identity Configuration Reference
+------------------------------------------
+
+Answering "yes" to the identity prompt during ``tg-admin quickstart`` will fill
+in your model with a number of tables and will add the following options to
+your ``app.cfg``:
+
+
+Visit
+~~~~~
+
+``visit.cookie.domain`` -- ``None``
+  Domain name to specify when setting the cookie (must begin with a `.` (dot)
+  according to RFC 2109). This is useful when your computer is at
+  ``spam.eggs.foo.com`` and you want to set a cookie for your whole ``foo.com``
+  domain for use in other applications.
+
+  The default (None) should work for most cases and will default to the machine
+  to which the request was made. **Note:** ``localhost`` is NEVER a valid value
+  and will **NOT** work.
+
+``visit.cookie.name`` -- ``"tg-visit"``
+  The name of the cookie with the visit key to transmit to the visitor's browser.
+
+``visit.cookie.path`` -- ``"/"``
+  Specific path for the cookie, the default puts your cookie in scope for the
+  entire site.
+
+``visit.cookie.permanent`` -- ``False``
+  Set to true if the visit cookie shall be a permanent cookie with a ``max-age``
+  attribute calculated from ``visit.timeout``. Otherwise, ``max-age`` will not be
+  set, resulting in a session cookie that will be discarded when the browser is closed.
+
+``visit.form.name`` -- ``tg_visit``
+  The name of the request parameter from which the visit key may be retrieved
+  when ``visit.source`` includes ``'form'``). The name MUST NOT contain dashes
+  or dots or it will break the request parameters decoding by the
+  ``NestedVariablesFilter``. New in 1.0.6.
+
+``visit.manager`` -- ``"sqlobject"``
+  The name of the VisitManager plugin to use for visitor tracking.
+
+``visit.on`` -- ``True``
+  Enables visit tracking. This means that each visit to your application will
+  be assigned a unique visit ID tracked via a cookie sent to the visitor's
+  browser.
+
+``visit.soprovider.model`` -- ``"*appname*.model.Visit"``
+  Database class to use for visit tracking
+
+``visit.source`` -- ``cookie``
+  Where to look for the key of an existing visit in the request.
+
+  This should be a comma-separated list of the possible values:
+  ``'cookie'``, ``'form'``. The given methods will be tried one-after-another
+  in the given order until a valid visit key is found or the list is exhausted.
+  By default only use the visit key found in a session cookie.  New in 1.0.6.
+
+``visit.timeout`` -- ``20``
+  Number of minutes a visit may be idle before it expires.
+
+
+.. _Identity:
+
+Identity
+~~~~~~~~
+
+``identity.failure_url`` -- ``"/login"``
+    URL to which CherryPy will internally redirect when an access control check
+    fails. If Identity management is turned on, a value for this option **must**
+    be specified. The value for this setting normally is a string with a URL but
+    it can also be set to a callable which should accept one positional argument
+    (a list of identity errors) and return the URL to redirect to as a string.
+    See the :doc:`identity recipes <Identity/Recipes>` page for more information
+    on using this feature.
+
+``identity.force_external_redirect`` -- ``False``
+    If this is set to True, the identity framework will do an external redirect,
+    when an ``IdentityFailure`` exception occurs, instead of an internal one,
+    i.e. it will redirect the browser to the URL given by ``identity.failure_url``.
+    This is useful if the failure URL is set to an ``https://`` URL (for example
+    to handle logins over an HTTPS connection, but keep the rest of the site on
+    plain HTTP), since an internal redirect would not work in this case.
+
+``identity.form.user_name`` -- ``"user_name"``
+    See below.
+
+``identity.form.password`` -- ``"password"``
+    See below.
+
+``identity.form.submit`` -- ``"login"``
+    The names of the fields on the login form containing the visitor's user name
+    and password (as recorded in the applications' data model object set by the
+    ``identity.*provider.model.user`` setting explained below under :ref:`Provider`).
+    In addition, the name of the submit button is specified simply so its value
+    may be stripped out from the request data prior to passing it to the target
+    controller method.
+
+``identity.on`` -- ``True``
+  Enables usage of the ``turbogears.identity`` module.
+
+``identity.source`` -- ``"form,http_auth,visit"``
+  Comma-separated list of sources the identity should provider consider
+  when determining the identity associated with a request.
+  The given methods will be tried one-after-another in the given order
+  until a valid identity is found or the list is exhausted.
+
+  Available options:
+
+  * ``form`` - Inspect the form variables passed in the request data to pull
+    out identity information. The request data must have fields for
+    ``user_name``, ``password``, and a ``login`` submit button.
+
+  * ``http_auth`` - Tries to get the identity information from the HTTP
+    ``Authorization`` header. Only Basic Auth is handled at the moment.
+
+  * ``visit`` - Loads the identity from the visit records.
+
+``identity.custom_encryption`` -- ``None``
+    When ``identity.*provider.encryption_algorithm`` (see below under :ref:`Provider`)
+    is set to ``"custom"`` you can provide a custom password encryption function
+    through this setting. The value should be the full name of the callable
+    (including the module (and possibly class) name) in dotted-path notation. The
+    callable should accept the password to be encrypted as a string (utf-8 encoded)
+    and return a unicode string with the encrypted password. Example::
+
+       identity.custom_encryption = 'mypkg.utils.encrypt_password'
+
+
+.. _Provider:
+
+Provider
+~~~~~~~~
+
+These options are only applicable when using one of the default identity
+provider plugins. TurboGears supplies both a SQLObject and a SQLAlchemy
+identity provider, they are named ``soprovider`` and ``saprovider``
+respectively and take the same options.
+
+``identity.*provider.encryption_algorithm`` -- ``None``
+  The password encryption algorithm used when comparing passwords against
+  what's stored in the database. Valid values are ``md5`` or ``sha1`` or ``custom``.
+
+  If you do not specify an encryption algorithm, passwords are expected to be clear
+  text. If the value is ``custom`` you must also set the the
+  ``identity.custom.encryption`` setting (see above under :ref:`Identity`) to the name
+  of an appropriate callable in dotted-path notation.
+
+  If this is set to a valid encryption algorithm the TurboGears identity provider
+  will encrypt passwords supplied as part of your login form. If you set the password
+  through the password property, like ``my_user.password = 'secret'`` the password
+  will be saved in encrypted form in the database, provided identity is up and running,
+  or you have loaded the configuration specifying what encryption to use (the latter may
+  be necessary in situations where identity may not yet be running, like tests).
+
+``identity.*provider.model.group`` -- ``"*appname*.model.Group"``
+  Database class for the provider's group model
+
+``identity.*provider.model.permission`` -- ``"*appname*.model.Permission"``
+  Database class for the provider's permission model
+
+``identity.*provider.model.user`` -- ``"*appname*.model.User"``
+  Database class for the provider's user model
+

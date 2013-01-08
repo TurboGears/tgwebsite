@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataController &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Toolbox Info" href="../VersionInfo.html" />
+    <link rel="prev" title="CatWalk" href="../Catwalk.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../VersionInfo.html" title="Toolbox Info"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Catwalk.html" title="CatWalk"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataController</a><ul>
+<li><a class="reference internal" href="#install-tgfastdata">Install TGFastData</a></li>
+<li><a class="reference internal" href="#use-datacontroller">Use DataController</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Catwalk.html"
+                        title="previous chapter">CatWalk</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../VersionInfo.html"
+                        title="next chapter">Toolbox Info</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="datacontroller">
+<span id="index-0"></span><h1>DataController<a class="headerlink" href="#datacontroller" title="Permalink to this headline">¶</a></h1>
+<p>DataController is a main module in <a class="reference internal" href="index.html"><em>FastData</em></a>.</p>
+<p>DataController is a fast method of providing CRUD (Create, Read, Update, Delete) functionality.</p>
+<p>You can use this simple function to provide CRUD and customize the DataController&#8217;s presentation with CSS.</p>
+<div class="section" id="install-tgfastdata">
+<h2>Install TGFastData<a class="headerlink" href="#install-tgfastdata" title="Permalink to this headline">¶</a></h2>
+<p>FastData has been split from TurboGears core and is now a plugin.</p>
+<p>Before you can take advantage of DataController, you need to install the FastData plugin first.</p>
+<div class="highlight-python"><pre>$ sudo easy_install -f http://www.turbogears.org/download/index.html TGFastData</pre>
+</div>
+</div>
+<div class="section" id="use-datacontroller">
+<h2>Use DataController<a class="headerlink" href="#use-datacontroller" title="Permalink to this headline">¶</a></h2>
+<p>controllers.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span>
+<span class="kn">from</span> <span class="nn">tgfastdata</span> <span class="kn">import</span> <span class="n">DataController</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">MyModelClass</span>
+
+<span class="k">class</span> <span class="nc">MyApp</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">mycrud</span> <span class="o">=</span> <span class="n">DataController</span><span class="p">(</span><span class="n">MyModelClass</span><span class="p">)</span> <span class="c"># provides a quick</span>
+                                          <span class="c"># and dirty CatWalk-like</span>
+                                          <span class="c"># CRUD interface for your MyModelClass</span>
+</pre></div>
+</div>
+<p>Note:</p>
+<p>TGFastData is still in development, it currently only supports the
+<a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a> database provider.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

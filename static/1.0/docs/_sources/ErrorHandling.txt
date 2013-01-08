@@ -1,0 +1,349 @@
+Error Handling
+==============
+
+.. contents::
+    :depth: 2
+
+
+TurboGears has an extensive system for managing and redirecting errors above and
+beyond the standard Python try/except block. The TurboGears error system distinguishes
+between (form) validation errors and Python exceptions. They are handled by the
+``@error_handler()`` and ``@exception_handler()`` directives, respectively.
+
+
+.. index:: error handling, @error_handler, error_handler decorator
+
+Validation Errors
+-----------------
+
+Validation errors are issued by the TurboGears validator framework. This is
+normally used with the widget library, but can also be helpful on its own when
+for example you just want to make sure one of your arguments is an integer.
+Validation errors are controlled using the ``@error_handler()`` decorator and
+are handled by a method with a ``tg_errors`` keyword parameter.
+
+Here's an example of how this decorator works::
+
+    from turbogears import controllers, expose, \
+        validate, validators, error_handler
+
+    class Root(controllers.RootController):
+
+        @expose()
+        def index(self, number=-1, tg_errors=None):
+            """Display a number (but actually the argument can be anything)."""
+            if tg_errors:
+                errors = [(param, inv.msg, inv.value)
+                    for param, inv in tg_errors.items()]
+                return dict(error_message=errors)
+            else:
+                return dict(number=number)
+
+        @expose()
+        @error_handler(index)
+        @validate(validators=dict(number=validators.Int))
+        def validated_number(self, number=2):
+            """Display an Integer (other kinds of arguments not allowed)."""
+            return dict(valid_number=number)
+
+The above code creates two controller methods, one for the root ``/`` of the
+domain and one for ``/validated_number``.
+
+Both take a parameter ``number`` and display it. The index isn't picky about its
+``number`` parameter and can be passed anything, but ``validated_number`` is
+decorated with an ``Int`` validator, which will raise an error when it fails.
+The error is directed back to the ``index`` controller, which receives the error
+as ``tg_errors`` and handles them intelligently.
+
+
+How Does it Work?
+~~~~~~~~~~~~~~~~~
+
+Here's the output from a `twill`_ session (slightly formatted) demonstrating
+how this all works (`twill`_ is used here for demonstration only. Of course you
+can just try it out with your favorite browser)::
+
+     -= Welcome to twill! =-
+
+     current page:  *empty page*
+     >> go http://localhost:8080/
+     ==> at http://localhost:8080/
+     >> show
+     {"tg_flash": null, "number": -1}
+
+     >> go http://localhost:8080/?number=42
+     ==> at http://localhost:8080/?number=42
+     >> show
+     {"tg_flash": null, "number": "42"}
+
+     >> go http://localhost:8080/?number=blue
+     ==> at http://localhost:8080/?number=blue
+     >> show
+     {"tg_flash": null, "number": "blue"}
+
+     >> go http://localhost:8080/validated_number
+     ==> at http://localhost:8080/validated_number
+     >> show
+     {"tg_flash": null, "valid_number": 2}
+
+     >> go http://localhost:8080/validated_number?number=42
+     ==> at http://localhost:8080/validated_number?number=42
+     >> show
+     {"tg_flash": null, "valid_number": 42}
+
+     >> go http://localhost:8080/validated_number?number=blue
+     ==> at http://localhost:8080/validated_number?number=blue
+     >> show
+     {"tg_flash": null, "error_messages": [["number", "Please enter an integer
+     value", "blue"]]}
+
+.. _twill: http://twill.idyll.org/
+
+The interesting part here is the last request. The ``validated_number``
+controller has been passed a bad value ``blue``, which is obviously not an integer.
+
+The validator has detected this and passed control back up to the
+``index`` controller as ``tg_errors``, just like we wanted. At the same time,
+the normal valid calls also behave as expected. ``tg_errors`` itself is a
+standard dictionary with the failed parameters as keys and `formencode.Invalid`_
+instances as values. The index method shows one (admittedly poor) way to handle
+errors. We can do better.
+
+.. _formencode.Invalid: http://formencode.org/class-formencode.api.Invalid.html
+
+Using ``error_handler`` with Widgets Forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Normally when you're using ``@error_handler()``, you're working with
+:doc:`Widget based forms <Widgets/SimpleForm>`. Here's a demo using the same
+basic setup as above::
+
+    from turbogears import controllers, expose,\
+        validate, validators, error_handler, widgets
+
+    number_form = widgets.ListForm(
+        fields=[
+            widgets.TextField(
+                name='number',
+                label="Enter a Number",
+                validator=validators.Int(not_empty=True))
+        ],
+        submit_text="Submit Number!"
+    )
+
+    ## This is what the template looks like:
+    # <html xmlns:py="http://purl.org/kid/ns#">
+    #     <body>
+    #         <h1>This is a Form Page!</h1>
+    #         ${form(value_of('data', None), action=action, method='POST')}
+    #     </body>
+    # </html>
+
+    class Root(controllers.RootController):
+
+        @expose(template=".templates.welcome")
+        def index(self, number=-1, tg_errors=None):
+            return dict(data=dict(number=number),
+                        form=number_form,
+                        action='/validated_number')
+
+        @expose()
+        @error_handler(index)
+        @validate(form=number_form)
+        def validated_number(self, number=2):
+            return dict(valid_number=number)
+
+The biggest change to the previous code (aside from the form being added) is
+that the ``index`` controller no longer explicitly handles ``tg_errors``.
+
+The convenient thing about forms is that they know how to handle their own
+validation errors, so all you have to do is set the error handler and forget
+about it.
+
+
+Accessing Current Form Values
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It should be noted that when you set a method as the ``@error_handler`` for a
+form submission, it can have extra variable keyword parameters, which will
+receive the current form field values in case of a validation error. This can
+be used, e.g. to manipulate the form values or options depending on the current
+value of some form field::
+
+      @expose(...)
+      def show_form(self, tg_errors=None, **kw):
+          ...
+          values = dict(...)
+          params = dict()
+          if kw.get('some_field'):
+              params['some_option'] = dict(some_field='foo')
+          return dict(form=some_form, values=values, params=params)
+
+      @error_handler(show_form)
+      @validate(form=some_form)
+      def save(self, ...):
+          ...
+
+
+.. index:: exception handling, @exception_handler, exception_handler decorator
+
+Exceptions and Rules
+--------------------
+
+Exceptions are handled separately from errors because validation errors are
+(somewhat) expected in a web application.
+
+Exceptions, on the other hand, are a bit more serious, so you'll probably want
+to handle them separately.
+
+The syntax and usage is very similar except you use ``@exception_handler`` and
+``tg_exceptions`` instead of ``@error_handler`` and ``tg_errors``.
+
+One notable difference is that you'll probably want to handle different types of
+exceptions with different handlers. For example, you'll probably want to handle
+SQLObject exceptions separately from ValueErrors.
+
+This is done by using the ``rules`` parameter (also available on ``@error_handler()``).
+``rules`` takes a string containing a valid Python expression. The rule matches
+when the expression is true. Here's a demonstration::
+
+    from turbogears import controllers, expose, exception_handler
+
+    class Root(controllers.RootController):
+        # Note that the exception handlers don't need to be exposed
+        # if they're not meant to be accessed directly. It's always a
+        # wise decision to expose only what is absolutely needed to prevent
+        # information leaking.
+
+        def value_handler(self, tg_exceptions=None):
+            """Only called for value errors."""
+            return dict(handling_value=True, exception=str(tg_exceptions))
+
+        def index_handler(self, tg_exceptions=None):
+            """Only called for index errors."""
+            return dict(handling_index=True, exception=str(tg_exceptions))
+
+        @expose()
+        @exception_handler(value_handler, "isinstance(tg_exceptions, ValueError)")
+        @exception_handler(index_handler, "isinstance(tg_exceptions, IndexError)")
+        def exceptional(self, number=2):
+            number = int(number)
+            if number < 42:
+                raise IndexError("Number too Low!")
+            if number == 42:
+                raise IndexError("Wise guy, eh?")
+            if number > 100:
+                raise Exception("This number is exceptionally high!")
+            return dict(result="No errors!")
+
+And here's the twill output::
+
+    current page:  *empty page*
+    >> go http://localhost:8080/exceptional
+    ==> at http://localhost:8080/exceptional
+    >> show
+    {"exception": "Number too Low!", "handling_index": true, "tg_flash": null}
+
+    >> go http://localhost:8080/exceptional?number=42
+    ==> at http://localhost:8080/exceptional?number=42
+    >> show
+    {"exception": "Wise guy, eh?", "handling_index": true, "tg_flash": null}
+
+    >> go http://localhost:8080/exceptional?number=blue
+    ==> at http://localhost:8080/exceptional?number=blue
+    >> show
+    {"exception": "invalid literal for int(): blue", "tg_flash": null, "handling_value": true}
+
+    >> debug http 1
+    DEBUG: setting http debugging to level 1
+
+    >> go http://localhost:8080/exceptional?number=400
+    # ...
+    reply: 'HTTP/1.1 500 Internal error\r\n'
+    # ...
+
+Notice that the calls for where ``number`` was less than 42 went to the
+``index_handler`` (``handling_index`` in the output) and that the non-int raised
+a value error. The final case shows that the built in CherryPy handling
+mechanisms will cover any unhandled case. You can, of course, redirect all the
+unhandled exceptions by using a ``@exception_handler()`` without the ``rules``
+parameter.
+
+
+Important Hints
+---------------
+
+Python 2.3 Compatibility
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The Python 2.3 :doc:`pseudo-decorator syntax <Install/Python2.3Support>` does
+not work with ``error_handler``. So use
+
+::
+
+    # GOOD
+    [expose(template=".templates.index")]
+    def index(self, query, tg_errors=None):
+
+    [expose(".templates.results")]
+    [validate(form=search_form)]
+    def search(self, query):
+        return dict(form=search_form)
+    search = error_handler(index)(search)
+
+instead of
+
+::
+
+    # BAD, DOES NOT WORK!
+    [expose(".templates.results")]
+    [validate(form=search_form)]
+    [error_handler(index)]
+    def search(self, address=''):
+        return dict(form=search_form)
+
+
+Decorator Order
+~~~~~~~~~~~~~~~
+
+For the most part, the order of the decorators doesn't matter too much. The one
+exception occurs when mixing error handling and the Identity framework and
+having a method serve as its own error handler. If your ``@error_handler()``
+decorator is under your ``@identity_require()`` decorator, you'll bypass the
+identity decorator completely and defeat your own security.  Don't do it.
+
+::
+
+    @expose()
+    @identity.require(identity.not_anonymous())
+    @error_handler()                             #BAD, DON'T DO IT
+    def foo(self, tg_errors=None):
+        pass
+
+    @expose()
+    @error_handler()                            #OK, be careful
+    @identity.require(identity.not_anonymous())
+    def bar(self, tg_errors=None):
+        pass
+
+    def handler(self, tg_errors=None):
+        pass
+
+    @expose()
+    @identity.require(identity.not_anonymous())
+    @error_handler(handler)                     #GOOD
+    def baz(self):
+        pass
+
+
+Further reading
+---------------
+
+.. toctree::
+   :hidden:
+
+   HowDoesErrorHandlingWork
+
+See :doc:`"How Does Error Handling Work?" <HowDoesErrorHandlingWork>` for some
+more details and references.
+

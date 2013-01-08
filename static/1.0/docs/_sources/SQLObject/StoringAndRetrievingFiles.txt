@@ -1,0 +1,68 @@
+Storing and Retrieving Files from a Database
+============================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+One common thing is storing files inside your database. This is usually done
+with image files, so this is what I'm going to show you here. You can adapt it
+to your needs. Complementary fields -- such as alternate_text, mimetype, etc. --
+can be added at will.
+
+The model::
+
+    class Image(SQLObject):
+
+        class sqlmeta:
+            table = 'images'
+
+        fileName = UnicodeCol(length=255, unique=True)
+        image = BLOBCol(notNone=True)
+
+The form::
+
+        form = widgets.TableForm(fields=[
+            widgets.FileField(
+                name='image', label=_('Some picture'),
+                validator=validators.FieldStorageUploadConverter())
+        ])
+
+Saving the image to the database::
+
+    @expose()
+    @validate(validators=dict(image=
+        validators.FieldStorageUploadConverter()))
+    def save(self, image):
+        image = model.Image(
+            fileName=image.filename, image=image.file.read())
+        return dict(image_id=image.id)
+
+Retrieving the image from the database::
+
+    @turbogears.expose(content_type='image/jpg')
+    def show_image(self, image_id):
+        # model.Image.q.image is where the image is stored
+        return model.Image.get(image_id).image
+
+You can use these in your template like this::
+
+  # put this in your controller, in the method where you'll expose() the page
+  images = [[image.id, image.fileName] for image in model.Image.select()]
+
+  # and add "images = images" to the returned dict
+
+After adding this to your model, you can then add it to your template::
+
+  <!--! Showing all images in a list -->
+  <ul>
+    <li py:for="image_id, filename in images">
+        <a href="/show_image/$image_id" py:content="filename"/><li>
+  </ul>
+
+If you want to show the images you put the "src" attribute from the "img" tag
+pointing to that URL::
+
+    <li><img src="/show_image/$image_id" alt="$filename"/></li>
+
+Note: If you're experiencing problems (particularly UnicodeDecodeErrors),
+try upgrading SQLObject to at least version 0.10.

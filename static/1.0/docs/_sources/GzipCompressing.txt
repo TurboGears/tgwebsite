@@ -1,0 +1,30 @@
+.. index:: gzip, compression
+
+Gzip Compressing Content
+========================
+
+You can setup TurboGears to compress all the data that it sends to the web browser using
+a CherryPy filter called `GzipFilter`_.
+
+.. _GzipFilter: http://www.cherrypy.org/wiki/GzipFilter
+
+If you are serving a lot of *text based content*, you will probably want this enabled
+to *save bandwidth* and to provide a much *faster loading* experience to the users.
+You can enable this by editing config/app.cfg file:
+
+config/app.cfg::
+
+    [/]
+    gzip_filter.on = True
+    gzip_filter.mime_types = ["application/x-javascript", "text/javascript", "text/html", "text/css", "text/plain"]
+
+
+Note that if ``mime_types`` isn't specified, the gzip filter defaults to ``["text/html", "text/plain"]``.
+
+In the above example, we only gzip javascript, css and html content. Images and other binary
+files are left out as they are usually pre-compressed by some compression method inherent to
+the file-type (JPEG, GIF, etc.).
+
+.. note:: In a development environment, turning gzip compression on might not be a good
+   idea since it makes debugging a little harder (for example, if you like to sniff the
+   HTTP flow).

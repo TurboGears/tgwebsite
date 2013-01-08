@@ -1,0 +1,86 @@
+.. index:: Windows
+
+TurboGears Installation on Windows
+==================================
+
+.. contents::
+  :depth: 2
+
+
+Getting Python
+--------------
+
+If you're new to Python, welcome. It's a great language
+
+1. Grab the `Python 2.5 Installer`_.
+2. Run the installer.
+3. Add Python to your path.
+
+   To do this, go to ``System Properties -> Advanced -> Environment Variables``
+   and add or edit the ``PATH`` variable to have ``;C:\Python25;C:\Python25\Scripts``,
+   assuming you installed Python to the default location.
+
+.. _python 2.5 installer: http://www.python.org/download/releases/2.5.4/
+
+.. note:: The recommended Python version to use with TurboGears 1.0
+    currently is **2.5.x**, but we still support **Python 2.4.x** and
+    (:doc:`with some restrictions <Python2.3Support>`) **Python 2.3.x**.
+    Python 2.5.x is supported from TurboGears version **1.0.2** onwards.
+
+
+Installing TurboGears
+---------------------
+
+You can run Python from any shell if your Python scripts directory is on your path.
+By default the scripts directory is C:\Python25\Scripts
+
+1. Open up a command line prompt (``Start -> Run`` and type ``cmd``)
+2. Download `tgsetup.py`_ and run
+
+  ::
+
+    python tgsetup.py
+
+3. Make sure your installation succeeded by running ``tg-admin info``.
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+
+Once you've gotten TurboGears and a database driver installed, jump over to the
+`20 minute wiki`_ tutorial or the `getting started guide`_ to get your feet wet.
+
+Also consider signing up for the `discussion`_ or `announcement`_ mailing list.
+We're always happy to help people work through their problems and you might have
+something to share with us. There's also an irc channel, ``#turbogears`` on
+``irc.freenode.net``.
+
+.. _20 minute wiki: Wiki20/Page1
+.. _getting started guide: Wiki20/Page1
+.. _discussion: http://groups.google.com/group/turbogears
+.. _announcement: http://groups.google.com/group/turbogears-announce
+
+
+Database Drivers
+----------------
+
+If you're just doing development on your desktop, you can use pysqlite. You can
+get the latest version from the `pysqlite download page`_.
+
+.. warning:: ``easy_install pysqlite`` does not work currently
+   for all versions of Python. Use the binary installer for your Python version
+   from the pysqlite page instead.
+
+If you're doing this on a production server, you'll probably want to use MySQL
+(using the ``MySQLdb`` driver) or Postgres (using the ``psycopg2`` driver),
+though you could use :doc:`several other databases </Database/index>` if you like.
+
+.. _pysqlite download page : http://www.initd.org/tracker/pysqlite/wiki/pysqlite
+
+
+Get Help
+--------
+
+For the most part, installation goes off without a hitch, but if you have
+problems, feel free to ask for `help`_.
+
+.. _help : /GettingHelp

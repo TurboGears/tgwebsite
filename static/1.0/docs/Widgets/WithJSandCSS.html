@@ -1,0 +1,574 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using JavaScript and CSS with Widgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Guide to the TurboGears Widgets Documentation" href="index.html" />
+    <link rel="next" title="Building Dynamic Option Lists From Data Objects" href="PassingArgumentsToCallables.html" />
+    <link rel="prev" title="Widget Packages" href="Packages.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="PassingArgumentsToCallables.html" title="Building Dynamic Option Lists From Data Objects"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Packages.html" title="Widget Packages"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Guide to the TurboGears Widgets Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using JavaScript and CSS with Widgets</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#usage-overview">Usage Overview</a><ul>
+<li><a class="reference internal" href="#how-does-it-work">How Does it Work?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#class-reference">Class Reference</a></li>
+<li><a class="reference internal" href="#where-to-put-resource-files">Where to Put Resource Files</a><ul>
+<li><a class="reference internal" href="#without-widgets">Without Widgets</a></li>
+<li><a class="reference internal" href="#using-pkg-resources">Using <em>pkg_resources</em></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples">Examples</a><ul>
+<li><a class="reference internal" href="#a-simple-form-with-css-styling-and-ajax-preview">A Simple Form with CSS Styling and AJAX Preview</a></li>
+<li><a class="reference internal" href="#packaging-a-javascript-library-as-a-stand-alone-widget">Packaging a JavaScript Library as a Stand-alone Widget</a></li>
+<li><a class="reference internal" href="#controlling-caching-of-css-javascript-files">Controlling Caching of CSS/JavaScript Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-s-left">What&#8217;s Left?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Packages.html"
+                        title="previous chapter">Widget Packages</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="PassingArgumentsToCallables.html"
+                        title="next chapter">Building Dynamic Option Lists From Data Objects</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="using-javascript-and-css-with-widgets">
+<h1><a class="toc-backref" href="#id1">Using JavaScript and CSS with Widgets</a><a class="headerlink" href="#using-javascript-and-css-with-widgets" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This document describes how to use JavaScript and CSS with <a class="reference internal" href="Overview.html"><em>TurboGears
+widgets</em></a>. If you haven&#8217;t done so already, you might want
+to read the <a class="reference internal" href="SimpleForm.html"><em>simple form widget tutorial</em></a> and the
+<a class="reference internal" href="FormValidationWithSchemas.html"><em>form validation tutorial</em></a> first.</p>
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-javascript-and-css-with-widgets" id="id1">Using JavaScript and CSS with Widgets</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#usage-overview" id="id3">Usage Overview</a></li>
+<li><a class="reference internal" href="#class-reference" id="id4">Class Reference</a></li>
+<li><a class="reference internal" href="#where-to-put-resource-files" id="id5">Where to Put Resource Files</a></li>
+<li><a class="reference internal" href="#examples" id="id6">Examples</a></li>
+<li><a class="reference internal" href="#what-s-left" id="id7">What&#8217;s Left?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>When you have worked with HTML form elements, you will have noticed that their
+standard appearance as displayed by web browsers is rather uninspriring and
+often differs greatly from browser to browser. Defining your forms with
+widgets, though it takes out the hard work, doesn&#8217;t make your forms any
+prettier. Luckily, there is now good CSS support in all modern browsers, so
+this can be easily remedied.</p>
+<p>Additionally, many standard HTML form elements aren&#8217;t really perfect from a
+usability point of view and many common user interface controls are missing.
+Again, support in modern browser for JavaScript has matured so far that it can
+be used to enhance the user interface with reasonable effort. The <a class="reference internal" href="List.html"><em>TurboGears
+standard widgets</em></a> already include some AJAX-enhanced controls, for example
+<a class="reference internal" href="AutoCompleteField.html"><em>AutoCompleteField</em></a> and <a class="reference internal" href="RemoteForm.html"><em>LinkRemoteFunction</em></a>, which you can use in your
+project without too much knowledge about what&#8217;s going on behind the scenes.</p>
+<p>Sometimes, though, you want to customize the look and behaviour of your widgets
+beyond the provided capabilities and you need to attach some custom CSS and
+JavaScript code or files to your page. The TurboGears widget system
+helps you by taking care of the following issues:</p>
+<ul class="simple">
+<li>JavaScript and CSS code and links get included in your page automatically as
+needed along with your widgets.</li>
+<li>The URL references to external JavaScript or CSS files are independant of
+how your application is mounted.</li>
+<li>JavaScript code can be inserted into your page in the HTML header section or
+at the top or bottom of the body.</li>
+<li>TurboGears provides the superb <a class="reference internal" href="../GettingStarted/MochiKit.html"><em>MochiKit</em></a> JavaScript library as stand-alone
+widget, which helps you to deal with many aspects of client-side scripting
+and AJAX.</li>
+</ul>
+</div>
+<div class="section" id="usage-overview">
+<h2><a class="toc-backref" href="#id3">Usage Overview</a><a class="headerlink" href="#usage-overview" title="Permalink to this headline">¶</a></h2>
+<p>For the impatient, here&#8217;s a quick overview of the steps needed to include a
+JavaScript or CSS resource with a widget:</p>
+<ol class="arabic simple">
+<li>Define your widget.</li>
+<li>Register a name for the directory where you place your static resources.</li>
+<li>Define the JavaScript and CSS widgets (see <a class="reference internal" href="#reference"><em>Class Reference</em></a>), giving the name
+you registered in step 2 and a relative URL to the constructor.</li>
+<li>Append JS/CSS widgets to the <tt class="docutils literal"><span class="pre">javascript</span></tt>/<tt class="docutils literal"><span class="pre">css</span></tt> attribute of the
+containing widget.</li>
+<li>Place your widget in the dict returned by your controller method.</li>
+<li>Make sure that your template inherits from <tt class="docutils literal"><span class="pre">sitetemplate.kid</span></tt> (extending
+the standard <tt class="docutils literal"><span class="pre">master.kid</span></tt> will take care of that).</li>
+</ol>
+<p>Here&#8217;s a code example for a simple search form definition with a single text
+entry field. The entry field has an <tt class="docutils literal"><span class="pre">onfocus</span></tt> JavaScript handler function,
+which is defined in an external JavaScript file. The link to this file is
+generated by the <tt class="docutils literal"><span class="pre">JSLink</span></tt> widget that is attached to the search form widget:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">widgets</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+
+<span class="c"># find &#39;static&#39; directory in package &#39;myproject&#39;</span>
+<span class="n">static_dir</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="s">&#39;myproject&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">)</span>
+<span class="c"># register directory under name &#39;myproject&#39;</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">register_static_directory</span><span class="p">(</span><span class="s">&#39;myproject&#39;</span><span class="p">,</span> <span class="n">static_dir</span><span class="p">)</span>
+
+<span class="n">searchform</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">ListForm</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="s">&#39;query&#39;</span><span class="p">,</span>
+        <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">onfocus</span><span class="o">=</span><span class="s">&#39;activate_searchform(this);&#39;</span><span class="p">))</span>
+    <span class="p">],</span>
+    <span class="n">action</span><span class="o">=</span><span class="s">&#39;search&#39;</span><span class="p">,</span>
+    <span class="n">submit_text</span><span class="o">=</span><span class="s">&#39;Search&#39;</span>
+<span class="p">)</span>
+<span class="n">searchform</span><span class="o">.</span><span class="n">javascript</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">JSLink</span><span class="p">(</span><span class="s">&#39;myproject&#39;</span><span class="p">,</span> <span class="s">&#39;javascript/searchform.js&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>And the matching controller method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&#39;.templates.search&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">searchform</span><span class="p">)</span>
+    <span class="c"># ... gather and return results here</span>
+</pre></div>
+</div>
+<p>Now, when your <tt class="docutils literal"><span class="pre">search</span></tt> template is rendered, it will contain the following
+code in the HTML <tt class="docutils literal"><span class="pre">head</span></tt> section:</p>
+<div class="highlight-python"><pre>&lt;SCRIPT SRC="/tg_widgets/myproject/javascript/searchform.js"
+  TYPE="text/javascript"&gt;&lt;/SCRIPT&gt;</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You may wonder about the strange URL in the <tt class="docutils literal"><span class="pre">src</span></tt> attribute of the
+<tt class="docutils literal"><span class="pre">script</span></tt> element. See the the description of <tt class="docutils literal"><span class="pre">widgetsJSLink</span></tt> in the
+<a class="reference internal" href="#reference"><em>Class Reference</em></a> section below for an explanation. For now, rest assured that it
+is enough to place the file <tt class="docutils literal"><span class="pre">searchfom.js</span></tt> in the <tt class="docutils literal"><span class="pre">static/javascript</span></tt>
+directory below your project&#8217;s package directory and everything will be
+fine.</p>
+</div>
+<p>In the complete example project you can see that this code will display a simple
+form with a text entry field labeled &#8220;Query&#8221; and a submit button. If you click
+in the &#8220;Query&#8221; field, it will be filled with text &#8220;Search form activated!&#8221; by
+the <tt class="docutils literal"><span class="pre">activate_searchform</span></tt> JavaScript function.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can download <a class="reference download internal" href="../_downloads/JSCSSTutorial-1.0.tgz"><tt class="xref download docutils literal"><span class="pre">example</span> <span class="pre">project</span> <span class="pre">1</span></tt></a> here.</p>
+</div>
+<div class="section" id="how-does-it-work">
+<h3>How Does it Work?<a class="headerlink" href="#how-does-it-work" title="Permalink to this headline">¶</a></h3>
+<p>Now we have seen, how JS/CSS widgets are used, here&#8217;s a little background
+information on how they end up being rendered in your page.</p>
+<ol class="arabic simple">
+<li>When you return a dictionary from your exposed controller method, the expose
+decorator looks in the dictionary for any widget objects and uses their
+<tt class="docutils literal"><span class="pre">retrieve_css</span></tt> and <tt class="docutils literal"><span class="pre">retrieve_javascript</span></tt> methods to find attached
+attached JS/CSS resources and places them in the special template variables,
+<tt class="docutils literal"><span class="pre">tg_css</span></tt>, <tt class="docutils literal"><span class="pre">tg_js_head</span></tt>, <tt class="docutils literal"><span class="pre">tg_js_bodytop</span></tt>, and <tt class="docutils literal"><span class="pre">tg_js_bodybottom</span></tt>
+according to the <tt class="docutils literal"><span class="pre">location</span></tt> attribute of the widget (for <tt class="docutils literal"><span class="pre">JSSource</span></tt> and
+<tt class="docutils literal"><span class="pre">JSLink</span></tt> widgets). This only works when you return JS/CSS widgets
+<strong>directly as values</strong> in the dictionary (i.e. not nested in lists or other
+container objects) or when they are attached to other widgets in the
+dictionary. In newer TurboGears versions (later than 1.0.5), this works also
+for all widgets in <tt class="docutils literal"><span class="pre">WidgetsList</span></tt> instances passed directly as values in
+the dictionary.</li>
+<li>When the template is rendered, it looks for the special template variables
+mentioned above, and loops over the list of widgets in them to render
+each in the appropriate spot. The necessary logic resides in
+<tt class="docutils literal"><span class="pre">sitetemplate.kid</span></tt> from the <tt class="docutils literal"><span class="pre">turbogears.view</span></tt> package, which the default
+<tt class="docutils literal"><span class="pre">master.kid</span></tt> template extends. When you edit your templates, be sure to
+extend <tt class="docutils literal"><span class="pre">master.kid</span></tt> or copy the logic from <tt class="docutils literal"><span class="pre">sitetemplate.kid</span></tt> to your own
+templates.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="class-reference">
+<span id="reference"></span><h2><a class="toc-backref" href="#id4">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
+<p>The widgets module defines several classes derived from <tt class="docutils literal"><span class="pre">widgets.Resource</span></tt>
+that encapsulates resources of of your web page:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">class</span> <span class="pre">Resource</span></tt></dt>
+<dd><p class="first">A resource for your widget, like a link to external JS/CSS or inline
+source to include at the template the widget is displayed.</p>
+<p class="last">Inherits directly from the <tt class="docutils literal"><span class="pre">widgets.Widgets</span></tt> class, so all the
+constructor arguments common to widgets apply, and is the common
+base class of all classes described below.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span> <span class="pre">JSLink(mod,</span> <span class="pre">[name,</span> <span class="pre">[**params]])</span></tt></dt>
+<dd><p class="first">A link to an external JavaScript file which will be rendered as a <tt class="docutils literal"><span class="pre">SCRIPT</span></tt>
+element with an appropriate <tt class="docutils literal"><span class="pre">SRC</span></tt> attribute.</p>
+<p>Inherits from <tt class="docutils literal"><span class="pre">widgets.Link</span></tt>, the common base class for <tt class="docutils literal"><span class="pre">JSLink</span></tt> and
+<tt class="docutils literal"><span class="pre">CSSLink</span></tt>.</p>
+<p><strong>Parameters:</strong></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">mod</span></tt></dt>
+<dd><p class="first">The name of the module used in putting together the URL in the <tt class="docutils literal"><span class="pre">SRC</span></tt>
+attribute of the <tt class="docutils literal"><span class="pre">SCRIPT</span></tt> element. This should normally correspond to
+the first argument given to the <tt class="docutils literal"><span class="pre">register_static_dir</span></tt> function.</p>
+<p>The constructed URL will look like this:</p>
+<div class="highlight-python"><pre>/&lt;approot&gt;tg_widgets/&lt;mod&gt;/&lt;name&gt;</pre>
+</div>
+<p class="last">where <tt class="docutils literal"><span class="pre">approot</span></tt> is the application&#8217;s webroot as set in the config
+file with <tt class="docutils literal"><span class="pre">server.webpath</span></tt>. For <tt class="docutils literal"><span class="pre">name</span></tt> see below.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">name</span></tt></dt>
+<dd>The name of the resource appended to the URL in the <tt class="docutils literal"><span class="pre">SRC</span></tt>  attribute
+of the <tt class="docutils literal"><span class="pre">SCRIPT</span></tt> element. This should normally be the path to the
+resource file, relative to the directory registered with
+<tt class="docutils literal"><span class="pre">register_static_dir</span></tt> and referenced via the <tt class="docutils literal"><span class="pre">mod</span></tt> argument.
+Defaults to <tt class="docutils literal"><span class="pre">&quot;widget&quot;</span></tt>, which is probably not what you want.</dd>
+<dt><tt class="docutils literal"><span class="pre">location</span></tt></dt>
+<dd>The location in the HTML code where the <tt class="docutils literal"><span class="pre">SCRIPT</span></tt> element should be
+inserted. Expects one of the values of the <tt class="docutils literal"><span class="pre">enum</span></tt> object
+<tt class="docutils literal"><span class="pre">widgets.js_location</span></tt>: <tt class="docutils literal"><span class="pre">head</span></tt>, <tt class="docutils literal"><span class="pre">bodytop</span></tt>, or <tt class="docutils literal"><span class="pre">bodybottom</span></tt>.
+Defaults to <tt class="docutils literal"><span class="pre">js_location.head</span></tt>.</dd>
+</dl>
+<p><strong>Usage example:</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">JSLink</span>
+<span class="n">static_dir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">)</span>
+<span class="n">register_static_dir</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="n">static_dir</span><span class="p">)</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">JSLink</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;javascript/myscript.js&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span> <span class="pre">JSSource(src,</span> <span class="pre">[location,</span> <span class="pre">[**params]])</span></tt></dt>
+<dd><p class="first">Inline JavaScript code which will be rendered enclosed in a <tt class="docutils literal"><span class="pre">SCRIPT</span></tt>
+element.</p>
+<p>Inherits from <tt class="docutils literal"><span class="pre">widgets.Source</span></tt>, the common base class for <tt class="docutils literal"><span class="pre">JSSource</span></tt>
+and <tt class="docutils literal"><span class="pre">CSSSource</span></tt>.</p>
+<p><strong>Parameters:</strong></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">src</span></tt></dt>
+<dd>A string with the actual JavaScript code.</dd>
+<dt><tt class="docutils literal"><span class="pre">location</span></tt></dt>
+<dd>See <tt class="docutils literal"><span class="pre">JSLink</span></tt>.</dd>
+</dl>
+<p><strong>Usage example:</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">JSSource</span><span class="p">,</span> <span class="n">js_location</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">JSSource</span><span class="p">(</span><span class="s">&#39;page_loaded();&#39;</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="n">js_location</span><span class="o">.</span><span class="n">bodybottom</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span> <span class="pre">CSSLink(mod,</span> <span class="pre">[name,</span> <span class="pre">[media,</span> <span class="pre">[**params]]])</span></tt></dt>
+<dd><p class="first">A link to an external CSS file which will be rendered as a <tt class="docutils literal"><span class="pre">LINK</span></tt>
+element with an appropriate <tt class="docutils literal"><span class="pre">HREF</span></tt> attribute.</p>
+<p>Inherits from <tt class="docutils literal"><span class="pre">widgets.Link</span></tt>, the common base class for <tt class="docutils literal"><span class="pre">JSLink</span></tt> and
+<tt class="docutils literal"><span class="pre">CSSLink</span></tt>.</p>
+<p><strong>Parameters:</strong></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">mod</span></tt></dt>
+<dd>The module name used in constructing the URL in the <tt class="docutils literal"><span class="pre">HREF</span></tt> attribute
+of the <tt class="docutils literal"><span class="pre">LINK</span></tt> element. See <tt class="docutils literal"><span class="pre">JSLink</span></tt> for details.</dd>
+<dt><tt class="docutils literal"><span class="pre">name</span></tt></dt>
+<dd>The path name used in constructing the URL in the <tt class="docutils literal"><span class="pre">HREF</span></tt> attribute
+of the <tt class="docutils literal"><span class="pre">LINK</span></tt> element. See <tt class="docutils literal"><span class="pre">JSLink</span></tt> for details.</dd>
+<dt><tt class="docutils literal"><span class="pre">media</span></tt></dt>
+<dd>The value of the <tt class="docutils literal"><span class="pre">MEDIA</span></tt> attribute of the <tt class="docutils literal"><span class="pre">LINK</span></tt> element. Defaults
+to <tt class="docutils literal"><span class="pre">&quot;all&quot;</span></tt>.</dd>
+</dl>
+<p><strong>Usage example:</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">CSSLink</span>
+<span class="n">static_dir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">)</span>
+<span class="n">register_static_dir</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="n">static_dir</span><span class="p">)</span>
+<span class="n">css</span> <span class="o">=</span> <span class="n">CSSLink</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span> <span class="s">&#39;css/styles.js&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">class</span> <span class="pre">CSSSource(src,</span> <span class="pre">[media,</span> <span class="pre">**params]])</span></tt></dt>
+<dd><p class="first">Inline CSS styles which will be rendered enclosed in a <tt class="docutils literal"><span class="pre">STYLE</span></tt> element.</p>
+<p>Inherits from <tt class="docutils literal"><span class="pre">widgets.Source</span></tt>, the common base class for <tt class="docutils literal"><span class="pre">JSSource</span></tt>
+and <tt class="docutils literal"><span class="pre">CSSSource</span></tt>.</p>
+<p><strong>Parameters:</strong></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">src</span></tt></dt>
+<dd>A string with the actual JavaScript code.</dd>
+<dt><tt class="docutils literal"><span class="pre">media</span></tt></dt>
+<dd>The value of the <tt class="docutils literal"><span class="pre">MEDIA</span></tt> attribute of the <tt class="docutils literal"><span class="pre">STYLE</span></tt> element. Defaults
+to <tt class="docutils literal"><span class="pre">&quot;all&quot;</span></tt>.</dd>
+</dl>
+<p><strong>Usage example:</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">CSSSource</span>
+<span class="n">css</span> <span class="o">=</span> <span class="n">CSSSource</span><span class="p">(</span><span class="s">&#39;body {voice-family: male;}&#39;</span><span class="p">,</span> <span class="n">media</span><span class="o">=</span><span class="s">&#39;aural&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">enum</span> <span class="pre">js_location</span></tt></dt>
+<dd><p class="first">An enum specifying the location for a <tt class="docutils literal"><span class="pre">JSLink</span></tt> or <tt class="docutils literal"><span class="pre">JSSource</span></tt> resource
+in the HTML output.</p>
+<p><strong>Values:</strong></p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">head</span></tt></dt>
+<dd>The resource will be places in the <tt class="docutils literal"><span class="pre">HEAD</span></tt> section of the HTML output.</dd>
+<dt><tt class="docutils literal"><span class="pre">bodytop</span></tt></dt>
+<dd>The resource will be placed immediately after the opening tag of the
+<tt class="docutils literal"><span class="pre">BODY</span></tt> element of the HTML output.</dd>
+<dt><tt class="docutils literal"><span class="pre">bodybottom</span></tt></dt>
+<dd>The resource will be placed immediately before the closing tag of the
+<tt class="docutils literal"><span class="pre">BODY</span></tt> element of the HTML output.</dd>
+</dl>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">function</span> <span class="pre">register_static_directory(modulename,</span> <span class="pre">directory)</span></tt></dt>
+<dd><p class="first">Sets up a static directory for JavaScript and CSS files. You can refer
+to this static directory in templates as <tt class="docutils literal"><span class="pre">${tg.widgets}/modulename</span></tt>.</p>
+<p><strong>Parameters:</strong></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">modulename</span></tt></dt>
+<dd>The name under which the the static directory should be registered.
+Defines a URL path component under <tt class="docutils literal"><span class="pre">/tg_widgets</span></tt>, i.e.
+<tt class="docutils literal"><span class="pre">/tg_widgets/&lt;modulename&gt;</span></tt>. Use this name as the first argument for
+the <tt class="docutils literal"><span class="pre">JSLink</span></tt> and <tt class="docutils literal"><span class="pre">CSSLink</span></tt> widget constructors.</dd>
+<dt><tt class="docutils literal"><span class="pre">directory</span></tt></dt>
+<dd>The path of the physical directory on the server that the registered URL
+will map to.</dd>
+</dl>
+<p><strong>Usage example:</strong></p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">register_static_directory</span>
+<span class="n">static_dir</span> <span class="o">=</span> <span class="n">register_static_directory</span><span class="p">(</span><span class="s">&#39;mypackage&#39;</span><span class="p">,</span>
+   <span class="s">&#39;/path/to/dir/on/server&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="where-to-put-resource-files">
+<h2><a class="toc-backref" href="#id5">Where to Put Resource Files</a><a class="headerlink" href="#where-to-put-resource-files" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="without-widgets">
+<h3>Without Widgets<a class="headerlink" href="#without-widgets" title="Permalink to this headline">¶</a></h3>
+<p><em>To be done...</em></p>
+</div>
+<div class="section" id="using-pkg-resources">
+<h3>Using <em>pkg_resources</em><a class="headerlink" href="#using-pkg-resources" title="Permalink to this headline">¶</a></h3>
+<p>See this mailing list post in the thread: <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/e7a071715f5b7a75/907387f71dc7e9c3?#907387f71dc7e9c3">MochiKit 1.4 + TurboGears</a></p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2><a class="toc-backref" href="#id6">Examples</a><a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="a-simple-form-with-css-styling-and-ajax-preview">
+<h3>A Simple Form with CSS Styling and AJAX Preview<a class="headerlink" href="#a-simple-form-with-css-styling-and-ajax-preview" title="Permalink to this headline">¶</a></h3>
+<p><em>To be done...</em></p>
+<ul class="simple">
+<li>Adding CSS and JavaScript</li>
+<li>Event handling</li>
+</ul>
+</div>
+<div class="section" id="packaging-a-javascript-library-as-a-stand-alone-widget">
+<h3>Packaging a JavaScript Library as a Stand-alone Widget<a class="headerlink" href="#packaging-a-javascript-library-as-a-stand-alone-widget" title="Permalink to this headline">¶</a></h3>
+<p><em>To be done...</em></p>
+<ul class="simple">
+<li>Example: Packaging up RUZEE.events</li>
+</ul>
+</div>
+<div class="section" id="controlling-caching-of-css-javascript-files">
+<h3>Controlling Caching of CSS/JavaScript Files<a class="headerlink" href="#controlling-caching-of-css-javascript-files" title="Permalink to this headline">¶</a></h3>
+<p>Generally, a web browser will cache your CSS/JavaScript files automatically, so
+even when you have modified a CSS/JavaScript file, the browser won&#8217;t download
+the modified file unless the user refreshes the page manually. One useful trick
+is to send a last modified time parameter with the static file&#8217;s url, which
+looks like this:</p>
+<div class="highlight-python"><pre>/static/css/layout?mtime=1171959724</pre>
+</div>
+<p>The idea is that every time we modify the file, we will get a new mtime value,
+so the browser will treat it as a new resource and download it. The greatest
+benefit is that the browser won&#8217;t reload the static file every time if we did
+not modify the static file.</p>
+<p>Sounds good? Let&#8217;s see how to implement this (you may also see a
+<a class="reference external" href="http://paste.turbogears.org/paste/2342">syntax-highlighted version</a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;Widgets for CSS and JavaScript resources with dynamically updating URL.</span>
+
+<span class="sd">You can put this module anywhere in your project package.</span>
+<span class="sd">If, for example, you have a &quot;widgets&quot; subpackage and name the module</span>
+<span class="sd">&quot;resources&quot;, you would import it in your controller like this::</span>
+
+<span class="sd">    from widgets resources import MCSSLink, MJSLink</span>
+
+<span class="sd">Here&#39;s an example of how to use the MCSSLink widget::</span>
+
+<span class="sd">    layout = MCSSLink(&#39;myproj&#39;, &#39;css/common/layout.css&#39;)</span>
+
+<span class="sd">Here&#39;s an example of how to use the MJSLink widget::</span>
+
+<span class="sd">    mochikit = MJSLink(&#39;myproj&#39;, &#39;javascript/MochiKit.js&#39;)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">widgets</span><span class="p">,</span> <span class="n">validators</span>
+
+<span class="c"># Register static directories</span>
+<span class="n">static_dirs</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="c"># Replace &quot;myproj&quot; with your project&#39;s package name</span>
+<span class="c"># on the following two lines</span>
+<span class="n">static_dirs</span><span class="p">[</span><span class="s">&#39;myproj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s">&quot;myproj&quot;</span><span class="p">,</span> <span class="s">&quot;static&quot;</span><span class="p">)</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">register_static_directory</span><span class="p">(</span><span class="s">&quot;myproj&quot;</span><span class="p">,</span> <span class="n">static_dirs</span><span class="p">[</span><span class="s">&#39;myproj&#39;</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">_get_timestamp</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">_get_mtime</span><span class="p">(</span><span class="n">proj</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">abspath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">static_dirs</span><span class="p">[</span><span class="n">proj</span><span class="p">],</span> <span class="n">path</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">abspath</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_get_timestamp</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">MCSSLink</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Link</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &lt;link rel=&quot;stylesheet&quot;</span>
+<span class="s">        type=&quot;text/css&quot;</span>
+<span class="s">        href=&quot;${link}?mtime=$mtime&quot;</span>
+<span class="s">        media=&quot;${media}&quot;</span>
+<span class="s">    /&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;media&quot;</span><span class="p">,</span> <span class="s">&quot;mtime&quot;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;media&#39;</span><span class="p">:</span> <span class="s">&quot;Specify the &#39;media&#39; attribute for the css link tag&quot;</span><span class="p">,</span>
+        <span class="s">&#39;mtime&#39;</span><span class="p">:</span> <span class="s">&#39;The last modified time of the CSS source&#39;</span>
+    <span class="p">}</span>
+    <span class="n">media</span> <span class="o">=</span> <span class="s">&quot;all&quot;</span>
+
+    <span class="n">retrieve_css</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">set_with_self</span>
+
+    <span class="k">def</span> <span class="nf">update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MCSSLink</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;mtime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_mtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mod</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MJSLink</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Link</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &lt;script type=&quot;text/javascript&quot; src=&quot;${link}?mtime=$mtime&quot;&gt;&lt;/script&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+
+    <span class="n">location</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">js_location</span><span class="o">.</span><span class="n">head</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;mtime&quot;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;mtime&#39;</span><span class="p">:</span> <span class="s">&#39;The last modified time of the JavaScript source&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">kw</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;location&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MJSLink</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">location</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">js_location</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                   <span class="s">&quot;JSLink location should be in </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">js_location</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+
+    <span class="k">def</span> <span class="nf">add_for_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">location</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span>
+
+    <span class="n">retrieve_javascript</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">set_with_self</span>
+
+    <span class="k">def</span> <span class="nf">update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MJSLink</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;mtime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_get_mtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mod</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="what-s-left">
+<h2><a class="toc-backref" href="#id7">What&#8217;s Left?</a><a class="headerlink" href="#what-s-left" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>i18n</li>
+<li>optimization (jsmin, packaging files together)</li>
+<li>referencing images in CSS (use relative paths)</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

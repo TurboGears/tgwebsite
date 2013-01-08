@@ -1,0 +1,185 @@
+.. index:: RSS, Atom, FeedController
+
+Serving RSS and Atom feeds
+==========================
+
+.. contents::
+  :depth: 2
+
+
+Turbogears has support for serving RSS_/Atom_ feeds of your data through a special controller
+called ``FeedController``. Here is a quick overview on how to use it.
+
+We assume that we have built a blog application and we want to add a feed to.
+
+
+The FeedController class
+------------------------
+
+First we need to subclass the ``FeedController`` class and add a ``get_feed_data`` method to it. This method will be called to populate the feed everytime a user requests it::
+
+    from turbogears.feed import FeedController
+
+    class Feed(FeedController):
+        def get_feed_data(self):
+            # return feed data here...
+            pass
+
+
+Feed meta-data
+--------------
+
+Now, let's start adding some data to the feed. We do this by returning a dict from
+``get_feed_data`` with the elements we wish our feed to have::
+
+    def get_feed_data(self):
+        entries = []
+
+        return dict(
+            title = "my fine blog",
+            link = "http://blog.foo.org",
+            author = {"name": "John Doe", "email": "john@foo.org"},
+            id = "http://blog.foo.org",
+            subtitle = "a blog about turbogears",
+            entries = entries
+        )
+
+
+Feed entries
+------------
+
+This takes care of the feed meta-data. Now we want to add entries for our blog posts to the
+feed, so we extend our ``get_feed_data`` method some more::
+
+    def get_feed_data(self):
+        entries = []
+        # get the latest five blog entries in reversed order from SQLobject
+        for entry in list(BlogEntry.select().reversed()[:5]):
+            foo = {}
+            foo["updated"] = entry.updated
+            foo["title"] = entry.title
+            foo["published"] = entry.published
+            foo["author"] = {"name": "John Doe", "email": "john@foo.org"}
+            foo["link"] = 'http://blog.foo.org/article/%s' % entry.id
+            foo["summary"] = entry.post[:30]
+            entries.append(foo)
+        return dict(
+            title = "my fine blog",
+            link = "http://blog.foo.org",
+            author = {"name": "John Doe", "email": "john@foo.org"},
+            id = "http://blog.foo.org",
+            subtitle = "a blog about turbogears",
+            entries = entries
+        )
+
+Please note that each ``foo`` dict is populated with the default for well-formed feeds, but each
+entry object can be whatever you define, you can even populate it from different SQLObjects. So
+there is no need for you to know the definition of ``BlogEntry``.
+
+Serving the feed
+----------------
+
+Now, all that is left to do is to mount the feed controller under our root controller ::
+
+    class Blog(controllers.Root):
+
+       feed = Feed()
+
+       ....
+
+Our application will now serve different feed types at the following URLs (assuming the ``Blog``
+controller is mounted as root):
+
+* ``http://blog.foo.org/feed/atom1_0``
+
+* ``http://blog.foo.org/feed/atom0_3``
+
+* ``http://blog.foo.org/feed/rss2_0``
+
+* ``http://blog.foo.org/feed`` - which will redirect to the default feed (by standard atom1.0)
+
+
+Customizing feeds with query parameters
+---------------------------------------
+
+The ``get_feed_data`` will be passed any extra URL path elements or query parameters as keyword arguments. If you define this method to accept keyword arguments like this::
+
+    def get_feed_data(self, **kwargs):
+        ...
+        # return feed dict
+
+Then, if someone request your feed by the following URL:
+
+*  ``http://blog.foo.org/feed/atom1_0?format=full&items=10``
+
+you'll have ``kwargs['format'] = 'full'`` and ``kwargs['items'] = '10'`` defined in your ``get_feed_data`` method and you can customize the dictionary with the feed items you return according to these values. For example::
+
+    def get_feed_data(self, **kwargs):
+        entries = []
+        # get as much as 'items' blog entries in reversed order
+        try:
+            num_items = int(kwargs.get('items', 5))
+        except:
+            num_items = 5
+        for entry in list(BlogEntry.select().reversed()[:num_items]):
+            foo = {}
+            foo["updated"] = entry.updated
+            ....
+            foo["summary"] = entry.post[:30]
+            if kwargs.get('format') == 'full':
+                foo['content'] = dict(type='text', value=entry.post)
+            entries.append(foo)
+        return dict(..., entries=entries)
+
+
+Supported elements
+------------------
+
+At this point the feed has no knowledge about which elements are necessary to create a valid feed. This is something expected to be added in the future. Patches welcome!
+
+The dictionary returned by ``get_feed_data`` must provide at least the following items:
+
+* entries
+* link
+* title
+
+Other supported, optional items are:
+
+* author
+* categories
+* generator
+* id
+* rights
+* subtitle
+* updated
+
+The following items are only used by some formats:
+
+* icon (Atom 1.0)
+* logo (RSS 2.0, Atom 1.0)
+* published (RSS 2.0)
+
+Every dictionary in the sequence ``entries`` must at least provide the following items:
+
+* link
+* title
+* summary
+
+Other supported, optional items are:
+
+* author
+* categories
+* id
+* published
+
+The following items are only used by some formats:
+
+* content (Atom 0.3, Atom 1.0)
+* updated (Atom 0.3, Atom 1.0)
+* rights (Atom 1.0)
+
+Please see the RSS_ and Atom_ specification for more information about these elements.
+
+.. _rss: http://www.rssboard.org/rss-specification
+.. _atom: http://atompub.org/rfc4287.html
+

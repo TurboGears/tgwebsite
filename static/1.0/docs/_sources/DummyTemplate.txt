@@ -1,0 +1,32 @@
+Dummy Kid Template for Debugging
+================================
+
+Here is a dummy Kid template that will display any variable that you send to it,
+so later on you or a designer can replace it with the real template and
+see what placeholders can be used::
+
+    <?python
+    def template_locals(template):
+        for name, value in template.__dict__.iteritems():
+          if (not name.startswith('_')
+                and not name.startswith('tg')
+                and name != 'std'):
+            yield name, repr(value)
+    ?>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#">
+    <head>
+      <title>Dummy</title>
+    </head>
+    <body>
+      <ul>
+        <li py:for="key, value in template_locals(self)">
+          $key = $value
+        </li>
+      </ul>
+    </body>
+    </html>
+
+Please note that the ``template_locals()`` function may filter out whatever you like.
+All that  needs to be done is to add more conditions to the if clause.

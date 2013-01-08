@@ -1,0 +1,237 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running TurboGears Behind Apache &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Running TurboGears behind Nginx" href="BehindNginx.html" />
+    <link rel="prev" title="How to Install TurboGears Without root Privileges" href="NonRoot.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="BehindNginx.html" title="Running TurboGears behind Nginx"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="NonRoot.html" title="How to Install TurboGears Without root Privileges"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running TurboGears Behind Apache</a><ul>
+<li><a class="reference internal" href="#using-apache-as-a-reverse-proxy">Using Apache as a Reverse Proxy</a><ul>
+<li><a class="reference internal" href="#turbogears-configuration">TurboGears Configuration</a></li>
+<li><a class="reference internal" href="#apache-configuration">Apache Configuration</a></li>
+<li><a class="reference internal" href="#setting-the-correct-charset">Setting the Correct Charset</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="NonRoot.html"
+                        title="previous chapter">How to Install TurboGears Without <tt class="docutils literal"><span class="pre">root</span></tt> Privileges</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="BehindNginx.html"
+                        title="next chapter">Running TurboGears behind Nginx</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="running-turbogears-behind-apache">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Running TurboGears Behind Apache</a><a class="headerlink" href="#running-turbogears-behind-apache" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#running-turbogears-behind-apache" id="id1">Running TurboGears Behind Apache</a><ul>
+<li><a class="reference internal" href="#using-apache-as-a-reverse-proxy" id="id2">Using Apache as a Reverse Proxy</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The CherryPy folks list this setup as their preferred setup for CherryPy and
+their wiki has extensive instructions on how to run the CherryPy server (and
+TurboGears by extension) <a class="reference external" href="http://tools.cherrypy.org/wiki/BehindApache">behind Apache</a> in different setups. By running your
+TurboGears application behind Apache you can take advantage of Apache&#8217;s HTTPS
+abilities or have it serve your static files.</p>
+<div class="section" id="using-apache-as-a-reverse-proxy">
+<h2><a class="toc-backref" href="#id2">Using Apache as a Reverse Proxy</a><a class="headerlink" href="#using-apache-as-a-reverse-proxy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="turbogears-configuration">
+<h3>TurboGears Configuration<a class="headerlink" href="#turbogears-configuration" title="Permalink to this headline">¶</a></h3>
+<p>In brief, add the following section to your <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> (assuming here
+you want to make a &#8220;real&#8221; deployment for production):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">base_url_filter</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">base_url_filter</span><span class="o">.</span><span class="n">use_x_forwarded_host</span> <span class="o">=</span> <span class="bp">True</span>
+
+<span class="n">server</span><span class="o">.</span><span class="n">socket_host</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span>
+<span class="n">server</span><span class="o">.</span><span class="n">socket_port</span> <span class="o">=</span> <span class="mi">8080</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you set <tt class="docutils literal"><span class="pre">base_url_filter.on</span> <span class="pre">=</span> <span class="pre">False</span></tt>, you need to make sure
+that you use the <tt class="docutils literal"><span class="pre">ProxyPassReverse</span></tt> directive in the Apache
+configuration below. This is necessary so that URLs generated by your
+application are correctly transformed to use the server name visible to
+the outside. You can also let CherryPy do this by setting
+<tt class="docutils literal"><span class="pre">base_url_filter.on</span> <span class="pre">=</span> <span class="pre">True</span></tt> but this will only work for HTTP servers
+<strong>not</strong> for HTTPS.</p>
+</div>
+</div>
+<div class="section" id="apache-configuration">
+<h3>Apache Configuration<a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Here is how to configure Apache 2 as a reverse proxy for your TurboGears application.</p>
+<p>In Apache&#8217;s <tt class="docutils literal"><span class="pre">httpd.conf</span></tt> uncomment the <tt class="docutils literal"><span class="pre">mod_proxy</span></tt> modules:</p>
+<div class="highlight-python"><pre>LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_connect_module modules/mod_proxy_connect.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so</pre>
+</div>
+<p>Also note, depending on your distribution, you first might need to install the
+<tt class="docutils literal"><span class="pre">apache-mod_proxy</span></tt> packages.</p>
+<p>In the virtual hosts section of the <tt class="docutils literal"><span class="pre">httpd.conf</span></tt> file or in the include file
+for your virtual host (e.g. <tt class="docutils literal"><span class="pre">httpd-vhosts.conf</span></tt>, but make sure this is loaded),
+you would want to have something like this for your site (adapt the server name,
+admin, log locations etc.):</p>
+<div class="highlight-python"><pre>NameVirtualHost *
+
+&lt;VirtualHost *&gt;
+    ServerName mytgapp.blabla.com
+    ServerAdmin here-your-name@blabla.com
+    UseCanonicalName Off
+    ServerSignature Off
+
+    #DocumentRoot /srv/www/vhosts/mytgapp
+
+    Errorlog /var/log/apache2/mytgapp-error_log
+    Customlog /var/log/apache2/mytgapp-access_log common
+
+    AddDefaultCharset utf-8
+
+    ProxyPreserveHost On
+    ProxyRequests Off
+
+    ProxyPass /error/ !
+    ProxyPass /icons/ !
+    ProxyPass /favicon.ico !
+    ProxyPass /robots.txt !
+    #ProxyPass /static/ !
+
+    ProxyPass / http://localhost:8080/
+    ProxyPassReverse / http://localhost:8080/
+
+&lt;/VirtualHost&gt;</pre>
+</div>
+<p>Uncomment the <tt class="docutils literal"><span class="pre">DocumentRoot</span></tt> and <tt class="docutils literal"><span class="pre">ProxyPass</span> <span class="pre">/static/</span></tt> lines if you want
+to serve the directory with static content of your TurboGears application directly
+by Apache. You will then also need to copy or link this directory to the configured
+<tt class="docutils literal"><span class="pre">DocumentRoot</span></tt> directory.</p>
+<p>Check that your Apache configuration has no problems:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">apachectl</span> <span class="o">-</span><span class="n">S</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>apachectl configtest</pre>
+</div>
+<p>If everything is ok, run:</p>
+<div class="highlight-python"><pre>apachectl start</pre>
+</div>
+<p>Finally, go to your TurboGears project directory and in a console run:</p>
+<div class="highlight-python"><pre>python start-myproject.py prod.cfg</pre>
+</div>
+<p>Now you should be able to see your webpage in full TurboGears glory
+at the address configured as <tt class="docutils literal"><span class="pre">ServerName</span></tt> above.</p>
+<p>To be able to relocate your application without problems, make sure you
+create your URLs properly (see <a class="reference internal" href="../GettingStarted/URLs.html"><em>Using URLs</em></a>).</p>
+</div>
+<div class="section" id="setting-the-correct-charset">
+<h3>Setting the Correct Charset<a class="headerlink" href="#setting-the-correct-charset" title="Permalink to this headline">¶</a></h3>
+<p>The default Kid templates used by TurboGears specify <tt class="docutils literal"><span class="pre">utf-8</span></tt> as a charset.
+The Apache default charset, returned in the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> header, is <tt class="docutils literal"><span class="pre">ISO-8859-1</span></tt>.
+This inconsistency will cause errors during validation and incorrect rendering of
+some characters on the client. Therefore we used the <tt class="docutils literal"><span class="pre">AddDefaultCharset</span> <span class="pre">utf-8</span></tt>
+directive above to override the Apache default in the TurboGears virtual host section.</p>
+<p>You can also explicitly set the charset property on a by-method basis by
+sending the <tt class="docutils literal"><span class="pre">Content-type</span></tt> HTTP header from CherryPy. To do this, you woud
+add the following line to your controller methods in <tt class="docutils literal"><span class="pre">controllers.py</span></tt>,
+somewhere before you return the data dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cherrypy</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">headerMap</span><span class="p">[</span><span class="s">&quot;Content-Type&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="s">&quot;;charset=utf-8&quot;</span>
+</pre></div>
+</div>
+<p>Apache notices the pre-existing header and passes it through.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

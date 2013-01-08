@@ -1,0 +1,146 @@
+.. index:: widgets, TurboGears widgets
+
+Guide to the TurboGears Widgets Documentation
+=============================================
+
+.. contents::
+  :depth: 2
+
+
+If you're learning Widgets, this page is intended to provide a clear pathway
+through the existing docs from learning the basics to *total widget mastery.*
+
+There still a few docs yet to be written, but the docs listed below should
+provide you with enough information to easily see how the other widgets work.
+
+
+Getting Started with Widgets
+----------------------------
+
+.. toctree::
+   :hidden:
+
+   Overview
+   SimpleForm
+   Explore
+   CalendarDatePicker
+   Browser
+   List
+
+If you read through the following documents you should have a good
+understanding of how basic Widgets work.
+
+* :doc:`Widgets Overview <Overview>` -- Learn how Widgets work and what
+  they can do to help you reuse bundles of HTML, CSS and JavaScript code in
+  your templates.
+
+* :doc:`Simple Widget Form Tutorial <SimpleForm>` -- Getting started with
+  widget based forms that support automatic display of validation errors, and
+  otherwise make form handling easy.
+
+* :doc:`Dive Into Widgets <Explore>` -- You don't need to run
+  a whole TurboGears application to play with widgets. You can explore
+  TurboGears widgets from the Python prompt.
+
+* :doc:`Calendar Date Picker <CalendarDatePicker>` -- Nice, easy to
+  implement calendar pop-ups for your application. Serves as a good example on
+  how to use a mildly complex, pre-made widget in your application.
+
+* :doc:`Widget Browser <Browser>`  -- Learn how to make the most of the
+  Widget Browser application in the TurboGears Toolbox or browse through the
+  list of available standard widgets in the `widget list <List>`.
+
+* :doc:`Widget List <List>` -- A list of Widgets that ship with the
+  TurboGears distribution.
+
+
+Going Further with Widgets
+---------------------------
+
+.. toctree::
+   :hidden:
+
+   Introduction
+   FormValidationWithSchemas
+   RemoteLink
+   RemoteForm
+   DataGrid
+   /FastData/index
+   AjaxGrid
+   Tips
+
+Learn how to create your own widgets.  It's not hard, and it can really help to
+keep your presentation layer clean and easy to understand and extend. Beyond
+that, these documents will help you write complex validation systems that work
+with widget based forms, and use widgets that are designed to work with your
+controller code to Ajaxify your pages.
+
+* :doc:`Introduction To Widgets <Introduction>` -- Create your own
+  widgets. Great tutorial that really nails down the point of why widgets
+  are such a good idea.
+
+* :doc:`Form Validation With Schemas <FormValidationWithSchemas>` -- For when
+  single field validation isn't enough, and you need to validate a whole form.
+
+* :doc:`Wrap AJAX Operations in Widgets <RemoteLink>` -- Learn how Ajax and
+  widgets interact.
+
+* :doc:`Remote Form Widget Tutorial <RemoteForm>` -- Sometimes
+  you want to use Ajax submit form and display the results. Widgets can help
+  make this easier.
+
+* :doc:`DataGridWidget <DataGrid>` and :doc:`FastData </FastData/index>`
+  -- Build simple and advanced grid displays for your application's data.
+
+* :doc:`AjaxGrid <AjaxGrid>` -- Create data-grids dynamically using widgets and
+  asyncronous calls to the server.
+
+* :doc:`Widget Tips <Tips>` - Miscellaneous notes on widgets
+  usage and pitfalls.
+
+
+Achieving Widget Mastery
+-------------------------
+
+.. toctree::
+   :hidden:
+
+   Packages
+   WithJSandCSS
+   PassingArgumentsToCallables
+   /DynamicValidation
+   DynamicForm
+   CompoundWidgets
+
+* :doc:`Widget Packages <Packages>` -- Create your own widget package
+  which can be shared between applications, and even be uploaded to the
+  cheeseshop.
+
+* :doc:`Widgets with JavaScript and CSS <WithJSandCSS>` -- Understand
+  the details of how Widgets work with "external" CSS and JavaScript files.
+
+* :doc:`Building Dynamic Options Lists From Data Objects <PassingArgumentsToCallables>` -- If you have
+  lots of callables defined for various select fields, you may want to consolidate those, with a couple
+  of reusable factory functions. This recipe will help you know how.
+
+* :doc:`Dynamic Form Validation </DynamicValidation>` -- How to validate widget
+  forms with validation schemas that dynamically adapt to the input data.
+
+* :doc:`Dynamic Form Updates with AJAX <DynamicForm>` -- When you
+  want to update parts of a form based on the user input without having to reload
+  the whole page, you need to employ AJAX to dynamically load data from your
+  controller. This page shows you how.
+
+* :doc:`Compound Widgets <CompoundWidgets>` -- Learn how to build widgets that
+  contain other widgets.
+
+
+
+External Widget Tutorials and Documents
+---------------------------------------
+
+* *Rapid Web Applications with TurboGears* chapter 16 covers widgets in depth.
+
+* *Widgets in more details* - `Widgets and Validators`_.
+
+.. _widgets and validators: http://lucasmanual.com/mywiki/TurboGears#WidgetsandValidators

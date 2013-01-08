@@ -1,0 +1,31 @@
+Connecting to MySQL via a socket file
+=====================================
+
+Problem
+-------
+
+I want to use TurboGears, but my machine is set up with MySQL not bound to a network socket and I get the following errors when I try to connect: _mysql_exceptions.OperationalError?: (2002, "Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)");
+
+Solution
+--------
+
+There is a practice of not binding MySQL to an IP address and port following the principle that
+"if you're not connected, you are protected." In this situation, the server has a socket file.
+By default TurboGears (or SQLObject and the Python MySQL driver/client to be more exact) will
+look for the socket file in ``/tmp/mysql.sock``. Many installations seem to use
+``/var/lib/mysql/mysql.sock``. Therefore, to get TurboGears to work, you'll need to specify the
+``unix_socket`` (if on Unix) param in the dburi. You can find out where your mysql socket is by looking at the file ``my.cnf``,  which usually resides in ``/etc/my.cnf`` or
+``/etc/mysql/my.cnf``.
+
+Format
+~~~~~~
+::
+
+    sqlobject.dburi="!mysql://username:password@/databasename?unix_socket=path-to-mysql.sock"
+
+Example
+~~~~~~~
+
+I have my socket file in ``/var/lib/mysql/mysql.sock`` and I want my user ``foo`` with password ``bar`` to connect to my db ``test1``. ::
+
+    sqlobject.dburi="!mysql:/foo:bar@/test1?unix_socket=/var/lib/mysql/mysql.sock"

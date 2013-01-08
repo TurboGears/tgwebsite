@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Widget Tips &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Using ToscaWidgets in TurboGears 1.0" href="../ToscaWidgets.html" />
+    <link rel="prev" title="Widget Recipes" href="Recipes.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../ToscaWidgets.html" title="Using ToscaWidgets in TurboGears 1.0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Recipes.html" title="Widget Recipes"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Widget Tips</a><ul>
+<li><a class="reference internal" href="#notes">Notes</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+<li><a class="reference internal" href="#class-hierarchy">Class Hierarchy</a></li>
+<li><a class="reference internal" href="#toscawidgets">ToscaWidgets</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Recipes.html"
+                        title="previous chapter">Widget Recipes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../ToscaWidgets.html"
+                        title="next chapter">Using ToscaWidgets in TurboGears 1.0</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="widget-tips">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">Widget Tips</a><a class="headerlink" href="#widget-tips" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#widget-tips" id="id2">Widget Tips</a><ul>
+<li><a class="reference internal" href="#notes" id="id3">Notes</a></li>
+<li><a class="reference internal" href="#tips" id="id4">Tips</a></li>
+<li><a class="reference internal" href="#class-hierarchy" id="id5">Class Hierarchy</a></li>
+<li><a class="reference internal" href="#toscawidgets" id="id6">ToscaWidgets</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="notes">
+<h2><a class="toc-backref" href="#id3">Notes</a><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">One must return the widget in the dict returned by the controller, for JS/CSS links
+to be picked up.</p>
+</li>
+<li><p class="first">Nesting (arbitrary depth) is fully supported.</p>
+</li>
+<li><p class="first">The following tags in <a class="reference external" href="http://trac.turbogears.org/browser/branches/1.0/turbogears/view/templates/sitetemplate.kid">sitetemplate.kid</a> (from which the default <tt class="docutils literal"><span class="pre">master.kid</span></tt> in a
+quickstarted project inherits) are used by the view logic to include the CSS and
+JavaScript resources attached to widgets.</p>
+<p>Header:</p>
+<div class="highlight-python"><pre>&lt;link py:strip="1" py:for="css in tg_css"&gt;${css.insert()}&lt;/link&gt;
+&lt;link py:strip="1" py:for="js in tg_js_head"&gt;${js.insert()}&lt;/link&gt;</pre>
+</div>
+<p>Body:</p>
+<div class="highlight-python"><pre>&lt;div py:for="js in tg_js_bodytop" py:replace="js.display()" /&gt;
+&lt;div py:for="js in tg_js_bodybottom" py:replace="js.display()" /&gt;</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="tips">
+<h2><a class="toc-backref" href="#id4">Tips</a><a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">When displaying a compound widget, you can pass parameters to an internal widget like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">repetitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Unfortunately, you cannot pass arguments to an inner widget whose name collides with an argument
+the outer widget accepts.</p>
+<p>For a more complete example of widget modification at run time,
+<a class="reference internal" href="ModifyDefaults.html"><em>see here</em></a>.</p>
+</li>
+<li><p class="first">To put extra HTML attributes on a widget, use the <tt class="docutils literal"><span class="pre">attrs</span></tt> parameter, which takes a dictionary.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;onchange&#39;</span><span class="p">:</span><span class="s">&#39;alert(1)&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To set the HTML attributes of a widget contained in a form, you combine the two techniques above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="o">...</span><span class="p">,</span>
+    <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+        <span class="n">field1</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">onchange</span><span class="o">=</span><span class="s">&quot;alert(&#39;Field #1 changed!&#39;);&quot;</span>
+        <span class="p">),</span>
+        <span class="n">field2</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;onchange&#39;</span><span class="p">:</span> <span class="s">&quot;alert(&#39;Field #2 changed!&#39;);&quot;</span><span class="p">,</span>
+            <span class="s">&#39;class&#39;</span><span class="p">:</span> <span class="s">&#39;someclass&#39;</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To set the HTML attributes of the form widget itself, use the <tt class="docutils literal"><span class="pre">form_attrs</span></tt> parameter when
+creating or displaying the form:</p>
+<div class="highlight-python"><pre>form.display(.., form_attrs={'id': 'theform', 'enctype': 'multipart/form-data'})</pre>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="class-hierarchy">
+<h2><a class="toc-backref" href="#id5">Class Hierarchy</a><a class="headerlink" href="#class-hierarchy" title="Permalink to this headline">¶</a></h2>
+<p>This helped me figure out a few things related to RepeatingFieldSet:</p>
+<div class="highlight-python"><pre>class Widget(object)
+
+class InputWidget(Widget) # has idea of validator
+class CompoundWidget(Widget)
+class CompoundInputWidget(CompoundWidget, InputWidget)
+class RepeatingInputWidget(CompoundInputWidget)
+
+class FormField(InputWidget)
+class FormFieldsContainer(CompoundInputWidget)
+class CompoundFormField(FormFieldsContainer, FormField)
+
+class RepeatingFormField(RepeatingInputWidget, CompoundFormField)
+class RepeatingFieldSet(RepeatingFormField)
+
+class Form(FormFieldsContainer)
+class TableForm(Form)
+class ListForm(Form)</pre>
+</div>
+</div>
+<div class="section" id="toscawidgets">
+<h2><a class="toc-backref" href="#id6">ToscaWidgets</a><a class="headerlink" href="#toscawidgets" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears 1.0 has widgets built-in, as a part of TurboGears itself. The <a class="reference external" href="http://www.toscawidgets.org/">ToscaWidgets</a>
+project has extracted the widgets framework and converted it into a framework-independent
+standalone package. In TurboGears 1.1 widgets support will be provided by ToscaWidgets
+as an extension. You can already use ToscaWidgets with TurboGears from version 1.0.</p>
+<p>The API is similar but not identical. The semantics are nearly identical.</p>
+<p>If trying out ToscaWidgets, please direct your questions to the <a class="reference external" href="http://groups.google.com/group/toscawidgets-discuss/">ToscaWidgets-discuss</a> mailing list.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

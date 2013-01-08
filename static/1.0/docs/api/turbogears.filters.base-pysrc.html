@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.filters.base</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.filters-module.html" onclick="show_private();">Package&nbsp;filters</a> ::
+        Module&nbsp;base
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.filters.base-module.html">Module turbogears.filters.base</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># -*- coding: UTF-8 -*-</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""Standard TurboGears request filters.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">Provides the following filter classes:</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">``MonkeyDecodingFilter``</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-docstring">    For decoding request data</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-docstring">``NestedvariablesFilter``</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring">    For decoding request variables from dotted notation to nested dicts</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">``VirtualPathFilter``</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">    For handling dynamic application roots</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-string">'MoneyDecodingFilter'</tt><tt class="py-op">,</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">    <tt class="py-string">'NestedVariablesFilter'</tt><tt class="py-op">,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-string">'VirtualPathFilter'</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-op">]</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">NotFound</tt><tt class="py-op">,</tt> <tt class="py-name">request</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Package turbogears.filters=turbogears.filters-module.html"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-0', 'filters', 'link-0');">filters</a></tt><tt class="py-op">.</tt><tt class="py-name">basefilter</tt> <tt class="py-keyword">import</tt> <tt class="py-name">BaseFilter</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-1" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-1', 'turbogears', 'link-1');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.config=turbogears.command.i18n.InternationalizationTool-class.html#config,Module turbogears.config=turbogears.config-module.html,Variable turbogears.testutil.TGTest.config=turbogears.testutil.TGTest-class.html#config"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-2', 'config', 'link-2');">config</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt><tt class="py-op">.</tt><tt class="py-name">variabledecode</tt> <tt class="py-keyword">import</tt> <tt class="py-name">NestedVariables</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable turbogears.controllers.log=turbogears.controllers-module.html#log,Variable turbogears.database.log=turbogears.database-module.html#log,Variable turbogears.filters.base.log=turbogears.filters.base-module.html#log,Variable turbogears.filters.safemultipart.log=turbogears.filters.safemultipart-module.html#log,Variable turbogears.i18n.tg_gettext.log=turbogears.i18n.tg_gettext-module.html#log,Variable turbogears.identity.base.log=turbogears.identity.base-module.html#log,Variable turbogears.identity.saprovider.log=turbogears.identity.saprovider-module.html#log,Variable turbogears.identity.soprovider.log=turbogears.identity.soprovider-module.html#log,Variable turbogears.identity.visitor.log=turbogears.identity.visitor-module.html#log,Variable turbogears.paginate'.log=turbogears.paginate%27-module.html#log,Variable turbogears.scheduler.log=turbogears.scheduler-module.html#log,Variable turbogears.startup.log=turbogears.startup-module.html#log,Variable turbogears.toolbox.shell.log=turbogears.toolbox.shell-module.html#log,Variable turbogears.view.base.log=turbogears.view.base-module.html#log,Variable turbogears.visit.api.log=turbogears.visit.api-module.html#log,Variable turbogears.visit.savisit.log=turbogears.visit.savisit-module.html#log,Variable turbogears.visit.sovisit.log=turbogears.visit.sovisit-module.html#log"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-3', 'log', 'link-3');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">'turbogears.filters'</tt><tt class="py-op">)</tt> </tt>
+<a name="MonkeyDecodingFilter"></a><div id="MonkeyDecodingFilter-def"><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt> <a class="py-toggle" href="#" id="MonkeyDecodingFilter-toggle" onclick="return toggle('MonkeyDecodingFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.filters.base.MonkeyDecodingFilter-class.html">MonkeyDecodingFilter</a><tt class="py-op">(</tt><tt class="py-base-class">BaseFilter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MonkeyDecodingFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MonkeyDecodingFilter-expanded"><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-docstring">"""Request filter which decodes the request data according to the encoding</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">    specified in the request or the encoding set in the configuration.</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    The decoding filter is only used if the configuration setting</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">    ``decoding_filter.on`` is set to ``True``. It defaults to `False``.</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    The configuration setting ``decoding_filter.encoding`` can be used to force</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">    always decoding the request with the given encoding. If this is not set,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    the encoding will be determined from the request headers.</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    If neither of the two is specified, the default encoding is used. This can</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">    be set with the ``decoding_filter.default_encoding`` configuration setting.</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    Falls back to UTF-8 decoding or ISO-8859-1 for requests with a main content</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">    type of "text". Also falls back to ISO-8859-1 if decoding using the</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">    requested encoding fails.</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="MonkeyDecodingFilter.decode"></a><div id="MonkeyDecodingFilter.decode-def"><a name="L54"></a><tt class="py-lineno"> 54</tt> <a class="py-toggle" href="#" id="MonkeyDecodingFilter.decode-toggle" onclick="return toggle('MonkeyDecodingFilter.decode');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.filters.base.MonkeyDecodingFilter-class.html#decode">decode</a><tt class="py-op">(</tt><tt class="py-param">from_enc</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MonkeyDecodingFilter.decode-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="MonkeyDecodingFilter.decode-expanded"><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-docstring">"""Recursively decode all values in an iterable from specified encoding.</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">decode_from</tt><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">from_enc</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name" targets="Variable turbogears.view.base.cycle.value=turbogears.view.base.cycle-class.html#value"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-4', 'value', 'link-4');">value</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-5', 'dict', 'link-5');">dict</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">k</tt><tt class="py-op">,</tt> <tt class="py-name">v</tt> <tt class="py-keyword">in</tt> <tt id="link-6" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-6', 'value', 'link-4');">value</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Function turbogears.i18n.pygettext.catalog.items()=turbogears.i18n.pygettext.catalog-module.html#items"><a title="turbogears.i18n.pygettext.catalog.items" class="py-name" href="#" onclick="return doclink('link-7', 'items', 'link-7');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                    <tt id="link-8" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-8', 'value', 'link-4');">value</a></tt><tt class="py-op">[</tt><tt class="py-name">k</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">decode_from</tt><tt class="py-op">(</tt><tt class="py-name">v</tt><tt class="py-op">,</tt> <tt class="py-name">from_enc</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-9', 'value', 'link-4');">value</a></tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name" targets="Method turbogears.toolbox.catwalk.CatWalk.list()=turbogears.toolbox.catwalk.CatWalk-class.html#list"><a title="turbogears.toolbox.catwalk.CatWalk.list" class="py-name" href="#" onclick="return doclink('link-10', 'list', 'link-10');">list</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                <tt class="py-name">newlist</tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="turbogears.toolbox.catwalk.CatWalk.list" class="py-name" href="#" onclick="return doclink('link-11', 'list', 'link-10');">list</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt id="link-12" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-12', 'value', 'link-4');">value</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                    <tt class="py-name">newlist</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">decode_from</tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">,</tt> <tt class="py-name">from_enc</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                <tt id="link-13" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-13', 'value', 'link-4');">value</a></tt> <tt class="py-op">=</tt> <tt class="py-name">newlist</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-14" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-14', 'value', 'link-4');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-15" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-15', 'value', 'link-4');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">decode</tt><tt class="py-op">(</tt><tt class="py-name">from_enc</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-16', 'value', 'link-4');">value</a></tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-name">decoded_params</tt> <tt class="py-op">=</tt> <tt class="py-name">decode_from</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Variable turbogears.database.AutoConnectHub.params=turbogears.database.AutoConnectHub-class.html#params,Variable turbogears.widgets.base.CSSLink.params=turbogears.widgets.base.CSSLink-class.html#params,Variable turbogears.widgets.base.CSSSource.params=turbogears.widgets.base.CSSSource-class.html#params,Variable turbogears.widgets.base.JSLink.params=turbogears.widgets.base.JSLink-class.html#params,Variable turbogears.widgets.base.JSSource.params=turbogears.widgets.base.JSSource-class.html#params,Variable turbogears.widgets.base.Resource.params=turbogears.widgets.base.Resource-class.html#params,Variable turbogears.widgets.base.Source.params=turbogears.widgets.base.Source-class.html#params,Variable turbogears.widgets.base.Widget.params=turbogears.widgets.base.Widget-class.html#params,Variable turbogears.widgets.big_widgets.AjaxGrid.params=turbogears.widgets.big_widgets.AjaxGrid-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteField.params=turbogears.widgets.big_widgets.AutoCompleteField-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteTextField.params=turbogears.widgets.big_widgets.AutoCompleteTextField-class.html#params,Variable turbogears.widgets.big_widgets.CalendarDatePicker.params=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#params,Variable turbogears.widgets.big_widgets.LinkRemoteFunction.params=turbogears.widgets.big_widgets.LinkRemoteFunction-class.html#params,Variable turbogears.widgets.big_widgets.RemoteForm.params=turbogears.widgets.big_widgets.RemoteForm-class.html#params,Variable turbogears.widgets.big_widgets.URLLink.params=turbogears.widgets.big_widgets.URLLink-class.html#params,Variable turbogears.widgets.forms.Button.params=turbogears.widgets.forms.Button-class.html#params,Variable turbogears.widgets.forms.CheckBox.params=turbogears.widgets.forms.CheckBox-class.html#params,Variable turbogears.widgets.forms.CheckBoxList.params=turbogears.widgets.forms.CheckBoxList-class.html#params,Variable turbogears.widgets.forms.CompoundFormField.params=turbogears.widgets.forms.CompoundFormField-class.html#params,Variable turbogears.widgets.forms.CompoundInputWidget.params=turbogears.widgets.forms.CompoundInputWidget-class.html#params,Variable turbogears.widgets.forms.FieldSet.params=turbogears.widgets.forms.FieldSet-class.html#params,Variable turbogears.widgets.forms.FileField.params=turbogears.widgets.forms.FileField-class.html#params,Variable turbogears.widgets.forms.Form.params=turbogears.widgets.forms.Form-class.html#params,Variable turbogears.widgets.forms.FormField.params=turbogears.widgets.forms.FormField-class.html#params,Variable turbogears.widgets.forms.FormFieldsContainer.params=turbogears.widgets.forms.FormFieldsContainer-class.html#params,Variable turbogears.widgets.forms.HiddenField.params=turbogears.widgets.forms.HiddenField-class.html#params,Variable turbogears.widgets.forms.ImageButton.params=turbogears.widgets.forms.ImageButton-class.html#params,Variable turbogears.widgets.forms.InputWidget.params=turbogears.widgets.forms.InputWidget-class.html#params,Variable turbogears.widgets.forms.Label.params=turbogears.widgets.forms.Label-class.html#params,Variable turbogears.widgets.forms.ListForm.params=turbogears.widgets.forms.ListForm-class.html#params,Variable turbogears.widgets.forms.MultipleSelectField.params=turbogears.widgets.forms.MultipleSelectField-class.html#params,Variable turbogears.widgets.forms.PasswordField.params=turbogears.widgets.forms.PasswordField-class.html#params,Variable turbogears.widgets.forms.RadioButtonList.params=turbogears.widgets.forms.RadioButtonList-class.html#params,Variable turbogears.widgets.forms.RepeatingFieldSet.params=turbogears.widgets.forms.RepeatingFieldSet-class.html#params,Variable turbogears.widgets.forms.RepeatingFormField.params=turbogears.widgets.forms.RepeatingFormField-class.html#params,Variable turbogears.widgets.forms.RepeatingInputWidget.params=turbogears.widgets.forms.RepeatingInputWidget-class.html#params,Variable turbogears.widgets.forms.SelectionField.params=turbogears.widgets.forms.SelectionField-class.html#params,Variable turbogears.widgets.forms.SingleSelectField.params=turbogears.widgets.forms.SingleSelectField-class.html#params,Variable turbogears.widgets.forms.TableForm.params=turbogears.widgets.forms.TableForm-class.html#params,Variable turbogears.widgets.forms.TextArea.params=turbogears.widgets.forms.TextArea-class.html#params,Variable turbogears.widgets.forms.TextField.params=turbogears.widgets.forms.TextField-class.html#params,Variable turbogears.widgets.i18n.LocalizableJSLink.params=turbogears.widgets.i18n.LocalizableJSLink-class.html#params,Variable turbogears.widgets.links.JumpMenu.params=turbogears.widgets.links.JumpMenu-class.html#params,Variable turbogears.widgets.rpc.RPC.params=turbogears.widgets.rpc.RPC-class.html#params"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-17', 'params', 'link-17');">params</a></tt><tt class="py-op">,</tt> <tt class="py-name">from_enc</tt><tt class="py-op">)</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-comment"># This is done in two steps to make sure the exception in</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-comment"># before_main can retry a decode with another encoding if needed.</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-comment"># DON'T merge those two lines.</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-18', 'params', 'link-17');">params</a></tt> <tt class="py-op">=</tt> <tt class="py-name">decoded_params</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="MonkeyDecodingFilter.before_main"></a><div id="MonkeyDecodingFilter.before_main-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="MonkeyDecodingFilter.before_main-toggle" onclick="return toggle('MonkeyDecodingFilter.before_main');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.filters.base.MonkeyDecodingFilter-class.html#before_main">before_main</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MonkeyDecodingFilter.before_main-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="MonkeyDecodingFilter.before_main-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-docstring">"""Decode the request data.</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">        Substituted for CherryPy's decoding filter in</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring">        ``startup.startTurboGears()``.</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        See class docstring for details.</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt id="link-19" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-19', 'get', 'link-19');">get</a></tt> <tt class="py-op">=</tt> <tt id="link-20" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-20', 'config', 'link-2');">config</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-21', 'get', 'link-19');">get</a></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-22" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-22', 'get', 'link-19');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'decoding_filter.on'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">,</tt> <tt class="py-string">"_decoding_attempted"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">_decoding_attempted</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">encoding</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-23', 'get', 'link-19');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'decoding_filter.encoding'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">encoding</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-name">content_type</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">headers</tt><tt class="py-op">.</tt><tt class="py-name">elements</tt><tt class="py-op">(</tt><tt class="py-string">"Content-Type"</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">content_type</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">                <tt class="py-name">content_type</tt> <tt class="py-op">=</tt> <tt class="py-name">content_type</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                <tt class="py-name">encoding</tt> <tt class="py-op">=</tt> <tt class="py-name">content_type</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-24', 'params', 'link-17');">params</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-25', 'get', 'link-19');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"charset"</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">encoding</tt> <tt class="py-keyword">and</tt> <tt class="py-name">content_type</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-26', 'value', 'link-4');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">"text/"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">                    <tt class="py-comment"># http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.7.1</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">                    <tt class="py-comment"># When no explicit charset parameter is provided by the</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                    <tt class="py-comment"># sender, media subtypes of the "text" type are defined</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                    <tt class="py-comment"># to have a default charset value of "ISO-8859-1" when</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                    <tt class="py-comment"># received via HTTP.</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                    <tt class="py-name">encoding</tt> <tt class="py-op">=</tt> <tt class="py-string">"ISO-8859-1"</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">encoding</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                <tt class="py-name">encoding</tt> <tt class="py-op">=</tt> <tt id="link-27" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-27', 'get', 'link-19');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'decoding_filter.default_encoding'</tt><tt class="py-op">,</tt> <tt class="py-string">"utf-8"</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decode</tt><tt class="py-op">(</tt><tt class="py-name">encoding</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">UnicodeDecodeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-comment"># IE and Firefox don't supply a charset when submitting form</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">            <tt class="py-comment"># params with a CT of application/x-www-form-urlencoded.</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-comment"># So after all our guessing, it could *still* be wrong.</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">            <tt class="py-comment"># Start over with ISO-8859-1, since that seems to be preferred.</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">decode</tt><tt class="py-op">(</tt><tt class="py-string">"ISO-8859-1"</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="NestedVariablesFilter"></a><div id="NestedVariablesFilter-def"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="NestedVariablesFilter-toggle" onclick="return toggle('NestedVariablesFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.filters.base.NestedVariablesFilter-class.html">NestedVariablesFilter</a><tt class="py-op">(</tt><tt class="py-base-class">BaseFilter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NestedVariablesFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="NestedVariablesFilter-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-docstring">"""Request filter that turns request params with names in special dotted</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring">    notation into nested dictionaries via FormEncode's NestedVariables</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">    validator.</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="NestedVariablesFilter.before_main"></a><div id="NestedVariablesFilter.before_main-def"><a name="L123"></a><tt class="py-lineno">123</tt> <a class="py-toggle" href="#" id="NestedVariablesFilter.before_main-toggle" onclick="return toggle('NestedVariablesFilter.before_main');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.filters.base.NestedVariablesFilter-class.html#before_main">before_main</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="NestedVariablesFilter.before_main-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="NestedVariablesFilter.before_main-expanded"><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">,</tt> <tt class="py-string">'params'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">            <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-28', 'params', 'link-17');">params</a></tt> <tt class="py-op">=</tt> <tt class="py-name">NestedVariables</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method turbogears.validators.MultipleSelection.to_python()=turbogears.validators.MultipleSelection-class.html#to_python"><a title="turbogears.validators.MultipleSelection.to_python" class="py-name" href="#" onclick="return doclink('link-29', 'to_python', 'link-29');">to_python</a></tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-30', 'params', 'link-17');">params</a></tt> <tt class="py-keyword">or</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="VirtualPathFilter"></a><div id="VirtualPathFilter-def"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt> <a class="py-toggle" href="#" id="VirtualPathFilter-toggle" onclick="return toggle('VirtualPathFilter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.filters.base.VirtualPathFilter-class.html">VirtualPathFilter</a><tt class="py-op">(</tt><tt class="py-base-class">BaseFilter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="VirtualPathFilter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="VirtualPathFilter-expanded"><a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-docstring">"""Filter that makes CherryPy ignorant of a URL root path.</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    That is, you can mount your app so the URI "/users/~rdel/myapp/" maps to</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-docstring">    the root object "/".</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="VirtualPathFilter.__init__"></a><div id="VirtualPathFilter.__init__-def"><a name="L135"></a><tt class="py-lineno">135</tt> <a class="py-toggle" href="#" id="VirtualPathFilter.__init__-toggle" onclick="return toggle('VirtualPathFilter.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.filters.base.VirtualPathFilter-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">webpath</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="VirtualPathFilter.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="VirtualPathFilter.__init__-expanded"><a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt id="link-31" class="py-name" targets="Variable turbogears.startup.webpath=turbogears.startup-module.html#webpath"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-31', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-32', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">.</tt><tt class="py-name">rstrip</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-33" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-33', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt id="link-34" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-34', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">             <tt id="link-35" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-35', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'/'</tt> <tt class="py-op">+</tt> <tt id="link-36" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-36', 'webpath', 'link-31');">webpath</a></tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-37" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-37', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-38', 'webpath', 'link-31');">webpath</a></tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="VirtualPathFilter.before_request_body"></a><div id="VirtualPathFilter.before_request_body-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="VirtualPathFilter.before_request_body-toggle" onclick="return toggle('VirtualPathFilter.before_request_body');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.filters.base.VirtualPathFilter-class.html#before_request_body">before_request_body</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="VirtualPathFilter.before_request_body-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="VirtualPathFilter.before_request_body-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-docstring">"""Determine the relevant path info by stripping off prefixes.</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">        Strips webpath and SCRIPT_NAME from request.object_path and</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring">        sets request.path_info (since CherryPy 2 does not set it).</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">        <tt id="link-39" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-39', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-40', 'webpath', 'link-31');">webpath</a></tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt id="link-41" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-41', 'webpath', 'link-31');">webpath</a></tt> <tt class="py-op">+=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">wsgi_environ</tt><tt class="py-op">[</tt><tt class="py-string">'SCRIPT_NAME'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">rstrip</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-op">(</tt><tt class="py-name">AttributeError</tt><tt class="py-op">,</tt> <tt class="py-name">KeyError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-42" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-42', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">object_path</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-43', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">object_path</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">object_path</tt><tt class="py-op">[</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-44" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-44', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-keyword">or</tt> <tt class="py-string">'/'</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Variable turbogears.widgets.forms.InputWidget.path=turbogears.widgets.forms.InputWidget-class.html#path"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-45', 'path', 'link-45');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt id="link-46" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-46', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">path_info</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-47', 'path', 'link-45');">path</a></tt><tt class="py-op">[</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-48" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-48', 'webpath', 'link-31');">webpath</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> <tt class="py-keyword">or</tt> <tt class="py-string">'/'</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">                <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">path_info</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-49" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-49', 'path', 'link-45');">path</a></tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">                <tt class="py-comment"># check for webpath only if not forwarded</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">                <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">wsgi_environ</tt><tt class="py-op">[</tt><tt class="py-string">'HTTP_X_FORWARDED_SERVER'</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">                        <tt class="py-keyword">raise</tt> <tt class="py-name">KeyError</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">                <tt class="py-keyword">except</tt> <tt class="py-op">(</tt><tt class="py-name">AttributeError</tt><tt class="py-op">,</tt> <tt class="py-name">KeyError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt class="py-name">NotFound</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-50', 'path', 'link-45');">path</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">            <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">path_info</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-51" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-51', 'path', 'link-45');">path</a></tt> </tt>
+</div></div><a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:38 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

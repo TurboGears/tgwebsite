@@ -1,0 +1,157 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Identity Management &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Getting Started With Identity" href="GettingStarted.html" />
+    <link rel="prev" title="Permanent Login" href="../Visit/PermanentLogin.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="GettingStarted.html" title="Getting Started With Identity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Visit/PermanentLogin.html" title="Permanent Login"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Identity Management</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#the-role-of-identity-management">The Role of Identity Management</a></li>
+<li><a class="reference internal" href="#identity-links">Identity Links</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Visit/PermanentLogin.html"
+                        title="previous chapter">Permanent Login</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="GettingStarted.html"
+                        title="next chapter">Getting Started With Identity</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="index-0">
+<span id="identity-management"></span><h1><a class="toc-backref" href="#id1">Identity Management</a><a class="headerlink" href="#index-0" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#index-0" id="id1">Identity Management</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#the-role-of-identity-management" id="id3">The Role of Identity Management</a></li>
+<li><a class="reference internal" href="#identity-links" id="id4">Identity Links</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Many database Web Apps need to identify users. For example, you log in to access your Gmail account, or to use Amazon bookstore services. TurboGears therefore provides an identity system that you can use in your applications. This system supports both authentication and authorization functions, and allows role-based access control by assigning users to groups.</p>
+<p>You use identity decorators to require user authentication and to authorize specific accesses:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="nd">@identity.require</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-role-of-identity-management">
+<h2><a class="toc-backref" href="#id3">The Role of Identity Management</a><a class="headerlink" href="#the-role-of-identity-management" title="Permalink to this headline">¶</a></h2>
+<p>You can use identity management in both controllers and templates:</p>
+<ul class="simple">
+<li>In <strong>controllers</strong> you specify the access restrictions on particular resources.</li>
+<li>In <strong>templates</strong> you can adapt the appearance and include or exclude content based on the user&#8217;s identity.</li>
+</ul>
+</div>
+<div class="section" id="identity-links">
+<h2><a class="toc-backref" href="#id4">Identity Links</a><a class="headerlink" href="#identity-links" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li>For an introductory tutorial on identity, see
+<a class="reference internal" href="GettingStarted.html"><em>Getting Started With Identity</em></a></li>
+<li>For in-depth information on using identity, see <a class="reference internal" href="Usage.html"><em>Using Identity</em></a></li>
+<li>For miscellaneous tips and tricks, see <a class="reference internal" href="Recipes.html"><em>Identity Recipes</em></a></li>
+<li>For the configuration of things like password encryption, see
+the <a class="reference internal" href="../Configuration.html"><em>Configuration</em></a> guide.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

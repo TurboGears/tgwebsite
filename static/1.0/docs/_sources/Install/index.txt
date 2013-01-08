@@ -1,0 +1,178 @@
+.. index:: download, installation
+
+Downloading and Installing TurboGears
+=====================================
+
+.. contents::
+  :depth: 2
+
+
+Quickstart Instructions
+-----------------------
+
+Installing the latest stable version of TurboGears 1.0 from scratch is most
+easily achieved with the `tgsetup.py`_ script.
+
+
+The Standard Way (tgsetup.py)
+-----------------------------
+
+There are only two steps necessary to install TurboGears, if you already have Python
+installed. If you don't have Python installed on your system (or are not sure about it),
+please refer to the detailed installation instructions in the next section.
+
+1. Download the `tgsetup.py`_ script.
+
+2. Run the script from the command-line::
+
+    $ python tgsetup.py
+
+We strongly suggest that you also refer to the system-specific installation instructions
+for details.
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+
+Requirements
+------------
+
+.. toctree::
+   :hidden:
+
+   SupportedSystems
+   Python2.3Support
+
+* Windows, Mac OS X 10.3/4 or Linux/Unix,
+  see also :doc:`Supported Operating Systems <SupportedSystems>`
+* Python >= 2.3.x, < 3.x (naturally, details see below)
+* An internet connection (for off-line installation see below)
+* About 20-25 MB of disk space, depending on your OS, architecture and filesystem
+* On some systems you need a C compiler, to compile Python C-extensions from some
+  components that are required by TurboGears. See the detailed instructions for your
+  platform for details.
+* If you need to compile extensions, you'll also need Python header files and libraries.
+  If they are not included in your Python installation, they can usually be installed
+  with a package called ``python-dev``, ``python-devel`` or similar.
+* (Recommended) A database system (see below)
+
+.. note::
+    The recommended Python version to use with TurboGears 1.0 currently is **2.5.x**,
+    but we still support **Python 2.4.x** and (:doc:`with some restrictions <Python2.3Support>`)
+    **Python 2.3.x**. Python 2.5.x is supported from TurboGears version **1.0.2** onwards and
+    Python 2.6.x from 1.0.9 and later.
+
+    TurboGears **does not support** Python 3.x yet.
+
+
+Detailed Platform-specific Instructions
+---------------------------------------
+
+.. toctree::
+   :hidden:
+
+   Nix
+   Windows
+   Mac
+   Debian
+   Ubuntu
+   FreeBSD
+   NonRoot
+   Offline
+   BehindProxy
+   Troubleshooting
+   Upgrade
+   Beta
+   OldVersions
+   FromSubversion
+   Uninstall
+
+There are some detailed installation instructions for different platforms
+and setups, starting with instructions for installing Python to
+platform-specific configuration issues.
+
+Please choose the instructions that match your setup:
+
+* :doc:`Installation on Unix-like systems <Nix>`
+* :doc:`Installation on Windows <Windows>`
+* :doc:`Installation on Mac OS X <Mac>`
+* :doc:`Installing on Debian <Debian>`
+* :doc:`Intalling TurboGears on Ubuntu Linux <Ubuntu>`
+* :doc:`Installing TurboGears on FreeBSD <FreeBSD>`
+* :doc:`Installation Without root Privileges <NonRoot>`
+* :doc:`Installation Without an Internet Connection (off-line Install) <Offline>`
+* :doc:`Installing TurboGears on a host behind a proxy <BehindProxy>`
+* :doc:`Installation Troubleshooting <Troubleshooting>`
+* :doc:`Upgrading From an Earlier Version of TurboGears <Upgrade>`
+* :doc:`Downloading and installing a TurboGears beta version <Beta>`
+* :doc:`Installing Older Versions of TurboGears <OldVersions>`
+* :doc:`Installing from Subversion <FromSubversion>`
+* :doc:`Uninstalling TurboGears <Uninstall>`
+
+
+Database Installation and Configuration
+----------------------------------------
+
+.. toctree::
+   :hidden:
+
+   /Database/index
+   /Database/SQLite
+   /Database/MySQL
+   /Database/PostgreSQL
+   /Database/Firebird
+
+TurboGears is designed to work in conjunction with an object-relational mapper
+such as :doc:`SQLObject </SQLObject/index>` or :doc:`SQLAlchemy </SQLAlchemy/index>`,
+so TurboGears can use all the databases supported by these ORMs.
+If you have one of the supported DBAPI implementations in
+:doc:`Database Options </Database/index>`, you should be settled.
+
+If you need to choose a database option, SQLite is an easy-to-use database to get
+started with, which works with plain files or in-memory databases. If you are
+using Python 2.5, SQLite is supported out of the box and you don't need to install pysqlite.
+
+Here we list installation and configuration instructions for the most common databases:
+
+    * :doc:`SQLite </Database/SQLite>`
+    * :doc:`MySQL </Database/MySQL>`
+    * :doc:`PostgreSQL </Database/PostgreSQL>`
+    * :doc:`Firebird </Database/Firebird>`
+
+
+Where Are the Download Files?
+-----------------------------
+
+Generally, downloads are done through the easy_install-based `tgsetup.py`_
+script.  There is a `list of files`_ available if you need to do something
+manually.
+
+.. _list of files: http://www.turbogears.org/1.0/downloads/current/index
+
+
+Specific Version Installation
+-----------------------------
+
+Installing an older version of TurboGears is possible, too. To install a
+specific version of TurboGears run a command line similar to this one::
+
+    $ easy_install -i http://www.turbogears.org/1.0/downloads/1.0.x/index TurboGears==1.0.x
+
+Replace ``1.0.x`` with the number of the version of TurboGears which you want
+to install. This form requires setuptools_ to be present on your machine. If
+you don't have setuptools yet, download and run `ez_setup.py`_ to install it::
+
+    $ wget http://peak.telecommunity.com/dist/ez_setup.py
+    $ python ez_setup.py
+
+After installing TurboGears you probably also want to install at least one of
+the object-relational mappers, :doc:`SQLObject </SQLObject/index>`
+or :doc:`SQLAlchemy </SQLAlchemy/index>`::
+
+    $ easy_install SQLAlchemy
+
+or::
+
+    $ easy_install SQLObject
+
+.. _setuptools: http://cheeseshop.org/pypi/setuptools
+.. _ez_setup.py: http://peak.telecommunity.com/dist/ez_setup.py

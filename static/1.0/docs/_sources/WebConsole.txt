@@ -1,0 +1,10 @@
+.. index:: web console
+
+Web Console
+===========
+
+The Web Console provides a basic interpreter interface through the web. The
+environment is exactly the same as you would get with the ``tg-admin shell``.
+
+.. image :: images/webconsole_screenshot.png
+

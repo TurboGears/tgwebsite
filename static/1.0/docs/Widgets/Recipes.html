@@ -1,0 +1,460 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Widget Recipes &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Widget Tips" href="Tips.html" />
+    <link rel="prev" title="DataController" href="../FastData/DataController.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Tips.html" title="Widget Tips"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../FastData/DataController.html" title="DataController"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Widget Recipes</a><ul>
+<li><a class="reference internal" href="#google-chart-widget">Google Chart Widget</a></li>
+<li><a class="reference internal" href="#general-flash-widget">General Flash Widget</a></li>
+<li><a class="reference internal" href="#mp3-player-flash-widget">MP3 Player Flash Widget</a></li>
+<li><a class="reference internal" href="#repeatingfieldset-with-custom-legend-and-field-names">RepeatingFieldSet With Custom Legend and Field Names</a><ul>
+<li><a class="reference internal" href="#the-problem">The Problem</a></li>
+<li><a class="reference internal" href="#the-solution">The Solution</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../FastData/DataController.html"
+                        title="previous chapter">DataController</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Tips.html"
+                        title="next chapter">Widget Tips</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="widget-recipes">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Widget Recipes</a><a class="headerlink" href="#widget-recipes" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#widget-recipes" id="id1">Widget Recipes</a></li>
+</ul>
+</div>
+<p>This page contains miscellaneous recipes for custom <a class="reference internal" href="index.html"><em>widgets</em></a> and widget usage.
+Feel free to add your own recipe!</p>
+<div class="section" id="google-chart-widget">
+<h2>Google Chart Widget<a class="headerlink" href="#google-chart-widget" title="Permalink to this headline">¶</a></h2>
+<p>Contributed by: Christopher Arndt</p>
+<p>This is a simple widget class that allows to easily create image links which
+use the <a class="reference external" href="http://code.google.com/apis/chart/">Google chart API</a> to display nice diagrams and graphs.</p>
+<p>See the docstring for usage information. You can also download an example
+project built with TurboGears 1.1, which showcases a few simple graphs
+created with this widget. The example project also contains the the code
+below in the <tt class="docutils literal"><span class="pre">googlecharts.py</span></tt> module file.</p>
+<p>The example code is attached to this page and can be downloaded here:</p>
+<blockquote>
+<div><a class="reference download internal" href="../_downloads/GoogleChartDemo.tar.bz2"><tt class="xref download docutils literal"><span class="pre">Google</span> <span class="pre">Chart</span> <span class="pre">Demo</span> <span class="pre">(.tar.bz2)</span></tt></a></div></blockquote>
+<p>Here&#8217;s a simple example of a chart image link created with this widget:</p>
+<div class="highlight-python"><pre>&lt;img
+  src="http://chart.apis.google.com/chart?cht=p3&amp;amp;chs=350x150&amp;amp;chl=Python|Perl|PHP&amp;amp;chd=t:60,15,25"
+  height="150"
+  class="googlechart"
+  width="350"&gt;</pre>
+</div>
+<p>And here is the resulting image delivered by the Google chart web service:</p>
+<img alt="../_images/widget_recipes_piechart.png" src="../_images/widget_recipes_piechart.png" />
+<p>And, finally, here&#8217;s the widget code. There are many possibilities for enhancing
+this widget. Please use this as a base for your own experiments!</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">widgets</span>
+
+<span class="k">class</span> <span class="nc">GoogleChart</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple widget to display Google Chart image links.</span>
+
+<span class="sd">    Example usage::</span>
+
+<span class="sd">        widget = GoogleChart(attrs={&#39;class&#39;: &#39;googlechart&#39;},</span>
+<span class="sd">            width=500, height=200)</span>
+<span class="sd">        widget.display(((&#39;Python&#39;, 60), (&#39;Perl&#39;, 15), (&#39;PHP&#39;, 25)))</span>
+
+<span class="sd">    or::</span>
+
+<span class="sd">        widget.display(dict(Python=60, Perl=15, PHP=25), type=&#39;bvs&#39;)</span>
+
+<span class="sd">    or::</span>
+
+<span class="sd">        widget.display([60, 15, 25], labels=[&#39;Python&#39;, &#39;Perl&#39;, &#39;PHP&#39;],</span>
+<span class="sd">           type=&#39;bhs&#39;)</span>
+
+<span class="sd">    The widget value is taken as the chart data. It can be either a simple list</span>
+<span class="sd">    or tuple of values, a list or tuple of (label, value) items or a dictionary</span>
+<span class="sd">    with label=value items.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s">    &lt;img xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span>
+<span class="s">      src=&quot;${api_base_uri}?cht=$type&amp;amp;chs=$size&amp;amp;chl=$labels&amp;amp;chd=$data&quot;</span>
+<span class="s">      width=&quot;$width&quot;</span>
+<span class="s">      height=&quot;$height&quot;</span>
+<span class="s">      py:attrs=&quot;attrs&quot;</span>
+<span class="s">    /&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;api_base_uri&#39;</span><span class="p">,</span> <span class="s">&#39;attrs&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;width&#39;</span><span class="p">,</span> <span class="s">&#39;height&#39;</span><span class="p">,</span> <span class="s">&#39;labels&#39;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="s">&#39;Dictionary containing extra (X)HTML attributes for the IMG tag&#39;</span><span class="p">,</span>
+        <span class="n">api_base_uri</span> <span class="o">=</span> <span class="s">&#39;The base URI of the Google Chart web service&#39;</span><span class="p">,</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="s">&quot;The code for the chart type (default: &#39;p3&#39; (a pie chart))&quot;</span><span class="p">,</span>
+        <span class="n">width</span> <span class="o">=</span> <span class="s">&quot;The width of teh chart image in pixels&quot;</span><span class="p">,</span>
+        <span class="n">height</span> <span class="o">=</span> <span class="s">&quot;The height of the chart image in pixels&quot;</span><span class="p">,</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="s">&quot;The labels for the chart data values. Can be a tuple or list&quot;</span>
+            <span class="s">&quot; of values or a string of values separated by pipe symbols (&#39;|&#39;)&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">api_base_uri</span> <span class="o">=</span> <span class="s">&#39;http://chart.apis.google.com/chart&#39;</span>
+    <span class="n">attrs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="mi">150</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="s">&#39;p3&#39;</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="mi">250</span>
+
+    <span class="k">def</span> <span class="nf">update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GoogleChart</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;labels&#39;</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c"># value is a dict of label=value items</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="c"># value is a list of (label, value) items</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;t:&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># value is a list of values</span>
+                <span class="n">params</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;t:&quot;</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">value</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;data&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c"># explicit &#39;labels&#39; keyword arg overrides labels in data list or dict</span>
+        <span class="k">if</span> <span class="n">labels</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+        <span class="n">params</span><span class="p">[</span><span class="s">&#39;size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">x</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;width&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;height&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="general-flash-widget">
+<h2>General Flash Widget<a class="headerlink" href="#general-flash-widget" title="Permalink to this headline">¶</a></h2>
+<p>Contributed by: Christoph Zwerschke</p>
+<p>This recipe shows how you can easily embed any Flash Player content
+on your pages with a TurboGears widget using <a class="reference external" href="http://code.google.com/p/swfobject/wiki/documentation">SWFObject</a>.</p>
+<ol class="arabic simple">
+<li>Create a subdirectory <tt class="docutils literal"><span class="pre">/static/flash</span></tt> in your project&#8217;s <tt class="docutils literal"><span class="pre">/static</span></tt>
+directory and copy your Flash Player content into that subdirectory.</li>
+<li>Download the latest version of SWFObject
+from <a class="reference external" href="http://code.google.com/p/swfobject/">http://code.google.com/p/swfobject/</a>
+(this recipe has been tested with SWFObject v2.1).</li>
+<li>Copy the <tt class="docutils literal"><span class="pre">swfobject.js</span></tt> file from the SWFObject archive into your project&#8217;s
+<tt class="docutils literal"><span class="pre">/static/javascript</span></tt> directory, and the <tt class="docutils literal"><span class="pre">expressInstall.swf</span></tt> file into
+your project&#8217;s <tt class="docutils literal"><span class="pre">/static/flash</span></tt> directory.</li>
+<li>Use the code below to define a TurboGears widget class <tt class="docutils literal"><span class="pre">FlashWidget</span></tt>
+for embedding your Flash Player content on any web page.</li>
+<li>Create a <tt class="docutils literal"><span class="pre">FlashWidget</span></tt> instance, specifying the name of the flash file
+(you can leave out the <tt class="docutils literal"><span class="pre">.swf`</span></tt> ending) and its title, pass it via your
+controller to your template and display it there. We&#8217;re assuming here that
+you will only display one of these widgets per web page because we are
+using a fixed element id.</li>
+</ol>
+<p>This is how a basic FlashWidget class can be defined
+(modify the template and the parameters as appropriate):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">url</span><span class="p">,</span> <span class="n">util</span><span class="p">,</span> <span class="n">widgets</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">JSLink</span><span class="p">,</span> <span class="n">JSSource</span>
+
+<span class="n">this_package</span> <span class="o">=</span> <span class="n">util</span><span class="o">.</span><span class="n">get_package_name</span><span class="p">()</span>
+<span class="n">static</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="n">this_package</span><span class="p">,</span> <span class="s">&#39;static&#39;</span><span class="p">)</span>
+<span class="n">widgets</span><span class="o">.</span><span class="n">register_static_directory</span><span class="p">(</span><span class="n">this_package</span><span class="p">,</span> <span class="n">static</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FlashWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Embeds Adobe Flash Player content using SWFObject 2.</span>
+
+<span class="sd">    We assume that you&#39;re only using one of these widgets per page.</span>
+
+<span class="sd">    See http://code.google.com/p/swfobject for info on SWFObject.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="s">&#39;name base title width height flash_vars&#39;</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+    <span class="n">object_id</span> <span class="o">=</span> <span class="s">&#39;flashwidget&#39;</span>
+    <span class="n">base</span> <span class="o">=</span> <span class="s">&#39;/static/flash&#39;</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">550</span><span class="p">,</span> <span class="mi">400</span>
+    <span class="n">flash_version</span> <span class="o">=</span> <span class="s">&#39;9.0.0&#39;</span>
+    <span class="n">get_flash_url</span> <span class="o">=</span> <span class="s">&#39;http://www.adobe.com/go/getflashplayer&#39;</span>
+    <span class="n">get_flash_button</span> <span class="o">=</span> <span class="s">&#39;http://www.adobe.com/images/shared/&#39;</span> \
+        <span class="s">&#39;download_buttons/get_flash_player.gif&#39;</span>
+
+    <span class="n">javascript</span><span class="o">=</span><span class="p">[</span><span class="n">JSLink</span><span class="p">(</span><span class="n">this_package</span><span class="p">,</span> <span class="s">&#39;javascript/swfobject.js&#39;</span><span class="p">),</span>
+        <span class="n">JSSource</span><span class="p">(</span><span class="s">&quot;swfobject.registerObject(&#39;flashwidget&#39;, &#39;</span><span class="si">%s</span><span class="s">&#39;, &#39;</span><span class="si">%s</span><span class="s">&#39;);&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">flash_version</span><span class="p">,</span> <span class="n">url</span><span class="p">(</span><span class="n">base</span> <span class="o">+</span> <span class="s">&#39;/expressInstall.swf&#39;</span><span class="p">)))]</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">        &lt;div xmlns:py=&quot;http://purl.org/kid/ns#&quot; py:strip=&quot;True&quot;&gt;</span>
+<span class="s">        &lt;h2 py:if=&quot;title&quot; py:content=&quot;title&quot;&gt;Title&lt;/h2&gt;</span>
+<span class="s">        &lt;object id=&quot;</span><span class="si">%s</span><span class="s">&quot;</span>
+<span class="s">            classid=&quot;clsid:D27CDB6E-AE6D-11cf-96B8-444553540000&quot;</span>
+<span class="s">        width=&quot;$width&quot; height=&quot;$height&quot;&gt;</span>
+<span class="s">        &lt;param name=&quot;base&quot; value=&quot;$base&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;movie&quot; value=&quot;$name&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;play&quot; value=&quot;true&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;loop&quot; value=&quot;false&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;menu&quot; value=&quot;true&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;quality&quot; value=&quot;high&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;scale&quot; value=&quot;showall&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;FlashVars&quot; value=&quot;$flash_vars&quot;/&gt;</span>
+<span class="s">        &lt;!--[if !IE]&gt;--&gt;</span>
+<span class="s">        &lt;object type=&quot;application/x-shockwave-flash&quot;</span>
+<span class="s">            codebase=&quot;$base&quot; data=&quot;$name&quot;</span>
+<span class="s">            width=&quot;$width&quot; height=&quot;$height&quot;&gt;</span>
+<span class="s">        &lt;param name=&quot;base&quot; value=&quot;$base&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;play&quot; value=&quot;true&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;loop&quot; value=&quot;false&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;menu&quot; value=&quot;true&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;quality&quot; value=&quot;high&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;scale&quot; value=&quot;showall&quot;/&gt;</span>
+<span class="s">        &lt;param name=&quot;FlashVars&quot; value=&quot;$flash_vars&quot;/&gt;</span>
+<span class="s">        &lt;!--&lt;![endif]--&gt;</span>
+<span class="s">        &lt;p&gt;&amp;#160;&lt;/p&gt;</span>
+<span class="s">        &lt;div style=&quot;width:${width}px;&quot;&gt;</span>
+<span class="s">        &lt;a href=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;&lt;img src=&quot;</span><span class="si">%s</span><span class="s">&quot;</span>
+<span class="s">            align=&quot;right&quot; border=&quot;0&quot; hspace=&quot;16&quot; vspace=&quot;2&quot;</span>
+<span class="s">            alt=&quot;Get Adobe Flash player&quot;/&gt;&lt;/a&gt;</span>
+<span class="s">        &lt;p style=&quot;text-align:left&quot;&gt;You need an up to date version</span>
+<span class="s">            of the Adobe Flash Player to view this content.&lt;/p&gt;</span>
+<span class="s">        &lt;/div&gt;</span>
+<span class="s">        &lt;p&gt;&amp;#160;&lt;/p&gt;</span>
+<span class="s">        &lt;!--[if !IE]&gt;--&gt;</span>
+<span class="s">        &lt;/object&gt;</span>
+<span class="s">        &lt;!--&lt;![endif]--&gt;</span>
+<span class="s">        &lt;/object&gt;</span>
+<span class="s">        &lt;/div&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">object_id</span><span class="p">,</span> <span class="n">get_flash_url</span><span class="p">,</span> <span class="n">get_flash_button</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">flash_vars</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">Widget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">+=</span> <span class="s">&#39;.swf&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">url</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">url</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">name</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">flash_vars</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">flash_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">flash_vars</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">flash_vars</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">flash_vars</span> <span class="o">=</span> <span class="s">&#39;&amp;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">flash_vars</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flash_vars</span> <span class="o">=</span> <span class="n">flash_vars</span> <span class="ow">or</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">width</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="k">if</span> <span class="n">height</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">height</span>
+</pre></div>
+</div>
+<p>See the MP3 Player Flash widget below for a demo application using this general Flash widget.</p>
+</div>
+<div class="section" id="mp3-player-flash-widget">
+<h2>MP3 Player Flash Widget<a class="headerlink" href="#mp3-player-flash-widget" title="Permalink to this headline">¶</a></h2>
+<p>Contributed by: Christoph Zwerschke</p>
+<p>This recipe shows how you can easily embed an MP3 player on your pages with
+a TurboGears widget using the open source <a class="reference external" href="http://flash-mp3-player.net">MP3 Player</a> and <a class="reference external" href="http://code.google.com/p/swfobject/wiki/documentation">SWFObject</a>.</p>
+<ol class="arabic simple">
+<li>Follow the instructions above for creating a general <tt class="docutils literal"><span class="pre">FlashWidget</span></tt> class.</li>
+<li>Copy your MP3 files and playlists into your project&#8217;s <tt class="docutils literal"><span class="pre">/static/flash</span></tt> directory.</li>
+<li>Download the latest version of <a class="reference external" href="http://flash-mp3-player.net/players/multi/">MP3 Player Multi</a>
+from <a class="reference external" href="http://flash-mp3-player.net/players/multi/download/">http://flash-mp3-player.net/players/multi/download/</a>
+(this recipe has been tested with MP3 Player Multi v1.2.1).</li>
+<li>Copy the <tt class="docutils literal"><span class="pre">player_mp3_multi.swf</span></tt> file that you downloaded into your project&#8217;s
+<tt class="docutils literal"><span class="pre">/static/flash</span></tt> directory.</li>
+<li>Use the code below to define a TurboGears widget class <tt class="docutils literal"><span class="pre">MP3Widget</span></tt> based
+on the <tt class="docutils literal"><span class="pre">FlashWidget</span></tt> class.</li>
+<li>Create a <tt class="docutils literal"><span class="pre">MP3Widget</span></tt> instance, specifying a title and parameters
+as listed in the <a class="reference external" href="http://flash-mp3-player.net/players/multi/documentation/">MP3 Player Multi documentation</a>, pass it via your
+controller to your template and display it there. We&#8217;re assuming here that
+you will only display one of these widgets per web page because we are
+using a fixed element id.</li>
+</ol>
+<p>This is how a basic MP3Widget class can be defined
+(you can choose a different MP3 player by setting <tt class="docutils literal"><span class="pre">name</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MP3Widget</span><span class="p">(</span><span class="n">FlashWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Embeds MP3 content using MP3 Player and SWFObject 2.</span>
+
+<span class="sd">    See http://flash-mp3-player.net for info on MP3 Player.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">object_id</span> <span class="o">=</span> <span class="s">&#39;mp3widget&#39;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;player_mp3_multi.swf&#39;</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">100</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">flash_vars</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">flash_vars</span><span class="p">:</span>
+            <span class="n">flash_vars</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="s">&#39;width&#39;</span> <span class="ow">in</span> <span class="n">flash_vars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">width</span><span class="p">:</span>
+                <span class="n">width</span> <span class="o">=</span> <span class="n">flash_vars</span><span class="p">[</span><span class="s">&#39;width&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">width</span><span class="p">:</span>
+            <span class="n">flash_vars</span><span class="p">[</span><span class="s">&#39;width&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="k">if</span> <span class="s">&#39;height&#39;</span> <span class="ow">in</span> <span class="n">flash_vars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">height</span><span class="p">:</span>
+                <span class="n">height</span> <span class="o">=</span> <span class="n">flash_vars</span><span class="p">[</span><span class="s">&#39;height&#39;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">height</span><span class="p">:</span>
+            <span class="n">flash_vars</span><span class="p">[</span><span class="s">&#39;height&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="n">FlashWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">flash_vars</span><span class="p">,</span>
+            <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>An example application using the MP3 player is attached to this page and can be downloaded here:</p>
+<blockquote>
+<div><a class="reference download internal" href="../_downloads/MP3PlayerDemo.tar.bz2"><tt class="xref download docutils literal"><span class="pre">MP3</span> <span class="pre">Player</span> <span class="pre">Demo</span> <span class="pre">(.tar.bz2)</span></tt></a></div></blockquote>
+<p>Here is how the MP3 player embedded on the web page looks like:</p>
+<img alt="../_images/widget_recipes_mp3_player.png" src="../_images/widget_recipes_mp3_player.png" />
+</div>
+<div class="section" id="repeatingfieldset-with-custom-legend-and-field-names">
+<h2>RepeatingFieldSet With Custom Legend and Field Names<a class="headerlink" href="#repeatingfieldset-with-custom-legend-and-field-names" title="Permalink to this headline">¶</a></h2>
+<p>Contributed by: <a class="reference external" href="http://trac.turbogears.org/ticket/1479">Dimitris Glezos</a></p>
+<div class="section" id="the-problem">
+<h3>The Problem<a class="headerlink" href="#the-problem" title="Permalink to this headline">¶</a></h3>
+<p>The current implementation of <tt class="docutils literal"><span class="pre">widgets.RepeatingFieldSet</span></tt> creates a set of
+fieldsets with common attributes; for example, legends are the same for each
+fieldset. In addition, the variables in each fieldset are automatically
+numbered &#8211; one might want to give them custom names.</p>
+</div>
+<div class="section" id="the-solution">
+<h3>The Solution<a class="headerlink" href="#the-solution" title="Permalink to this headline">¶</a></h3>
+<p>Here is an implementation of the widget that accepts lists of the size of
+repetitions for legends and fields:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">RepeatingFieldSetPlus</span><span class="p">(</span><span class="n">RepeatingFormField</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A widget similar to RepeatingFieldSet, but with differentiation</span>
+<span class="sd">    between each field set. Accepts ids and legends as lists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &lt;div xmlns:py=&quot;http://purl.org/kid/ns#&quot;&gt;</span>
+<span class="s">    &lt;fieldset py:for=&quot;repetition, id in enumerate(ids)&quot;</span>
+<span class="s">        class=&quot;${field_class}&quot;</span>
+<span class="s">        id=&quot;${field_id}_${id}&quot;</span>
+<span class="s">    &gt;</span>
+<span class="s">        &lt;legend py:if=&quot;legends[repetition]&quot;</span>
+<span class="s">                py:content=&quot;legends[repetition]&quot; /&gt;</span>
+<span class="s">        &lt;div py:for=&quot;field in hidden_fields&quot;</span>
+<span class="s">             py:replace=&quot;field.display(value_for(field[repetition]),</span>
+<span class="s">                        **params_for(field[repetition]))&quot;</span>
+<span class="s">        /&gt;</span>
+<span class="s">        &lt;label class=&quot;fieldlabel&quot; for=&quot;${field.field_id}&quot;</span>
+<span class="s">               py:content=&quot;field.label&quot; /&gt;</span>
+<span class="s">        &lt;span py:replace=&quot;field.display(value_for(field),</span>
+<span class="s">                                        **params_for(field))&quot; /&gt;</span>
+<span class="s">        &lt;span py:if=&quot;error_for(field)&quot; class=&quot;fielderror&quot;</span>
+<span class="s">              py:content=&quot;error_for(field)&quot; /&gt;</span>
+<span class="s">        &lt;span py:if=&quot;field.help_text&quot; class=&quot;fieldhelp&quot;</span>
+<span class="s">              py:content=&quot;field.help_text&quot; /&gt;</span>
+<span class="s">    &lt;/fieldset&gt;</span>
+<span class="s">    &lt;/div&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;legends&quot;</span><span class="p">,</span> <span class="s">&quot;ids&quot;</span><span class="p">,</span> <span class="s">&quot;table_attrs&quot;</span><span class="p">]</span>
+    <span class="n">params_doc</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;legend&#39;</span> <span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Text to display as the legend &#39;</span>
+                             <span class="s">&#39;for the fieldset&#39;</span><span class="p">)}</span>
+    <span class="n">legends</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">table_attrs</span> <span class="o">=</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>This widget can be used like this:</p>
+<div class="highlight-python"><pre>RepeatingFieldSetPlus(
+    ids = [f.id for f in foo.items]
+    legends = [f.leg for f in foo.items]
+    fields=[SingleSelectField(":doc:`/foo`%s" % f.id) for f in foo.items]</pre>
+</div>
+<p>I hope I&#8217;m even somewhat close to something useful/unimplemented here..</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

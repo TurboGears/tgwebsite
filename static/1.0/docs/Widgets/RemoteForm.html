@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RemoteForm Widget Tutorial &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Wrap Ajax Operations in Widgets" href="RemoteLink.html" />
+    <link rel="prev" title="The AutoCompleteField Widget" href="AutoCompleteField.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RemoteLink.html" title="Wrap Ajax Operations in Widgets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AutoCompleteField.html" title="The AutoCompleteField Widget"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">RemoteForm Widget Tutorial</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#basic-remoteform-usage">Basic RemoteForm Usage</a></li>
+<li><a class="reference internal" href="#updating-an-ajaxgrid-when-a-remoteform-is-submitted">Updating an AjaxGrid when a RemoteForm is submitted</a></li>
+<li><a class="reference internal" href="#download-the-example-code">Download the example code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="AutoCompleteField.html"
+                        title="previous chapter">The AutoCompleteField Widget</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="RemoteLink.html"
+                        title="next chapter">Wrap Ajax Operations in Widgets</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="remoteform-widget-tutorial">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">RemoteForm Widget Tutorial</a><a class="headerlink" href="#remoteform-widget-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#remoteform-widget-tutorial" id="id1">RemoteForm Widget Tutorial</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#basic-remoteform-usage" id="id3">Basic RemoteForm Usage</a></li>
+<li><a class="reference internal" href="#updating-an-ajaxgrid-when-a-remoteform-is-submitted" id="id4">Updating an AjaxGrid when a RemoteForm is submitted</a></li>
+<li><a class="reference internal" href="#download-the-example-code" id="id5">Download the example code</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">RemoteForm</span></tt> and its companion widget, <tt class="docutils literal"><span class="pre">LinkRemoteFunction</span></tt>, provide an
+&#8220;ajaxian&#8221; method of presenting a form. RemoteForm&#8217;s purpose is to provide
+the HTML form functionality without forcing a page refresh.</p>
+</div>
+<div class="section" id="basic-remoteform-usage">
+<h2><a class="toc-backref" href="#id3">Basic RemoteForm Usage</a><a class="headerlink" href="#basic-remoteform-usage" title="Permalink to this headline">¶</a></h2>
+<p>In this example, we&#8217;re going to demo a form using <tt class="docutils literal"><span class="pre">TextField</span></tt>, <tt class="docutils literal"><span class="pre">CheckBox</span></tt>,
+and a <tt class="docutils literal"><span class="pre">RadioButtonList</span></tt>. To start, in the controller, define a class that
+contains the fields you want to display:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">TextField</span><span class="p">,</span> <span class="n">CheckBox</span><span class="p">,</span> <span class="n">RadioButtonList</span><span class="p">,</span> <span class="n">RemoteForm</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets.base</span> <span class="kn">import</span> <span class="n">WidgetsList</span>
+
+<span class="k">class</span> <span class="nc">SearchFormFields</span><span class="p">(</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">()</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">()</span>
+    <span class="n">check</span> <span class="o">=</span> <span class="n">CheckBox</span><span class="p">()</span>
+    <span class="n">radio</span> <span class="o">=</span> <span class="n">RadioButtonList</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;Python&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;Java&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&quot;Pascal&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&quot;Ruby&quot;</span><span class="p">)],</span>
+        <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, expose a controller function to create the remote form upon request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;.templates.welcome&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">item_searchform</span> <span class="o">=</span> <span class="n">RemoteForm</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s">&quot;ItemSearch&quot;</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="n">SearchFormFields</span><span class="p">(),</span>
+            <span class="n">submit_text</span><span class="o">=</span><span class="s">&quot;Search&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item_searchform</span><span class="o">=</span><span class="n">item_searchform</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The last controller function is a callback, which is used by the widget to
+retrieve the data inside it&#8217;s asynchronous request.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">do_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Echo the parameters back as HTML.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;&lt;p&gt;Recieved data:&lt;br&gt;</span><span class="si">%r</span><span class="s">&lt;/br&gt;&lt;/p&gt;&quot;</span> <span class="o">%</span> <span class="n">kw</span>
+</pre></div>
+</div>
+<p>Finally, in the template, call the widget&#8217;s <tt class="docutils literal"><span class="pre">display</span></tt> function. You can pass
+parameters to display() to customize the effects. The example below displays
+&#8220;Searching...&#8221; during the XMLHttpRequest, and &#8220;Done!&#8221; when it completes.</p>
+<p>In your welcome.kid, replace the contents of the BODY section with the
+following:</p>
+<div class="highlight-python"><pre>&lt;span py:replace="item_searchform.display(
+    action='do_search',
+    target_dom='items',
+    update='items',
+    before='getElement(\'loading\').innerHTML=\'Searching...\';',
+    on_complete='getElement(\'loading\').innerHTML=\'Done!\';',
+    confirm='Are you sure you want to submit this request?')"/&gt;
+&lt;p id="loading"/&gt;
+&lt;div id="items"/&gt;</pre>
+</div>
+<p>And that&#8217;s it. Browsers hitting our demo page will be served up some nice
+RemoteForm goodness.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Most of the above was gleaned from the widget example in
+the toolbox. See the demo there for a live example.</p>
+</div>
+</div>
+<div class="section" id="updating-an-ajaxgrid-when-a-remoteform-is-submitted">
+<h2><a class="toc-backref" href="#id4">Updating an AjaxGrid when a RemoteForm is submitted</a><a class="headerlink" href="#updating-an-ajaxgrid-when-a-remoteform-is-submitted" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to have a RemoteForm widget notify an AjaxGrid to update its data
+when the RemoteForm is submitted.  This can easily be done using the following</p>
+<div class="highlight-python"><pre>&lt;div id="form"&gt;
+    &lt;span py:replace="form.display(
+        action='/savedata',
+        on_complete='javascript:%s_AjaxGrid.refresh({});' % grid.id)"/&gt;
+&lt;/div&gt;
+&lt;div id="grid"&gt;
+    &lt;span py:content="grid.display()"/&gt;
+ &lt;/div&gt;</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">on_complete</span></tt> parameter calls the JavaScript that updates the AjaxGrid&#8217;s
+data.  Using this method will trigger two requests to the server. One POST
+request to send the form&#8217;s data and a GET request to retrieve new data for the
+grid.</p>
+</div>
+<div class="section" id="download-the-example-code">
+<h2><a class="toc-backref" href="#id5">Download the example code</a><a class="headerlink" href="#download-the-example-code" title="Permalink to this headline">¶</a></h2>
+<p>The example code on this page is attached and can be downloaded here:</p>
+<p><a class="reference download internal" href="../_downloads/rf-demo.tar.gz"><tt class="xref download docutils literal"><span class="pre">rf-demo.tar.gz</span></tt></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

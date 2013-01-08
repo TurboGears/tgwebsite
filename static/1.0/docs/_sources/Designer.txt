@@ -1,0 +1,71 @@
+Designer-Friendly Templates
+===========================
+
+Since Kid templates are standard XHTML, you can open them directly
+in your browser without them first being fed through the controller.
+Thus, when it is important or useful for you, you can make the
+templates look great all by themselves before controller content is
+added. This is helpful in maintaining MVC discipline by allowing
+designers to develop their templates independently from the programmers.
+
+While much of your markup will render correctly without the controller,
+there are a few things you need to watch out for, such as:
+
+* :ref:`Stylesheets`
+* :ref:`JavaScript`
+* :ref:`VariableSubstitution`
+
+.. _Stylesheets:
+
+Stylesheets
+-----------
+
+Sometimes, it's inconvenient or impossible to have a stylesheet ``href`` that
+works properly when viewing the template directly *and* after the template is
+rendered. To get around this, you can use ``href`` to handle viewing the
+template in your browser and ``py:attrs`` to handle the rendered page. For
+example::
+
+
+    <link rel="stylesheet" type="text/css" href="/Path/To/File.css"
+       py:attrs="href='/path/on/website'"/>
+
+When you're viewing the template in your browser, your browser will only
+look at the ``href`` attribute, therefore your stylesheet will be loaded properly.
+When the template is rendered for the final view, Kid will substitute the value
+that's in ``py:attrs``, so that the stylesheet works properly on the web.
+
+.. _JavaScript:
+
+JavaScript
+----------
+
+When dealing with JavaScript, this same approach as above will work for
+the ``src`` attribute on the script tag.
+
+.. _VariableSubstitution:
+
+Variable Substitutions
+----------------------
+
+In Kid you can embed not only variables, but also any Python expression
+by enclosing them in curly braces and putting a $ sign in front, like ``${expr}``.
+The curly braces are actually not even needed for simple variable substitutions::
+
+   <th>Customer name:</th><td>$name</th>
+
+However, you may want to make the raw template look more like the final output
+in the browser, i.e. insert a real name instead, so that the designer gets a better
+impression of the final output. You can do this with the ``py:content`` directive::
+
+  <th>Customer name:</th><td py:content="name">John Doe</td>
+
+Sometimes the variable substitution is not the whole content of a tag, like here::
+
+  <li>Customer name: $name</li>
+
+You can then use an auxiliary tag with the ``py:replace`` directive so that
+it will not appear in the final output::
+
+  <li>Customer name: <span py:replace="name">John Doe</span></li>
+

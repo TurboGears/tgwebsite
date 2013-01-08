@@ -1,0 +1,188 @@
+.. index:: visit framework
+
+Using the Visit Framework
+=========================
+
+.. contents::
+   :depth: 2
+
+
+Overview
+--------
+
+
+The Visit framework:
+
+1. Manages a cookie that uniquely identifies a visitor to your website.
+2. Provides a plug-in mechanism so that your code can be called when a visitor
+   browses your site.
+3. The visit framework is also the foundation of the :doc:`identity </Identity/index>`
+   framework used by TurboGears for authentication and authorization purposes.
+
+
+Configuration
+-------------
+
+`Visit configuration`_ is done in ``app.cfg``. The purpose of the configuration
+options should be pretty clear from the comments in ``app.cfg``, but here are
+some of the more interesting options.
+
+.. _Visit configuration: http://docs.turbogears.org/1.0/Configuration#visit
+
+``visit.on``
+  Turns the visit framework on if ``True``
+
+``visit.source`` -- ``cookie``
+  Where to look for the key of an existing visit in the request and in which
+  order. Comma-separated list of possible values: ``'cookie'``, ``'form'``.
+  By default only use the visit key found in a session cookie.  New in 1.0.6.
+
+``visit.timeout``
+  The number of minutes a visitor may be idle before the visit is considered to
+  be 'expired'.
+
+  The default is 20 minutes. If you extend this to be a really long time period,
+  you are defeating the point of tracking a visit. Remember, you are trying to
+  track visits to the site, not track a 'user' over any number of visits.
+
+``visit.cookie.name``
+  You can change the name of the cookie that is sent to the visitor. The default
+  is ``'tg-visit'``.
+
+``visit.form.name`` -- ``tg_visit``
+  The name of the request parameter from which the visit key may be retrieved
+  when ``visit.source`` includes ``'form'``. The name MUST NOT contain dashes
+  or dots or it will break the request parameters decoding by the
+  ``NestedVariablesFilter``. New in 1.0.6.
+
+``visit.cookie.permanent``
+  If you want to be able to recover a session even when the browser was closed
+  (within the timeout specified above), you can set this to ``True``. But be
+  aware that this will make your application less secure.
+
+
+The Visit Cookie
+----------------
+
+The cookie that is sent to the user has the properties specified in ``app.cfg``.
+The actual payload for the cookie is a SHA_ hash of some of the visitor's
+attributes (visitors IP address, port, the time, and random data). If this is a
+new visit, the cookie is generated and sent to the client. Note that the timeout
+time is tracked in the database, and is not a function of any 'expires' property
+of the cookie. Rather, this information is stored in the ``Visit`` object
+defined in ``model.py``.
+
+If a user configures his/her browser to ignore or reject cookies, the Visit
+framework will not work properly for that user. In this situation, every user
+request makes Visit act as if that this is a brand-new visit, and the response
+will include a newly created cookie.
+
+.. _SHA: http://docs.python.org/lib/module-sha.html
+
+
+Tracking Visits With Request Parameters
+---------------------------------------
+
+New in 1.0.6.
+
+Sometimes tracking visits with a session cookie is not possible, either
+because the user has disabled cookies in his browser or a buggy web client does
+not transfer the session cookie with the visit key correctly. As a workaround
+the visit key can also be retrieved from the request parameters (whether URL or
+request body parameters). This is not enabled by default for security reasons
+because session-hijacking vulnerabilities can easily be introduced by improper
+use of session IDs in URLs. To enable retrieval of the visit key from the request
+params, set ``visit.source`` to include the value ``"form"`` in your application's
+configuration. Example::
+
+    visit.source = 'cookie, form'
+
+With this setting, the visit framework will look for the visit key first in the
+session cookie and, if it is not found, in a request parameter with the name set
+by the ``visit.form.name`` configuration setting (default ``"tg_visit"``). If the
+visit key is found in the request parameters, the request parameter will be
+stripped from the parameters so your controller methods do not need to handle an
+extra parameter.
+
+You must make arrangements for the client to transfer the visit key with the request
+parameters by either adding it to the query string of any URLs pointing to your
+application (for GET requests) or by adding the parameter to POST requests, for
+example by adding a hidden form field with the visit key to forms. You can get the
+value of the current visit key in your templates with ``tg.identity.visit_key``.
+
+Example for including the visit key in a URL for a GET request::
+
+    <a href="${tg.url('/foo', {tg.config('visit.form.name', 'tg_visit'): tg.identity.visit_key})}"
+      >Click here</>
+
+Example for including the visit key in a POST request through a form::
+
+    <form action="${tg.url('/foo')}" method="POST">
+      <input type="hidden"
+        name="${tg.config('visit.form.name', 'tg_visit')}"
+        value="${tg.identity.visit_key}" />
+      ...
+    </form>
+
+
+Housekeeping
+------------
+
+Currently the Visit framework does not clean out old visit entries from the
+database, so expired visits will accumulate there and should be cleaned up
+once in a while. How often this is necessary depends on the traffic your
+website gets and whether you want to be able to check who was logged in
+at which time later.
+
+It is advisable to set up a periodic job to clean up old visit entries
+every day (week, hour, whatever suits you). Here is an example of a function
+that accomplishes this if you are using an SQLAlchemy :doc:`visit <index>`/:doc:`identity </Identity/index>` model::
+
+    # tasks.py
+
+    import logger
+    import datetime
+
+    from yourpkg.model import Visit, VisitIdentity, session
+
+    log = logging.getLogger('yourpkg.tasks')
+
+    def expunge_expired_visits(keep_days=7):
+        """Expunge all visits and corresponding visitidentity entries from the
+        database, which are older than 'keep_days' (default: 7 days)."""
+
+        t2 = datetime.timedelta(days=keep_days)
+        visits = Visit.query.filter(
+            Visit.expiry < (datetime.datetime.now() - t2))
+        log.info('Expunging all visits older than %i days.', keep_days)
+        log.debug('Expunging %i old visit(s).', visits.count())
+        for visit in visits:
+            vi = VisitIdentity.by_visit_key(visit.visit_key)
+            if vi:
+                session.delete(vi)
+            session.delete(visit)
+        session.flush()
+
+This cleans out all expired visit entries, which have expired more than
+``keep_days`` days ago. It also deletes the VisitIdentity objects
+corresponding to these expired visits. You can use the TurboGears
+:doc:`scheduler </Scheduler>` to run this function periodically or use
+a :doc:`console script entry point </Install/DeployWithAnEgg>`
+to provide a script, which can be run from *cron*. If you do so, make sure
+that the configuration file is loaded, so that SQLAlchemy knows about your
+connection :doc:`dburi </GettingStarted/UseDatabase>`.
+See :doc:`Using your model outside of TurboGears </ModelOutsideTG>` for more
+information on this topic.
+
+
+Extending the Visit Framework
+-----------------------------
+
+.. toctree::
+   :hidden:
+
+   Extending
+
+The visit framework can be extended with visit plugins or by replacing the
+standard visit manager with a custom one. Please see the page :doc:`Extending
+the Visit Framework <Extending>` for more information.

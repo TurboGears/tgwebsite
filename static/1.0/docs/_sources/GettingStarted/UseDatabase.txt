@@ -1,0 +1,100 @@
+.. index:: data model, database
+
+Data Model Overview
+===================
+
+.. contents::
+    :depth: 2
+
+
+In TurboGears the model represents whatever persistent data your application works with.
+
+In practice, we usually use an ORM (object relational mapper) in our model.
+
+Object relational mappers provide a bridge between Python objects and a relational database.
+An ORM lets you use object-oriented programming style for accessing a relational database,
+and provides an abstraction layer over different database backend systems. ORMs are not designed
+to hide away the database 100%, but they go a long way towards letting you write Python and not
+worry about SQL.
+
+TurboGears 1.0 models are typically represented using SQLObject objects, as SQLObject is
+the default ORM used by TurboGears 1.0. This Getting Started guide is therefore based on
+SQLObject. However, you can also use SQLAlchemy and this will become the default ORM
+starting with TurboGears 1.1 If you prefer this solution, please read our alternative
+Getting Started guide :doc:`using SQLAlchemy and Elixir <UseElixir>`.
+
+
+.. _set_database_uri:
+
+Set the Database URI (dburi)
+----------------------------
+
+You need to tell your model where to find the database by configuring the database settings.
+
+In your project's ``dev.cfg`` file (for development) or the ``prod.cfg`` file (for production use)
+you'll find the parameter ``sqlobject.dburi``, which controls where the database is stored. The
+value is a typical URI scheme. For example::
+
+    sqlobject.dburi="sqlite://%(current_dir_uri)s/devdata.sqlite"
+
+The default settings specifies a ``devdata.sqlite`` SQLite database file within your project's top
+directory. You can change the dburi to use other :doc:`alternative databases </Database/index>`
+such as MySQL, Postgres, MS SQL Server, etc.
+
+.. note:: On the connection URI (``sqlobject.dburi``), You can also provide options via
+  "query parameters". Two useful options are ``debug`` and ``debugOutput``:
+
+  If you add ``?debug=1`` to your URI, each query will be output as it is run.
+
+  If you add ``&debugOutput=1``, you'll also see the result of the query displayed.
+
+
+Define the Data Model
+---------------------
+
+You define your data model in the ``model.py`` file in your project's package.
+
+TurboGears (i.e. SQLObject) provides two different ways to define your database:
+
+#. Define tables and their relationships in Python.
+#. Get them automatically from your database.
+
+For clarity in your code and database portability, it is often easier to define your
+model in Python terms.
+
+Defining your model in Python requires more typing of Python code, but saves
+you from having to write SQL to create your database. Check the :doc:`Model Reference <DefineDatabase>` for detail.
+
+To define a Python classes to be based on your database, you just do this in model.py ::
+
+      from sqlobject import *
+
+      class Book(SQLObject):
+          class sqlmeta:
+              fromDatabase = True
+
+.. note:: This only works with some databases. Check the SQLObject `Automatic Class Generation`_
+    documentation to check whether this works with your database.
+
+.. _automatic class generation: http://sqlobject.org/SQLObject.html#automatic-class-generation
+
+
+Create the Database
+-------------------
+
+To create the database from the model definition, you just need to run the following command
+from within your project's top-level directory::
+
+  $ tg-admin sql create
+
+This will create tables that you've defined in your model. Of course, this will only work, if you
+defined the model with Python, not if you use ``fromDatabase = True``,
+
+
+Using the Model Outside your Application
+----------------------------------------
+
+If you want to access the database from outside of your TurboGears application, for example
+for data import scripts or database maintenance, you have to load the database configuration
+properly first. Please see :doc:`Using Your Model Outside of TurboGears Applications </ModelOutsideTG>`
+for an explanation.

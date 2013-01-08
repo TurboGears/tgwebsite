@@ -1,0 +1,67 @@
+Solving specific problems
+------------------------------
+
+.. contents::
+   :depth: 0
+   :local:
+   :backlinks: top
+
+
+
+View (Templates & Outputs)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  * :doc:`How a view template is chosen <AlternativeTemplating>`
+  * :doc:`Designer-friendly templates <Designer>`
+  * :doc:`Application-wide Headers and Footers <HeadersFooters>`
+  * :doc:`Generate JSON output for AJAX <JSON>`
+  * :doc:`Generate XML output instead of HTML <ExposeDecorator>`
+  * :doc:`Retrieve global template variables (stdvars) <StdVars>`
+
+
+Controller
+~~~~~~~~~~
+
+  * :doc:`Keep infomation in client side: Cookies <Cookies>`
+  * :doc:`Keep infomation in server side: Sessions <Sessions>`
+  * :doc:`Absolute URLs that Won't Break <GettingStarted/URLs>`
+  * `Send Email: TurboMail <http://www.python-turbomail.org>`_
+  * :doc:`Bread Crumb Naviation <BreadCrumb>`
+  * :doc:`Host Static Files <StaticFiles>`
+  * `Serving web services <http://sda.iu.edu/turbozsi/>`_
+
+
+Widgets & AJAX
+~~~~~~~~~~~~~~
+
+  * :doc:`Reuse web elements easily: Widgets <Widgets/Introduction>`
+
+
+Identity
+~~~~~~~~
+  * :doc:`Authentication and Authorization: Identity Management <Identity/index>`
+  * `New user registration and maintenance: registration <http://pat.lewis.home.insightbb.com/>`_
+
+
+Whole System
+~~~~~~~~~~~~
+
+  * :doc:`Bilingual: Internationalization <Internationalization>`
+  * :doc:`Agile Testing: testutil and nosetests <Testing>`
+  * :doc:`Error logging: The TurboGears Logging System <LoggingSystem>`
+  * :doc:`Handle recurring tasks: The TurboGears Scheduler <Scheduler>`
+
+
+----
+
+Advanced Topics
+===============
+
+Writing Plugins
+~~~~~~~~~~~~~~~
+  * :doc:`Writing TurboGears Plugins <Plugins>`
+
+    - :doc:`Config setup.py to deploy TurboGears application <Install/DeployWithAnEgg>`
+    - :doc:`Writing a Template plugin <TemplatePlugins>`
+    - :doc:`Writing a tg-admin command plugins <CommandPlugins>`
+    - :doc:`Extending Quickstart <ExtendingQuickstart>`

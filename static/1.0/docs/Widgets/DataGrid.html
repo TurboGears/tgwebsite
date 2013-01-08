@@ -1,0 +1,425 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>DataGrid &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Ajax Grid Widget" href="AjaxGrid.html" />
+    <link rel="prev" title="StatelessWidgets" href="StatelessWidgets.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AjaxGrid.html" title="Ajax Grid Widget"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="StatelessWidgets.html" title="StatelessWidgets"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">DataGrid</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#differences-between-datagrid-and-fastdatagrid">Differences between DataGrid and FastDataGrid</a></li>
+<li><a class="reference internal" href="#basic-datagrid-usage">Basic DataGrid usage</a></li>
+<li><a class="reference internal" href="#fastdata-integration">FastData integration</a></li>
+<li><a class="reference internal" href="#customizing-the-fastdatagrid-representation">Customizing the FastDataGrid representation</a></li>
+<li><a class="reference internal" href="#using-identity-with-fastdatagrid">Using Identity with FastDataGrid</a></li>
+<li><a class="reference internal" href="#customizing-datagrid-representation">Customizing DataGrid representation</a></li>
+<li><a class="reference internal" href="#advanced-datagrid-usage">Advanced DataGrid usage</a><ul>
+<li><a class="reference internal" href="#using-a-callable-instead-of-an-attribute-name">Using a callable instead of an attribute name</a></li>
+<li><a class="reference internal" href="#using-datagrid-column">Using <tt class="docutils literal"><span class="pre">DataGrid.Column</span></tt></a></li>
+<li><a class="reference internal" href="#other-ways-of-specifying-columns">Other ways of specifying columns</a></li>
+<li><a class="reference internal" href="#using-datagrid-without-a-model">Using DataGrid without a model</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#error-handling">Error handling</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="StatelessWidgets.html"
+                        title="previous chapter">StatelessWidgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="AjaxGrid.html"
+                        title="next chapter">Ajax Grid Widget</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="datagrid">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">DataGrid</a><a class="headerlink" href="#datagrid" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#datagrid" id="id2">DataGrid</a><ul>
+<li><a class="reference internal" href="#overview" id="id3">Overview</a></li>
+<li><a class="reference internal" href="#differences-between-datagrid-and-fastdatagrid" id="id4">Differences between DataGrid and FastDataGrid</a></li>
+<li><a class="reference internal" href="#basic-datagrid-usage" id="id5">Basic DataGrid usage</a></li>
+<li><a class="reference internal" href="#fastdata-integration" id="id6">FastData integration</a></li>
+<li><a class="reference internal" href="#customizing-the-fastdatagrid-representation" id="id7">Customizing the FastDataGrid representation</a></li>
+<li><a class="reference internal" href="#using-identity-with-fastdatagrid" id="id8">Using Identity with FastDataGrid</a></li>
+<li><a class="reference internal" href="#customizing-datagrid-representation" id="id9">Customizing DataGrid representation</a></li>
+<li><a class="reference internal" href="#advanced-datagrid-usage" id="id10">Advanced DataGrid usage</a></li>
+<li><a class="reference internal" href="#error-handling" id="id11">Error handling</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id3">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">DataGrid</span></tt> helps you to present your data on a page in a tabular form.
+DataGrid&#8217;s purpose is to render a list of same-kind objects (such as a list
+of your model instances) in a nice, tabular layout with minimal efforts. The
+DataGrid subclass, <tt class="docutils literal"><span class="pre">FastDataGrid</span></tt>, integrates nicely with <tt class="docutils literal"><span class="pre">FastData</span></tt>
+controllers by providing inline links to edit or delete an object or create
+new objects of the same type.</p>
+</div>
+<div class="section" id="differences-between-datagrid-and-fastdatagrid">
+<h2><a class="toc-backref" href="#id4">Differences between DataGrid and FastDataGrid</a><a class="headerlink" href="#differences-between-datagrid-and-fastdatagrid" title="Permalink to this headline">¶</a></h2>
+<p>DataGrid requires you to describe what you&#8217;re going to display via
+&#8220;<tt class="docutils literal"><span class="pre">fields</span></tt>&#8221; parameter at construction time. FastDataGrid is sophisticated
+enough to figure out how to display an arbitrary <tt class="docutils literal"><span class="pre">SelectResults</span></tt> instance
+(this is the type of object returned when you call <tt class="docutils literal"><span class="pre">.select()</span></tt> on your
+SQLObject model object).</p>
+<p>They also have different Kid templates. DataGrid&#8217;s template is very simple
+and on purpose &#8211; the goal is to be easy to grasp and easy to extend/replace
+with a custom one. On the other hand, the FastData template is much more
+sophisticated, designed to work within FastData environment. It is intended
+to be used &#8220;as is&#8221;, giving the user certain hooks to customize its appearance.</p>
+</div>
+<div class="section" id="basic-datagrid-usage">
+<h2><a class="toc-backref" href="#id5">Basic DataGrid usage</a><a class="headerlink" href="#basic-datagrid-usage" title="Permalink to this headline">¶</a></h2>
+<p>Suppose you want to display a list of users in your system. Here is a sample
+<tt class="docutils literal"><span class="pre">User</span></tt> class definition (note that it&#8217;s not an SQLObject &#8211; just a plain
+Python class):</p>
+<div class="highlight-python"><pre>class User:
+
+    def __init__(self, ID, name, email_address):
+        self.user_id = ID
+        self.name = name
+        self.email_address = email_address
+
+   @property
+   def display_name(self):
+       return self.name.capitalize()</pre>
+</div>
+<p>Note that the <tt class="docutils literal"><span class="pre">&#64;property</span></tt> decorator is only available since Python 2.4. If
+you are using Python 2.3, you can define <tt class="docutils literal"><span class="pre">display_name</span></tt> as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">display_name</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Given the above definition, you may want to display Users in the following
+form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">DataGrid</span>
+
+<span class="n">users_admin_form</span> <span class="o">=</span> <span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;ID&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;E-mail&#39;</span><span class="p">,</span> <span class="s">&#39;email_address&#39;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>As you have probably guessed, the <tt class="docutils literal"><span class="pre">fields</span></tt> parameter defines what would be
+displayed by this DataGrid instance and how. Each tuple defines a single
+column in the resulting table; the first tuple&#8217;s element defines the
+column title while the second element defines the &#8220;accessor&#8217;&#8221;. The accessor
+may be a string, naming an attribute of the model object, such as
+<tt class="docutils literal"><span class="pre">&quot;user_id&quot;</span></tt> or a property&#8217;s name, such as <tt class="docutils literal"><span class="pre">&quot;display_name&quot;</span></tt>, but it can also
+be a callable, for example a parameterless method of you model object. See
+more on this below, under &#8220;Advanced DataGrid Usage&#8221;.</p>
+<p>To display a users&#8217; table you pass an iterable yielding <tt class="docutils literal"><span class="pre">User</span></tt> instances
+to the <tt class="docutils literal"><span class="pre">users_admin_form.display()</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">users</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">User</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;john&#39;</span><span class="p">,</span> <span class="s">&#39;john@foo.net&#39;</span><span class="p">),</span>
+    <span class="n">User</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;fred&#39;</span><span class="p">,</span> <span class="s">&#39;fred@foo.net&#39;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">users_admin_form</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The result will look something like this:</p>
+<div class="highlight-python"><pre>&lt;table border="0" cellpadding="0" cellspacing="3"&gt;
+  &lt;thead&gt;
+    &lt;td&gt;ID&lt;/td&gt;
+    &lt;td&gt;Name&lt;/td&gt;
+    &lt;td&gt;E-mail&lt;/td&gt;
+  &lt;/thead&gt;
+  &lt;tr&gt;
+    &lt;td&gt;1&lt;/td&gt;
+    &lt;td&gt;John&lt;/td&gt;
+    &lt;td&gt;john@foo.net&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;2&lt;/td&gt;
+    &lt;td&gt;Fred&lt;/td&gt;
+    &lt;td&gt;fred@foo.net&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+</div>
+<div class="section" id="fastdata-integration">
+<span id="id1"></span><h2><a class="toc-backref" href="#id6">FastData integration</a><a class="headerlink" href="#fastdata-integration" title="Permalink to this headline">¶</a></h2>
+<p>For a <a class="reference internal" href="../FastData/index.html"><em>FastData</em></a> environment you&#8217;re mostly likely to use FastDataGrid:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">tgfastdata</span> <span class="kn">import</span> <span class="n">DataController</span>
+<span class="kn">from</span> <span class="nn">tgfastdata.datawidgets</span> <span class="kn">import</span> <span class="n">FastDataGrid</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">DataController</span><span class="p">(</span><span class="n">sql_class</span><span class="o">=</span><span class="n">User</span><span class="p">,</span> <span class="n">list_widget</span><span class="o">=</span><span class="n">FastDataGrid</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Now, if you access the <tt class="docutils literal"><span class="pre">/users/</span></tt> page, you should see a table with a list
+of users, along with edit/delete icons and an &#8220;Add a record&#8221; link at the
+bottom.</p>
+<p>Note that, unlike with the plain DataGrid class, you don&#8217;t need to pass a
+<tt class="docutils literal"><span class="pre">fields</span></tt> parameter to FastDataGrid. Instead, FastDataGrid is able to inspect
+the passed <tt class="docutils literal"><span class="pre">SelectResults</span></tt> instance to extract SQLObject&#8217;s metadata. In
+other words, a FastDataGrid instance can easily render arbitrary SQLObjects
+while with DataGrid you need to list the instances&#8217; fields explicitly. You
+may still want to pass &#8216;&#8217;fields&#8217;&#8217; parameter to FastDataGrid if you want to
+customize the representation of the fields: which fields are shown, their order
+and how they are displayed. In fact, if you don&#8217;t want to change any FastDataGrid
+options at instantiation time, you don&#8217;t need to pass a FastDataGrid instance to
+the DataController explicitely at all, as this widget will be used by default for
+lists, if you don&#8217;t pass a different one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">DataController</span><span class="p">(</span>
+        <span class="n">sql_class</span><span class="o">=</span><span class="n">User</span><span class="p">,</span>
+        <span class="n">list_widget</span><span class="o">=</span><span class="n">FastDataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;User&#39;</span><span class="p">,</span> <span class="s">&#39;user_name&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;E-mail&#39;</span><span class="p">,</span> <span class="s">&#39;email_address&#39;</span><span class="p">),</span>
+        <span class="p">]),</span>
+        <span class="n">list_template</span><span class="o">=</span><span class="s">&#39;.templates.admin_users&#39;</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Add something like this to your <cite>admin_users</cite> template:</p>
+<div class="highlight-python"><pre>${list_widget.display(data, show_actions=False, add_link_title='Add User')}</pre>
+</div>
+</div>
+<div class="section" id="customizing-the-fastdatagrid-representation">
+<h2><a class="toc-backref" href="#id7">Customizing the FastDataGrid representation</a><a class="headerlink" href="#customizing-the-fastdatagrid-representation" title="Permalink to this headline">¶</a></h2>
+<p>You can tweak FastDataGrid&#8217;s representation to a certain extent by passing
+configuration options at &#8220;display time&#8221; (when you call <tt class="docutils literal"><span class="pre">grid.display()</span></tt> from
+your template). The following options are supported:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">show_actions</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">show_add_link</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">add_link_title</span></tt>,</li>
+<li><tt class="docutils literal"><span class="pre">delete_link_msg</span></tt></li>
+</ul>
+<p>I hope their meaning is self-explaining. Most up-to-date list of these
+options can be found at the top of the <tt class="docutils literal"><span class="pre">datagrid.kid</span></tt> file in the
+<tt class="docutils literal"><span class="pre">turbogears.fastdata.templates</span></tt> sub-package.</p>
+</div>
+<div class="section" id="using-identity-with-fastdatagrid">
+<h2><a class="toc-backref" href="#id8">Using Identity with FastDataGrid</a><a class="headerlink" href="#using-identity-with-fastdatagrid" title="Permalink to this headline">¶</a></h2>
+<p>To use IdentityManagement with a FastDataGrid, you must create a subclass of
+<tt class="docutils literal"><span class="pre">DataController</span></tt> and <tt class="docutils literal"><span class="pre">identity.SecureResource</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SecureDataController</span><span class="p">(</span><span class="n">DataController</span><span class="p">,</span> <span class="n">identity</span><span class="o">.</span><span class="n">SecureResource</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>And to use it in a controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">some_fastdatagrid</span> <span class="o">=</span> <span class="n">SecureDataController</span><span class="p">(</span><span class="n">sql_class</span><span class="o">=</span><span class="n">Whatever</span><span class="p">)</span>
+    <span class="n">some_fastdatagrid</span><span class="o">.</span><span class="n">require</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="s">&#39;some_group&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="customizing-datagrid-representation">
+<h2><a class="toc-backref" href="#id9">Customizing DataGrid representation</a><a class="headerlink" href="#customizing-datagrid-representation" title="Permalink to this headline">¶</a></h2>
+<p>Unlike, FastDataGrid, DataGrid&#8217;s template provides no customization hook. On
+the other hand it is really simple and easy to understand so if you need to
+customize DataGrid&#8217;s representation, simply copy it and tweak as you see fit.
+To use your template with a DataGrid use the <tt class="docutils literal"><span class="pre">template</span></tt> constructor
+parameter, just like with any Widget.</p>
+</div>
+<div class="section" id="advanced-datagrid-usage">
+<h2><a class="toc-backref" href="#id10">Advanced DataGrid usage</a><a class="headerlink" href="#advanced-datagrid-usage" title="Permalink to this headline">¶</a></h2>
+<p>In addition to the simple DataGrid definition shown above, you can use
+<tt class="docutils literal"><span class="pre">fields</span></tt> parameter in a more &#8220;advanced&#8221; ways.</p>
+<div class="section" id="using-a-callable-instead-of-an-attribute-name">
+<h3>Using a callable instead of an attribute name<a class="headerlink" href="#using-a-callable-instead-of-an-attribute-name" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes simply displaying an attribute like <tt class="docutils literal"><span class="pre">display_name</span></tt> is not
+enough. In the case of an <a class="reference internal" href="../Identity/index.html"><em>identity</em></a>-based <tt class="docutils literal"><span class="pre">User</span></tt> object,
+you may want to format the permissions a user possesses nicely. To do this,
+you provide a callable object instead of the attribute name. The callable is
+then called with a row object and the returned value is inserted in a table cell.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">format_user_permissions</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="c"># ok, nothing fancy here but you get the idea</span>
+    <span class="c"># Hint: use Kid&#39;s XML function to return HTML markup.</span>
+    <span class="k">return</span> <span class="s">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">permissions</span><span class="p">)</span>
+
+<span class="n">users_admin_form</span> <span class="o">=</span> <span class="n">DataGrid</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s">&#39;ID&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&#39;Permissions&#39;</span><span class="p">,</span> <span class="n">format_user_permissions</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that a parameterless method of your model class is a suitable callable
+object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">:</span>
+
+    <span class="c"># ...</span>
+
+    <span class="k">def</span> <span class="nf">get_last_login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">&quot;Returns last login&#39;s timestamp.&quot;</span>
+
+<span class="n">users_admin_form</span> <span class="o">=</span> <span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;ID&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&#39;Last logged in&#39;</span><span class="p">,</span> <span class="n">User</span><span class="o">.</span><span class="n">get_last_login</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-datagrid-column">
+<h3>Using <tt class="docutils literal"><span class="pre">DataGrid.Column</span></tt><a class="headerlink" href="#using-datagrid-column" title="Permalink to this headline">¶</a></h3>
+<p>Instead of a two-element tuple, you can use an instance of
+<tt class="docutils literal"><span class="pre">DataGrid.Column</span></tt> (or subclass thereof) when defining DataGrid&#8217;s fields.
+This is only useful if you&#8217;re using a custom DataGrid template as well.</p>
+<p>The idea of the DataGrid.Column is to be able to specify arbitrary
+additional &#8216;&#8217;options&#8217;&#8217; along with a column which are then used in template
+to alter the template&#8217;s logic.</p>
+<p>As an example, you can add a <tt class="docutils literal"><span class="pre">sortable</span></tt> option to all columns that shall
+be sortable by clicking on their header:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">users_admin_form</span> <span class="o">=</span> <span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">DataGrid</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">,</span> <span class="s">&#39;ID&#39;</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+    <span class="n">DataGrid</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;display_name&#39;</span><span class="p">,</span> <span class="s">&#39;Name&#39;</span><span class="p">,</span>
+        <span class="n">options</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">sortable</span><span class="o">=</span><span class="bp">True</span><span class="p">)),</span>
+    <span class="n">DataGrid</span><span class="o">.</span><span class="n">Column</span><span class="p">(</span><span class="s">&#39;loggedin&#39;</span><span class="p">,</span> <span class="s">&#39;get_last_login&#39;</span><span class="p">,</span> <span class="s">&#39;Last logged in&#39;</span><span class="p">),</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>You would only need to modify the Kid template of DataGrid like that:</p>
+<div class="highlight-python"><pre>...
+&lt;thead py:if="columns"&gt;
+  &lt;tr&gt;
+    &lt;th py:for="i, col in enumerate(columns)" class=":doc:`/col`${i}"&gt;
+      &lt;a py:strip="not col.get_option('sortable', False)"
+        href="${tg.url('', sort=col.name)}" py:content="col.title"/&gt;
+    &lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/thead&gt;
+...</pre>
+</div>
+</div>
+<div class="section" id="other-ways-of-specifying-columns">
+<h3>Other ways of specifying columns<a class="headerlink" href="#other-ways-of-specifying-columns" title="Permalink to this headline">¶</a></h3>
+<p>Two side notes (valid for TurboGears &gt; 1.0.4.4 only):</p>
+<p>Instead of using <tt class="docutils literal"><span class="pre">DataGrid.Column</span></tt>, you can also pass options
+as a third item in a 3-tuple, or you can pass only the accessor
+(i.e. an attribute name or a function).</p>
+<p>You can set the standard option <tt class="docutils literal"><span class="pre">align</span></tt> to <tt class="docutils literal"><span class="pre">'center'</span></tt> or <tt class="docutils literal"><span class="pre">'right'</span></tt>
+for specifying centered or right-aligned columns.</p>
+</div>
+<div class="section" id="using-datagrid-without-a-model">
+<h3>Using DataGrid without a model<a class="headerlink" href="#using-datagrid-without-a-model" title="Permalink to this headline">¶</a></h3>
+<p>All the examples above assumed some model class, like User, being used to
+display in DataGrid. In fact, you can use DataGrid with any kind of data,
+not necessarily proper instances. The only &#8220;hindrance&#8221; is that you have to
+always specify a callable object as a field&#8217;s accessor. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">&#39;Country&#39;</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">&#39;Age&#39;</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="p">])</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s">&quot;Anton Bykov&quot;</span><span class="p">,</span> <span class="s">&quot;Bulgaria&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="s">&quot;Joe Doe&quot;</span><span class="p">,</span> <span class="s">&quot;Great Britain&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">44</span><span class="p">,</span> <span class="s">&quot;Pablo Martelli&quot;</span><span class="p">,</span> <span class="s">&quot;Brazil&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <tt class="docutils literal"><span class="pre">itemgetter()</span></tt> is only available since Python 2.4. If you are using
+Python 2.3, you can use <tt class="docutils literal"><span class="pre">lambda</span> <span class="pre">row:</span> <span class="pre">row[n]</span></tt> instead of <tt class="docutils literal"><span class="pre">itemgetter(n)</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h2><a class="toc-backref" href="#id11">Error handling</a><a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h2>
+<p>DataGrid does not intercept any exception that may be raised during
+iteration or accessing a particular object&#8217;s attribute.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

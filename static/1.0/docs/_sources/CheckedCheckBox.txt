@@ -1,0 +1,55 @@
+Automatically Checking a Checkbox or Radio Button
+=================================================
+
+The following::
+
+    <input type="checkbox" checked="${tg.checker(expression)}"/>
+
+
+will create a checked checkbox if the ``expression`` is true.
+This works because ``tg.checker(expression)`` returns ``checked``
+if the expression is true, otherwise ``None``. If the return
+value is ``None``, Kid will not render the attribute.
+
+
+Dynamic checkboxes
+------------------
+
+To create a dynamic list of checkboxes (or radio buttons),
+with the appropriate ones pre-checked, you will put something
+like this in the controller::
+
+    # Create a class for your things.
+    # In reality, you would import it from your model file.
+
+    class Thing:
+        def __init__(self, id):
+            self.id = id
+            self.label = 'Thing %d' % id
+
+    class Root(controllers.RootController):
+
+        @turbogears.expose(...)
+        def index(self):
+            # Construct a list of things.
+            # In reality, you would do a select on your model class.
+            things = map(Thing, range(10))
+            # Select some examples things.
+            # In reality, these would be pulled from some other model object.
+           things = map(Thing, range(10))
+           return dict(things=things, selected_things=[3, 5, 8])
+
+Then in the template::
+
+    <div py:for="thing in things" py:strip="True">
+        <input type="checkbox" id="${thing.id}"
+               name="selected_things" value="${thing.id}"
+               checked="${tg.checker(thing.id in selected_things)}"/>
+        <label py:content="thing.label" for="${thing.id}"/>
+    </div>
+
+Using ``py:strip="True"`` means that the ``div`` will not be in the resulting HTML;
+we're just using it as a wrapper, and the checkboxes will all appear in one line.
+Without the ``py:strip="True"``, the checkboxes will each appear in a separate
+``div``, i.e. in separate lines beneath each other.
+

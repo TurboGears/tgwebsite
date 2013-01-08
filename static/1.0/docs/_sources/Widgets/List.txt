@@ -1,0 +1,110 @@
+.. index:: WidgetList
+
+WidgetList
+==========
+
+.. contents::
+    :depth: 2
+
+This is list of built-in TurboGears Widgets. For more information about Widgets,
+please see the :doc:`Widgets Overview <Overview>` page. Examples of these Widgets can viewed
+through the TurboGears :doc:`ToolBox </Toolbox>` :doc:`Widget Browser <Browser>`.
+
+
+Form Field Widgets
+------------------
+
+#. Button
+#. :doc:`Calendar <CalendarDatePicker>`
+#. Calendar with time
+#. CheckBox
+#. File Field
+#. Hidden Field
+#. Image Button
+#. Label
+#. Multiple Select Field
+#. Password Field
+#. Reset Button
+#. Single Select Field
+#. Submit Button
+#. Text Area
+#. Text Field
+
+
+Composite Form Field Widgets
+----------------------------
+
+#. CheckBox List
+#. FieldSet
+#. RadioButton List
+#. Repeating FieldSet
+
+
+Form Widgets
+------------
+
+#. :doc:`Data Grid <DataGrid>`
+#. List :doc:`Form <SimpleForm>`
+#. Table :doc:`Form <SimpleForm>`
+
+
+Resource Widgets
+----------------
+
+#. CSS Link
+#. CSS Source
+#. JS Link
+#. JS Source
+#. Localizable JS Link
+
+   Provides a simple way to include language-specific data in your
+   JavaScript code.
+
+JavaScript-enhanced Widgets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#. AJAX :doc:`Remote Form <RemoteForm>`
+
+   A TableForm that submits the data asynchronously and loads the resulting HTML
+   into a DOM object
+
+#. :doc:`Ajax Grid <AjaxGrid>`
+
+   AJAX updateable datagrid based on widget.js grid.
+
+#. Ajax Remote Function
+
+   Returns a link that executes a POST asynchronously and updates a DOM Object
+   with the result of it.
+
+#. :doc:`Auto Complete Field <AutoCompleteField>`
+
+   Performs Ajax-style auto-completion by requesting search results from the
+   server as the user types.
+
+#. Auto Complete Text Field
+
+   Text field with auto complete functionality.
+
+#. Jump Menu
+
+   Choose a link from a select list and the page will be redirect to the
+   URL of the selected link.
+
+#. Syntax Highlighter
+
+   This widget includes the syntax highlighter JavaScript and CSS into your
+   rendered page to syntax-highlight text areas named 'code'.
+
+#. Tabber
+
+   This widget includes the tabber JavaScript and CSS into your rendered page so
+   you can create tabbed divs by assigning them the 'tabber' and 'tabbertab'
+   classes.
+
+
+Third-party Widgets
+-------------------
+
+Check out third-party TurboGears Widgets in the
+`CogBin <http://www.turbogears.org/cogbin/>`_.

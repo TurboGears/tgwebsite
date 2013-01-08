@@ -1,0 +1,410 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deploying your TG application with an Egg and Easy Install &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="How to Install TurboGears Without root Privileges" href="NonRoot.html" />
+    <link rel="prev" title="Hosting TurboGears Applications" href="Hosting.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="NonRoot.html" title="How to Install TurboGears Without root Privileges"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Hosting.html" title="Hosting TurboGears Applications"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deploying your TG application with an Egg and Easy Install</a><ul>
+<li><a class="reference internal" href="#how-to-build-an-egg-file-for-your-project">How to Build an .egg File for Your Project</a></li>
+<li><a class="reference internal" href="#how-to-install-your-egg">How to Install Your .egg</a><ul>
+<li><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-your-application">Running Your Application</a><ul>
+<li><a class="reference internal" href="#the-start-script">The Start Script</a></li>
+<li><a class="reference internal" href="#the-deployment-configuration">The Deployment Configuration</a></li>
+<li><a class="reference internal" href="#the-production-database">The Production Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-make-your-project-s-egg-require-additional-packages">How to Make Your Project&#8217;s .egg Require Additional Packages</a></li>
+<li><a class="reference internal" href="#how-to-make-your-project-available-on-the-cheeseshop">How to Make Your Project Available on the Cheeseshop</a></li>
+<li><a class="reference internal" href="#making-your-project-available-in-the-cogbin">Making Your Project Available in the CogBin</a></li>
+<li><a class="reference internal" href="#how-to-provide-console-scripts">How to Provide Console Scripts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Hosting.html"
+                        title="previous chapter">Hosting TurboGears Applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="NonRoot.html"
+                        title="next chapter">How to Install TurboGears Without <tt class="docutils literal docutils literal"><span class="pre">root</span></tt> Privileges</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="deploying-your-tg-application-with-an-egg-and-easy-install">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Deploying your TG application with an Egg and Easy Install</a><a class="headerlink" href="#deploying-your-tg-application-with-an-egg-and-easy-install" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deploying-your-tg-application-with-an-egg-and-easy-install" id="id1">Deploying your TG application with an Egg and Easy Install</a><ul>
+<li><a class="reference internal" href="#how-to-build-an-egg-file-for-your-project" id="id2">How to Build an .egg File for Your Project</a></li>
+<li><a class="reference internal" href="#how-to-install-your-egg" id="id3">How to Install Your .egg</a><ul>
+<li><a class="reference internal" href="#installing-dependencies" id="id4">Installing Dependencies</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-your-application" id="id5">Running Your Application</a><ul>
+<li><a class="reference internal" href="#the-start-script" id="id6">The Start Script</a></li>
+<li><a class="reference internal" href="#the-deployment-configuration" id="id7">The Deployment Configuration</a></li>
+<li><a class="reference internal" href="#the-production-database" id="id8">The Production Database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-make-your-project-s-egg-require-additional-packages" id="id9">How to Make Your Project&#8217;s .egg Require Additional Packages</a></li>
+<li><a class="reference internal" href="#how-to-make-your-project-available-on-the-cheeseshop" id="id10">How to Make Your Project Available on the Cheeseshop</a></li>
+<li><a class="reference internal" href="#making-your-project-available-in-the-cogbin" id="id11">Making Your Project Available in the CogBin</a></li>
+<li><a class="reference internal" href="#how-to-provide-console-scripts" id="id12">How to Provide Console Scripts</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="how-to-build-an-egg-file-for-your-project">
+<h2><a class="toc-backref" href="#id2">How to Build an .egg File for Your Project</a><a class="headerlink" href="#how-to-build-an-egg-file-for-your-project" title="Permalink to this headline">¶</a></h2>
+<p>An egg is Python&#8217;s new distribution format, comparable to a <tt class="docutils literal"><span class="pre">.jar</span></tt> in Java.
+It&#8217;s basically a zip file with a particular directory structure containing the
+code and a bit of metadata. You can get details on eggs directly from the
+inventor at the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/PythonEggs">PEAK Developers&#8217; Center</a>.</p>
+<p>A freshly quickstarted project will have a <tt class="docutils literal"><span class="pre">setup.py</span></tt> file. This file allows
+you to easily package your file for redistribution both for internal use and
+for sharing on the <a class="reference external" href="http://cheeseshop.python.org/pypi/">Cheeseshop</a> or the <a class="reference external" href="http://www.turbogears.org/cogbin/">Cogbin</a>. Creating an egg is as simple as
+switching to your project directory and running:</p>
+<div class="highlight-python"><pre>python setup.py bdist_egg</pre>
+</div>
+<p>This will produce an egg file for the current version of your project in the
+<tt class="docutils literal"><span class="pre">./dist</span></tt> folder.</p>
+</div>
+<div class="section" id="how-to-install-your-egg">
+<h2><a class="toc-backref" href="#id3">How to Install Your .egg</a><a class="headerlink" href="#how-to-install-your-egg" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to use an egg is to copy it over to your production machine
+and do:</p>
+<div class="highlight-python"><pre>[sudo] easy_install *myapp*.egg</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not have <tt class="docutils literal"><span class="pre">easy_install</span></tt> on the target machine, you need
+to install the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/setuptools">setuptools</a> package first to get it, either through your
+operating system&#8217;s software package system or by downloading the
+bootstrapping program <a class="reference external" href="http://peak.telecommunity.com/dist/ez_setup.py">ez_setup.py</a>. Conveniently, <tt class="docutils literal"><span class="pre">ez_setup.py</span></tt> also
+takes the same arguments that <tt class="docutils literal"><span class="pre">easy_install</span></tt> takes, so <tt class="docutils literal"><span class="pre">python</span>
+<span class="pre">ez_setup.py</span> <span class="pre">*myapp*.egg</span></tt> will do the full install. Be sure to switch
+over to <tt class="docutils literal"><span class="pre">easy_install</span></tt> after the first run.</p>
+</div>
+<div class="section" id="installing-dependencies">
+<h3><a class="toc-backref" href="#id4">Installing Dependencies</a><a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>As long as the <tt class="docutils literal"><span class="pre">setup.py</span></tt> lists TurboGears as a requirement (see the section
+on <a class="reference internal" href="#adding-requirements"><em>adding requirements</em></a>), it should be possible
+for somebody to install your application with just the egg and <tt class="docutils literal"><span class="pre">easy_install</span></tt>
+or <tt class="docutils literal"><span class="pre">ez_setup.py</span></tt> including the installation of TurboGears itself and all its
+dependencies.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This is a nice feature for application deployment, but be aware that
+installing an egg can also upgrade TurboGears and other packages if the egg
+requires a later version than the system provides. If long term system
+stability is important to you, you may want to investigate solutions like
+<a class="reference internal" href="NonRoot.html"><em>virtualenv</em></a>.</p>
+<p class="last">Please be also aware that by default the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file of a quickstarted
+project will require a TurboGears version that is equal or newer than the
+version which was used to run <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt>. This means if you
+install your application and TurboGears is not installed or only an older
+version than required, <tt class="docutils literal"><span class="pre">easy_install</span></tt> will fetch and install the newest
+TurboGears version it can find. <strong>This includes beta versions and release
+candidates of future TurboGears versions with a higher major version number.</strong>
+If you want to ensure that your application will only install a known good
+TurboGears version, you should add a more specific version constraint for
+TurboGears in <tt class="docutils literal"><span class="pre">setup.py</span></tt> (again, see <a class="reference internal" href="#adding-requirements"><em>adding requirements</em></a>
+on how to do this).</p>
+</div>
+</div>
+</div>
+<div class="section" id="running-your-application">
+<h2><a class="toc-backref" href="#id5">Running Your Application</a><a class="headerlink" href="#running-your-application" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-start-script">
+<h3><a class="toc-backref" href="#id6">The Start Script</a><a class="headerlink" href="#the-start-script" title="Permalink to this headline">¶</a></h3>
+<p>As a part of the <tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">process</span></tt>, a console script that fulfills the same
+function as your <tt class="docutils literal"><span class="pre">start-*pkgname*.py</span></tt> script is installed in a system binary
+directory, whose location depends on your operating system (e.g. under
+<tt class="docutils literal"><span class="pre">/usr/bin</span></tt> on Unix or <tt class="docutils literal"><span class="pre">Python\Scripts</span></tt> on Windows). This is the same place
+that <tt class="docutils literal"><span class="pre">tg-admin</span></tt> is installed and it is usually on your <tt class="docutils literal"><span class="pre">PATH</span></tt>, so you should
+be able to start up your project from anywhere. You can change the installation
+directory for console scripts with the <tt class="docutils literal"><span class="pre">--script-dir</span></tt> option to <tt class="docutils literal"><span class="pre">easy_install</span></tt>.</p>
+<p>Assuming the package name of your project is <tt class="docutils literal"><span class="pre">sample</span></tt>, you would then start your
+application with:</p>
+<div class="highlight-python"><pre>$ start-sample prod.cfg</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> is your deployment configuration file, which is treated in the
+next section.</p>
+</div>
+<div class="section" id="the-deployment-configuration">
+<h3><a class="toc-backref" href="#id7">The Deployment Configuration</a><a class="headerlink" href="#the-deployment-configuration" title="Permalink to this headline">¶</a></h3>
+<p>To get everything up and running, you also need a deployment <a class="reference internal" href="../Configuration.html"><em>configuration</em></a> file
+(usually called <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> by convention) and pass the name of this file as the
+first and only argument to your start script.</p>
+<p>Since TurboGears 1.0.4 the default start script also can find and use a default
+deployment configuration file, which is packaged in your application&#8217;s egg. To
+include such a default configuration, all you need to do is to uncomment the
+line that starts with <tt class="docutils literal"><span class="pre">#data_files</span></tt> in the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file of your project,
+put your default configuration in a file named <tt class="docutils literal"><span class="pre">default.cfg</span></tt> in your project
+directory and build the egg as explained above with <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">bdist_egg</span></tt>.</p>
+</div>
+<div class="section" id="the-production-database">
+<h3><a class="toc-backref" href="#id8">The Production Database</a><a class="headerlink" href="#the-production-database" title="Permalink to this headline">¶</a></h3>
+<p>Your deployment configuration should specify location and parameters for the
+production <a class="reference internal" href="../GettingStarted/UseDatabase.html"><em>database</em></a> that your project will use.</p>
+<p>This can be the same database as the one you created with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt>
+while developing your application. If you use a different database for production
+(a wise decision) you will need to create the tables in the database, before using
+it for the first time.</p>
+<div class="highlight-python"><pre>tg-admin -c prod.cfg sql create</pre>
+</div>
+<p>will create the necessary tables using the database specified in the deployment
+configuration file <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="how-to-make-your-project-s-egg-require-additional-packages">
+<span id="adding-requirements"></span><h2><a class="toc-backref" href="#id9">How to Make Your Project&#8217;s .egg Require Additional Packages</a><a class="headerlink" href="#how-to-make-your-project-s-egg-require-additional-packages" title="Permalink to this headline">¶</a></h2>
+<p>By specifying all your dependencies, not just TurboGears, <tt class="docutils literal"><span class="pre">easy_install</span></tt> can
+completely automate your package setup. You specify dependencies by modifying
+the <tt class="docutils literal"><span class="pre">requires</span></tt> argument in <tt class="docutils literal"><span class="pre">setup()</span></tt> in your <tt class="docutils literal"><span class="pre">setup.py</span></tt> file to include
+the name of the package you need. Here is an example that adds the fictional
+package <tt class="docutils literal"><span class="pre">FooBar</span></tt> as an installation requirement:</p>
+<div class="highlight-python"><pre>setup(
+    name="test",
+    version=0.1,
+    zip_safe=False,
+    install_requires = [
+        "TurboGears &gt;= 1.0.1",
+        "FooBar"
+    ],
+    ...</pre>
+</div>
+<p>If you need a specific version of the package you can use comparison operators
+against the version name. You can see that happening in the above example, as
+this project depends on &#8220;TurboGears version 1.0.1 or greater&#8221;. See the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/setuptools">setuptools</a>
+documentation for more information on declaring dependencies.</p>
+</div>
+<div class="section" id="how-to-make-your-project-available-on-the-cheeseshop">
+<h2><a class="toc-backref" href="#id10">How to Make Your Project Available on the Cheeseshop</a><a class="headerlink" href="#how-to-make-your-project-available-on-the-cheeseshop" title="Permalink to this headline">¶</a></h2>
+<p>If you decide to share your creation with the world, the easiest way to do so
+is by using the <a class="reference external" href="http://cheeseshop.python.org/pypi/">Cheeseshop</a> (technically the Python Package Index, but nobody
+calls it that). Before you can upload your project to the Cheeseshop, you will
+need an account. You can create one on the <a class="reference external" href="http://www.python.org/pypi?:action=register_form">PyPI registration page</a>.</p>
+<p>After you have created an account, you will need to tell setuptools your
+account information for uploading the file. See the <a class="reference external" href="http://docs.python.org/dist/package-index.html">distutils documentation</a>
+for details on this.</p>
+<p>Now that you have your account configured and you&#8217;ve updated the metadata in
+<tt class="docutils literal"><span class="pre">setup.py</span></tt>, you need to register a page for your application. setuptools
+can do this for you automatically with the following command:</p>
+<div class="highlight-python"><pre>python setup.py register</pre>
+</div>
+<p>Once you have everything configured, setuptools can upload your egg
+automatically. Here is the command you need:</p>
+<div class="highlight-python"><pre>python setup.py bdist_egg upload</pre>
+</div>
+<p>Any eggs you created in the process should also be available in the <tt class="docutils literal"><span class="pre">dist/</span></tt>
+folder of your project.</p>
+<p>You can also register projects and upload your eggs manually. This
+<a class="reference external" href="http://wiki.python.org/moin/CheeseShopTutorial">setuptools tutorial</a> should be enough to get you going.</p>
+</div>
+<div class="section" id="making-your-project-available-in-the-cogbin">
+<h2><a class="toc-backref" href="#id11">Making Your Project Available in the CogBin</a><a class="headerlink" href="#making-your-project-available-in-the-cogbin" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://www.turbogears.org/cogbin/">CogBin</a> scans the CheeseShop for updated packages and looks for keywords it
+recognizes. To make your project available in the CogBin, simply add the
+appropriate keyword(s) to your <tt class="docutils literal"><span class="pre">setup.py</span></tt> file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Applications</td>
+<td><tt class="docutils literal"><span class="pre">turbogears.app</span></tt></td>
+</tr>
+<tr class="row-even"><td>Widgets</td>
+<td><tt class="docutils literal"><span class="pre">turbogears.widgets</span></tt></td>
+</tr>
+<tr class="row-odd"><td>Template plug-ins</td>
+<td><tt class="docutils literal"><span class="pre">python.templating.engines</span></tt></td>
+</tr>
+<tr class="row-even"><td>Identity providers</td>
+<td><tt class="docutils literal"><span class="pre">turbogears.identity.provider</span></tt></td>
+</tr>
+<tr class="row-odd"><td>tg-admin commands</td>
+<td><tt class="docutils literal"><span class="pre">turbogears.command</span></tt></td>
+</tr>
+<tr class="row-even"><td>Toolbox plug-ins</td>
+<td><tt class="docutils literal"><span class="pre">turbogears.toolboxcommand</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>This goes in the <tt class="docutils literal"><span class="pre">keywords</span></tt> argument to <tt class="docutils literal"><span class="pre">setup()</span></tt> in your <tt class="docutils literal"><span class="pre">setup.py</span></tt>
+file. If you are using the file provided in a quickstarted project these
+options should already be listed, just uncomment the ones you need.</p>
+</div>
+<div class="section" id="how-to-provide-console-scripts">
+<h2><a class="toc-backref" href="#id12">How to Provide Console Scripts</a><a class="headerlink" href="#how-to-provide-console-scripts" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The procedure described here to turn the start script into a setuptools
+console script is already taken care of with TurboGears versions &gt; 1.0.3.</p>
+<p class="last">However you can use the same technique to provide additional console scripts
+for your application.</p>
+</div>
+<p>Another nice feature you get for free from setuptools is the ability to
+automatically create console scripts. The TurboGears package itself uses this
+feature to install the <tt class="docutils literal"><span class="pre">tg-admin</span></tt> command. By declaring a <tt class="docutils literal"><span class="pre">console_scripts</span></tt>
+<a class="reference external" href="http://peak.telecommunity.com/DevCenter/setuptools#extensible-applications-and-frameworks">entry point</a> in your project&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt>, you can get setuptools to handle all
+of the  platform-dependent work of setting up a script for you. It even creates
+appropriate <tt class="docutils literal"><span class="pre">.exe</span></tt> files on windows!</p>
+<p>As a sample, let&#8217;s take the basic <tt class="docutils literal"><span class="pre">start-&lt;pkgname&gt;.py</span></tt> script and turn
+it into a command you can run. First, copy your <tt class="docutils literal"><span class="pre">start-&lt;pkgname&gt;.py</span></tt>
+file into the project itself in a new file named <tt class="docutils literal"><span class="pre">commands.py</span></tt>. Then
+reformat it so it looks something like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="n">pkg_resources</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s">&quot;TurboGears&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">update_config</span><span class="p">,</span> <span class="n">start_server</span>
+    <span class="kn">import</span> <span class="nn">cherrypy</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">lowercase_api</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="c"># first look on the command line for a desired config file,</span>
+    <span class="c"># if it&#39;s not on the command line, then</span>
+    <span class="c"># look for setup.py in the current working directory. If it&#39;s not there,</span>
+    <span class="c">#  this script is probably installed</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">update_config</span><span class="p">(</span><span class="n">configfile</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="n">modulename</span><span class="o">=</span><span class="s">&quot;sample.config&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">exists</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s">&quot;setup.py&quot;</span><span class="p">)):</span>
+        <span class="n">update_config</span><span class="p">(</span><span class="n">configfile</span><span class="o">=</span><span class="s">&quot;dev.cfg&quot;</span><span class="p">,</span><span class="n">modulename</span><span class="o">=</span><span class="s">&quot;sample.config&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">update_config</span><span class="p">(</span><span class="n">configfile</span><span class="o">=</span><span class="s">&quot;prod.cfg&quot;</span><span class="p">,</span><span class="n">modulename</span><span class="o">=</span><span class="s">&quot;sample.config&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">sample.controllers</span> <span class="kn">import</span> <span class="n">Root</span>
+
+    <span class="n">start_server</span><span class="p">(</span><span class="n">Root</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The big change that we made was capturing most of the startup script&#8217;s logic
+in a new <tt class="docutils literal"><span class="pre">start</span></tt> function that takes no arguments. Other than that we had to
+modify the <tt class="docutils literal"><span class="pre">elif</span></tt> statement that is looking for your <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> file so it
+uses the current directory instead of looking for it in the same directory as
+the calling file.</p>
+<p>Now all you have to do is add an entry point that tells setuptools you are
+implementing a console script. This is done in your setup.py file. Here is a
+sample line:</p>
+<div class="highlight-python"><pre>setup(
+    name="sample",
+    version=version,
+    ...
+    entry_points = """
+        [console_scripts]
+        sample-start = sample.commands:start
+        ...
+    """,
+    ...
+    )</pre>
+</div>
+<p>That is pretty much it. When your project is installed, unless the user
+specifically requests that console scripts are not installed, a
+<tt class="docutils literal"><span class="pre">sample-start</span></tt> script is created and placed in the normal system directory.</p>
+<p>If you don&#8217;t want to use a development installation of your egg you can always
+rewrite <tt class="docutils literal"><span class="pre">start-&lt;pkgname&gt;.py</span></tt> to look something like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sample.commands</span> <span class="kn">import</span> <span class="n">start</span>
+<span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

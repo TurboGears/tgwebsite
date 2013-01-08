@@ -1,0 +1,150 @@
+.. index:: Windows Service
+
+Running TurboGears as a Windows Service
+=======================================
+
+.. contents::
+    :depth: 2
+
+
+Prerequisites
+-------------
+
+The `pywin32 package`_ (previous known as win32all) with `win32all docs`_
+avaiable at Mark Hammond's Starship Python site.
+
+.. _pywin32 package : https://sourceforge.net/projects/pywin32/
+.. _win32all docs: http://starship.python.net/crew/mhammond/win32/
+
+This must be installed before the Windows service functionality can be used.
+
+Installation Instructions
+-------------------------
+
+1. Download ``service.py``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``service.py`` is an :download:`attachment <downloads/service.py>` for this page.
+
+**Note:** this file *does not* have to be in the same directory as the TG
+application code.
+
+2. Edit ``service.py``
+~~~~~~~~~~~~~~~~~~~~~~
+``service.py`` contains a user's "USER EDIT SECTION" which may need to be
+edited. If ``service.py`` is located in the TG application's base directory,
+then the default values do not need to be changed.  A description of each
+variable follows:
+
+
+``_svc_name_``
+    Name of the service (used in the Windows registry).
+
+    *Default:* The capitalized name of the directory where the ``service.py``
+    file is located.
+
+``_svc_display_name_``
+    Name that will be displayed in the Windows Services management console.
+
+    *Default:* The capitalized name of the directory where the ``service.py``
+    file is located.
+
+``code_dir``
+    Base directory of the TG application code. This should be the same
+    directory where the ``*appname*-start.py``, ``dev.cfg``, or ``prod.cfg``
+    files are located.
+
+    *Default:* The directory where the ``service.py`` file is located.
+
+``root_class``
+    The fully qualified name of the main TG class.  For example, if you were
+    enabling the `20 Minute Wiki`_ tutorial as a Windows service, then the
+    fully qualified class name would be 'wiki20.controllers.Root'.
+
+    *Default:* ``*packagename*.controllers.Root``
+
+.. _20 Minute Wiki : Wiki20/Page1
+
+``config_module``
+    The name of the configuration module.
+
+    *Default:* ``*packagename*.config``
+
+``log_dir``
+    The location for the app's stdout and stderr log files.
+
+    *Default:* ``code_dir``
+
+3. Control your Service
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Open a command prompt and navigate to the directory where ``service.py`` is
+located.  Use the following commands to install/start/stop/remove your service::
+
+    service.py                        (Lists all available options)
+    service.py install                (Installs the service with a manual startup )
+    service.py --startup auto install (Installs the service with auto startup)
+
+    service.py start                  (Starts the service)
+    service.py stop                   (Stops the service)
+    service.py remove                 (Removes the service)
+
+The service should now be accessible and controllable from the Window Services
+management console.
+
+Notes
+-----
+
+ * The autoreload functionality does not work when a CherryPy application is
+   run as a Windows service (it crashes the service).  Therefore, the code will
+   disable the autoreload functionality before the server is started.
+ * When the Python code runs as a Windows service, the current directory is
+   automatically set to ``C:\<python-install-dir>\lib\site-packages\win32``.
+   ``service.py`` uses the ``code_dir`` value to reset the current directory to
+   the base directory of the TG application.
+ * The ``stdout`` and ``stderr`` output is redirected to two files
+   (``stdout.log`` and ``stderr.log``).  ``stdout`` and ``stderr`` must be
+   redirected because when running as a service, they don't have a valid file
+   to write to.  So, when Windows attempts to flush ``stdout`` or stderr, the
+   service crashes and the following entry is found in the Windows Event
+   Application Logs::
+
+    The instance's SvcRun() method failed
+      File "C:\Python24\lib\site-packages\win32\lib\win32serviceutil.py", line 742, in SvcRun
+        self.SvcDoRun()
+      File "C:\Documents and Settings\<user>\Desktop\service.py", line 80, in SvcDoRun
+        self.tg_init()
+      File "C:\Documents and Settings\<user>\Desktop\service.py", line 115, in tg_init
+        print 'try to crash the buffer over and over again...'
+    exceptions.IOError: (9, 'Bad file descriptor')
+
+ * The CherryPy site also lists a similar method of creating a `CherryPy Windows service`_.
+
+.. _CherryPy Windows service: http://docs.cherrypy.org/cherrypy22-as-windows-service
+
+Troubleshooting
+---------------
+
+Use the Windows Event Viewer, the ``stdout``, and the ``stderr`` log files to locate
+problems with your application.
+
+If you need to have more than one service, for multiple applications, I found I needed to rename service.py, to a different file name for each application. Not doing this meant the services interfered with each other.
+
+If your service stops when you log off Windows, try the following modification to the code::
+
+    #...snip...
+
+    # -- END USER EDIT SECTION
+    stop_event = win32event.CreateEvent(None, 0, 0, None)
+
+    def SvcDoRun(self):
+        """ Called when the Windows Service runs. """
+
+        self.ReportServiceStatus(win32service.SERVICE_START_PENDING)
+        self.tg_init()
+        cherrypy.root = self.root()
+        self.ReportServiceStatus(win32service.SERVICE_RUNNING)
+        cherrypy.server.start(init_only=True)
+        win32event.WaitForSingleObject(TGWindowsService.stop_event, win32event.INFINITE)
+
+    #...snip...

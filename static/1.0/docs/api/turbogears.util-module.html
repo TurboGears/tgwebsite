@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.util</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;util
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module util</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears.util-pysrc.html">source&nbsp;code</a></span></p>
+<p>The TurboGears utility module.</p>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.util.Bunch-class.html" class="summary-name">Bunch</a><br />
+      Simple but handy collector of a bunch of named stuff.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.util.DictObj-class.html" class="summary-name">DictObj</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.util.DictObj-class.html" class="summary-name">DictWrapper</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.util.setlike-class.html" class="summary-name">setlike</a><br />
+      Set preserving item order.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="quote_cookie"></a><span class="summary-sig-name">quote_cookie</span>(<span class="summary-sig-arg">str</span>,
+        <span class="summary-sig-arg">LegalChars</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345678</code><code class="variable-ellipsis">...</code></span>,
+        <span class="summary-sig-arg">idmap</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x1</code><code class="variable-ellipsis">...</code></span>,
+        <span class="summary-sig-arg">translate</span>=<span class="summary-sig-default">&lt;function translate at 0x7cc398&gt;</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="unquote_cookie"></a><span class="summary-sig-name">unquote_cookie</span>(<span class="summary-sig-arg">str</span>)</span></td>
+          <td align="right" valign="top">
+            
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#deprecated" class="summary-sig-name">deprecated</a>(<span class="summary-sig-arg">message</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Decorator which can be used to mark functions as deprecated.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#deprecated">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#Enum" class="summary-sig-name">Enum</a>(<span class="summary-sig-arg">*names</span>)</span><br />
+      True immutable symbolic enumeration with qualified value access.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#Enum">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#load_project_config" class="summary-sig-name">load_project_config</a>(<span class="summary-sig-arg">configfile</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Try to update the project settings from the config file specified.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#load_project_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_package_name"></a><span class="summary-sig-name">get_package_name</span>()</span><br />
+      Try to find out the package name of the current directory.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#get_package_name">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_model"></a><span class="summary-sig-name">get_model</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#get_model">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="ensure_sequence"></a><span class="summary-sig-name">ensure_sequence</span>(<span class="summary-sig-arg">obj</span>)</span><br />
+      Construct a sequence from object.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#ensure_sequence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="to_kw"></a><span class="summary-sig-name">to_kw</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Convert all applicable arguments to keyword arguments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#to_kw">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="from_kw"></a><span class="summary-sig-name">from_kw</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Extract named positional arguments from keyword arguments.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#from_kw">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#adapt_call" class="summary-sig-name">adapt_call</a>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Remove unsupported func arguments from given args list and kw dict.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#adapt_call">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="call_on_stack"></a><span class="summary-sig-name">call_on_stack</span>(<span class="summary-sig-arg">func_name</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Check if a call to function matching pattern is on stack.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#call_on_stack">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="remove_keys"></a><span class="summary-sig-name">remove_keys</span>(<span class="summary-sig-arg">dict_</span>,
+        <span class="summary-sig-arg">seq</span>)</span><br />
+      Gracefully remove keys from dict.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#remove_keys">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="has_arg"></a><span class="summary-sig-name">has_arg</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">argname</span>)</span><br />
+      Check whether function has argument.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#has_arg">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="arg_index"></a><span class="summary-sig-name">arg_index</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">argname</span>)</span><br />
+      Find index of argument as declared for given function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#arg_index">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="inject_arg"></a><span class="summary-sig-name">inject_arg</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">argname</span>,
+        <span class="summary-sig-arg">argval</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Insert argument into call.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#inject_arg">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="inject_args"></a><span class="summary-sig-name">inject_args</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">injections</span>,
+        <span class="summary-sig-arg">args</span>,
+        <span class="summary-sig-arg">kw</span>,
+        <span class="summary-sig-arg">start</span>=<span class="summary-sig-default">0</span>)</span><br />
+      Insert arguments into call.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#inject_args">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="add_tg_args"></a><span class="summary-sig-name">add_tg_args</span>(<span class="summary-sig-arg">func</span>,
+        <span class="summary-sig-arg">args</span>)</span><br />
+      Add hint for special arguments that shall not be removed.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#add_tg_args">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="bind_args"></a><span class="summary-sig-name">bind_args</span>(<span class="summary-sig-arg">**add</span>)</span><br />
+      Call with arguments set to a predefined value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#bind_args">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="recursive_update"></a><span class="summary-sig-name">recursive_update</span>(<span class="summary-sig-arg">to_dict</span>,
+        <span class="summary-sig-arg">from_dict</span>)</span><br />
+      Recursively update all dicts in to_dict with values from from_dict.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#recursive_update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="combine_contexts"></a><span class="summary-sig-name">combine_contexts</span>(<span class="summary-sig-arg">frames</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">depth</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Combine contexts (globals, locals) of frames.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#combine_contexts">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="request_available"></a><span class="summary-sig-name">request_available</span>()</span><br />
+      Check if cherrypy.request is available.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#request_available">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="flatten_sequence"></a><span class="summary-sig-name">flatten_sequence</span>(<span class="summary-sig-arg">seq</span>)</span><br />
+      Flatten sequence.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#flatten_sequence">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#pop_from_nested_dict" class="summary-sig-name">pop_from_nested_dict</a>(<span class="summary-sig-arg">params</span>,
+        <span class="summary-sig-arg">keys</span>)</span><br />
+      Pop a value from a nested parameter dictionary.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#pop_from_nested_dict">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pop_request_params"></a><span class="summary-sig-name">pop_request_params</span>(<span class="summary-sig-arg">keys</span>)</span><br />
+      Pop a value from the nested request parameter dictionary.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#pop_request_params">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#load_class" class="summary-sig-name">load_class</a>(<span class="summary-sig-arg">dottedpath</span>)</span><br />
+      Load a class from a module in dotted-path notation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#load_class">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#parse_http_accept_header" class="summary-sig-name">parse_http_accept_header</a>(<span class="summary-sig-arg">accept</span>)</span><br />
+      Parse an HTTP Accept header (RFC 2616) into a sorted list.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#parse_http_accept_header">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#simplify_http_accept_header" class="summary-sig-name">simplify_http_accept_header</a>(<span class="summary-sig-arg">accept</span>)</span><br />
+      Parse an HTTP Accept header (RFC 2616) into a preferred value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#simplify_http_accept_header">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#to_unicode" class="summary-sig-name">to_unicode</a>(<span class="summary-sig-arg">value</span>)</span><br />
+      Convert encoded string to unicode string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#to_unicode">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#to_utf8" class="summary-sig-name">to_utf8</a>(<span class="summary-sig-arg">value</span>)</span><br />
+      Convert a unicode string to utf-8 encoded plain string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#to_utf8">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_template_encoding_default"></a><span class="summary-sig-name">get_template_encoding_default</span>(<span class="summary-sig-arg">engine_name</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Return default encoding for template files (Kid, Genshi, etc.).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#get_template_encoding_default">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#get_mime_type_for_format" class="summary-sig-name">get_mime_type_for_format</a>(<span class="summary-sig-arg">format</span>)</span><br />
+      Return default MIME media type for a template format.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#get_mime_type_for_format">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#mime_type_has_charset" class="summary-sig-name">mime_type_has_charset</a>(<span class="summary-sig-arg">mime_type</span>)</span><br />
+      Return whether the MIME media type supports a charset parameter.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#mime_type_has_charset">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#find_precision" class="summary-sig-name">find_precision</a>(<span class="summary-sig-arg">value</span>)</span><br />
+      Find precision of some arbitrary value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#find_precision">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.util-module.html#copy_if_mutable" class="summary-sig-name">copy_if_mutable</a>(<span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">feedback</span>=<span class="summary-sig-default">False</span>)</span><br />
+      Make a copy of the value if it is mutable.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#copy_if_mutable">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="match_ip"></a><span class="summary-sig-name">match_ip</span>(<span class="summary-sig-arg">cidr</span>,
+        <span class="summary-sig-arg">ip</span>)</span><br />
+      Check whether IP address matches CIDR IP address block.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.util-pysrc.html#match_ip">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="deprecated"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">deprecated</span>(<span class="sig-arg">message</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#deprecated">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator which can be used to mark functions as deprecated.</p>
+  <p>It will result in a warning being emitted when the function is 
+  used.</p>
+  <p>Inspired by 
+  http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/391367</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="Enum"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">Enum</span>(<span class="sig-arg">*names</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#Enum">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>True immutable symbolic enumeration with qualified value access.</p>
+  <p>Written by Zoran Isailovski: 
+  http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/413486</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="load_project_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">load_project_config</span>(<span class="sig-arg">configfile</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#load_project_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Try to update the project settings from the config file specified.</p>
+  <p>If configfile is <code>None</code>, uses <a 
+  href="turbogears.util-module.html#get_project_config" class="link" 
+  onclick="show_private();">get_project_config</a> to locate one.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="adapt_call"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">adapt_call</span>(<span class="sig-arg">func</span>,
+        <span class="sig-arg">args</span>,
+        <span class="sig-arg">kw</span>,
+        <span class="sig-arg">start</span>=<span class="sig-default">0</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#adapt_call">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Remove unsupported func arguments from given args list and kw dict.
+
+@param func: the callable to inspect for supported arguments
+@type func: callable
+
+@param args: the names of the positional arguments intended to be passed
+to func
+@type args: list
+
+@param kw: the keyword arguments intended to be passed to func
+@type kw: dict
+
+@keyparam start: the number of items from the start of the argument list of
+func to disregard. Set start=1 to use adapt_call on a bound method to
+disregard the implicit self argument.
+
+@type start: int
+
+Returns args list and kw dict from which arguments unsupported by func
+have been removed. The passed in kw dict is also stripped as a side-effect.
+The returned objects can then be used to call the target function.
+
+Example:
+
+    def myfunc(arg1, arg2, kwarg1='foo'):
+        pass
+
+    args, kw = adapt_call(myfunc, ['args1, 'bogus1'],
+       {'kwargs1': 'bar', 'bogus2': 'spamm'})
+    # --&gt; ['args1'], {'kwargs1': 'bar'}
+    myfunc(*args, **kw)
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="pop_from_nested_dict"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">pop_from_nested_dict</span>(<span class="sig-arg">params</span>,
+        <span class="sig-arg">keys</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#pop_from_nested_dict">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Pop a value from a nested parameter dictionary.</p>
+  <p>You must pass a list or dotted key as the key chain to the value. If a
+  value for this key chain is found, it will be removed and the value will 
+  be returned. If this creates empty subkeys, these will also be removed. 
+  If no single value is associated with the key chain, then None will be 
+  returned.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="load_class"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">load_class</span>(<span class="sig-arg">dottedpath</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#load_class">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Load a class from a module in dotted-path notation.</p>
+  <p>E.g.: load_class(&quot;package.module.class&quot;).</p>
+  <p>Based on recipe 16.3 from Python Cookbook, 2ed., by Alex Martelli, 
+  Anna Martelli Ravenscroft, and David Ascher (O'Reilly Media, 2005)</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="parse_http_accept_header"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">parse_http_accept_header</span>(<span class="sig-arg">accept</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#parse_http_accept_header">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse an HTTP Accept header (RFC 2616) into a sorted list.</p>
+  <p>The quality factors in the header determine the sort order. The values
+  can include possible media-range parameters. This function can also be 
+  used for the Accept-Charset, Accept-Encoding and Accept-Language 
+  headers.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="simplify_http_accept_header"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">simplify_http_accept_header</span>(<span class="sig-arg">accept</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#simplify_http_accept_header">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Parse an HTTP Accept header (RFC 2616) into a preferred value.</p>
+  <p>The quality factors in the header determine the preference. Possible 
+  media-range parameters are allowed, but will be ignored. This function 
+  can also be used for the Accept-Charset, Accept-Encoding and 
+  Accept-Language headers.</p>
+  <p>This is similar to parse_http_accept_header(accept)[0], but 
+  faster.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="to_unicode"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">to_unicode</span>(<span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#to_unicode">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Convert encoded string to unicode string.</p>
+  <p>Uses get_template_encoding_default() to guess source string encoding. 
+  Handles turbogears.i18n.lazystring correctly.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="to_utf8"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">to_utf8</span>(<span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#to_utf8">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Convert a unicode string to utf-8 encoded plain string.</p>
+  <p>Handles turbogears.i18n.lazystring correctly.</p>
+  <p>Does nothing to already encoded string.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="get_mime_type_for_format"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">get_mime_type_for_format</span>(<span class="sig-arg">format</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#get_mime_type_for_format">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return default MIME media type for a template format.</p>
+  <p>Note: By default we are serving xhtml as &quot;text/html&quot; instead
+  of the more correct &quot;application/xhtml+xml&quot;, since many 
+  browsers, particularly MSIE, do not support this. We are assuming that 
+  xhtml means XHTML 1.0 here, where this approach is possible. It would be 
+  possible to use some kind of content negotiation to deliver a customized 
+  content type, but we avoid this because it causes more harm (e.g. with 
+  proxies involved) than good.</p>
+  <p>If you want to serve the proper content type (e.g. for XHTML 1.1), set
+  tg.format_mime_types= {'xhtml': 'application/xhtml+xml'}. You can also 
+  set a particular content type per controller using the content_type 
+  parameter of the expose decorator.</p>
+  <p>For detailed information about this issues, see here: 
+  http://www.smackthemouse.com/xhtmlxml, 
+  http://schneegans.de/web/xhtml/.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="mime_type_has_charset"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">mime_type_has_charset</span>(<span class="sig-arg">mime_type</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#mime_type_has_charset">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return whether the MIME media type supports a charset parameter.</p>
+  <p>Note: According to RFC4627, we do not output a charset parameter for 
+  &quot;application/json&quot; (this type always uses a UTF encoding).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="find_precision"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">find_precision</span>(<span class="sig-arg">value</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#find_precision">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Find precision of some arbitrary value.</p>
+  <p>The main intention for this function is to use it together with 
+  turbogears.i18n.format.format_decimal() where one has to inform the 
+  precision wanted. So, use it like this:</p>
+  <p>format_decimal(some_number, find_precision(some_number))</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="copy_if_mutable"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copy_if_mutable</span>(<span class="sig-arg">value</span>,
+        <span class="sig-arg">feedback</span>=<span class="sig-default">False</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.util-pysrc.html#copy_if_mutable">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Make a copy of the value if it is mutable.</p>
+  <p>Returns the value. If feedback is set to true, also returns whether 
+  value was mutable as the second element of a tuple.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:36 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

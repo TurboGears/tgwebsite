@@ -1,0 +1,85 @@
+.. index:: ActiveMapper
+
+ActiveMapper Crash Course
+=========================
+
+ActiveMapper_ is a SQLAlchemy extension developed by `Jonathan LaCour`_ which
+provides a declarative interface to the SQLAlchemy mapper. This page
+briefly covers all the extension's features but doesn't explain them in depth.
+
+Note that ActiveMapper has been discontinued in favor of the Elixir_ declarative
+layer, and recent versions of SQLAlchemy come with built-in declarative_ support.
+
+.. _Jonathan LaCour: http://cleverdevil.org/
+.. _ActiveMapper: http://cleverdevil.org/computing/35/
+.. _Elixir: http://elixir.ematia.de/
+.. _declarative: http://www.sqlalchemy.org/docs/orm/extensions/declarative.html
+
+We'll start off with an example::
+
+    class Demo(ActiveMapper):
+        class mapping:
+            ## Showing options here with default values
+            #__table__ = "demo"      # class_name.lower()
+            #__autoload__ = False"
+            demo_key = column(Unicode(16), primary_key=True)
+            name = column(Unicode(20))
+            active_count = column(Integer,colname="ACTIVECOUNT")
+
+            # a foreign key reference, note the string is the db column
+            group = column(Integer, foreign_key="group.group_id", index=True)
+
+            ## This also works
+            #group = column(Integer, foreign_key= ForeignKey("group.group_id"),
+                            index= True)
+
+            #one_to_one and one_to_many only need the target AM class
+            demo_link = one_to_one("DemoLink", backref="linked_demo")
+
+            # A many_to_many mapping requires the target ActiveMapper class and
+            #  an intermediate table.
+            user = many_to_many("User",demo_user)
+
+Similar to SQLObject, you declare a class that inherits from ``ActiveMapper``.
+Unlike SQLObject, you must declare an internal class called ``mapping``, which
+will contain all your column definitions. ``column()`` itself is a straight
+wrapper around the standard SQLAlchemy ``Column`` and takes the same arguments.
+
+The relationship columns, ``one_to_one`` and ``many_to_many`` are a bit more
+restrictive, they take (only) the following arguments:
+
+``one_to_one`` & ``one_to_many``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+classname
+  The linked table, either as a reference or as a string containing the class
+  name. *Required.*
+colname
+  The database name of the constraint, default is ``None``
+backref
+  Same as standard SA, if present it creates a reference back to the current
+  object with the same name as the passed string, default is ``None``
+private
+  If ``True``, cascades deletion, default ``False``
+lazy
+  Delays loading the referenced object untill it is accessed, default ``True``
+order_by
+  Same as standard SA
+
+``many_to_many``
+~~~~~~~~~~~~~~~~
+
+classname
+  The linked table, either as a reference or as a string containing the class
+  name. *Required.*
+secondary
+  A reference to the intermediate table. *Required.*
+backref
+  Same as standard SA, if present it creates a reference back to the current
+  object with the same name as the passed string, default is ``None``
+lazy
+  Delays loading the referenced object untill it is accessed, default ``True``
+order_by
+  Same as standard SA
+
+Most of this is demonstrated by the Identity classes created during quickstart.

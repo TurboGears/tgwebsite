@@ -1,0 +1,898 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.widgets.datagrid</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.widgets-module.html">Package&nbsp;widgets</a> ::
+        Module&nbsp;datagrid
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.widgets.datagrid-module.html">Module turbogears.widgets.datagrid</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Generic widget to present and manipulate data in a grid (tabular) form.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">See also: http://trac.turbogears.org/turbogears/wiki/DataGridWidget</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package turbogears.widgets=turbogears.widgets-module.html"><a title="turbogears.widgets" class="py-name" href="#" onclick="return doclink('link-1', 'widgets', 'link-1');">widgets</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Class turbogears.widgets.base.Widget=turbogears.widgets.base.Widget-class.html"><a title="turbogears.widgets.base.Widget" class="py-name" href="#" onclick="return doclink('link-2', 'Widget', 'link-2');">Widget</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Class turbogears.widgets.base.CSSLink=turbogears.widgets.base.CSSLink-class.html"><a title="turbogears.widgets.base.CSSLink" class="py-name" href="#" onclick="return doclink('link-3', 'CSSLink', 'link-3');">CSSLink</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Package turbogears.static=turbogears.static-module.html,Variable turbogears.widgets.base.static=turbogears.widgets.base-module.html#static"><a title="turbogears.static
+turbogears.widgets.base.static" class="py-name" href="#" onclick="return doclink('link-4', 'static', 'link-4');">static</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-5', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="turbogears.widgets" class="py-name" href="#" onclick="return doclink('link-6', 'widgets', 'link-1');">widgets</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module turbogears.command.base=turbogears.command.base-module.html,Module turbogears.filters.base=turbogears.filters.base-module.html,Module turbogears.identity.base=turbogears.identity.base-module.html,Module turbogears.toolbox.base=turbogears.toolbox.base-module.html,Module turbogears.view.base=turbogears.view.base-module.html,Module turbogears.widgets.base=turbogears.widgets.base-module.html"><a title="turbogears.command.base
+turbogears.filters.base
+turbogears.identity.base
+turbogears.toolbox.base
+turbogears.view.base
+turbogears.widgets.base" class="py-name" href="#" onclick="return doclink('link-7', 'base', 'link-7');">base</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">CoreWD</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt id="link-8" class="py-name" targets="Class formencode.api.NoDefault=formencode.api.NoDefault-class.html,Variable turbogears.widgets.datagrid.NoDefault=turbogears.widgets.datagrid-module.html#NoDefault"><a title="formencode.api.NoDefault
+turbogears.widgets.datagrid.NoDefault" class="py-name" href="#" onclick="return doclink('link-8', 'NoDefault', 'link-8');">NoDefault</a></tt> <tt class="py-op">=</tt> <tt class="py-name">object</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"DataGrid"</tt><tt class="py-op">,</tt> <tt class="py-string">"PaginateDataGrid"</tt><tt class="py-op">]</tt> </tt>
+<a name="DataGrid"></a><div id="DataGrid-def"><a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt> <a class="py-toggle" href="#" id="DataGrid-toggle" onclick="return toggle('DataGrid');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html">DataGrid</a><tt class="py-op">(</tt><tt class="py-base-class">Widget</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DataGrid-expanded"><a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-docstring">"""Generic widget to present and manipulate data in a grid (tabular) form.</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">    The columns to build the grid from are specified with fields ctor argument</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">    which is a list. Currently an element can be either a two-element tuple or</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">    instance of DataGrid.Column class. If tuple is used it a Column is then</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring">    build out of it, first element is assumed to be a title and second element -</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">    field accessor.</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">    You can specify columns' data statically, via fields ctor parameter, or</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    dynamically, by via 'fields' key.</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt id="link-9" class="py-name" targets="Package turbogears.static.css=turbogears.static.css-module.html,Variable turbogears.widgets.base.Widget.css=turbogears.widgets.base.Widget-class.html#css,Variable turbogears.widgets.datagrid.DataGrid.css=turbogears.widgets.datagrid.DataGrid-class.html#css,Variable turbogears.widgets.links.SyntaxHighlighter.css=turbogears.widgets.links.SyntaxHighlighter-class.html#css,Variable turbogears.widgets.links.Tabber.css=turbogears.widgets.links.Tabber-class.html#css"><a title="turbogears.static.css
+turbogears.widgets.base.Widget.css
+turbogears.widgets.datagrid.DataGrid.css
+turbogears.widgets.links.SyntaxHighlighter.css
+turbogears.widgets.links.Tabber.css" class="py-name" href="#" onclick="return doclink('link-9', 'css', 'link-9');">css</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-10" class="py-name"><a title="turbogears.widgets.base.CSSLink" class="py-name" href="#" onclick="return doclink('link-10', 'CSSLink', 'link-3');">CSSLink</a></tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="turbogears.static
+turbogears.widgets.base.static" class="py-name" href="#" onclick="return doclink('link-11', 'static', 'link-4');">static</a></tt><tt class="py-op">,</tt> <tt class="py-string">"grid.css"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt id="link-12" class="py-name" targets="Variable turbogears.widgets.base.CSSLink.template=turbogears.widgets.base.CSSLink-class.html#template,Variable turbogears.widgets.base.CSSSource.template=turbogears.widgets.base.CSSSource-class.html#template,Variable turbogears.widgets.base.JSLink.template=turbogears.widgets.base.JSLink-class.html#template,Variable turbogears.widgets.base.JSSource.template=turbogears.widgets.base.JSSource-class.html#template,Variable turbogears.widgets.base.Widget.template=turbogears.widgets.base.Widget-class.html#template,Variable turbogears.widgets.base.WidgetDescription.template=turbogears.widgets.base.WidgetDescription-class.html#template,Variable turbogears.widgets.big_widgets.AjaxGrid.template=turbogears.widgets.big_widgets.AjaxGrid-class.html#template,Variable turbogears.widgets.big_widgets.AutoCompleteField.template=turbogears.widgets.big_widgets.AutoCompleteField-class.html#template,Variable turbogears.widgets.big_widgets.AutoCompleteTextField.template=turbogears.widgets.big_widgets.AutoCompleteTextField-class.html#template,Variable turbogears.widgets.big_widgets.CalendarDatePicker.template=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#template,Variable turbogears.widgets.big_widgets.LinkRemoteFunction.template=turbogears.widgets.big_widgets.LinkRemoteFunction-class.html#template,Variable turbogears.widgets.big_widgets.URLLink.template=turbogears.widgets.big_widgets.URLLink-class.html#template,Variable turbogears.widgets.datagrid.DataGrid.template=turbogears.widgets.datagrid.DataGrid-class.html#template,Variable turbogears.widgets.datagrid.PaginateDataGrid.template=turbogears.widgets.datagrid.PaginateDataGrid-class.html#template,Variable turbogears.widgets.forms.Button.template=turbogears.widgets.forms.Button-class.html#template,Variable turbogears.widgets.forms.CheckBox.template=turbogears.widgets.forms.CheckBox-class.html#template,Variable turbogears.widgets.forms.CheckBoxList.template=turbogears.widgets.forms.CheckBoxList-class.html#template,Variable turbogears.widgets.forms.FieldSet.template=turbogears.widgets.forms.FieldSet-class.html#template,Variable turbogears.widgets.forms.FileField.template=turbogears.widgets.forms.FileField-class.html#template,Variable turbogears.widgets.forms.HiddenField.template=turbogears.widgets.forms.HiddenField-class.html#template,Variable turbogears.widgets.forms.ImageButton.template=turbogears.widgets.forms.ImageButton-class.html#template,Variable turbogears.widgets.forms.Label.template=turbogears.widgets.forms.Label-class.html#template,Variable turbogears.widgets.forms.ListForm.template=turbogears.widgets.forms.ListForm-class.html#template,Variable turbogears.widgets.forms.MultipleSelectField.template=turbogears.widgets.forms.MultipleSelectField-class.html#template,Variable turbogears.widgets.forms.PasswordField.template=turbogears.widgets.forms.PasswordField-class.html#template,Variable turbogears.widgets.forms.RadioButtonList.template=turbogears.widgets.forms.RadioButtonList-class.html#template,Variable turbogears.widgets.forms.RepeatingFieldSet.template=turbogears.widgets.forms.RepeatingFieldSet-class.html#template,Variable turbogears.widgets.forms.ResetButton.template=turbogears.widgets.forms.ResetButton-class.html#template,Variable turbogears.widgets.forms.SingleSelectField.template=turbogears.widgets.forms.SingleSelectField-class.html#template,Variable turbogears.widgets.forms.SubmitButton.template=turbogears.widgets.forms.SubmitButton-class.html#template,Variable turbogears.widgets.forms.TableForm.template=turbogears.widgets.forms.TableForm-class.html#template,Variable turbogears.widgets.forms.TextArea.template=turbogears.widgets.forms.TextArea-class.html#template,Variable turbogears.widgets.forms.TextField.template=turbogears.widgets.forms.TextField-class.html#template,Variable turbogears.widgets.links.JumpMenu.template=turbogears.widgets.links.JumpMenu-class.html#template"><a title="turbogears.widgets.base.CSSLink.template
+turbogears.widgets.base.CSSSource.template
+turbogears.widgets.base.JSLink.template
+turbogears.widgets.base.JSSource.template
+turbogears.widgets.base.Widget.template
+turbogears.widgets.base.WidgetDescription.template
+turbogears.widgets.big_widgets.AjaxGrid.template
+turbogears.widgets.big_widgets.AutoCompleteField.template
+turbogears.widgets.big_widgets.AutoCompleteTextField.template
+turbogears.widgets.big_widgets.CalendarDatePicker.template
+turbogears.widgets.big_widgets.LinkRemoteFunction.template
+turbogears.widgets.big_widgets.URLLink.template
+turbogears.widgets.datagrid.DataGrid.template
+turbogears.widgets.datagrid.PaginateDataGrid.template
+turbogears.widgets.forms.Button.template
+turbogears.widgets.forms.CheckBox.template
+turbogears.widgets.forms.CheckBoxList.template
+turbogears.widgets.forms.FieldSet.template
+turbogears.widgets.forms.FileField.template
+turbogears.widgets.forms.HiddenField.template
+turbogears.widgets.forms.ImageButton.template
+turbogears.widgets.forms.Label.template
+turbogears.widgets.forms.ListForm.template
+turbogears.widgets.forms.MultipleSelectField.template
+turbogears.widgets.forms.PasswordField.template
+turbogears.widgets.forms.RadioButtonList.template
+turbogears.widgets.forms.RepeatingFieldSet.template
+turbogears.widgets.forms.ResetButton.template
+turbogears.widgets.forms.SingleSelectField.template
+turbogears.widgets.forms.SubmitButton.template
+turbogears.widgets.forms.TableForm.template
+turbogears.widgets.forms.TextArea.template
+turbogears.widgets.forms.TextField.template
+turbogears.widgets.links.JumpMenu.template" class="py-name" href="#" onclick="return doclink('link-12', 'template', 'link-12');">template</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"turbogears.widgets.templates.datagrid"</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">    <tt id="link-13" class="py-name" targets="Method turbogears.toolbox.catwalk.browse.Browse.fields()=turbogears.toolbox.catwalk.browse.Browse-class.html#fields,Variable turbogears.widgets.datagrid.DataGrid.fields=turbogears.widgets.datagrid.DataGrid-class.html#fields,Variable turbogears.widgets.forms.FormFieldsContainer.fields=turbogears.widgets.forms.FormFieldsContainer-class.html#fields"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-13', 'fields', 'link-13');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.Column"></a><div id="DataGrid.Column-def"><a name="L32"></a><tt class="py-lineno"> 32</tt> <a class="py-toggle" href="#" id="DataGrid.Column-toggle" onclick="return toggle('DataGrid.Column');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.Column-class.html">Column</a><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.Column-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.Column-expanded"><a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-docstring">"""Simple struct that describes single DataGrid column.</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">        Column has:</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">          - a name, which allows to uniquely identify column in a DataGrid</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">          - getter, which is used to extract field's value</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">          - title, which is displayed in the table's header</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">          - options, which is a way to carry arbitrary user-defined data</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">          - attrwrapper, which is a function returning an object's attribute</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="DataGrid.Column.__init__"></a><div id="DataGrid.Column.__init__-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="DataGrid.Column.__init__-toggle" onclick="return toggle('DataGrid.Column.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.Column-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                <tt class="py-param">getter</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">title</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">options</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">attrwrapper</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.Column.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.Column.__init__-expanded"><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-14" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-14', 'name', 'link-14');">name</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">'column name is required'</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-15" class="py-name" targets="Class turbogears.paginate'.attrwrapper=turbogears.paginate%27.attrwrapper-class.html,Class turbogears.widgets.datagrid.DataGrid.attrwrapper=turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-15', 'attrwrapper', 'link-15');">attrwrapper</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                <tt id="link-16" class="py-name"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-16', 'attrwrapper', 'link-15');">attrwrapper</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name" targets="Class turbogears.widgets.datagrid.DataGrid=turbogears.widgets.datagrid.DataGrid-class.html"><a title="turbogears.widgets.datagrid.DataGrid" class="py-name" href="#" onclick="return doclink('link-17', 'DataGrid', 'link-17');">DataGrid</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-18', 'attrwrapper', 'link-15');">attrwrapper</a></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">getter</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">getter</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-19', 'attrwrapper', 'link-15');">attrwrapper</a></tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-20', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt class="py-name">getter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">getter</tt> <tt class="py-op">=</tt> <tt class="py-name">getter</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-comment"># assume it's an attribute name</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">                    <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">getter</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-21', 'attrwrapper', 'link-15');">attrwrapper</a></tt><tt class="py-op">(</tt><tt class="py-name">getter</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-22', 'name', 'link-14');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-23', 'name', 'link-14');">name</a></tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">title</tt> <tt class="py-op">=</tt> <tt class="py-name">title</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt id="link-24" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-24', 'name', 'link-14');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">capitalize</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">title</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Variable turbogears.widgets.forms.SelectionField.options=turbogears.widgets.forms.SelectionField-class.html#options"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-25', 'options', 'link-25');">options</a></tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-26', 'options', 'link-25');">options</a></tt> <tt class="py-keyword">or</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+</div><a name="DataGrid.Column.get_option"></a><div id="DataGrid.Column.get_option-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="DataGrid.Column.get_option-toggle" onclick="return toggle('DataGrid.Column.get_option');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.Column-class.html#get_option">get_option</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt id="link-27" class="py-name"><a title="formencode.api.NoDefault
+turbogears.widgets.datagrid.NoDefault" class="py-name" href="#" onclick="return doclink('link-27', 'NoDefault', 'link-8');">NoDefault</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.Column.get_option-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.Column.get_option-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-28" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-28', 'name', 'link-14');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-29', 'options', 'link-25');">options</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-30', 'options', 'link-25');">options</a></tt><tt class="py-op">[</tt><tt id="link-31" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-31', 'name', 'link-14');">name</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-32" class="py-name" targets="Variable turbogears.widgets.base.Widget.default=turbogears.widgets.base.Widget-class.html#default,Variable turbogears.widgets.big_widgets.CalendarDatePicker.default=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#default"><a title="turbogears.widgets.base.Widget.default
+turbogears.widgets.big_widgets.CalendarDatePicker.default" class="py-name" href="#" onclick="return doclink('link-32', 'default', 'link-32');">default</a></tt> <tt class="py-keyword">is</tt> <tt id="link-33" class="py-name"><a title="formencode.api.NoDefault
+turbogears.widgets.datagrid.NoDefault" class="py-name" href="#" onclick="return doclink('link-33', 'NoDefault', 'link-8');">NoDefault</a></tt><tt class="py-op">:</tt> <tt class="py-comment"># no such key and no default is given</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">KeyError</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-34', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-35" class="py-name"><a title="turbogears.widgets.base.Widget.default
+turbogears.widgets.big_widgets.CalendarDatePicker.default" class="py-name" href="#" onclick="return doclink('link-35', 'default', 'link-32');">default</a></tt> </tt>
+</div><a name="DataGrid.Column.get_field"></a><div id="DataGrid.Column.get_field-def"><a name="L65"></a><tt class="py-lineno"> 65</tt> <a class="py-toggle" href="#" id="DataGrid.Column.get_field-toggle" onclick="return toggle('DataGrid.Column.get_field');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.Column-class.html#get_field">get_field</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">row</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.Column.get_field-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.Column.get_field-expanded"><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">getter</tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+</div><a name="DataGrid.Column.__str__"></a><div id="DataGrid.Column.__str__-def"><a name="L67"></a><tt class="py-lineno"> 67</tt> <a class="py-toggle" href="#" id="DataGrid.Column.__str__-toggle" onclick="return toggle('DataGrid.Column.__str__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.Column-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.Column.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.Column.__str__-expanded"><a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;DataGrid.Column %s&gt;"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-36', 'name', 'link-14');">name</a></tt> </tt>
+</div></div><a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.attrwrapper"></a><div id="DataGrid.attrwrapper-def"><a name="L70"></a><tt class="py-lineno"> 70</tt> <a class="py-toggle" href="#" id="DataGrid.attrwrapper-toggle" onclick="return toggle('DataGrid.attrwrapper');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html">attrwrapper</a><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.attrwrapper-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.attrwrapper-expanded"><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-docstring">"""Helper class that returns an object's attribute when called.</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">        This allows to access 'dynamic' attributes (properties) as well as</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">        simple static ones, and also allows nested access.</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="DataGrid.attrwrapper.__init__"></a><div id="DataGrid.attrwrapper.__init__-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="DataGrid.attrwrapper.__init__-toggle" onclick="return toggle('DataGrid.attrwrapper.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.attrwrapper.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.attrwrapper.__init__-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-37', 'name', 'link-14');">name</a></tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt id="link-38" class="py-name" targets="Class int=int-class.html"><a title="int" class="py-name" href="#" onclick="return doclink('link-38', 'int', 'link-38');">int</a></tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">'attribute name must be'</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                    <tt class="py-string">' an integer index or a string attribute'</tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-39', 'name', 'link-14');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-40" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-40', 'name', 'link-14');">name</a></tt> </tt>
+</div><a name="DataGrid.attrwrapper.__call__"></a><div id="DataGrid.attrwrapper.__call__-def"><a name="L82"></a><tt class="py-lineno"> 82</tt> <a class="py-toggle" href="#" id="DataGrid.attrwrapper.__call__-toggle" onclick="return toggle('DataGrid.attrwrapper.__call__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html#__call__">__call__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">obj</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.attrwrapper.__call__-collapsed" style="display:none;" pad="+++" indent="++++++++++++++++"></div><div id="DataGrid.attrwrapper.__call__-expanded"><a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt id="link-41" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-41', 'dict', 'link-41');">dict</a></tt><tt class="py-op">,</tt> <tt id="link-42" class="py-name" targets="Method turbogears.toolbox.catwalk.CatWalk.list()=turbogears.toolbox.catwalk.CatWalk-class.html#list"><a title="turbogears.toolbox.catwalk.CatWalk.list" class="py-name" href="#" onclick="return doclink('link-42', 'list', 'link-42');">list</a></tt><tt class="py-op">,</tt> <tt class="py-name">tuple</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">obj</tt><tt class="py-op">[</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-43', 'name', 'link-14');">name</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-44" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-44', 'name', 'link-14');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-45', 'name', 'link-14');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                <tt class="py-name">obj</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">obj</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-46', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">obj</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                    <tt class="py-keyword">break</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">obj</tt> </tt>
+</div></div><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.__init__"></a><div id="DataGrid.__init__-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="DataGrid.__init__-toggle" onclick="return toggle('DataGrid.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">fields</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.__init__-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="turbogears.widgets.datagrid.DataGrid" class="py-name" href="#" onclick="return doclink('link-47', 'DataGrid', 'link-17');">DataGrid</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-48" class="py-name" targets="Method turbogears.command.i18n.InternationalizationTool.__init__()=turbogears.command.i18n.InternationalizationTool-class.html#__init__,Method turbogears.command.info.InfoCommand.__init__()=turbogears.command.info.InfoCommand-class.html#__init__,Method turbogears.command.kid2genshi.Kid2Genshi.__init__()=turbogears.command.kid2genshi.Kid2Genshi-class.html#__init__,Method turbogears.command.quickstart.quickstart.__init__()=turbogears.command.quickstart.quickstart-class.html#__init__,Method turbogears.command.quickstart.update.__init__()=turbogears.command.quickstart.update-class.html#__init__,Method turbogears.database.AutoConnectHub.__init__()=turbogears.database.AutoConnectHub-class.html#__init__,Method turbogears.database.PackageHub.__init__()=turbogears.database.PackageHub-class.html#__init__,Method turbogears.feed.feed.FeedController.__init__()=turbogears.feed.feed.FeedController-class.html#__init__,Method turbogears.filters.base.VirtualPathFilter.__init__()=turbogears.filters.base.VirtualPathFilter-class.html#__init__,Method turbogears.filters.safemultipart.MultipartWrapper.__init__()=turbogears.filters.safemultipart.MultipartWrapper-class.html#__init__,Method turbogears.i18n.pygettext.pygettext.TokenEater.__init__()=turbogears.i18n.pygettext.pygettext.TokenEater-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Domain.__init__()=turbogears.i18n.sagettext.model.TG_Domain-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Message.__init__()=turbogears.i18n.sagettext.model.TG_Message-class.html#__init__,Method turbogears.i18n.tg_gettext.lazystring.__init__()=turbogears.i18n.tg_gettext.lazystring-class.html#__init__,Method turbogears.identity.conditions.CompoundPredicate.__init__()=turbogears.identity.conditions.CompoundPredicate-class.html#__init__,Method turbogears.identity.conditions.SecureObject.__init__()=turbogears.identity.conditions.SecureObject-class.html#__init__,Method turbogears.identity.conditions.from_any_host.__init__()=turbogears.identity.conditions.from_any_host-class.html#__init__,Method turbogears.identity.conditions.from_host.__init__()=turbogears.identity.conditions.from_host-class.html#__init__,Method turbogears.identity.conditions.has_all_permissions.__init__()=turbogears.identity.conditions.has_all_permissions-class.html#__init__,Method turbogears.identity.conditions.has_any_permission.__init__()=turbogears.identity.conditions.has_any_permission-class.html#__init__,Method turbogears.identity.conditions.has_permission.__init__()=turbogears.identity.conditions.has_permission-class.html#__init__,Method turbogears.identity.conditions.in_all_groups.__init__()=turbogears.identity.conditions.in_all_groups-class.html#__init__,Method turbogears.identity.conditions.in_any_group.__init__()=turbogears.identity.conditions.in_any_group-class.html#__init__,Method turbogears.identity.conditions.in_group.__init__()=turbogears.identity.conditions.in_group-class.html#__init__,Method turbogears.identity.exceptions.IdentityFailure.__init__()=turbogears.identity.exceptions.IdentityFailure-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentity.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentityProvider-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentity.__init__()=turbogears.identity.soprovider.SqlObjectIdentity-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__()=turbogears.identity.soprovider.SqlObjectIdentityProvider-class.html#__init__,Method turbogears.identity.visitor.IdentityVisitPlugin.__init__()=turbogears.identity.visitor.IdentityVisitPlugin-class.html#__init__,Method turbogears.paginate'.Paginate.__init__()=turbogears.paginate%27.Paginate-class.html#__init__,Method turbogears.paginate'.attrwrapper.__init__()=turbogears.paginate%27.attrwrapper-class.html#__init__,Method turbogears.paginate'.itemwrapper.__init__()=turbogears.paginate%27.itemwrapper-class.html#__init__,Method turbogears.scheduler.IntervalTask.__init__()=turbogears.scheduler.IntervalTask-class.html#__init__,Method turbogears.scheduler.MonthdayTask.__init__()=turbogears.scheduler.MonthdayTask-class.html#__init__,Method turbogears.scheduler.Scheduler.__init__()=turbogears.scheduler.Scheduler-class.html#__init__,Method turbogears.scheduler.Task.__init__()=turbogears.scheduler.Task-class.html#__init__,Method turbogears.scheduler.ThreadedScheduler.__init__()=turbogears.scheduler.ThreadedScheduler-class.html#__init__,Method turbogears.scheduler.WeekdayTask.__init__()=turbogears.scheduler.WeekdayTask-class.html#__init__,Method turbogears.testutil.BrowsingSession.__init__()=turbogears.testutil.BrowsingSession-class.html#__init__,Method turbogears.toolbox.admi18n.Internationalization.__init__()=turbogears.toolbox.admi18n.Internationalization-class.html#__init__,Method turbogears.toolbox.base.Toolbox.__init__()=turbogears.toolbox.base.Toolbox-class.html#__init__,Method turbogears.toolbox.base.WidgetBrowser.__init__()=turbogears.toolbox.base.WidgetBrowser-class.html#__init__,Method turbogears.toolbox.catwalk.CatWalk.__init__()=turbogears.toolbox.catwalk.CatWalk-class.html#__init__,Method turbogears.toolbox.designer.Designer.__init__()=turbogears.toolbox.designer.Designer-class.html#__init__,Method turbogears.toolbox.shell.WebConsole.__init__()=turbogears.toolbox.shell.WebConsole-class.html#__init__,Method turbogears.util.DictObj.__init__()=turbogears.util.DictObj-class.html#__init__,Method turbogears.view.base.UserAgent.__init__()=turbogears.view.base.UserAgent-class.html#__init__,Method turbogears.view.base.cycle.__init__()=turbogears.view.base.cycle-class.html#__init__,Method turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__()=turbogears.view.genshisupport.TGGenshiTemplatePlugin-class.html#__init__,Method turbogears.visit.api.BaseVisitManager.__init__()=turbogears.visit.api.BaseVisitManager-class.html#__init__,Method turbogears.visit.api.Visit.__init__()=turbogears.visit.api.Visit-class.html#__init__,Method turbogears.visit.api.VisitFilter.__init__()=turbogears.visit.api.VisitFilter-class.html#__init__,Method turbogears.visit.savisit.SqlAlchemyVisitManager.__init__()=turbogears.visit.savisit.SqlAlchemyVisitManager-class.html#__init__,Method turbogears.visit.sovisit.SqlObjectVisitManager.__init__()=turbogears.visit.sovisit.SqlObjectVisitManager-class.html#__init__,Method turbogears.widgets.base.CompoundWidget.__init__()=turbogears.widgets.base.CompoundWidget-class.html#__init__,Method turbogears.widgets.base.JSLink.__init__()=turbogears.widgets.base.JSLink-class.html#__init__,Method turbogears.widgets.base.JSSource.__init__()=turbogears.widgets.base.JSSource-class.html#__init__,Method turbogears.widgets.base.Link.__init__()=turbogears.widgets.base.Link-class.html#__init__,Method turbogears.widgets.base.MetaDescription.__init__()=turbogears.widgets.base.MetaDescription-class.html#__init__,Method turbogears.widgets.base.Source.__init__()=turbogears.widgets.base.Source-class.html#__init__,Method turbogears.widgets.base.Widget.__init__()=turbogears.widgets.base.Widget-class.html#__init__,Method turbogears.widgets.base.WidgetsList.__init__()=turbogears.widgets.base.WidgetsList-class.html#__init__,Method turbogears.widgets.big_widgets.AjaxGrid.__init__()=turbogears.widgets.big_widgets.AjaxGrid-class.html#__init__,Method turbogears.widgets.big_widgets.CalendarDatePicker.__init__()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.Column.__init__()=turbogears.widgets.datagrid.DataGrid.Column-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.__init__()=turbogears.widgets.datagrid.DataGrid-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__()=turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html#__init__,Method turbogears.widgets.forms.CheckBox.__init__()=turbogears.widgets.forms.CheckBox-class.html#__init__,Method turbogears.widgets.forms.FormField.__init__()=turbogears.widgets.forms.FormField-class.html#__init__,Method turbogears.widgets.forms.InputWidget.__init__()=turbogears.widgets.forms.InputWidget-class.html#__init__,Method turbogears.widgets.forms.SelectionField.__init__()=turbogears.widgets.forms.SelectionField-class.html#__init__,Method turbogears.widgets.links.SyntaxHighlighter.__init__()=turbogears.widgets.links.SyntaxHighlighter-class.html#__init__,Method turbogears.widgets.links.Tabber.__init__()=turbogears.widgets.links.Tabber-class.html#__init__,Method turbogears.widgets.meta.MetaWidget.__init__()=turbogears.widgets.meta.MetaWidget-class.html#__init__"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-48', '__init__', 'link-48');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-49" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-49', 'fields', 'link-13');">fields</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-50', 'fields', 'link-13');">fields</a></tt> <tt class="py-op">=</tt> <tt id="link-51" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-51', 'fields', 'link-13');">fields</a></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-52', 'fields', 'link-13');">fields</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-53', 'fields', 'link-13');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name" targets="Variable turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns=turbogears.i18n.sogettext.model.TG_Domain.sqlmeta-class.html#columns,Variable turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns=turbogears.i18n.sogettext.model.TG_Message.sqlmeta-class.html#columns,Variable turbogears.identity.soprovider.TG_Group.sqlmeta.columns=turbogears.identity.soprovider.TG_Group.sqlmeta-class.html#columns,Variable turbogears.identity.soprovider.TG_Permission.sqlmeta.columns=turbogears.identity.soprovider.TG_Permission.sqlmeta-class.html#columns,Variable turbogears.identity.soprovider.TG_User.sqlmeta.columns=turbogears.identity.soprovider.TG_User.sqlmeta-class.html#columns,Variable turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns=turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta-class.html#columns,Method turbogears.toolbox.catwalk.CatWalk.columns()=turbogears.toolbox.catwalk.CatWalk-class.html#columns,Method turbogears.toolbox.catwalk.browse.Browse.columns()=turbogears.toolbox.catwalk.browse.Browse-class.html#columns,Variable turbogears.visit.sovisit.TG_Visit.sqlmeta.columns=turbogears.visit.sovisit.TG_Visit.sqlmeta-class.html#columns"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-54', 'columns', 'link-54');">columns</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_parse</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-55', 'fields', 'link-13');">fields</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.get_column"></a><div id="DataGrid.get_column-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="DataGrid.get_column-toggle" onclick="return toggle('DataGrid.get_column');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#get_column">get_column</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.get_column-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.get_column-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return DataGrid.Column with specified name.</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">        Raises KeyError if no such column exists.</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">col</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-56', 'columns', 'link-54');">columns</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">col</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-57', 'name', 'link-14');">name</a></tt> <tt class="py-op">==</tt> <tt id="link-58" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-58', 'name', 'link-14');">name</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">col</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">KeyError</tt><tt class="py-op">(</tt><tt id="link-59" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-59', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.__getitem__"></a><div id="DataGrid.__getitem__-def"><a name="L110"></a><tt class="py-lineno">110</tt> <a class="py-toggle" href="#" id="DataGrid.__getitem__-toggle" onclick="return toggle('DataGrid.__getitem__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#__getitem__">__getitem__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.__getitem__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.__getitem__-expanded"><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-docstring">"""Shortcut to get_column."""</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-60" class="py-name" targets="Method turbogears.widgets.datagrid.DataGrid.get_column()=turbogears.widgets.datagrid.DataGrid-class.html#get_column"><a title="turbogears.widgets.datagrid.DataGrid.get_column" class="py-name" href="#" onclick="return doclink('link-60', 'get_column', 'link-60');">get_column</a></tt><tt class="py-op">(</tt><tt id="link-61" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-61', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-decorator">@</tt><tt class="py-decorator">staticmethod</tt> </tt>
+<a name="DataGrid.get_field_getter"></a><div id="DataGrid.get_field_getter-def"><a name="L115"></a><tt class="py-lineno">115</tt> <a class="py-toggle" href="#" id="DataGrid.get_field_getter-toggle" onclick="return toggle('DataGrid.get_field_getter');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#get_field_getter">get_field_getter</a><tt class="py-op">(</tt><tt class="py-param">columns</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.get_field_getter-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.get_field_getter-expanded"><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a function to access the fields of table by row, col."""</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-name">idx</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> <tt class="py-comment"># index columns by name</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">col</tt> <tt class="py-keyword">in</tt> <tt id="link-62" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-62', 'columns', 'link-54');">columns</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">            <tt class="py-name">idx</tt><tt class="py-op">[</tt><tt class="py-name">col</tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-63', 'name', 'link-14');">name</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">col</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">_get_field</tt><tt class="py-op">(</tt><tt class="py-param">row</tt><tt class="py-op">,</tt> <tt class="py-param">col</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">idx</tt><tt class="py-op">[</tt><tt class="py-name">col</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-64" class="py-name" targets="Method turbogears.widgets.datagrid.DataGrid.Column.get_field()=turbogears.widgets.datagrid.DataGrid.Column-class.html#get_field"><a title="turbogears.widgets.datagrid.DataGrid.Column.get_field" class="py-name" href="#" onclick="return doclink('link-64', 'get_field', 'link-64');">get_field</a></tt><tt class="py-op">(</tt><tt class="py-name">row</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">_get_field</tt> </tt>
+</div><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid.update_params"></a><div id="DataGrid.update_params-def"><a name="L124"></a><tt class="py-lineno">124</tt> <a class="py-toggle" href="#" id="DataGrid.update_params-toggle" onclick="return toggle('DataGrid.update_params');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#update_params">update_params</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid.update_params-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid.update_params-expanded"><a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-65" class="py-name"><a title="turbogears.widgets.datagrid.DataGrid" class="py-name" href="#" onclick="return doclink('link-65', 'DataGrid', 'link-17');">DataGrid</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name" targets="Method turbogears.widgets.base.CompoundWidget.update_params()=turbogears.widgets.base.CompoundWidget-class.html#update_params,Method turbogears.widgets.base.Link.update_params()=turbogears.widgets.base.Link-class.html#update_params,Method turbogears.widgets.base.Widget.update_params()=turbogears.widgets.base.Widget-class.html#update_params,Method turbogears.widgets.big_widgets.AjaxGrid.update_params()=turbogears.widgets.big_widgets.AjaxGrid-class.html#update_params,Method turbogears.widgets.big_widgets.CalendarDatePicker.update_params()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#update_params,Method turbogears.widgets.big_widgets.RemoteForm.update_params()=turbogears.widgets.big_widgets.RemoteForm-class.html#update_params,Method turbogears.widgets.datagrid.DataGrid.update_params()=turbogears.widgets.datagrid.DataGrid-class.html#update_params,Method turbogears.widgets.forms.Button.update_params()=turbogears.widgets.forms.Button-class.html#update_params,Method turbogears.widgets.forms.CheckBox.update_params()=turbogears.widgets.forms.CheckBox-class.html#update_params,Method turbogears.widgets.forms.CompoundInputWidget.update_params()=turbogears.widgets.forms.CompoundInputWidget-class.html#update_params,Method turbogears.widgets.forms.Form.update_params()=turbogears.widgets.forms.Form-class.html#update_params,Method turbogears.widgets.forms.FormField.update_params()=turbogears.widgets.forms.FormField-class.html#update_params,Method turbogears.widgets.forms.FormFieldsContainer.update_params()=turbogears.widgets.forms.FormFieldsContainer-class.html#update_params,Method turbogears.widgets.forms.InputWidget.update_params()=turbogears.widgets.forms.InputWidget-class.html#update_params,Method turbogears.widgets.forms.RepeatingInputWidget.update_params()=turbogears.widgets.forms.RepeatingInputWidget-class.html#update_params,Method turbogears.widgets.forms.SelectionField.update_params()=turbogears.widgets.forms.SelectionField-class.html#update_params,Method turbogears.widgets.i18n.CalendarLangFileLink.update_params()=turbogears.widgets.i18n.CalendarLangFileLink-class.html#update_params,Method turbogears.widgets.i18n.LocalizableJSLink.update_params()=turbogears.widgets.i18n.LocalizableJSLink-class.html#update_params,Method turbogears.widgets.rpc.RPC.update_params()=turbogears.widgets.rpc.RPC-class.html#update_params"><a title="turbogears.widgets.base.CompoundWidget.update_params
+turbogears.widgets.base.Link.update_params
+turbogears.widgets.base.Widget.update_params
+turbogears.widgets.big_widgets.AjaxGrid.update_params
+turbogears.widgets.big_widgets.CalendarDatePicker.update_params
+turbogears.widgets.big_widgets.RemoteForm.update_params
+turbogears.widgets.datagrid.DataGrid.update_params
+turbogears.widgets.forms.Button.update_params
+turbogears.widgets.forms.CheckBox.update_params
+turbogears.widgets.forms.CompoundInputWidget.update_params
+turbogears.widgets.forms.Form.update_params
+turbogears.widgets.forms.FormField.update_params
+turbogears.widgets.forms.FormFieldsContainer.update_params
+turbogears.widgets.forms.InputWidget.update_params
+turbogears.widgets.forms.RepeatingInputWidget.update_params
+turbogears.widgets.forms.SelectionField.update_params
+turbogears.widgets.i18n.CalendarLangFileLink.update_params
+turbogears.widgets.i18n.LocalizableJSLink.update_params
+turbogears.widgets.rpc.RPC.update_params" class="py-name" href="#" onclick="return doclink('link-66', 'update_params', 'link-66');">update_params</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-67" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-67', 'get', 'link-67');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'fields'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">            <tt id="link-68" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-68', 'fields', 'link-13');">fields</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt class="py-name">pop</tt><tt class="py-op">(</tt><tt class="py-string">'fields'</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">            <tt id="link-69" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-69', 'columns', 'link-54');">columns</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">_parse</tt><tt class="py-op">(</tt><tt id="link-70" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-70', 'fields', 'link-13');">fields</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">            <tt id="link-71" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-71', 'columns', 'link-54');">columns</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-72" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-72', 'columns', 'link-54');">columns</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'columns'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-73" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-73', 'columns', 'link-54');">columns</a></tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">        <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'get_field'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-74" class="py-name" targets="Static Method turbogears.widgets.datagrid.DataGrid.get_field_getter()=turbogears.widgets.datagrid.DataGrid-class.html#get_field_getter"><a title="turbogears.widgets.datagrid.DataGrid.get_field_getter" class="py-name" href="#" onclick="return doclink('link-74', 'get_field_getter', 'link-74');">get_field_getter</a></tt><tt class="py-op">(</tt><tt id="link-75" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-75', 'columns', 'link-54');">columns</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"> </tt>
+<a name="DataGrid._parse"></a><div id="DataGrid._parse-def"><a name="L134"></a><tt class="py-lineno">134</tt> <a class="py-toggle" href="#" id="DataGrid._parse-toggle" onclick="return toggle('DataGrid._parse');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGrid-class.html#_parse">_parse</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">fields</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGrid._parse-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DataGrid._parse-expanded"><a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-docstring">"""Parse field specifications into a list of Columns.</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-docstring">        A specification can be a DataGrid.Column, an accessor</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-docstring">        (attribute name or function), a tuple (title, accessor)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-docstring">        or a tuple (title, accessor, options).</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt id="link-76" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-76', 'columns', 'link-54');">columns</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-name">names</tt> <tt class="py-op">=</tt> <tt class="py-name">set</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-comment"># keep track of names to ensure there are no dups</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">n</tt><tt class="py-op">,</tt> <tt class="py-name">col</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt><tt id="link-77" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-77', 'fields', 'link-13');">fields</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">col</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name" targets="Class turbogears.widgets.datagrid.DataGrid.Column=turbogears.widgets.datagrid.DataGrid.Column-class.html"><a title="turbogears.widgets.datagrid.DataGrid.Column" class="py-name" href="#" onclick="return doclink('link-78', 'Column', 'link-78');">Column</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">col</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">,</tt> <tt id="link-79" class="py-name"><a title="int" class="py-name" href="#" onclick="return doclink('link-79', 'int', 'link-38');">int</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt class="py-name">col</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">                    <tt class="py-name">name_or_f</tt> <tt class="py-op">=</tt> <tt class="py-name">col</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                    <tt class="py-name">title</tt> <tt class="py-op">=</tt> <tt id="link-80" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-80', 'options', 'link-25');">options</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                    <tt class="py-name">title</tt><tt class="py-op">,</tt> <tt class="py-name">name_or_f</tt> <tt class="py-op">=</tt> <tt class="py-name">col</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">                    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                        <tt id="link-81" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-81', 'options', 'link-25');">options</a></tt> <tt class="py-op">=</tt> <tt class="py-name">col</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">                    <tt class="py-keyword">except</tt> <tt class="py-name">IndexError</tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                        <tt id="link-82" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-82', 'options', 'link-25');">options</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">                <tt id="link-83" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-83', 'name', 'link-14');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'column-'</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">n</tt><tt class="py-op">)</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">                <tt class="py-name">col</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-84" class="py-name"><a title="turbogears.widgets.datagrid.DataGrid.Column" class="py-name" href="#" onclick="return doclink('link-84', 'Column', 'link-78');">Column</a></tt><tt class="py-op">(</tt><tt id="link-85" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-85', 'name', 'link-14');">name</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">                    <tt class="py-name">name_or_f</tt><tt class="py-op">,</tt> <tt class="py-name">title</tt><tt class="py-op">,</tt> <tt id="link-86" class="py-name"><a title="turbogears.widgets.forms.SelectionField.options" class="py-name" href="#" onclick="return doclink('link-86', 'options', 'link-25');">options</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-87" class="py-name"><a title="turbogears.paginate'.attrwrapper
+turbogears.widgets.datagrid.DataGrid.attrwrapper" class="py-name" href="#" onclick="return doclink('link-87', 'attrwrapper', 'link-15');">attrwrapper</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">col</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-88', 'name', 'link-14');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">names</tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">ValueError</tt><tt class="py-op">(</tt><tt class="py-string">'Duplicate column name: %s'</tt> <tt class="py-op">%</tt> <tt id="link-89" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-89', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt id="link-90" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-90', 'columns', 'link-54');">columns</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">col</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">            <tt class="py-name">names</tt><tt class="py-op">.</tt><tt id="link-91" class="py-name" targets="Function turbogears.i18n.pygettext.catalog.add()=turbogears.i18n.pygettext.catalog-module.html#add,Function turbogears.i18n.pygettext.msgfmt.add()=turbogears.i18n.pygettext.msgfmt-module.html#add,Method turbogears.toolbox.catwalk.CatWalk.add()=turbogears.toolbox.catwalk.CatWalk-class.html#add,Method turbogears.util.setlike.add()=turbogears.util.setlike-class.html#add"><a title="turbogears.i18n.pygettext.catalog.add
+turbogears.i18n.pygettext.msgfmt.add
+turbogears.toolbox.catwalk.CatWalk.add
+turbogears.util.setlike.add" class="py-name" href="#" onclick="return doclink('link-91', 'add', 'link-91');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">col</tt><tt class="py-op">.</tt><tt id="link-92" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-92', 'name', 'link-14');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-93" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.sqlmeta.columns
+turbogears.i18n.sogettext.model.TG_Message.sqlmeta.columns
+turbogears.identity.soprovider.TG_Group.sqlmeta.columns
+turbogears.identity.soprovider.TG_Permission.sqlmeta.columns
+turbogears.identity.soprovider.TG_User.sqlmeta.columns
+turbogears.identity.soprovider.TG_VisitIdentity.sqlmeta.columns
+turbogears.toolbox.catwalk.CatWalk.columns
+turbogears.toolbox.catwalk.browse.Browse.columns
+turbogears.visit.sovisit.TG_Visit.sqlmeta.columns" class="py-name" href="#" onclick="return doclink('link-93', 'columns', 'link-54');">columns</a></tt> </tt>
+</div></div><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="DataGridDesc"></a><div id="DataGridDesc-def"><a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt> <a class="py-toggle" href="#" id="DataGridDesc-toggle" onclick="return toggle('DataGridDesc');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.DataGridDesc-class.html">DataGridDesc</a><tt class="py-op">(</tt><tt class="py-base-class">CoreWD</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DataGridDesc-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DataGridDesc-expanded"><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt id="link-94" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-94', 'name', 'link-14');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"DataGrid"</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">    <tt id="link-95" class="py-name" targets="Variable turbogears.widgets.base.WidgetDescription.for_widget=turbogears.widgets.base.WidgetDescription-class.html#for_widget"><a title="turbogears.widgets.base.WidgetDescription.for_widget" class="py-name" href="#" onclick="return doclink('link-95', 'for_widget', 'link-95');">for_widget</a></tt> <tt class="py-op">=</tt> <tt id="link-96" class="py-name"><a title="turbogears.widgets.datagrid.DataGrid" class="py-name" href="#" onclick="return doclink('link-96', 'DataGrid', 'link-17');">DataGrid</a></tt><tt class="py-op">(</tt><tt id="link-97" class="py-name"><a title="turbogears.toolbox.catwalk.browse.Browse.fields
+turbogears.widgets.datagrid.DataGrid.fields
+turbogears.widgets.forms.FormFieldsContainer.fields" class="py-name" href="#" onclick="return doclink('link-97', 'fields', 'link-13');">fields</a></tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-string">'Name'</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">row</tt><tt class="py-op">:</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">                                  <tt class="py-op">(</tt><tt class="py-string">'Country'</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">row</tt><tt class="py-op">:</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                                  <tt class="py-op">(</tt><tt class="py-string">'Age'</tt><tt class="py-op">,</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">row</tt><tt class="py-op">:</tt> <tt class="py-name">row</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">                          <tt id="link-98" class="py-name"><a title="turbogears.widgets.base.Widget.default
+turbogears.widgets.big_widgets.CalendarDatePicker.default" class="py-name" href="#" onclick="return doclink('link-98', 'default', 'link-32');">default</a></tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-number">33</tt><tt class="py-op">,</tt> <tt class="py-string">"Anton Bykov"</tt><tt class="py-op">,</tt> <tt class="py-string">"Bulgaria"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">                                   <tt class="py-op">(</tt><tt class="py-number">23</tt><tt class="py-op">,</tt> <tt class="py-string">"Joe Doe"</tt><tt class="py-op">,</tt> <tt class="py-string">"Great Britain"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">                                   <tt class="py-op">(</tt><tt class="py-number">44</tt><tt class="py-op">,</tt> <tt class="py-string">"Pablo Martelli"</tt><tt class="py-op">,</tt> <tt class="py-string">"Brazil"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"> </tt>
+<a name="PaginateDataGrid"></a><div id="PaginateDataGrid-def"><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt> <a class="py-toggle" href="#" id="PaginateDataGrid-toggle" onclick="return toggle('PaginateDataGrid');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.PaginateDataGrid-class.html">PaginateDataGrid</a><tt class="py-op">(</tt><tt class="py-base-class">DataGrid</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PaginateDataGrid-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PaginateDataGrid-expanded"><a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">    <tt class="py-docstring">"""A data grid widget that supports the paginate decorator."""</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">    <tt id="link-99" class="py-name"><a title="turbogears.widgets.base.CSSLink.template
+turbogears.widgets.base.CSSSource.template
+turbogears.widgets.base.JSLink.template
+turbogears.widgets.base.JSSource.template
+turbogears.widgets.base.Widget.template
+turbogears.widgets.base.WidgetDescription.template
+turbogears.widgets.big_widgets.AjaxGrid.template
+turbogears.widgets.big_widgets.AutoCompleteField.template
+turbogears.widgets.big_widgets.AutoCompleteTextField.template
+turbogears.widgets.big_widgets.CalendarDatePicker.template
+turbogears.widgets.big_widgets.LinkRemoteFunction.template
+turbogears.widgets.big_widgets.URLLink.template
+turbogears.widgets.datagrid.DataGrid.template
+turbogears.widgets.datagrid.PaginateDataGrid.template
+turbogears.widgets.forms.Button.template
+turbogears.widgets.forms.CheckBox.template
+turbogears.widgets.forms.CheckBoxList.template
+turbogears.widgets.forms.FieldSet.template
+turbogears.widgets.forms.FileField.template
+turbogears.widgets.forms.HiddenField.template
+turbogears.widgets.forms.ImageButton.template
+turbogears.widgets.forms.Label.template
+turbogears.widgets.forms.ListForm.template
+turbogears.widgets.forms.MultipleSelectField.template
+turbogears.widgets.forms.PasswordField.template
+turbogears.widgets.forms.RadioButtonList.template
+turbogears.widgets.forms.RepeatingFieldSet.template
+turbogears.widgets.forms.ResetButton.template
+turbogears.widgets.forms.SingleSelectField.template
+turbogears.widgets.forms.SubmitButton.template
+turbogears.widgets.forms.TableForm.template
+turbogears.widgets.forms.TextArea.template
+turbogears.widgets.forms.TextField.template
+turbogears.widgets.links.JumpMenu.template" class="py-name" href="#" onclick="return doclink('link-99', 'template', 'link-12');">template</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"turbogears.widgets.templates.paginate_datagrid"</tt> </tt>
+</div><a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="PaginateDataGridDesc"></a><div id="PaginateDataGridDesc-def"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt> <a class="py-toggle" href="#" id="PaginateDataGridDesc-toggle" onclick="return toggle('PaginateDataGridDesc');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.PaginateDataGridDesc-class.html">PaginateDataGridDesc</a><tt class="py-op">(</tt><tt class="py-base-class">CoreWD</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PaginateDataGridDesc-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PaginateDataGridDesc-expanded"><a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">    <tt id="link-100" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-100', 'name', 'link-14');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"PaginateDataGrid"</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">    <tt id="link-101" class="py-name"><a title="turbogears.widgets.base.WidgetDescription.for_widget" class="py-name" href="#" onclick="return doclink('link-101', 'for_widget', 'link-95');">for_widget</a></tt> <tt class="py-op">=</tt> <tt class="py-name">DataGridDesc</tt><tt class="py-op">.</tt><tt id="link-102" class="py-name"><a title="turbogears.widgets.base.WidgetDescription.for_widget" class="py-name" href="#" onclick="return doclink('link-102', 'for_widget', 'link-95');">for_widget</a></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="PaginateDataGridDesc.Paginate"></a><div id="PaginateDataGridDesc.Paginate-def"><a name="L189"></a><tt class="py-lineno">189</tt> <a class="py-toggle" href="#" id="PaginateDataGridDesc.Paginate-toggle" onclick="return toggle('PaginateDataGridDesc.Paginate');">-</a><tt class="py-line">    <tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.PaginateDataGridDesc.Paginate-class.html">Paginate</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PaginateDataGridDesc.Paginate-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="PaginateDataGridDesc.Paginate-expanded"><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-comment"># paginate var mock-up</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">        <tt class="py-name">page_count</tt> <tt class="py-op">=</tt> <tt class="py-number">5</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt class="py-name">pages</tt> <tt class="py-op">=</tt> <tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">,</tt> <tt class="py-name">page_count</tt> <tt class="py-op">+</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-name">limit</tt> <tt class="py-op">=</tt> <tt class="py-number">3</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">        <tt class="py-name">current_page</tt> <tt class="py-op">=</tt> <tt class="py-name">page_count</tt> <tt class="py-op">//</tt> <tt class="py-number">2</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-name">href_first</tt> <tt class="py-op">=</tt> <tt class="py-string">"javascript:alert('This is only a mock-up.')"</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-name">href_prev</tt> <tt class="py-op">=</tt> <tt class="py-name">href_next</tt> <tt class="py-op">=</tt> <tt class="py-name">href_last</tt> <tt class="py-op">=</tt> <tt class="py-name">href_first</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">        <tt id="link-103" class="py-name" targets="Method turbogears.paginate'.Paginate.get_href()=turbogears.paginate%27.Paginate-class.html#get_href"><a title="turbogears.paginate'.Paginate.get_href" class="py-name" href="#" onclick="return doclink('link-103', 'get_href', 'link-103');">get_href</a></tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">page</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">:</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">href_first</tt> </tt>
+</div><a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"> </tt>
+<a name="PaginateDataGridDesc.display"></a><div id="PaginateDataGridDesc.display-def"><a name="L199"></a><tt class="py-lineno">199</tt> <a class="py-toggle" href="#" id="PaginateDataGridDesc.display-toggle" onclick="return toggle('PaginateDataGridDesc.display');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.datagrid.PaginateDataGridDesc-class.html#display">display</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kw</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PaginateDataGridDesc.display-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="PaginateDataGridDesc.display-expanded"><a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">        <tt class="py-comment"># activate paginate var provider</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-104" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-104', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-105" class="py-name" targets="Function turbogears.paginate'.paginate()=turbogears.paginate%27-module.html#paginate"><a title="turbogears.paginate'.paginate" class="py-name" href="#" onclick="return doclink('link-105', 'paginate', 'link-105');">paginate</a></tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">request</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-106" class="py-name"><a title="turbogears.paginate'.paginate" class="py-name" href="#" onclick="return doclink('link-106', 'paginate', 'link-105');">paginate</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-107" class="py-name" targets="Class turbogears.paginate'.Paginate=turbogears.paginate%27.Paginate-class.html"><a title="turbogears.paginate'.Paginate" class="py-name" href="#" onclick="return doclink('link-107', 'Paginate', 'link-107');">Paginate</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt><tt class="py-name">PaginateDataGridDesc</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-108" class="py-name" targets="Method turbogears.widgets.base.CompoundWidget.display()=turbogears.widgets.base.CompoundWidget-class.html#display,Method turbogears.widgets.base.Widget.display()=turbogears.widgets.base.Widget-class.html#display,Method turbogears.widgets.forms.FileField.display()=turbogears.widgets.forms.FileField-class.html#display,Method turbogears.widgets.forms.InputWidget.display()=turbogears.widgets.forms.InputWidget-class.html#display"><a title="turbogears.widgets.base.CompoundWidget.display
+turbogears.widgets.base.Widget.display
+turbogears.widgets.forms.FileField.display
+turbogears.widgets.forms.InputWidget.display" class="py-name" href="#" onclick="return doclink('link-108', 'display', 'link-108');">display</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt id="link-109" class="py-name" targets="Variable turbogears.identity.exceptions.IdentityConfigurationException.args=turbogears.identity.exceptions.IdentityConfigurationException-class.html#args"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-109', 'args', 'link-109');">args</a></tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kw</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

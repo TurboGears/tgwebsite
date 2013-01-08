@@ -1,0 +1,336 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>20 Minute Wiki Page 6 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="The 20 Minutes Wiki" href="Page1.html" />
+    <link rel="next" title="Controller Getting Started Guide" href="../GettingStarted/Controller.html" />
+    <link rel="prev" title="20 Minute Wiki Page 5" href="Page5.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../GettingStarted/Controller.html" title="Controller Getting Started Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Page5.html" title="20 Minute Wiki Page 5"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Page1.html" accesskey="U">The 20 Minutes Wiki</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">20 Minute Wiki Page 6</a><ul>
+<li><a class="reference internal" href="#you-want-ajax-we-got-ajax">You want AJAX? We got AJAX!</a></li>
+<li><a class="reference internal" href="#from-mochikit-import">from MochiKit import *</a></li>
+<li><a class="reference internal" href="#prepare-the-page">Prepare the page</a></li>
+<li><a class="reference internal" href="#the-main-event">The main event</a></li>
+<li><a class="reference internal" href="#dealing-with-the-consequences">Dealing with the consequences</a></li>
+<li><a class="reference internal" href="#sweet-success">Sweet success</a></li>
+<li><a class="reference internal" href="#the-final-files">The final files</a></li>
+<li><a class="reference internal" href="#for-further-reading">For further reading...</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Page5.html"
+                        title="previous chapter">20 Minute Wiki Page 5</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../GettingStarted/Controller.html"
+                        title="next chapter">Controller Getting Started Guide</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="minute-wiki-page-6">
+<h1><a class="toc-backref" href="#id1">20 Minute Wiki Page 6</a><a class="headerlink" href="#minute-wiki-page-6" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#minute-wiki-page-6" id="id1">20 Minute Wiki Page 6</a><ul>
+<li><a class="reference internal" href="#you-want-ajax-we-got-ajax" id="id2">You want AJAX? We got AJAX!</a></li>
+<li><a class="reference internal" href="#from-mochikit-import" id="id3">from MochiKit import *</a></li>
+<li><a class="reference internal" href="#prepare-the-page" id="id4">Prepare the page</a></li>
+<li><a class="reference internal" href="#the-main-event" id="id5">The main event</a></li>
+<li><a class="reference internal" href="#dealing-with-the-consequences" id="id6">Dealing with the consequences</a></li>
+<li><a class="reference internal" href="#sweet-success" id="id7">Sweet success</a></li>
+<li><a class="reference internal" href="#the-final-files" id="id8">The final files</a></li>
+<li><a class="reference internal" href="#for-further-reading" id="id9">For further reading...</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="you-want-ajax-we-got-ajax">
+<span id="index-0"></span><h2><a class="toc-backref" href="#id2">You want AJAX? We got AJAX!</a><a class="headerlink" href="#you-want-ajax-we-got-ajax" title="Permalink to this headline">¶</a></h2>
+<p>This part of the tutorial is not technically AJAX. The &#8220;X&#8221; in AJAX stands for XML. I&#8217;m going to use <a class="reference external" href="http://www.json.org/">JSON</a> instead. JSON is easy and lightweight and efficient to use for all browsers. To use JSON for this TurboGears example, we just have to tell TurboGears that we want to use it via a second <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt> decorator.</p>
+<pre class="literal-block">
+&#64;expose(&quot;wiki20.templates.pagelist&quot;)
+<strong>&#64;expose(&quot;json&quot;)</strong>
+def pagelist(self):
+    pages = [page.pagename for page in Page.select(orderBy=Page.q.pagename)]
+    return dict(pages=pages)
+</pre>
+<p>Now, if point your browser at <a class="reference external" href="http://localhost:8080/pagelist?tg_format=json">http://localhost:8080/pagelist?tg_format=json</a>, you&#8217;ll see your pagelist in JSON format. Here&#8217;s an example of how the JSON ouput looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;tg_flash&quot;</span><span class="p">:</span> <span class="n">null</span><span class="p">,</span> <span class="s">&quot;pages&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;FrontPage&quot;</span><span class="p">,</span> <span class="s">&quot;SandBox&quot;</span><span class="p">,</span> <span class="s">&quot;MyPage&quot;</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p>This easy conversion to JSON is the other use for returning a dictionary. In
+standard CherryPy methods, you can return a string containing the rendered
+page. You can do that with TurboGears as well, but a free JSON interface is a
+pretty good reason to to it the TurboGears way. You can return as many formats
+as you likeby stacking more <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt> decorators. Check out the <a class="reference internal" href="../ExposeDecorator.html"><em>&#64;expose
+reference</em></a> article for details.</p>
+</div>
+<div class="section" id="from-mochikit-import">
+<h2><a class="toc-backref" href="#id3">from MochiKit import *</a><a class="headerlink" href="#from-mochikit-import" title="Permalink to this headline">¶</a></h2>
+<p>For the client side of this tutorial, we&#8217;ll be using MochiKit, the official
+javascript framework of TurboGears. The two are only loosely coupled, as
+opposed to prototype/Rails, but we find MochiKit to provide a very elegant
+Python-inspired API while avoiding monkeypatches on the JavaScript datatypes.</p>
+<p>To keep this from turning into a javascript tutorial (it&#8217;s pretty long as-is
+because we don&#8217;t expect Pythonistas to be javascript masters), we&#8217;re just going
+to ajaxify one call by changing our &#8220;view complete page list&#8221; link to pull in
+the pagelist and include it right in the page you&#8217;re viewing.</p>
+<p>The first thing we need to do is have MochiKit included in all of our pages. This can be done by editing the <tt class="docutils literal"><span class="pre">master.kid</span></tt> file or by having TurboGears add it as a widget. We&#8217;ll use the latter technique here.</p>
+<p>Open the <tt class="docutils literal"><span class="pre">wiki20/config/app.cfg</span></tt>. This file controls environment-independent settings like identity and output encoding. Search through the file for the <tt class="docutils literal"><span class="pre">tg.include_widgets</span></tt> setting, uncomment it, and modify it like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tg</span><span class="o">.</span><span class="n">include_widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;turbogears.mochikit&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>As the name indicates, we actually are using TurboGears&#8217; widget infrastructure
+to do the inclusion. Widgets are an advanced feature and are out of scope for
+this tutorial, but they&#8217;re essentially self-contained bundles of HTML+behavior
+code that make building forms a snap. One of the things they can do is include
+javascript in a page and the <tt class="docutils literal"><span class="pre">turbogears.mochikit</span></tt> takes advantage of this to
+provide a javascript library. The <a class="reference external" href="http://www.turbogears.org/cogbin/">cogbin</a> has other javascript libraries
+packed up as widgets that can be used the same way.</p>
+<p>After making this configuration change, <strong>restart the server.</strong> The auto-reload functionality only detects changes to Python files.</p>
+</div>
+<div class="section" id="prepare-the-page">
+<h2><a class="toc-backref" href="#id4">Prepare the page</a><a class="headerlink" href="#prepare-the-page" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have MochiKit, we are ready to modify our template. We&#8217;ll practice good style by progressively enhancing our pagelist link in <tt class="docutils literal"><span class="pre">master.kid</span></tt>:</p>
+<pre class="literal-block">
+&lt;div id=&quot;footer&quot;&gt;
+&lt;p&gt;View the &lt;a <strong>id=&quot;pagelist&quot;</strong> href=&quot;${tg.url('/pagelist')}&quot;&gt;
+    complete list of pages.&lt;/a&gt;
+&lt;/p&gt;
+<strong>&lt;div id=&quot;pagelist_results&quot;&gt;&lt;/div&gt;</strong>
+&lt;img src=&quot;/static/images/under_the_hood_blue.png&quot; /&gt;
+</pre>
+<p>It doesn&#8217;t look like much, but all we need is an <tt class="docutils literal"><span class="pre">id</span></tt> on our link and a place
+to put the results. By doing it this way (instead of setting <tt class="docutils literal"><span class="pre">href=&quot;#&quot;</span></tt> and
+doing an <tt class="docutils literal"><span class="pre">onclick</span></tt> handler) we keep our page usable in all browsers, whether
+they have JavaScript enabled or not.</p>
+</div>
+<div class="section" id="the-main-event">
+<h2><a class="toc-backref" href="#id5">The main event</a><a class="headerlink" href="#the-main-event" title="Permalink to this headline">¶</a></h2>
+<p>In the interest of expediency (and because we&#8217;re substituting URLs with Kid),
+we&#8217;ll add the handler to a <tt class="docutils literal"><span class="pre">&lt;script&gt;</span></tt> tag in the HEAD section rather than in
+its own file.</p>
+<pre class="literal-block">
+&lt;style type=&quot;text/css&quot; media=&quot;screen&quot;&gt;
+&#64;import &quot;/static/css/style.css&quot;;
+&lt;/style&gt;
+<strong>&lt;script type=&quot;text/javascript&quot;&gt;</strong>
+<strong>addLoadEvent(function(){</strong>
+    <strong>connect($('pagelist'),'onclick', function (e) {</strong>
+    <strong>e.preventDefault();</strong>
+    <strong>var d = loadJSONDoc(&quot;${tg.url('/pagelist', tg_format='json')}&quot;);</strong>
+    <strong>d.addCallback(showPageList);</strong>
+    <strong>});</strong>
+<strong>});</strong>
+<strong>&lt;/script&gt;</strong>
+&lt;/head&gt;
+</pre>
+<p>We&#8217;re exercising a lot of MochiKit features here. The <tt class="docutils literal"><span class="pre">connect()</span></tt> function is
+used to connect the <tt class="docutils literal"><span class="pre">onclick</span></tt> event of our pagelist link (MochiKit does a
+getElementById if the first argument to connect is a string) to our anonymous
+handler function. We could do the same thing by setting <tt class="docutils literal"><span class="pre">onclick</span></tt> directly on
+the link itself, but this allows us to connect as many <tt class="docutils literal"><span class="pre">onclick</span></tt> handlers as
+we like and makes maintenance simpler.</p>
+<p>The handler function itself calls <tt class="docutils literal"><span class="pre">e.preventDefault()</span></tt> to prevent the click
+from causing us to navigate away from the page and kicks off our replacement
+behavior. A call to <tt class="docutils literal"><span class="pre">e.stop()</span></tt> would work just as well and would prevent
+further <a class="reference external" href="http://www.quirksmode.org/js/events_order.html">event propagation</a> from happening, ensuring that only the behavior
+you specify for the event happens. For <tt class="docutils literal"><span class="pre">onclick</span></tt> replacements, your humble
+tutorial writer prefers <tt class="docutils literal"><span class="pre">preventDefault</span></tt> in order to ensure that analytics
+packages continue working.</p>
+<p>MochiKit includes the <tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> function for doing an asynchronous
+XMLHttpRequest and converting the result from JSON into a JavaScript object.
+That&#8217;s all there is to &#8216;AJAX&#8217;, really. Makes you wonder what all the fuss is
+about. Notice we&#8217;re using Kid substitution to ensure the url passed to
+<tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> is accurate, just like we would anywhere else.</p>
+</div>
+<div class="section" id="dealing-with-the-consequences">
+<h2><a class="toc-backref" href="#id6">Dealing with the consequences</a><a class="headerlink" href="#dealing-with-the-consequences" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> returns a <tt class="docutils literal"><span class="pre">Deferred</span></tt> object. The idea with a <tt class="docutils literal"><span class="pre">Deferred</span></tt> is
+that we know that our request for the pagelist will happen <em>some time in the
+future</em>, but we don&#8217;t know when. A <tt class="docutils literal"><span class="pre">Deferred</span></tt> is a placeholder that allows us
+to specify what happens when the result comes in. We have a very simple
+requirement here: call a function called <tt class="docutils literal"><span class="pre">showPageList</span></tt>, which we&#8217;ll write
+now:</p>
+<pre class="literal-block">
+&lt;script type=&quot;text/javascript&quot;&gt;
+addLoadEvent(function(){
+    connect('pagelist','onclick', function (e) {
+    e.preventDefault();
+    var d = loadJSONDoc(&quot;${tg.url('/pagelist', tg_format='json')}&quot;);
+    d.addCallback(showPageList);
+    });
+});
+<strong>function showPageList(result) {</strong>
+    <strong>var currentpagelist = UL(null, map(row_display, result[&quot;pages&quot;]));</strong>
+    <strong>replaceChildNodes(&quot;pagelist_results&quot;, currentpagelist);</strong>
+<strong>}</strong>
+&lt;/script&gt;
+</pre>
+<p>When <tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> gets its result, it will pass it along to
+<tt class="docutils literal"><span class="pre">showPageList</span></tt>. The nice thing about this process is that <tt class="docutils literal"><span class="pre">result</span></tt> is the
+same dictionary our <tt class="docutils literal"><span class="pre">pagelist</span></tt> method returned in Python! Even though we have
+our list, we still need to convert it to HTML and insert it into the page. In
+most javascript frameworks, you&#8217;d do this by concatinating HTML snippets or DOM
+nodes, but MochiKit provides a better way.</p>
+<p>The first line of <tt class="docutils literal"><span class="pre">showPageList</span></tt> shows off MochiKit.DOM, which provides a
+conventiently named set of functions for creating common HTML elements. The
+<tt class="docutils literal"><span class="pre">UL()</span></tt> function is creating a new <tt class="docutils literal"><span class="pre">&lt;UL&gt;</span></tt> element with no attributes
+(indicated by the <tt class="docutils literal"><span class="pre">null</span></tt> in the first argument). The second argument is for
+the element&#8217;s children, which we expect to be <tt class="docutils literal"><span class="pre">&lt;LI&gt;</span></tt> elements but instead
+find this strange <tt class="docutils literal"><span class="pre">map()</span></tt> beast. The results are dumped into the
+<tt class="docutils literal"><span class="pre">pagelist_results</span></tt> element using <tt class="docutils literal"><span class="pre">replaceChildNodes()</span></tt>.</p>
+<p>As for that second argument, <tt class="docutils literal"><span class="pre">map()</span></tt> works exactly like it does in Python.
+The function <tt class="docutils literal"><span class="pre">row_display</span></tt> (which we&#8217;ll write next) is called for every item
+in <tt class="docutils literal"><span class="pre">result[&quot;pages&quot;]</span></tt>.</p>
+<p>If you&#8217;re not used to functional programming this can be somewhat mind bending,
+but it&#8217;s basically a short way to write a for loop. Here&#8217;s what <tt class="docutils literal"><span class="pre">map()</span></tt> looks
+like (the actual implementation is more complex because it&#8217;s more robust):</p>
+<div class="highlight-python"><pre>// ILLUSTRATION ONLY, NOT PART OF THE TUTORIAL
+function map(func, list){
+    var toReturn = [];
+    for(var i = 0; i &lt; list.length; i++){
+        toReturn.push(func(list[i]));
+    }
+    return toReturn;
+}</pre>
+</div>
+<p>As mentioned, we need a <tt class="docutils literal"><span class="pre">row_display</span></tt> function which will turn a WikiWord
+title into a <tt class="docutils literal"><span class="pre">&lt;LI&gt;</span></tt> element containing a link to the corresponding page.</p>
+<pre class="literal-block">
+function showPageList(result) {
+    var currentpagelist = UL(null, map(row_display, result[&quot;pages&quot;]));
+    replaceChildNodes(&quot;pagelist_results&quot;, currentpagelist);
+}
+<strong>function row_display(pagename) {</strong>
+    <strong>return LI(null, A({&quot;href&quot; : &quot;${tg.url('/')}&quot; + pagename}, pagename))</strong>
+<strong>}</strong>
+&lt;/script&gt;
+</pre>
+<p>The <tt class="docutils literal"><span class="pre">row_display()</span></tt> function further demonstrates MochiKit.DOM. Notice that
+we&#8217;re actually setting the <tt class="docutils literal"><span class="pre">href</span></tt> attribute for the <tt class="docutils literal"><span class="pre">&lt;A&gt;</span></tt> element. The
+<tt class="docutils literal"><span class="pre">std.url()</span></tt> is another instance of Kid substitution sneaking in. It&#8217;s
+replaced before any Javascript is run. The contents of the <tt class="docutils literal"><span class="pre">&lt;A&gt;</span></tt> itself are
+the page name. MochiKit is smart and does the right thing here by inserting the
+<tt class="docutils literal"><span class="pre">pagename</span></tt> string as text content.</p>
+<p>Whew! that was a lot of explanation for 6 lines of code. This
+parent/map(formatter_function, children) pattern is very common when working
+with MochiKit.DOM. You&#8217;ll see a similar example in the official MochiKit
+documentation.</p>
+</div>
+<div class="section" id="sweet-success">
+<h2><a class="toc-backref" href="#id7">Sweet success</a><a class="headerlink" href="#sweet-success" title="Permalink to this headline">¶</a></h2>
+<p>Voila! If you go to your <a class="reference external" href="http://localhost:8080/">front page</a> and click on the page list link, you&#8217;ll
+see the page list right there in the page.</p>
+</div>
+<div class="section" id="the-final-files">
+<h2><a class="toc-backref" href="#id8">The final files</a><a class="headerlink" href="#the-final-files" title="Permalink to this headline">¶</a></h2>
+<p>The final files for this demo can be downloaded here;</p>
+<ul class="simple">
+<li>ZIP file: <a class="reference download internal" href="../_downloads/wiki20-1.0.1.zip"><tt class="xref download docutils literal"><span class="pre">wiki20-1.0.1.zip</span></tt></a></li>
+<li>Tar/Bz2 file: <a class="reference download internal" href="../_downloads/wiki20-1.0.1.tar.bz2"><tt class="xref download docutils literal"><span class="pre">wiki20-1.0.1.tar.bz2</span></tt></a></li>
+</ul>
+</div>
+<div class="section" id="for-further-reading">
+<h2><a class="toc-backref" href="#id9">For further reading...</a><a class="headerlink" href="#for-further-reading" title="Permalink to this headline">¶</a></h2>
+<p>Hopefully this tutorial has provided you with a good feel for how development
+flows when you&#8217;re working in TurboGears. TurboGears provides a large number of
+conveniences that this tutorial doesn&#8217;t cover: the <a class="reference internal" href="../Identity/index.html"><em>identity</em></a>
+authentication/authorization framework, the <a class="reference internal" href="../Widgets/Introduction.html"><em>widgets</em></a>
+framework (including automatic <a class="reference internal" href="../ValidateDecorator.html"><em>validation</em></a> and
+<a class="reference internal" href="../ErrorHandling.html"><em>error handling</em></a>), <a class="reference internal" href="../Internationalization.html"><em>i18n</em></a> tools,
+and support for using other <a class="reference internal" href="../AlternativeTemplating.html"><em>templating engines</em></a>
+and the powerful <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a> ORM.</p>
+<p>If you had any problems with this tutorial, or have ideas on how to make it
+better, please let us know on the mailing list or in the comments below!
+Suggestions are almost always incorporated.</p>
+<p><a class="reference internal" href="Page5.html"><em>Go back to Page 5</em></a> : <a class="reference internal" href="../index.html"><em>Onward to the Documentation Index</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

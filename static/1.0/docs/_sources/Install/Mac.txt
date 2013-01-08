@@ -1,0 +1,191 @@
+.. index:: Mac OS X
+
+TurboGears Installation on Mac OS X
+===================================
+
+.. contents::
+  :depth: 2
+
+
+Getting Python
+--------------
+
+Your Mac comes with Python built into the system. The latest release of Mac OS
+X, version 10.5 ("Leopard") even comes with Python 2.5. Mac OS X 10.4 ("Tiger")
+only has Python 2.3 pre-installed. While TurboGears 1.0 works with Python 2.3,
+it is strongly recommended that you upgrade to Python 2.5. The decorator syntax
+supported by Python 2.4 and higher will make your life much more pleasant and
+you'll be using a *lot* of decorators in TurboGears.
+
+So, if you are on OS X 10.4, here's how to upgrade Python:
+
+#. Download `Python 2.5 for the Mac`_. Follow the link that says "installer for
+   the latest version".
+#. Run the installer.
+#. Open the Terminal application (under "Applications/Utilities").
+#. Run the command ``echo $PATH`` and make sure that ``/usr/local/bin`` appears
+   before ``/usr/bin`` in your path! If it's not there, check the section
+   "How Do I Change my Path on Mac OS X?" below for tips on changing it.
+
+.. note:: The recommended Python version to use with TurboGears 1.0.x
+    currently is **2.5.x**, but we still support **Python 2.4.x** and (`with
+    some restrictions`_) **Python 2.3.x**. Python 2.5.x is supported from
+    TurboGears version **1.0.2** onwards.
+
+.. _python 2.5 for the mac : http://www.python.org/download/mac/
+.. _with some restrictions: Python2.3Support
+
+
+Installing TurboGears
+---------------------
+
+For most people, the following works without a hitch, but if you have problems,
+check the "Troubleshooting" section below.
+
+Following these instructions will install TurboGears and all required packages
+under the installation directory of your Python installation, so you need
+to use ``sudo`` to be able to write files there and in ``/usr/local/bin``.
+
+.. note:: **Note**: the ``$`` at the start of the command line examples given
+   below denotes the shell prompt. You don't need to enter this.
+
+#. Open the Terminal application (under "Applications/Utilities").
+
+#. Make sure you have at least Python 2.4, or better 2.5::
+
+        $ python -V
+
+   If not, please upgrade your Python installation (see above).
+
+#. Download `tgsetup.py`_ and run::
+
+        $ curl -OL http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+        $ sudo python tgsetup.py
+
+4. Make sure you have ``/usr/local/bin`` on your path (see below)
+   and then check that everything went well by running::
+
+        $ tg-admin info
+
+Once you've gotten TurboGears and a database driver installed, jump over to the
+`20 minute wiki`_ tutorial to get your feet wet.
+
+Also consider signing up for the mailing list. We're always happy to help
+people work through their problems and you might have something to share with us.
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+.. _20 minute wiki: Wiki20/Page1
+
+
+Installing Without root Access
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you can see from the use of the ``sudo`` command, the standard installation
+procedure described above, requires root privileges to install TurboGears
+system-wide. You can also install TurboGears below your home directory.
+This setup is described on the page :doc:`How to Install TurboGears Without root Privileges <NonRoot>`.
+
+
+Database Driver
+---------------
+
+If you plan to use a database with TurboGears, you will need to install the
+appropriate driver. You can either download it from the `PythonMac packages
+page`_ or use ``easy_install``. Below is a list of databases and their drivers
+available from this page:
+
+* :doc:`MySQL </Database/MySQL>` - MySQL_python (formerly known as MySQLdb)
+* :doc:`PostgreSQL </Database/PostgreSQL>`- psycopg2
+* :doc:`SQLite </Database/SQLite>` - pysqlite2
+* :doc:`Others </Database/index>`, as supported by SQLObject or SQLAlchemy
+
+To install a database module with ``easy_install``:
+
+#. Open the Terminal application (under "Applications/Utilities") and
+   check whether you already have ``easy_install``, by running the command::
+
+        $ which easy_install
+
+   If you get no output, you don't have it on your system.
+
+#. If you don't have ``easy_install``, either perform the TurboGears
+   installation, as described above, first (which also installs
+   ``easy_install`` for you) **or** download the `ez_setup.py`_ script
+   and run::
+
+        $ curl -O http://peak.telecommunity.com/dist/ez_setup.py
+        $ sudo python ez_setup.py
+
+#. Then install your preferred database module with:
+
+   .. parsed-literal::
+
+        $ sudo easy_install *package-name*
+
+   e.g::
+
+        $ sudo easy_install pysqlite
+
+You only need one driver, but if you choose MySQL or PostgreSQL, it's nice to have
+SQLite for testing and initial development. If you are using Python 2.5, SQLite
+is supported out of the box and you don't need to install pysqlite.
+
+.. _pythonmac packages page : http://pythonmac.org/packages/
+.. _ez_setup.py : http://peak.telecommunity.com/dist/ez_setup.py
+
+
+How Do I Change my Path on Mac OS X?
+------------------------------------
+
+Mac OS X is Unix-like under the hood. There are many ways to accomplish just
+about anything, including setting your path.
+
+If you haven't already, run ``echo $PATH`` and check to see that
+``/usr/local/bin`` is there and that it appears before ``/usr/bin/``. If not,
+you'll need to add it to either your own profile or to the system profile.
+First, you'll need to see which shell you're using::
+
+    echo $SHELL
+
+If the output is ``/bin/tcsh``::
+
+    echo 'set path = (/usr/local/bin $path)' >> ~/.cshrc
+    source ~/.cshrc
+
+If the output is ``/bin/bash/``::
+
+    echo 'PATH=/usr/local/bin:$PATH; export PATH' >> ~/.bash_profile
+    source ~/.bash_profile
+
+This will apply to your current user only. To set it system wide, you'll have to
+edit ``/etc/profile``, but that's beyond the scope of this tutorial.
+
+
+Troubleshooting
+---------------
+
+Problem
+    The installation fails with an error message containing "``gcc failed``".
+Diagnosis
+    The installation procedure tried to install a required package that contains
+    a C-extension and could not find a pre-compiled binary egg for your operating
+    system and/or architecture. It then tried to compile the extension on your
+    system and failed, because no compiler could be found.
+Solution
+    a. Install the `Xcode`_ developer tools and try again.
+    b. Post a request to the mailing list asking for someone to upload a
+       matching binary egg for your system/architecture to ``turbogears.org``.
+
+Problem
+    When I try to run ``tg-admin`` command after the installation, I get the
+    message ``bash: tg-admin: command not found``.
+Diagnosis
+    Did you check that ``/usr/local/bin`` is on the command search path?
+Solution
+    Prepend ``/usr/local/bin`` to the PATH environment variable (see above).
+
+Please also check the :doc:`installation troubleshooting <Troubleshooting>`
+page for common problems not specific to Mac installation and if you are still
+stuck feel free to ask for help on the mailing list.
+
+.. _xcode: http://developer.apple.com/tools/xcode/

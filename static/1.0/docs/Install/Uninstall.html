@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Uninstalling TurboGears &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Database Installation" href="../Database/index.html" />
+    <link rel="prev" title="Installing From Subversion" href="FromSubversion.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Database/index.html" title="Database Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FromSubversion.html" title="Installing From Subversion"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Uninstalling TurboGears</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#minute-tutorial-on-site-packages">5 Minute Tutorial on <tt class="docutils literal"><span class="pre">site-packages</span></tt></a></li>
+<li><a class="reference internal" href="#uninstalling-the-current-tg-version">Uninstalling the Current TG version</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="FromSubversion.html"
+                        title="previous chapter">Installing From Subversion</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Database/index.html"
+                        title="next chapter">Database Installation</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="uninstalling-turbogears">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Uninstalling TurboGears</a><a class="headerlink" href="#uninstalling-turbogears" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#uninstalling-turbogears" id="id1">Uninstalling TurboGears</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#minute-tutorial-on-site-packages" id="id3">5 Minute Tutorial on <tt class="docutils literal"><span class="pre">site-packages</span></tt></a></li>
+<li><a class="reference internal" href="#uninstalling-the-current-tg-version" id="id4">Uninstalling the Current TG version</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>So you want to uninstall TurboGears. This could be because:</p>
+<ol class="arabic simple">
+<li>You found a bug or &#8220;feature&#8221; and you must go back to an earlier version
+(or something broke on a live server after upgrading).</li>
+<li>You install a SVN checkout and want to get back to a release version or vice-versa.</li>
+<li>You just got tired of us, which I hope never happens; if so rant on the
+mailing list, we&#8217;ll fix/add/remove your problem if reasonable of course. :)</li>
+</ol>
+<p>First of all let me say there is no easy_install command for uninstall, at
+least not yet...</p>
+<p>Therefore, when you want to build a test environment for TurboGears, we recommend
+using virtualenv&#8221;. See the page <a class="reference internal" href="NonRoot.html"><em>NonRoot</em></a> for a short intro on how
+to set up a virtual environment.</p>
+</div>
+<div class="section" id="minute-tutorial-on-site-packages">
+<h2><a class="toc-backref" href="#id3">5 Minute Tutorial on <tt class="docutils literal"><span class="pre">site-packages</span></tt></a><a class="headerlink" href="#minute-tutorial-on-site-packages" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Go to your <tt class="docutils literal"><span class="pre">&lt;prefix&gt;/lib/site-package</span></tt> directory.</p>
+</li>
+<li><p class="first">Everything installed by setuptools, is listed either in <tt class="docutils literal"><span class="pre">easy-install.pth</span></tt>,
+<tt class="docutils literal"><span class="pre">setuptools.pth</span></tt> or a <tt class="docutils literal"><span class="pre">.egg</span></tt> (directory or file) the rest (if any) is
+either plain distutils or stuff you put there manually.</p>
+</li>
+<li><p class="first">You will find either a folder or a file that ends in <tt class="docutils literal"><span class="pre">.egg</span></tt>, they are both
+packages, the only diference is that some packages are &#8220;zip safe&#8221; and others
+aren&#8217;t, which just means you can run them from a compressed file or you need
+to uncompress (to a folder). So from now on an egg is whichever applies.</p>
+</li>
+<li><p class="first">Another thing to note is that old versions of all packages are not deleted,
+so if you have been using turbogears/setuptools for a while you will see many
+versions of the same package. it is safe to delete old versions, but don&#8217;t
+delete the ones shown in <tt class="docutils literal"><span class="pre">easy-install.pth</span></tt>, which we&#8217;ll cover in a sec.</p>
+</li>
+<li><p class="first">Open the file <tt class="docutils literal"><span class="pre">easy-install.pth</span></tt> in your favorite text editor, and you will
+see something like this:</p>
+<div class="highlight-python"><pre>import sys; sys.__plen = len(sys.path)
+.\setuptools-0.6c3-py2.4.egg
+.\turbogears-1.0.1-py2.4.egg
+.\sqlobject-0.7.3b1-py2.4.egg
+.\configobj-4.3.2-py2.4.egg
+.\ruledispatch-0.5a0.dev_r2115-py2.4-win32.egg
+.\formencode-0.6-py2.4.egg
+.\celementtree-1.0.5_20051216-py2.4-win32.egg
+.\pastescript-1.1-py2.4.egg
+.\elementtree-1.2.6_20050316-py2.4-win32.egg
+.\simplejson-1.5-py2.4.egg
+.\cherrypy-2.2.1-py2.4.egg
+.\turbokid-0.9.9-py2.4.egg
+.\turbocheetah-0.9.5-py2.4.egg
+.\turbojson-1.0-py2.4.egg
+.\pyprotocols-1.0a0dev_r2082-py2.4-win32.egg
+.\cheetah-2.0rc7-py2.4.egg
+.\pastedeploy-1.1-py2.4.egg
+.\paste-1.1.1-py2.4.egg
+.\kid-0.9.5-py2.4.egg
+.\sqlalchemy-0.3.4-py2.4.egg
+&lt;big line that ruins wiki formatting&gt;</pre>
+</div>
+</li>
+<li><p class="first">This lists all packages installed by setuptools (NOT only TurboGears stuff).</p>
+</li>
+</ol>
+<p>If you remove a package from this file, Python won&#8217;t find it, even if the egg
+is still there: this is the actual list of packages installed not the content
+of the <tt class="docutils literal"><span class="pre">site-packages</span></tt> directory.</p>
+</div>
+<div class="section" id="uninstalling-the-current-tg-version">
+<h2><a class="toc-backref" href="#id4">Uninstalling the Current TG version</a><a class="headerlink" href="#uninstalling-the-current-tg-version" title="Permalink to this headline">¶</a></h2>
+<p>The simplest scenario is when the only thing you installed with <tt class="docutils literal"><span class="pre">easy_install</span></tt>
+/ <tt class="docutils literal"><span class="pre">setuptools</span></tt> is TurboGears. Then you just need to delete all <tt class="docutils literal"><span class="pre">.egg</span></tt> files
+and directories and clean the <tt class="docutils literal"><span class="pre">easy-install.pth</span></tt> to look something like this:</p>
+<div class="highlight-python"><pre>import sys; sys.__plen = len(sys.path)
+&lt;big line that ruins wiki formatting&gt;</pre>
+</div>
+<p>If not, run <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt>, and delete all the listed packages one-by-one from
+<tt class="docutils literal"><span class="pre">easy-install.pth</span></tt>. You can leave the eggs there if you later want to reinstall
+the same version.</p>
+<p>Finally, you can delete the various scripts installed by the eggs from
+<tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> (Unix/Mac OS X) or <tt class="docutils literal"><span class="pre">C:\Python2x\Scripts</span></tt> (Windows).
+Here&#8217;s a list of scripts installed by TurboGears and its dependencies:</p>
+<ul class="simple">
+<li>cheetah</li>
+<li>cheetah-compile</li>
+<li>kid</li>
+<li>kidc</li>
+<li>paster</li>
+<li>sqlobject-admin</li>
+<li>tg-admin</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

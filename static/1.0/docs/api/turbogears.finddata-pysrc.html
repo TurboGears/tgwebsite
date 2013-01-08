@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.finddata</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;finddata
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.finddata-module.html">Module turbogears.finddata</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Note: you may want to copy this into your setup.py file verbatim, as</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"># you can't import this from another package, when you don't know if</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"># that package is installed yet.</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">fnmatch</tt> <tt class="py-keyword">import</tt> <tt class="py-name">fnmatchcase</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">distutils</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module turbogears.util=turbogears.util-module.html"><a title="turbogears.util" class="py-name" href="#" onclick="return doclink('link-0', 'util', 'link-0');">util</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">convert_path</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"># Provided as an attribute, so you can append to these instead</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"># of replicating them:</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable turbogears.finddata.standard_exclude=turbogears.finddata-module.html#standard_exclude"><a title="turbogears.finddata.standard_exclude" class="py-name" href="#" onclick="return doclink('link-1', 'standard_exclude', 'link-1');">standard_exclude</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'*.py'</tt><tt class="py-op">,</tt> <tt class="py-string">'*.pyc'</tt><tt class="py-op">,</tt> <tt class="py-string">'*~'</tt><tt class="py-op">,</tt> <tt class="py-string">'.*'</tt><tt class="py-op">,</tt> <tt class="py-string">'*.bak'</tt><tt class="py-op">,</tt> <tt class="py-string">'*.swp*'</tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable turbogears.finddata.standard_exclude_directories=turbogears.finddata-module.html#standard_exclude_directories"><a title="turbogears.finddata.standard_exclude_directories" class="py-name" href="#" onclick="return doclink('link-2', 'standard_exclude_directories', 'link-2');">standard_exclude_directories</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'.*'</tt><tt class="py-op">,</tt> <tt class="py-string">'CVS'</tt><tt class="py-op">,</tt> <tt class="py-string">'_darcs'</tt><tt class="py-op">,</tt> <tt class="py-string">'./build'</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">                                <tt class="py-string">'./dist'</tt><tt class="py-op">,</tt> <tt class="py-string">'EGG-INFO'</tt><tt class="py-op">,</tt> <tt class="py-string">'*.egg-info'</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="find_package_data"></a><div id="find_package_data-def"><a name="L17"></a><tt class="py-lineno"> 17</tt> <a class="py-toggle" href="#" id="find_package_data-toggle" onclick="return toggle('find_package_data');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.finddata-module.html#find_package_data">find_package_data</a><tt class="py-op">(</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-param">where</tt><tt class="py-op">=</tt><tt class="py-string">'.'</tt><tt class="py-op">,</tt> <tt class="py-param">package</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-param">exclude</tt><tt class="py-op">=</tt><tt id="link-3" class="py-name"><a title="turbogears.finddata.standard_exclude" class="py-name" href="#" onclick="return doclink('link-3', 'standard_exclude', 'link-1');">standard_exclude</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt class="py-param">exclude_directories</tt><tt class="py-op">=</tt><tt id="link-4" class="py-name"><a title="turbogears.finddata.standard_exclude_directories" class="py-name" href="#" onclick="return doclink('link-4', 'standard_exclude_directories', 'link-2');">standard_exclude_directories</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-param">only_in_packages</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-param">show_ignored</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="find_package_data-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="find_package_data-expanded"><a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring">    Return a dictionary suitable for use in ``package_data``</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    in a distutils ``setup.py`` file.</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">    The dictionary looks like::</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">        {'package': [files]}</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">    Where ``files`` is a list of all the files in that package that</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">    don't match anything in ``exclude``.</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">    If ``only_in_packages`` is true, then top-level directories that</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">    are not packages won't be included (but directories under packages</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">    will).</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    Directories matching any pattern in ``exclude_directories`` will</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">    be ignored; by default directories with leading ``.``, ``CVS``,</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">    ``_darcs``, ``./build``, ``.dist``, ``EGG-INFO`` and ``*.egg-info``</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    will be ignored.</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">    If ``show_ignored`` is true, then all the files that aren't</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">    included in package data are shown on stderr (for debugging</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">    purposes).</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    Note patterns use wildcards, or can be exact paths (including</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    leading ``./``), and all searching is case-insensitive.</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-name">out</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt class="py-name">stack</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">(</tt><tt class="py-name">convert_path</tt><tt class="py-op">(</tt><tt class="py-name">where</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.package=turbogears.command.i18n.InternationalizationTool-class.html#package,Variable turbogears.command.quickstart.quickstart.package=turbogears.command.quickstart.quickstart-class.html#package"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-5', 'package', 'link-5');">package</a></tt><tt class="py-op">,</tt> <tt class="py-name">only_in_packages</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-keyword">while</tt> <tt class="py-name">stack</tt><tt class="py-op">:</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">        <tt class="py-name">where</tt><tt class="py-op">,</tt> <tt class="py-name">prefix</tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-6', 'package', 'link-5');">package</a></tt><tt class="py-op">,</tt> <tt class="py-name">only_in_packages</tt> <tt class="py-op">=</tt> <tt class="py-name">stack</tt><tt class="py-op">.</tt><tt class="py-name">pop</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-7" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-7', 'name', 'link-7');">name</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">listdir</tt><tt class="py-op">(</tt><tt class="py-name">where</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">            <tt class="py-name">fn</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Variable turbogears.widgets.forms.InputWidget.path=turbogears.widgets.forms.InputWidget-class.html#path"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-8', 'path', 'link-8');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">where</tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-9', 'name', 'link-7');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-10', 'path', 'link-8');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">isdir</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt class="py-name">bad_name</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">pattern</tt> <tt class="py-keyword">in</tt> <tt class="py-name">exclude_directories</tt><tt class="py-op">:</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">fnmatchcase</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-11', 'name', 'link-7');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">)</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">                        <tt class="py-keyword">or</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">pattern</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">                        <tt class="py-name">bad_name</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">show_ignored</tt><tt class="py-op">:</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">                            <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">                                <tt class="py-string">"Directory %s ignored by pattern %s"</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                                <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">bad_name</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-12', 'path', 'link-8');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">isfile</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-13', 'path', 'link-8');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-string">'__init__.py'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-14" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-14', 'package', 'link-5');">package</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-name">new_package</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-15', 'name', 'link-7');">name</a></tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">                        <tt class="py-name">new_package</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-16', 'package', 'link-5');">package</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'.'</tt> <tt class="py-op">+</tt> <tt id="link-17" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-17', 'name', 'link-7');">name</a></tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">                    <tt class="py-name">stack</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">,</tt> <tt class="py-name">new_package</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                    <tt class="py-name">stack</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">prefix</tt> <tt class="py-op">+</tt> <tt id="link-18" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-18', 'name', 'link-7');">name</a></tt> <tt class="py-op">+</tt> <tt class="py-string">'/'</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-19', 'package', 'link-5');">package</a></tt><tt class="py-op">,</tt> <tt class="py-name">only_in_packages</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-keyword">elif</tt> <tt id="link-20" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-20', 'package', 'link-5');">package</a></tt> <tt class="py-keyword">or</tt> <tt class="py-keyword">not</tt> <tt class="py-name">only_in_packages</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-comment"># is a file</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">                <tt class="py-name">bad_name</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt class="py-name">pattern</tt> <tt class="py-keyword">in</tt> <tt class="py-name">exclude</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">fnmatchcase</tt><tt class="py-op">(</tt><tt id="link-21" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-21', 'name', 'link-7');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">                        <tt class="py-keyword">or</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">pattern</tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                        <tt class="py-name">bad_name</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">                        <tt class="py-keyword">if</tt> <tt class="py-name">show_ignored</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                            <tt class="py-keyword">print</tt> <tt class="py-op">&gt;&gt;</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                                <tt class="py-string">"File %s ignored by pattern %s"</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                                <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">bad_name</tt><tt class="py-op">:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                    <tt class="py-keyword">continue</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-name">out</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-22', 'package', 'link-5');">package</a></tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">prefix</tt><tt class="py-op">+</tt><tt id="link-23" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-23', 'name', 'link-7');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">out</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt class="py-name">pprint</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">pprint</tt><tt class="py-op">.</tt><tt class="py-name">pprint</tt><tt class="py-op">(</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt id="link-24" class="py-name" targets="Function turbogears.finddata.find_package_data()=turbogears.finddata-module.html#find_package_data"><a title="turbogears.finddata.find_package_data" class="py-name" href="#" onclick="return doclink('link-24', 'find_package_data', 'link-24');">find_package_data</a></tt><tt class="py-op">(</tt><tt class="py-name">show_ignored</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:40 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+Dojo / IE workaround
+====================
+
+When you use TurboGears to generate the internals of a remotely sourced contentpane in Dojo you may run into problems on IE. The problem revolves around the response header from TurboGears having a ``; charset=UTF-8`` at the end of the mimetype. If you comment out the line in TurboGears that generates this, everything continues to function and works in IE too.
+
+The code is in ``turbogears/view/base.py``. Comment out this line::
+
+    content_type += '; charset=' + charset
+
+**This is a hack** and not the right solution, but it does work.

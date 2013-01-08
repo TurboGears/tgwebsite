@@ -1,0 +1,460 @@
+Extending the Visit Framework
+=============================
+
+.. contents::
+  :depth: 2
+
+
+Visit Plugins
+-------------
+
+The visit framework is extensible via a plugin mechanism. Plugins objects can
+provide methods, which are called on every request. The plug-in mechanism can
+be useful for answering questions like 'How long does a user browse my site?',
+'What browsers do my users use?', or 'How effective is this page in generating
+a specific response?'. These questions might be  difficult to answer using
+regular TurboGears controllers, but are greatly simplified using Visit.
+
+The ``tubogears.visit`` module has an ``enable_visit_plugin`` method that you
+can call to register an object with Visit. Your object only needs to implement
+one method, ``record_request``.
+
+So, a *very* simple visit plugin could be implemented in as little as something
+like:
+
+``simplevisit.py``::
+
+    import turbogears
+    import logging
+
+    log = logging.getLogger('myapp.simplevisit')
+
+    class SimpleVisitPlugin(object):
+
+        def record_request(self, visit):
+            log.info("Visit key: %s" % visit.key)
+
+    def add_simple_visit_plugin():
+        log.info("Registering the SimpleVisitPlugin")
+        turbogears.visit.enable_visit_plugin(SimpleVisitPlugin())
+
+    turbogears.startup.call_on_startup.append(add_simple_visit_plugin)
+
+If you import this ``simplevisit.py`` module into your main ``controller.py``,
+you should see information about the visit key show up in your log output.
+
+
+The Visit Object
+~~~~~~~~~~~~~~~~
+
+In the example above, ``record_request`` takes an argument *visit*. This visit
+object is not the same Visit as is in the default model.py, but rather a very
+simple object defined in ``turbogears.visit.api``. It has only two properties:
+
+``key``
+  This is the same SHA hash that is contained in the cookie, and also
+  corresponds to the ``visit_key`` property found in ``model.Visit``.
+
+``is_new``
+  This contains a boolean that is ``True`` if this is the first time the visitor
+  has initiated a request to the site, and ``False`` otherwise.
+
+This object is also assigned to ``cherrypy.request.tg_visit``, and so it can be
+accessed inside of any regular controller.
+
+
+Example 1: Tracking Browser Type
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that we have a start on what all the pieces are, we can flesh out a slightly
+more involved example. Say we have a requirement that we want to know what
+browsers our visitors are using. Ok, we could parse the log files right now for
+that information and get a pretty reasonable estimate. But, since we are talking
+about our Visit hammer, this problem is looking an awful lot like a nail.
+
+First let's extend our model.Visit class just a bit by adding a browser column::
+
+    class Visit(SQLObject):
+        class sqlmeta:
+            table = "visit"
+
+        visit_key = StringCol(length=40, alternateID=True,
+            alternateMethodName="by_visit_key")
+        created = DateTimeCol(default=datetime.now)
+        expiry = DateTimeCol()
+        browser = StringCol(length=80, default=None) # new
+        # rest of Visit continues ...
+
+Update your database with the new ``browser`` column. Next, add the following
+file to our project.
+
+``browservisit.py``::
+
+    import turbogears
+    import cherrypy
+    import logging
+    log = logging.getLogger('myapp.browservisit')
+    from model import Visit
+
+    class BrowserVisitPlugin(object):
+
+        def record_request(self, visit):
+            if visit.is_new:
+                # fetch the the user-agent string the browser gave to cherrypy
+                ua = cherrypy.request.headers.get('User-Agent', None)
+
+                # The UserAgent class reduces the user-agent into a very coarse
+                # list of types, Firefox, Safari, IE.
+                # If you need more fine-grained information you will need to
+                # write your own class to do it, or just comment the next line
+                # out and store the raw user-agent string
+                ua = turbogears.view.UserAgent(ua)
+
+                # Find the appropriate model.Visit object
+                mvisit = Visit.by_visit_key(visit.key)
+                # store the browser in the database
+                log.debug('Setting model.Visit.browser=%s' % ua.browser)
+                mvisit.browser = ua.browser
+
+    def add_browser_visit_plugin():
+        log.info("Registering the BrowserVisitPlugin")
+        turbogears.visit.enable_visit_plugin(BrowserVisitPlugin())
+
+    turbogears.startup.call_on_startup.append(add_browser_visit_plugin)
+
+Import the ``browservisit.py`` module into ``controllers.py``, and browser
+information should now be stored in each ``model.Visit`` object.
+
+Note above that we are using the ``is_new`` property to so that we only set the
+user agent information on the visitor's first request. This check prevents a lot
+of redundant processing on the Visit object (fetching it and saving it back to
+the database), and should be incorporated any time you have an item that won't
+change over the life of the visit.
+
+
+Example 2: Recording the IP Address of Visitors
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Another usage example would be adding the ability to track IP addresses for
+each new visit. Assuming you already have enabled visit tracking, here are
+the steps to create a visit plugin that does just that.
+
+
+Step One - Create Your Model
+````````````````````````````
+
+Add the following in your app's ``model.py``::
+
+  class VisitIP(SQLObject):
+
+        class sqlmeta:
+            # SQL object default naming is visitor_i_p, not pretty
+            table = 'visit_ip'
+        visit = ForeignKey('TG_Visit')
+        ip_address = StringCol(length=20)
+
+Create the table in your database with ``tg-admin sql create --class=VisitIP``.
+
+
+Step Two - Add Plugin Logic
+```````````````````````````
+
+Make a new module in your project named ``visit_plugin.py``. Its contents are
+as follows::
+
+    import logging
+    from turbogears import config, util, visit
+    from model import VisitIP
+
+    log = logging.getLogger('turbogears.visit')
+
+    def ip_tracking_is_on():
+        """"Return True if IP tracking is properly enabled, False otherwise."""
+        return config.get('visit.on', False) and
+            config.get('visit.ip_tracking.on', False)
+
+    # Interface for the TurboGears extension
+    def start_extension():
+        if not ip_tracking_is_on():
+            return
+        log("Visit IP tracker starting.")
+
+        # Register the plugin with the Visit Tracking framework
+        visit.enable_visit_plugin(IPVisitPlugin())
+
+    def shutdown_extension():
+        if not ip_tracking_is_on():
+            return
+        log("Visit IP tracker shutting down.")
+
+    class IPVisitPlugin(object):
+
+        def __init__(self):
+            log("IPVisitPlugin extension loaded.")
+            visit_class_path = config.get("visit.saprovider.model",
+                "turbogears.visit.savisit.TG_Visit")
+            self.visit_class = util.load_class(visit_class_path)
+
+        def record_request(self, visit):
+            # This method gets called on every single visit
+
+            # we only want to record the IP if this is a new visitor
+            if visit.is_new:
+                # retrieve the actual Visit object
+                v = self.visit_class.lookup_visit(visit.key)
+
+                # add a new visit ip object to the database
+                VisitIP(visit=v, ip_address=cherrypy.request.remoteAddr)
+
+                # if you are using a SQLAlchemy model you might want to add
+                # session.flush()
+
+        def new_visit(self, visit_id):
+            # This method gets called the first time the visit is started.
+            # I think IP tracking makes sense in here.
+
+The ``start_extension`` and ``shutdown_extension`` functions are called by
+turbogears when starting up and shutting down. The key in this process is the
+``visit.enable_visit_plugin`` call, which registers your plugin with the visit
+framework.
+
+
+Step Three: Register the Extension
+``````````````````````````````````
+
+In your project's setup.py, add an ``entry_points`` parameter to the ``setup()``
+function::
+
+    setup(
+        # [...] lots of stuff snipped
+        test_suite = 'nose.collector',
+        # begin new
+        entry_points="""
+            [turbogears.extensions]
+            my_visit_extension = ip_plugin.visit_plugin
+        """,
+        # end new
+    )
+
+
+My project's package name is ``ip_plugin``, you will need to adapt this to your
+project so that the entry point references the right module in your project.
+
+
+Step Four: Update Config File
+`````````````````````````````
+
+Add a configuration setting so that the tracking can be turned on and off.
+Somewhere in your app's deployment configuration file add the line
+
+::
+
+    visit.ip_tracking.on = True
+
+
+Step Five: Update Egg Info
+``````````````````````````
+
+This step just re-generates the egg information for your project so that the
+extension actually gets called at runtime. From the command line, at the root
+level of your project run
+
+::
+
+    python setup.py egg_info
+
+
+Conclusion
+``````````
+
+That's it. Fire up your project and you should be tracking ip activity just
+like the NSA.
+
+It is also be possible to register the plugin simply by adding a call of
+``visit.enable_visit_plugin()`` to the ``turbogears.startup.call_on_startup``
+list somewhere in your app's controller code as in example 1 above, but the
+solution in this example allows to keep your visit plugin in a completely
+separate package and enable it in your application's ``setup.py`` without
+touching the code of your application (provided its Visit model is compatible).
+
+
+Example 3: Tracking Sales Effectiveness
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Suppose that we have a website where we are selling a service (e.g. something
+like Vonage_ or Netflix_). We have a bunch of pages giving information about our
+service, and a sign-up process where people buy the service. What we want to know
+is "How many people visiting our site actually buy our service?"  In other
+words, how effective is our website in converting visitors to clients?
+
+.. _vonage: http://www.vonage.com/
+.. _netflix: http://www.netflix.com/
+
+Fortunately, this is something that is relatively easy to to accomplish using
+Visit.  First, let's create a special model class for this specific project.
+
+``model.py``::
+
+    class VisitSaleMonitor(SQLObject):
+
+        visit_key = StringCol(length=40, alternateID=True,
+            alternateMethodName="by_visit_key")
+        pitch_time = DateTimeCol(default=None)
+        sale_time = DateTimeCol(default=None)
+
+Nothing too spectacular is going on there; we are just creating a place-holder to
+store when the visitor hit the areas of the site we are interested in. Go ahead
+and add the new table to your database::
+
+    tg-admin sql create --class=VisitSaleMonitor
+
+Now, we are going to build our Visit plug-in. There really isn't too much to
+this, just some simple logic to log what our visitors do.  Assume that our
+'pitch' begins with the main page (i.e. ``/index`` or ``/``) and the sales
+process ends with the ``/sale_complete`` controller.
+
+``salemonitor.py``::
+
+    import logging
+    from datetime import datetime
+
+    import turbogears
+    from cherrypy import request
+    from turbogears import identity
+    from sqlobject import SQLObjectNotFound
+
+    from model import VisitSaleMonitor
+
+    log = logging.getLogger('myapp.salemonitor')
+
+    class SaleVisitPlugin(object):
+
+        def record_request(self, visit):
+            path = request.object_path
+            # ignore requests for things in /static
+            if path.startswith('/static/'):
+                return
+
+            # If we wanted to ignore registered users from our analysis,
+            # we might do something like the following:
+
+            # if not identity.current.anonymous:
+            #     try:
+            #         # find the User's record and delete it
+            #         idvisit = VisitSaleMonitor.by_visit_key(visit.key)
+            #     except SQLObjectNotFound:
+            #         pass
+            #     else:
+            #         idvisit.destroySelf()
+            #     return
+
+            try:
+                # see if the salemonitor obj has already been created
+                salevisit = VisitSaleMonitor.by_visit_key(visit.key)
+            except SQLObjectNotFound:
+                # not found, so this must be the first visit
+                salevisit = VisitSaleMonitor(visit_key=visit.key)
+
+            if path in ('/', '/index') and not salevisit.pitch_time:
+                salevisit.pitch_time=datetime.now()
+            elif path=='/sale_complete' and not salevisit.sale_time:
+                salevisit.sale_time=datetime.now()
+
+    def add_sale_visit_plugin():
+        log.info('Starting SaleVisitPlugin')
+        turbogears.visit.enable_visit_plugin(SaleVisitPlugin())
+
+    turbogears.startup.call_on_startup.append(add_sale_visit_plugin)
+
+And that's it. Import ``salemonitor`` into your ``controllers.py``, and you
+should be logging exactly when and what a visitor is doing. You now have
+information in your database that can be extracted via SQLObject queries or
+normal SQL.
+
+It isn't hard to see how one might extend this simple example to do more complex
+click tracking and analysis. For instance, it could easily be extended to track
+how many visitors start entering their billing information, and then back out.
+
+
+Further References
+~~~~~~~~~~~~~~~~~~
+
+For general information on how to use the visit framework see
+:doc:`Using the Visit Framework <index>`.
+
+If you want to log more information about logged-in users, like e.g. the
+user name or permissions, have a look at the :doc:`Identity documentation </Identity/index>`.
+
+
+Custom Visit Managers
+---------------------
+
+If you want to store visit object in a different storage backend, customize how
+visit objeccts are created and updated or perform any house-keeping tasks while
+the visit framework is running, you need to implement your own visit manager.
+
+
+Setting the Visit Manager
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears comes with two standard visit managers, one with a SQLObject backend
+and another for SQLAlchemy. Which one is used is determined by the configuration
+setting ``visit.manager``, whose value is normally ``sqlobject`` or
+``sqlalchemy``. When you want to use a custom visit manager, you have to
+register it as a plugin for the ``turbogears.visit.manager`` :doc:`entry-point </EntryPointList>` via
+the ``setup.py`` file of the package which includes the visit manager class.
+
+For example, if your custom visit manager class is ``MyVisitManager`` in the
+module ``mypackage.myvisit``, you would add the following to the ``setup``
+call::
+
+    setup(
+        # [...]
+        entry_points="""
+            [turbogears.visit.manager]
+            my_visit_mamager = mypkg.myvisit:MyVisitManager
+        """,
+        # end new
+    )
+
+You can then use ``my_visit_manager`` as the value for the ``visit.manager``
+configuration setting.
+
+Since TurboGears 1.1 it is also possible to specify the visit manager class
+directly with ``visit.manager`` using a fully-qualified dotted-path notation,
+for example::
+
+    visit.manager = 'mypkg.myvisit.MyVisitManager'
+
+
+Implementing a Visit Manager
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The visit manager is responsible for keping track of visits, creating new ones,
+updating existing ones and handle the communication with the storage backend.
+Custom visit managers should be sub.classed from one of the standard visit
+managers (``turbogears.visit.sovisit.SqlObjectVisitManager`` or
+``turbogears.visit.savisit.SqlAlchemyVisitManager``) or the abstract base class
+in ``turbogears.api.BaseVisitManager``. The must provide the following methods:
+
+``create_model(self)``
+    Should create the visit data model in the storage backend. Should handle
+    being called several times gracefully.
+
+``new_visit_with_key(self, visit_key)``
+    Should return a new Visit object with the given key.
+
+``visit_for_key(self, visit_key)``
+    Should return an existing Visit object for this key.
+
+    Should return None if the visit doesn't exist or has expired.
+
+``update_queued_visits(self, queue)``
+    Should update all visits in ``queue`` with the new expiration time.
+    ``queue`` is a dictionary mapping visit keys to the expiration time, a
+    ``datetime.datetime`` object.
+
+Since the visit manager runs i its own thread, care should be taken that
+updates to the storage backend are always made as atomic transactions.
+
+.. _entry-point: EntryPointList

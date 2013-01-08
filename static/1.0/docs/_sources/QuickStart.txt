@@ -1,0 +1,71 @@
+Are you ready to gear up?
+=========================
+
+.. contents::
+    :depth: 2
+
+*This is the verbose version of TurboGears quickstart guide*
+
+
+Getting started
+---------------
+
+Your journey into the land of easy web application creation has begun. Take the following
+steps to dive right in:
+
+
+Design your model
+~~~~~~~~~~~~~~~~~
+
+Develop your model in the model.py file.
+
+You can edit ``dev.cfg`` to use a different backend.
+
+Or just start with pre-configured :doc:`SQLite <Database/SQLite>` database.
+
+* :doc:`Learn more about designing models <GettingStarted/UseDatabase>`
+* :doc:`Learn more about database backends <BackEndOverview>`
+
+Run the command ``tg-admin sql create`` in your project directory to create the tables in
+the database.
+
+
+Create your views
+~~~~~~~~~~~~~~~~~
+
+Create your views with html-like templates in the ``<project-package>/templates`` folder.
+
+Static content (Javascript, CSS, images) should be located in the ``<project-package>/static``
+folder.
+
+* :doc:`Learn more about views <GettingStarted/Kid>`
+* :doc:`Learn more about defining static content <StaticFiles>`
+
+
+Build your controllers
+~~~~~~~~~~~~~~~~~~~~~~
+
+Edit ``<project-package>/controllers.py`` and build your website structure with the
+simplicity of Python objects.
+
+* :doc:`Learn more about controllers <GettingStarted/Controller>`
+
+
+And more...
+-----------
+
+There are many other cool things you can do with TurboGears.
+Please check out our :doc:`documentation <index>`.
+
+TurboGears, when running in development mode, will automatically reload itself when
+you modify your project, so all you need to do after saving your files is reloading
+the page in your browser.
+
+
+Reference
+---------
+
+Learn more about TurboGears and take part in its development:
+
+* `Official website <http://www.turbogears.org>`_
+* :doc:`Documentation <index>`

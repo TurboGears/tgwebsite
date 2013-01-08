@@ -1,0 +1,166 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Storing and Retrieving Files from a Database &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Views in SQLObject" href="Views.html" />
+    <link rel="prev" title="SQLObject “gotcha’s”" href="Gotchas.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Views.html" title="Views in SQLObject"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Gotchas.html" title="SQLObject “gotcha’s”"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Gotchas.html"
+                        title="previous chapter">SQLObject &#8220;gotcha&#8217;s&#8221;</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Views.html"
+                        title="next chapter">Views in SQLObject</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="storing-and-retrieving-files-from-a-database">
+<h1><a class="toc-backref" href="#id1">Storing and Retrieving Files from a Database</a><a class="headerlink" href="#storing-and-retrieving-files-from-a-database" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#storing-and-retrieving-files-from-a-database" id="id1">Storing and Retrieving Files from a Database</a></li>
+</ul>
+</div>
+<p>One common thing is storing files inside your database. This is usually done
+with image files, so this is what I&#8217;m going to show you here. You can adapt it
+to your needs. Complementary fields &#8211; such as alternate_text, mimetype, etc. &#8211;
+can be added at will.</p>
+<p>The model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Image</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&#39;images&#39;</span>
+
+    <span class="n">fileName</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">BLOBCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="p">[</span>
+    <span class="n">widgets</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s">&#39;image&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&#39;Some picture&#39;</span><span class="p">),</span>
+        <span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">FieldStorageUploadConverter</span><span class="p">())</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>Saving the image to the database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">image</span><span class="o">=</span>
+    <span class="n">validators</span><span class="o">.</span><span class="n">FieldStorageUploadConverter</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Image</span><span class="p">(</span>
+        <span class="n">fileName</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">image</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">image_id</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Retrieving the image from the database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s">&#39;image/jpg&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">show_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_id</span><span class="p">):</span>
+    <span class="c"># model.Image.q.image is where the image is stored</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_id</span><span class="p">)</span><span class="o">.</span><span class="n">image</span>
+</pre></div>
+</div>
+<p>You can use these in your template like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># put this in your controller, in the method where you&#39;ll expose() the page</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[[</span><span class="n">image</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">fileName</span><span class="p">]</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">select</span><span class="p">()]</span>
+
+<span class="c"># and add &quot;images = images&quot; to the returned dict</span>
+</pre></div>
+</div>
+<p>After adding this to your model, you can then add it to your template:</p>
+<div class="highlight-python"><pre>&lt;!--! Showing all images in a list --&gt;
+&lt;ul&gt;
+  &lt;li py:for="image_id, filename in images"&gt;
+      &lt;a href="/show_image/$image_id" py:content="filename"/&gt;&lt;li&gt;
+&lt;/ul&gt;</pre>
+</div>
+<p>If you want to show the images you put the &#8220;src&#8221; attribute from the &#8220;img&#8221; tag
+pointing to that URL:</p>
+<div class="highlight-python"><pre>&lt;li&gt;&lt;img src="/show_image/$image_id" alt="$filename"/&gt;&lt;/li&gt;</pre>
+</div>
+<p>Note: If you&#8217;re experiencing problems (particularly UnicodeDecodeErrors),
+try upgrading SQLObject to at least version 0.10.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

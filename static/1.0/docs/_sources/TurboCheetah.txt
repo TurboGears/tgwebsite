@@ -1,0 +1,75 @@
+.. index:: Cheetah, TurboCheetah
+
+TurboCheetah
+============
+
+.. contents::
+  :depth: 2
+
+
+Author:
+    Kevin Dangoor et al.
+Maintainer:
+    Christoph Zwerschke
+Release information and download URL:
+    http://pypi.python.org/pypi/TurboCheetah
+SVN repository:
+    http://svn.turbogears.org/projects/TurboCheetah
+
+
+Overview
+--------
+
+TurboCheetah is a TurboGears support package which provides a _doc:`template
+engine plug-in <TemplatePlugins>` for the `Cheetah templating engine`_,
+allowing you to use Cheetah templates with TurboGears, Buffet or other systems
+that support the ``python.templating.engines`` :doc:`entry point <EntryPointList>`.
+
+
+Usage
+-----
+
+For information on using TurboCheetah and Cheetah templates with TurboGears see
+the :doc:`Cheetah templating <CheetahTemplating>` page, the documentation
+on the :doc:`expose decorator <ExposeDecorator>` and more about :doc:`advanced
+Cheetah templates <AdvancedCheetahTemplates>`.
+
+
+Installation
+------------
+
+TurboCheetah will be installed autmatically when you install TurboGears 1.0.x
+since Cheetah is also used for the :doc:`quickstart templates <ExtendingQuickstart>`
+
+The forthcoming TurboGears 1.1 release will use the Genshi_ templating language
+per default and may replace Cheetah with Tempita for quickstart templates, so it
+will propbably not install TurboCheetah by default anymore.
+
+If you therefore need to install TurboCheetah separately, use easy_install_::
+
+    [sudo] easy_install TurboCheetah
+
+
+Compatibility
+~~~~~~~~~~~~~
+
+The latest TurboCheetah release is compatible with both TurboGears 1.0.x and the
+forthcoming TurboGears 1.1 releases.
+
+
+References
+----------
+
+For information on the Cheetah templating engine, go here:
+
+    http://www.cheetahtemplate.org
+
+
+For information on writing a template engine plug-in, see:
+
+    :doc:`Writing a Template Engine <TemplatePlugins>`
+
+
+.. _cheetah templating engine: http://www.cheetahtemplate.org
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _genshi: http://genshi.edgewall.org/

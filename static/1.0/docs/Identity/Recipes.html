@@ -1,0 +1,523 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Identity Recipes &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Identity Failure URL" href="FailureURL.html" />
+    <link rel="prev" title="Using Identity with Encrypted Passwords" href="EncryptedPassword.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FailureURL.html" title="Identity Failure URL"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="EncryptedPassword.html" title="Using Identity with Encrypted Passwords"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Identity Recipes</a><ul>
+<li><a class="reference internal" href="#setting-an-identity-failure-url">Setting an Identity Failure URL</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#writing-your-own-predicates">Writing Your Own Predicates</a></li>
+<li><a class="reference internal" href="#providing-a-custom-passwort-encryption-function">Providing a Custom Passwort Encryption Function</a></li>
+<li><a class="reference internal" href="#writing-your-own-decorator-function">Writing your own decorator function</a></li>
+<li><a class="reference internal" href="#customizing-the-identity-model">Customizing the Identity Model</a></li>
+<li><a class="reference internal" href="#implementing-a-custom-identity-provider">Implementing a Custom Identity Provider</a></li>
+<li><a class="reference internal" href="#log-in-a-user-object-manually">Log in a <tt class="docutils literal"><span class="pre">User</span></tt> Object Manually</a></li>
+<li><a class="reference internal" href="#contributed-tips-tricks">Contributed Tips &amp; Tricks</a><ul>
+<li><a class="reference internal" href="#get-a-reference-to-the-current-identity-information">Get a Reference to the Current Identity Information</a></li>
+<li><a class="reference internal" href="#do-something-special-after-login">Do Something Special After Login</a></li>
+<li><a class="reference internal" href="#changing-the-database-in-which-your-visit-identity-tables-get-created">Changing the Database in Which Your Visit/Identity Tables Get Created</a></li>
+<li><a class="reference internal" href="#authenticating-against-an-external-password-source">Authenticating Against an External Password Source</a></li>
+<li><a class="reference internal" href="#authenticate-against-an-ldap-server">Authenticate Against an LDAP Server</a></li>
+<li><a class="reference internal" href="#authenticate-against-an-ldap-server-updated">Authenticate Against an LDAP Server (Updated)</a></li>
+<li><a class="reference internal" href="#http-basic-authentication">HTTP Basic Authentication</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="EncryptedPassword.html"
+                        title="previous chapter">Using Identity with Encrypted Passwords</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FailureURL.html"
+                        title="next chapter">Identity Failure URL</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="index-0">
+<span id="identity-recipes"></span><h1><a class="toc-backref" href="#id1">Identity Recipes</a><a class="headerlink" href="#index-0" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#index-0" id="id1">Identity Recipes</a><ul>
+<li><a class="reference internal" href="#setting-an-identity-failure-url" id="id2">Setting an Identity Failure URL</a></li>
+<li><a class="reference internal" href="#writing-your-own-predicates" id="id3">Writing Your Own Predicates</a></li>
+<li><a class="reference internal" href="#providing-a-custom-passwort-encryption-function" id="id4">Providing a Custom Passwort Encryption Function</a></li>
+<li><a class="reference internal" href="#writing-your-own-decorator-function" id="id5">Writing your own decorator function</a></li>
+<li><a class="reference internal" href="#customizing-the-identity-model" id="id6">Customizing the Identity Model</a></li>
+<li><a class="reference internal" href="#implementing-a-custom-identity-provider" id="id7">Implementing a Custom Identity Provider</a></li>
+<li><a class="reference internal" href="#log-in-a-user-object-manually" id="id8">Log in a <tt class="docutils literal"><span class="pre">User</span></tt> Object Manually</a></li>
+<li><a class="reference internal" href="#contributed-tips-tricks" id="id9">Contributed Tips &amp; Tricks</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This page is a repository of useful identity tips and tricks, and any small
+notes that don&#8217;t seem to have much of a home anywhere else.</p>
+<div class="section" id="setting-an-identity-failure-url">
+<span id="index-1"></span><h2><a class="toc-backref" href="#id2">Setting an Identity Failure URL</a><a class="headerlink" href="#setting-an-identity-failure-url" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>Please see the page <a class="reference internal" href="FailureURL.html"><em>IdentityFailureUrl</em></a> for documentation on this topic.</p>
+</div>
+<div class="section" id="writing-your-own-predicates">
+<h2><a class="toc-backref" href="#id3">Writing Your Own Predicates</a><a class="headerlink" href="#writing-your-own-predicates" title="Permalink to this headline">¶</a></h2>
+<p>Look at the source of the <tt class="docutils literal"><span class="pre">identity.conditions</span></tt> module to see how identity
+predicates are implemented. New predicates should derive from the <tt class="docutils literal"><span class="pre">Predicate</span></tt>
+and  <tt class="docutils literal"><span class="pre">IdentityPredicateHelper</span></tt> classes from that module and implement a
+<tt class="docutils literal"><span class="pre">eval_with_object</span></tt> method and define an <tt class="docutils literal"><span class="pre">error_message</span></tt> class attribute.</p>
+<p>Here&#8217;s a (slightly contrived) example that checks if the given identity is a
+member of the <tt class="docutils literal"><span class="pre">&quot;premium</span> <span class="pre">users&quot;</span></tt> group:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.identity.conditions</span> <span class="kn">import</span> <span class="n">Predicate</span><span class="p">,</span> \
+    <span class="n">IdentityPredicateHelper</span>
+
+<span class="k">class</span> <span class="nc">is_premium_user</span><span class="p">(</span><span class="n">Predicate</span><span class="p">,</span> <span class="n">IdentityPredicateHelper</span><span class="p">):</span>
+    <span class="n">error_message</span> <span class="o">=</span> <span class="s">&quot;Not member a member of the &#39;</span><span class="si">%(group)s</span><span class="s">&#39; group&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="s">&quot;premium users&quot;</span>
+
+    <span class="k">def</span> <span class="nf">eval_with_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identity</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="n">identity</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_error_message</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+</div>
+<p>In this example, the <tt class="docutils literal"><span class="pre">eval_with_object</span></tt> method will receive the
+<tt class="docutils literal"><span class="pre">turbogears.identity.current</span></tt> object as the <tt class="docutils literal"><span class="pre">identity</span></tt> argument and possibly
+a list of error messages from identity predicates that have been checked before
+this one. The method returns <tt class="docutils literal"><span class="pre">True</span></tt> when the check passes, if not it will
+append it&#8217;s own error message to the <tt class="docutils literal"><span class="pre">errors</span></tt> list and return <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">append_error_messages</span></tt> method inherited from <tt class="docutils literal"><span class="pre">identity.Predicate</span></tt> class
+takes the <tt class="docutils literal"><span class="pre">error_messages</span></tt> attribute, performs string interpolation on it,
+using the instance&#8217;s namespace as the substitutions dictionary and appends the
+resulting string to the given <tt class="docutils literal"><span class="pre">errors</span></tt> list as a side-effect.</p>
+</div>
+<div class="section" id="providing-a-custom-passwort-encryption-function">
+<span id="index-2"></span><h2><a class="toc-backref" href="#id4">Providing a Custom Passwort Encryption Function</a><a class="headerlink" href="#providing-a-custom-passwort-encryption-function" title="Permalink to this headline">¶</a></h2>
+<p>The identity framework has two password hashing functions built in: MD5 and
+SHA1. But you can also provide your own custom password encryption function by
+setting the configuration setting <tt class="docutils literal"><span class="pre">identity.&lt;provider&gt;.encryption_algorithm</span></tt>
+to <tt class="docutils literal"><span class="pre">&quot;custom&quot;</span></tt> (where <tt class="docutils literal"><span class="pre">&lt;provider</span></tt> is one of <tt class="docutils literal"><span class="pre">soprovider</span></tt> or <tt class="docutils literal"><span class="pre">saprovider</span></tt>
+if you use the standard TurboGears identity providers) and the setting
+<tt class="docutils literal"><span class="pre">identity.custom_encryption</span></tt> to the name of callable, which takes the
+unencrypted password (as a UTF-8-encoded string) and returns the password hash
+as a Unicode string. The name of the callable must be the full path to the
+callable, including the module name etc., in dotted path notation.</p>
+<p>Here is a brief code example of how to use a custom encryption function, which
+uses the SHA256 hashing algorithm from the standard library module <a class="reference external" href="http://docs.python.org/lib/module-hashlib.html">hashlib</a>
+(only available in Python &gt;= 2.5) in a project with the package name <tt class="docutils literal"><span class="pre">mytest</span></tt>,
+which uses the standard <tt class="docutils literal"><span class="pre">SqlAlchemyIdentityProvider</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">turbogears</span> <span class="kn">as</span> <span class="nn">tg</span>
+
+<span class="k">def</span> <span class="nf">sha256_hash</span><span class="p">(</span><span class="n">password</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return SHA256 hash for given password as unicode.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span>
+
+<span class="n">tg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s">&#39;identity.custom_encryption&#39;</span><span class="p">:</span> <span class="s">&#39;mytest.controllers.sha256_hash&#39;</span><span class="p">,</span>
+    <span class="s">&#39;identity.saprovider.encryption_algorithm&#39;</span><span class="p">:</span> <span class="s">&quot;custom&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Put this code in your <tt class="docutils literal"><span class="pre">controllers.py</span></tt> or <tt class="docutils literal"><span class="pre">command.py</span></tt> file (or any of
+your application&#8217;s modules that is imported on startup). You can test your
+custom password encryption with the interactive shell:</p>
+<div class="highlight-python"><pre>$ tg-admin sql create
+$ tg-admin shell
+&gt;&gt;&gt; from mytest import controllers
+&gt;&gt;&gt; u = User(user_name=u'test', display_name=u'Test User',
+    email_address=u'test@foo.com', password=u'Ken sent me')
+&gt;&gt;&gt; u.password
+u'67d4d507a17e7f1db4e7e11db2b7a695292a17e53cbe4c8870d367fc30d03789'</pre>
+</div>
+</div>
+<div class="section" id="writing-your-own-decorator-function">
+<h2><a class="toc-backref" href="#id5">Writing your own decorator function</a><a class="headerlink" href="#writing-your-own-decorator-function" title="Permalink to this headline">¶</a></h2>
+<p>This is not for the faint at heart, but it does give you absolute flexibility.</p>
+<p>Take a look at the decorators in <tt class="docutils literal"><span class="pre">turbogears/identity/conditions.py</span></tt>. They&#8217;ll
+give you an idea of what you&#8217;ll need to do; it is simplest if your decorator
+subclasses <tt class="docutils literal"><span class="pre">turbogears.decorator</span></tt>. That will give you a solid basis for
+development and maintain compatibility with other default decorators.</p>
+</div>
+<div class="section" id="customizing-the-identity-model">
+<h2><a class="toc-backref" href="#id6">Customizing the Identity Model</a><a class="headerlink" href="#customizing-the-identity-model" title="Permalink to this headline">¶</a></h2>
+<p>You can customize your own classes for users, groups, and/or permissions,
+adding attributes to the user class, say an image of the user and a phone
+number. You can even provide a complete replacement, but remember that the
+identity system references the automatically-generated classes and their
+elements by name, so you will need to provide a compatible interface.</p>
+<p>Look at the source of the <tt class="docutils literal"><span class="pre">identity.soprovider</span></tt> and <tt class="docutils literal"><span class="pre">identity.saprovider</span></tt>
+modules to see how the current identity providers use the identity model.
+Basically, as long as you only add attributes to the auto-generated identity
+model, you&#8217;ll be fine. If you change the names of existing attributes, you
+are on your own. To stay compatible with the rest of the identity framework,
+you have to stay compatible with the <a class="reference internal" href="Usage.html"><em>documented interface</em></a>.</p>
+</div>
+<div class="section" id="implementing-a-custom-identity-provider">
+<span id="index-3"></span><h2><a class="toc-backref" href="#id7">Implementing a Custom Identity Provider</a><a class="headerlink" href="#implementing-a-custom-identity-provider" title="Permalink to this headline">¶</a></h2>
+<p>If you want total control over the authentication process, i.e how identity
+decides if a user is known and allowed to login, you have to implement a
+<em>custom identity provider</em>. You also need write your own provider, if you
+want to communicate with different database backend or an external
+authentication mechanism. See the contributed recipes in the sections below for
+examples on the latter.</p>
+<p>You can sub-class one of the providers included with TurbGears, i.e.
+<cite>SqlObjectIdentityProvider`</cite> or <tt class="docutils literal"><span class="pre">SqlAlchemyIdentityProvider</span></tt> or write your
+own provider class from scratch. Check the mentioned standard providers for the
+methods which you have to implement.</p>
+<p>If you sub-class one of the standard providers, you probably will only need to
+overwrite the <tt class="docutils literal"><span class="pre">validate_identity</span></tt> method to check if a user is valid and
+is allowed to log-in. On success, i.e. the user is authenticated, this method
+should return a valid identity object conforming to the <a class="reference external" href="http://docs.turbogears.org/1.0/UsingIdentity#identity-current-interface">identity interface</a>,
+or return <tt class="docutils literal"><span class="pre">None</span></tt> on failure.</p>
+<p>We provide an example TurboGears project coming with a custom identity
+provider which implements additional security checks on login. Furthermore
+this project demonstrates the following features:</p>
+<ul class="simple">
+<li>How to sub-class a standard identity provider (see <tt class="docutils literal"><span class="pre">secsaprovider.py</span></tt>).</li>
+<li>How to register the custom provider as an identity plug-in (see <tt class="docutils literal"><span class="pre">setup.py</span></tt>)</li>
+<li>How to extend the standard identity data model in a backwards-compatible way
+(see <tt class="docutils literal"><span class="pre">model.py</span></tt> and <tt class="docutils literal"><span class="pre">secsaprovider.py</span></tt>)</li>
+<li>How to set custom identity error messages (see
+<tt class="docutils literal"><span class="pre">SecSAIdentityProvider.authentication_error</span></tt>) and use them in the login
+page template (see <tt class="docutils literal"><span class="pre">controller.py</span></tt> and <tt class="docutils literal"><span class="pre">login.html</span></tt>)</li>
+</ul>
+<p>Please download the project from the following link and see the included
+<tt class="docutils literal"><span class="pre">README.txt</span></tt> file for more information and pointers to documentation:</p>
+<p><a class="reference download internal" href="../_downloads/CustomIdentity-1.0.1.zip"><tt class="xref download docutils literal"><span class="pre">CustomIdentity-1.0.1.zip</span></tt></a></p>
+</div>
+<div class="section" id="log-in-a-user-object-manually">
+<h2><a class="toc-backref" href="#id8">Log in a <tt class="docutils literal"><span class="pre">User</span></tt> Object Manually</a><a class="headerlink" href="#log-in-a-user-object-manually" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you will need to log a user in directly instead of having them go
+through the regular login system. For instance if you are allowing
+administrators to assume the role of another user. This can be done with the
+following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">identity</span><span class="o">.</span><span class="n">set_current_identity</span><span class="p">(</span><span class="n">identity</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">identity</span></tt> is an instance of an object that conforms to the identity
+API and is associated with a <tt class="docutils literal"><span class="pre">User</span></tt> and a <tt class="docutils literal"><span class="pre">Visit</span></tt> instance. Such an
+identity instance is created by creating a <tt class="docutils literal"><span class="pre">VisitIdentity</span></tt> object (which
+links a user to a visit) and then using this to get an identity instance
+from the current identity provider.</p>
+<p>The following function performs all the necessary steps, and works for either
+the SQLObject or the SQLAlchemy identity provider:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">identity</span><span class="p">,</span> <span class="n">visit</span>
+<span class="kn">from</span> <span class="nn">mypkg.model</span> <span class="kn">import</span> <span class="n">VisitIdentityKey</span>
+
+<span class="k">def</span> <span class="nf">login_user</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Associate given user with current visit &amp; identity.&quot;&quot;&quot;</span>
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">visit</span><span class="o">.</span><span class="n">current</span><span class="p">()</span><span class="o">.</span><span class="n">key</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">VisitIdentity</span><span class="o">.</span><span class="n">by_visit_key</span><span class="p">(</span><span class="n">visit_key</span><span class="p">)</span>
+        <span class="c"># If you use SQLAlchemy, you can remove the try/except clause</span>
+        <span class="c"># around the above line so you don&#39;t have to import SQLObject</span>
+        <span class="c"># to check for the SQLObjectNotFound exception.</span>
+    <span class="k">except</span> <span class="n">SQLObjectNotFound</span><span class="p">:</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="p">:</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">VisitIdentity</span><span class="p">(</span><span class="n">visit_key</span><span class="o">=</span><span class="n">visit_key</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">user_id</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_id</span>
+
+    <span class="n">user_identity</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">current_provider</span><span class="o">.</span><span class="n">load_identity</span><span class="p">(</span><span class="n">visit_key</span><span class="p">)</span>
+    <span class="n">identity</span><span class="o">.</span><span class="n">set_current_identity</span><span class="p">(</span><span class="n">user_identity</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A common use case for this recipe is logging in after successfully
+registering a new user. If you&#8217;re doing this make sure you have saved the new
+user record to the database using session.flush() or similar. Not doing so
+will cause errors later on in the process.</p>
+</div>
+</div>
+<div class="section" id="contributed-tips-tricks">
+<h2><a class="toc-backref" href="#id9">Contributed Tips &amp; Tricks</a><a class="headerlink" href="#contributed-tips-tricks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-a-reference-to-the-current-identity-information">
+<h3>Get a Reference to the Current Identity Information<a class="headerlink" href="#get-a-reference-to-the-current-identity-information" title="Permalink to this headline">¶</a></h3>
+<p>If you want to log who&#8217;s making updates in the DB you can get this information
+from the User object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">user</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="do-something-special-after-login">
+<h3>Do Something Special After Login<a class="headerlink" href="#do-something-special-after-login" title="Permalink to this headline">¶</a></h3>
+<p>In some cases, you may want to perform a specific action when a user logs in.
+One way to do this is to modify the standard login kid template as follows:</p>
+<div class="highlight-python"><pre>&lt;form action="/verify_login" method="POST"&gt;
+  &lt;input type="hidden" name="previous_url" value="${previous_url}"/&gt;
+  &lt;!-- form continues on ... --&gt;</pre>
+</div>
+<p>Then, in your <tt class="docutils literal"><span class="pre">controllers.py</span></tt>, add the following controller method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">verify_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous_url</span><span class="o">=</span><span class="s">&#39;/login&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">user_logged_in</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">anonymous</span>
+        <span class="ow">and</span> <span class="n">identity</span><span class="o">.</span><span class="n">was_login_attempted</span><span class="p">()</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="n">identity</span><span class="o">.</span><span class="n">get_identity_errors</span><span class="p">()):</span>
+            <span class="n">user_logged_in</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="c"># do your login stuff here. for instance you could do:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Welcome to TurboGears!&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">previous_url</span> <span class="o">==</span> <span class="s">&#39;/login&#39;</span> <span class="ow">and</span> <span class="n">user_logged_in</span><span class="p">:</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+    <span class="n">redirect</span><span class="p">(</span><span class="n">previous_url</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Essentially, you are routing all login attempts through your new
+<tt class="docutils literal"><span class="pre">verify_login</span></tt> controller before sending the request off to the final
+destination.</p>
+</div>
+<div class="section" id="changing-the-database-in-which-your-visit-identity-tables-get-created">
+<h3>Changing the Database in Which Your Visit/Identity Tables Get Created<a class="headerlink" href="#changing-the-database-in-which-your-visit-identity-tables-get-created" title="Permalink to this headline">¶</a></h3>
+<p>Contributed by <strong>RenierMorales</strong> on <em>2007-07-20 17:26:14</em>.</p>
+<p>If you don&#8217;t want to or can&#8217;t have TG create the Visit tables in the same DBMS
+where the rest of your application&#8217;s data resides, you can configure it so that
+they are created in a different DBMS.</p>
+<p>Here is what I added to my project, per file:</p>
+<p><tt class="docutils literal"><span class="pre">dev.cfg</span></tt> / <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">turbogears</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&quot;sqlite:/home/renier/projects/www/dvo/visit.db&quot;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">model.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">__visit_connection__</span> <span class="o">=</span> <span class="n">PackageHub</span><span class="p">(</span><span class="s">&#39;turbogears.visit&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">_connection</span> <span class="o">=</span> <span class="n">__visit_connection__</span>
+    <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">VisitIdentity</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">_connection</span> <span class="o">=</span> <span class="n">__visit_connection__</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Now my Visit data is stored in an SQLite database separate from my application
+data. Change <tt class="docutils literal"><span class="pre">turbogears.visit.dburi</span></tt> in your configuration to specify any
+other type of database connection.</p>
+</div>
+<div class="section" id="authenticating-against-an-external-password-source">
+<h3>Authenticating Against an External Password Source<a class="headerlink" href="#authenticating-against-an-external-password-source" title="Permalink to this headline">¶</a></h3>
+<p>In some cases, you may want to authenticate against an external password
+source, while still using the standard identity models for storing all other
+user information.</p>
+<p>For example, authenticating against an existing Windows/Samba domain controller
+allows your users to use the same password for your TurboGears project as they
+do to log in to Windows (the same concept applies to LDAP, etc.).</p>
+<p>For an example of how to do this, see <a class="reference download internal" href="../_downloads/sosmbprovider.py"><tt class="xref download docutils literal"><span class="pre">sosmbprovider.py</span></tt></a>, which subclasses the
+SQLObject provider but validates user names and passwords against a Windows
+domain. It&#8217;s not a pure SMB provider (only the user names and passwords are
+checked against the domain controller), so you still have to add users and
+groups (etc.) to the Identity tables.</p>
+<p>If you are using SQLObject and want to validate usernames and passwords against
+an LDAP directory, see <a class="reference download internal" href="../_downloads/soldapprovider.py"><tt class="xref download docutils literal"><span class="pre">soldapprovider.py</span></tt></a>.</p>
+<p>If you want to validate against an LDAP directory but are using Elixir or
+SQLAlchemy as your model, see, see <a class="reference download internal" href="../_downloads/saldapprovider.py"><tt class="xref download docutils literal"><span class="pre">saldapprovider.py</span></tt></a>.</p>
+<p>For an example of how to validate user names and passwords against a UNIX
+password file or NIS Yellow Pages, see <a class="reference download internal" href="../_downloads/sopwdprovider.py"><tt class="xref download docutils literal"><span class="pre">sopwdprovider.py</span></tt></a>.</p>
+<p>In TurboGears 1.0 a <tt class="docutils literal"><span class="pre">validate_password()</span></tt> method was added to the
+<tt class="docutils literal"><span class="pre">SqlObjectIdentityProvider</span></tt> object in <tt class="docutils literal"><span class="pre">soprovider.py</span></tt>, making it much
+simpler to subclass and create your own provider.</p>
+<p>The following sections contain recipes for authenticating against different
+types of authentication services.</p>
+</div>
+<div class="section" id="authenticate-against-an-ldap-server">
+<span id="index-4"></span><h3>Authenticate Against an LDAP Server<a class="headerlink" href="#authenticate-against-an-ldap-server" title="Permalink to this headline">¶</a></h3>
+<p>Contributed by <strong>anonymous</strong> on <em>2007-12-13 09:43:29</em>.</p>
+<p>A short description how to authenticate against my LDAP server:</p>
+<p>The following example uses the <a class="reference download internal" href="../_downloads/soldapprovider.py"><tt class="xref download docutils literal"><span class="pre">soldapprovider.py</span></tt></a>
+file attached to this page, since the model used is SQLObject. For SQLAlchemy or Elixir,
+the instructions are similar. Only that you&#8217;ll have to use <tt class="docutils literal"><span class="pre">'saldapprovider'</span></tt> as the
+<tt class="docutils literal"><span class="pre">identity.provider</span></tt> and similar changes.</p>
+<ul>
+<li><p class="first">Create an account to authenticate both in Turbogears and LDAP server.</p>
+</li>
+<li><p class="first">Add the following entry in <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> or <tt class="docutils literal"><span class="pre">app.cfg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">identity</span><span class="o">.</span><span class="n">provider</span> <span class="o">=</span> <span class="s">&#39;soldapprovider&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Edit the <tt class="docutils literal"><span class="pre">entry_points.txt</span></tt> in your TurboGears installation directory, i.e.
+<tt class="docutils literal"><span class="pre">&lt;site-package&gt;/TurboGears-X.Y-py2.5.egg/EGG-INFO/entry_points.txt</span></tt>:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Search the block: <tt class="docutils literal"><span class="pre">[turbogears.identity.provider]</span></tt></p>
+</li>
+<li><p class="first">Add the following entry:</p>
+<div class="highlight-python"><pre>soldapprovider = turbogears.identity.soldapprovider:SoLdapIdentityProvider</pre>
+</div>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Add the linked file <a class="reference download internal" href="../_downloads/soldapprovider.py"><tt class="xref download docutils literal"><span class="pre">soldapprovider.py</span></tt></a>
+in the above description to your TurboGears installation, i.e.
+<tt class="docutils literal"><span class="pre">&lt;site-packages&gt;/TurboGears-X.Y-py2.5.egg/turbogears/identity/soldapprovider.py</span></tt>.</p>
+</li>
+<li><p class="first">Edit the line <tt class="docutils literal"><span class="pre">filter</span> <span class="pre">=</span> <span class="pre">&quot;</span> <span class="pre">...</span> <span class="pre">&quot;</span> <span class="pre">%</span> <span class="pre">user_name</span></tt> according to your LDAP server,
+e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span> <span class="o">=</span> <span class="s">&quot;(uid=</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">user_name</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="authenticate-against-an-ldap-server-updated">
+<h3>Authenticate Against an LDAP Server (Updated)<a class="headerlink" href="#authenticate-against-an-ldap-server-updated" title="Permalink to this headline">¶</a></h3>
+<p><em>These instructions are hopefully clearer than the ones above, and they don&#8217;t
+require you to muck about inside the TurboGears installation directories at
+all.</em></p>
+<p>Download the file <a class="reference download internal" href="../_downloads/soldapprovider.py"><tt class="xref download docutils literal"><span class="pre">soldapprovider.py</span></tt></a>,
+and place it in the package of your project.  Edit the file and make the
+following changes. I don&#8217;t think I have upload privileges to modify it directly,
+but these changes make the <tt class="docutils literal"><span class="pre">soldapprovider.py</span></tt> fully configuration driven
+and re-usable:</p>
+<p>Change the import statement at the top of the file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">soprovider</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>to this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.identity.soprovider</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+<p>Change these lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">basedn</span>  <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s">&quot;identity.soldapprovider.basedn&quot;</span><span class="p">,</span> <span class="s">&quot;dc=localhost&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">autocreate</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s">&quot;identity.soldapprovider.autocreate&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to this (adds another configuration option):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">basedn</span>  <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s">&quot;identity.soldapprovider.basedn&quot;</span><span class="p">,</span> <span class="s">&quot;dc=localhost&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">filter_id</span>  <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s">&quot;identity.soldapprovider.filter_id&quot;</span><span class="p">,</span> <span class="s">&quot;uid&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">autocreate</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="s">&quot;identity.soldapprovider.autocreate&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, change this line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span> <span class="o">=</span> <span class="s">&quot;(sAMAccountName=</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">user_name</span>
+</pre></div>
+</div>
+<p>to this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">filter</span> <span class="o">=</span> <span class="s">&quot;(</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_id</span><span class="p">,</span> <span class="n">user_name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Edit the file <tt class="docutils literal"><span class="pre">setup.py</span></tt> in your project directory. Look for the section that
+starts with <tt class="docutils literal"><span class="pre">entry_points</span> <span class="pre">=</span> <span class="pre">&quot;&quot;&quot;</span></tt> in the <tt class="docutils literal"><span class="pre">setup(...)</span></tt> call and add the
+following lines to add your identity provider to the list of providers that
+TurboGears has available (replace &#8220;yourpkg&#8221; withe the package name of your
+application):</p>
+<div class="highlight-python"><pre>'turbogears.identity.provider': [
+         'soldapprovider = ofreports.soldapprovider:SoLdapIdentityProvider'
+]</pre>
+</div>
+<p>Then run <tt class="docutils literal"><span class="pre">&quot;python</span> <span class="pre">setup.py</span> <span class="pre">egg_info&quot;</span></tt> in our project directory to update the
+<tt class="docutils literal"><span class="pre">*.egg-info</span></tt> directory.</p>
+<p>Edit your <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and add some configuration options for your environment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">identity</span><span class="o">.</span><span class="n">provider</span> <span class="o">=</span> <span class="s">&#39;soldapprovider&#39;</span>
+<span class="n">identity</span><span class="o">.</span><span class="n">soldapprovider</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="s">&#39;localhost&#39;</span>
+<span class="n">identity</span><span class="o">.</span><span class="n">soldapprovider</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">389</span>
+<span class="n">identity</span><span class="o">.</span><span class="n">soldapprovider</span><span class="o">.</span><span class="n">basedn</span> <span class="o">=</span> <span class="s">&#39;ou=people,dc=yourdomain,dc=com&#39;</span>
+<span class="n">identity</span><span class="o">.</span><span class="n">soldapprovider</span><span class="o">.</span><span class="n">filter_id</span> <span class="o">=</span> <span class="s">&#39;uid&#39;</span>
+</pre></div>
+</div>
+<p>Make sure that the user login that you want to use exists in LDAP, and try to
+login.</p>
+</div>
+<div class="section" id="http-basic-authentication">
+<span id="index-5"></span><h3>HTTP Basic Authentication<a class="headerlink" href="#http-basic-authentication" title="Permalink to this headline">¶</a></h3>
+<p>HTTP Basic Authentication is already supported out of the box. Look into the
+<tt class="docutils literal"><span class="pre">identity.visitor</span></tt> module in the <tt class="docutils literal"><span class="pre">IdentityVisitPlugin.identity_from_http_auth</span></tt>
+method for the implementation. This should be easy to enhance with support
+for Digest authentication.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

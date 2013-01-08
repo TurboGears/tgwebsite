@@ -1,0 +1,318 @@
+.. index:: graphs, figures
+
+Generating Graphs and Figures in TurboGears
+===========================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+In TurboGears you can generate graphs and figures with Python modules
+on the server side or with Javascript or Flash on the client side.
+
+
+Server Side
+-----------
+
+The page :doc:`ServeDynamicImage <ServeDynamicFiles>` has a short example showing how to serve a dynamically generated image with TurboGears in general. In the following, we list some options for generating such images.
+
+.. index:: matplotlib
+
+Generating Graphs with matplotlib
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Homepage: http://matplotlib.sourceforge.net/
+
+The following decorator exposes individual figures as separate pages.  Each
+figure is rendered as a PNG image::
+
+    import StringIO
+    import matplotlib
+    import numpy
+
+
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    from turbogears import expose
+
+
+    def expose_matplot_figure(f=None, **render_opts):
+        """Decorator which exposes and renders a matplotlib Figure.
+
+        Usage:
+
+        def sample_fig(self):
+            fig = matplotlib.figure.Figure(figsize=(9, 6))
+            fig.Name = "Sinewave"
+            ax = fig.add_subplot(111)
+            ax.set_xlabel("angle")
+            ax.set_ylabel("amplitude")
+            t = arange(0.0, 2.0, 0.01)
+            s1 = sin(2*pi*t)
+            ax.plot(t, s1, color="k")
+            return fig
+
+        @expose_matplot_figure
+        def sinegraph_default_dpi(self):
+            return self.sample_fig()
+
+        ...same thing using a dict...
+
+        @expose_matplot_figure
+        def sinegraph_default_dpi_using_dict(self):
+            return dict(fig=self.sample_fig())
+
+        @expose_matplot_figure(dpi=20)
+        def sinegraph_20dpi(self):
+            return self.sample_fig()
+
+        @expose_matplot_figure
+        def sinegraph_32dpi(self):
+            return dict(fig=self.sample_fig(), dpi=32)
+
+        @expose_pylab_figure(dpi=72)
+        def sinegraph_results_dict_overrides_decorator(self):
+            return dict(fig=self.sample_fig(), dpi=32)
+        """
+
+        def get_fig(result):
+            if isinstance(result, dict):
+                fig = result['fig']
+                del result['fig']
+                return fig
+            else:
+                return result
+
+        def get_render_opts(result):
+            if isinstance(result, dict):
+                render_opts.update(result)
+            return render_opts
+
+        def wrap_f_with_render_figure(f):
+            def render_figure(*pargs, **vargs):
+                # Make the PNG
+                result = f(*pargs, **vargs)
+                canvas = FigureCanvasAgg(get_fig(result))
+                rendered_fig = StringIO.StringIO()
+                canvas.print_figure(rendered_fig, **get_render_opts(result))
+                return rendered_fig.getvalue()
+            return expose(content_type="image/png")(render_figure)
+
+        if f is None:
+            # This corresponds to the usage @expose_matplotlib_figure(dpi=20)
+            return wrap_f_with_render_figure
+        else:
+            # This corresponds to the usage @expose_matplotlib_figure
+            return wrap_f_with_render_figure(f)
+
+
+.. index:: pylab
+
+Generating Graphs with pylab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following decorator displays pylab graphs::
+
+    import StringIO
+    from threading import RLock()
+
+    import pylab
+    from turbogears import expose
+
+    pylab_lock = RLock()
+
+
+    def expose_pylab_figure(f=None, **render_opts):
+        """"Decorator which exposes and renders a pylab graph.
+
+        Warning:
+
+        Unfortunately pylab is not (as far as I know) thread safe
+        as it works with an implicit figure.  Therefore the image
+        rendering code must be gated with a lock.
+
+        This will have no real effect if you're using a process oriented
+        server, but it may do bad things to TurboGears if you're using
+        a threading server.
+
+        Usage:
+
+        @expose_pylab_figure
+        def simple_plot():
+            plot([1, 2, 3])
+
+        @expose_pylab_figure(dpi=20)
+        def simple_plot_20dpi():
+            plot([1, 2, 3])
+
+        @expose_pylab_figure
+        def simple_plot_32dpi():
+            plot([1, 2, 3])
+            return dict(dpi=32)
+
+        @expose_pylab_figure(dpi=72)
+        def simple_plot_results_dict_overrides_decorator(self):
+            plot([1, 2, 3])
+            return dict(dpi=32)
+
+        """
+
+        def get_render_opts(result):
+            if result is not None:
+                render_opts.update(result)
+            return render_opts
+
+        def wrap_f_with_render_figure(f):
+            def render_figure(*pargs, **vargs):
+                pylab_lock.acquire()
+                try:
+                    result = f(*pargs, **vargs)
+                    rendered_figure = StringIO.StringIO()
+                    pylab.savefig(rendered_figure, **get_render_opts(result))
+                    pylab.close('all')
+                    return rendered_figure.getvalue()
+                finally:
+                    pylab_lock.release()
+            return expose(content_type="image/png")(render_figure)
+
+        if f is None:
+            # This corresponds to the usage @expose_pylab_figure(dpi=20)
+            return wrap_f_with_render_figure
+        else:
+            # This corresponds to the usage @expose_pylab_figure
+            return wrap_f_with_render_figure(f)
+
+
+Client Side
+-----------
+
+
+.. index:: PlotKit
+
+With Javascript library: PlotKit
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* http://www.liquidx.net/plotkit/
+
+* http://www.python.org/pypi/PlotKit/
+
+Install with::
+
+    $ [sudo] easy_install PlotKit
+
+Here's a simple usage example.
+
+In ``controllers.py``::
+
+      from plotkit import EasyPlot
+
+      class Root(controllers.RootController):
+          @expose(template="wgtest.templates.welcome")
+          def index(self):
+              setA = [[0,0], [1,2], [2,3], [3,7], [4,8], [5,6]]
+              setB = [[0,0], [1,1], [2,4], [3,8], [4,7], [5,20]]
+              setC = [[0,1], [1,3], [2,5], [3,5], [4,3], [5,2]]
+              return dict(ep= EasyPlot(id="diag",
+                       style="line",
+                       width="300",
+                       height="300",
+                       data=[setA, setB, setC]))
+
+In ``welcome.kid``, simply add
+
+::
+
+    ${ep.display()}
+
+into the HTML BODY element.
+
+You can download the :download:`example code <downloads/wgtest.tar.gz>` here.
+
+
+.. index:: XML/SWF Charts
+
+With Flash & XML : XML/SWF Charts
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+XML/SWF Charts is an SWF (Flash) client side plotting API. Xou can feed xml
+data to XML/SWF Charts and it will plot for you.
+
+* http://www.maani.us/xml_charts/
+* http://www.maani.us/xml_charts/index.php?menu=Gallery
+
+Download it, extract ``charts.swf`` and the ``/charts_library`` folder into
+your project's ``static`` folder.
+
+There are some tricks to use XML/SWF Charts with kid templates. Here's what
+you'd put into the HTML BODY element to insert the Flash object. Put this into
+a template called ``plot.kid``::
+
+    <OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+      codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0"
+        WIDTH="400"
+        HEIGHT="250"
+        id="charts"
+        ALIGN="">
+      <PARAM NAME="movie"
+      VALUE="static/charts.swf?library_path=static/charts_library&amp;xml_source=${data}" />
+      <PARAM NAME="quality" VALUE="high" />
+      <PARAM NAME="bgcolor" VALUE="#666666" />
+
+      <EMBED src="static/charts.swf?library_path=static/charts_library&amp;xml_source=${data}"
+        quality="high"
+        bgcolor="#666666"
+        WIDTH="400"
+        HEIGHT="250"
+        NAME="charts"
+        ALIGN=""
+        swLiveConnect="true"
+        TYPE="application/x-shockwave-flash"
+        PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer">
+      </EMBED>
+    </OBJECT>
+
+Here's the controller method, which displays the page with the XML/SQF Chart Flash object. Add this in ``controller.py``::
+
+    @expose(template=".templates.plot")
+    def plot(self):
+        # return url: /data
+        return dict(data="data")
+
+And here's an example controller method, which delivers the chart data::
+
+      @expose()
+      def data(self):
+            template = """\
+            <chart>
+                <chart_type>column</chart_type>
+                <chart_data>
+                <row>
+                 <null/>
+                 <string>2001</string>
+                 <string>2002</string>
+                 <string>2003</string>
+                 <string>2004</string>
+                </row>
+                <row>
+                 <string>Region A</string>
+                 <number>5</number>
+                 <number>10</number>
+                 <number>30</number>
+                 <number>63</number>
+                </row>
+                <row>
+                 <string>Region B</string>
+                 <number>100</number>
+                 <number>20</number>
+                 <number>65</number>
+                 <number>55</number>
+                </row>
+                <row>
+                 <string>Region C</string>
+                 <number>56</number>
+                 <number>21</number>
+                 <number>5</number>
+                 <number>90</number>
+                </row>
+                </chart_data>
+            </chart>
+            """
+            return template

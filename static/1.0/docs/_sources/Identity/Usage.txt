@@ -1,0 +1,346 @@
+Using Identity
+==============
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+This page will show you how to use identity in your controller and templates
+to manage access to your application's resources. If you don't know how to
+enable identity for your project yet, please read the tutorial linked in
+the section "Further Reading" at the end of this end page first.
+
+
+.. index:: @identity.require, @require, require decorator
+
+Using Identity in the Controller
+--------------------------------
+
+To restrict access to a controller method, add an ``@identity.require(...)``
+decorator to that method. This decorator takes a single argument, the
+*predicate* that specifies the conditions that must be true for the access to
+be permitted. For example to protect the index page so that only members of the
+admin group can access it you would use the ``identity.in_group("admin")``
+predicate::
+
+    class Root(controllers.RootController):
+        @expose()
+        @identity.require(identity.in_group("admin"))
+        def index(self):
+            ...
+
+After making the above change (your server should restart automatically
+when you save the ``controllers.py`` file), visit ``http://localhost:8080/``.
+Since the index page is now protected, you will be redirected to the login page
+where you must authenticate yourself. Log in using the name and password of the
+account you created in the :doc:`Getting Started With Identity <GettingStarted>` tutorial.
+Now you should see the index page, with "Welcome, *your name*." and a "Logout" link
+at the top of the page. This is created for you in the ``master.kid`` template.
+
+
+.. index:: protecting resources
+
+Protecting Resources
+~~~~~~~~~~~~~~~~~~~~
+
+Sometimes, just restricting access to individual methods (pages) isn't enough.
+For example, you might want to protect an entire controller, or maybe your
+access permissions depend on the data viewed.
+
+
+Protecting Object Attribute Access
+``````````````````````````````````
+
+If you wrap an object with a ``identity.SecureObject`` object, you can restrict
+access to its attributes with the same predicates you can use for the
+``identity.require`` decorator::
+
+    secure_obj = SecureObject(obj, identity.in_group('premium_users'))
+
+This functionality is used by the ``SecureResource`` object discussed in the
+next section.
+
+
+Protecting a Controller
+```````````````````````
+
+To restrict access to an entire controller (i.e. a whole URL subtree), add
+``identity.SecureResource`` to the base classes of your  ``Controller`` and
+add a ``require`` attribute at the class level::
+
+    class MySecureController(turbogears.Controller, identity.SecureResource):
+        require = identity.in_group("admin")
+
+        # etc ...
+
+You can apply whatever decorators you want on the methods of the
+``MySecureController`` instance. So each method could have additional
+restrictions. And ``MySecureController`` could have ``SecureObjects`` as well.
+However, access to exposed methods of ``MySecureController`` and any
+``SecureObjects`` would have to satisfy the authorization requirements for
+``MySecureController`` first.
+
+
+.. _explicit_permission_checking:
+
+Explicit Permission Checking
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's say you are creating a web site where users can add their own content,
+like a blogging tool or a photo sharing site. Users should be able to edit
+their own content, but not the content added by other users.  You can't do
+these checks in a decorator, as you need access to the actual data, which is
+only loaded in the method body (and you don't want to load the data twice).
+Instead of using a decorator you can perform the identity checks in the method
+body.
+
+Again, derive your controller from ``identity.SecureResource``. Perform your
+identity check at the method level. If the user doesn't have the required
+permissions, throw a suitable ``IdentityException``::
+
+    class GroupMembershipRequiredException(identity.IdentityException):
+        message = "To access this resource you must be a member of one of these groups: %s"
+        def __init__(self, groups=None):
+            if groups is None:
+                groups = (,)
+            self.groups = groups
+        def __str__(self):
+            return self.message % ", ".join(self.groups)
+
+    class MyController(controllers.Controller, identity.SecureResource):
+
+         @turbogears.expose("mytemplate")
+         def myFunction(self):
+            if not ("admin" in identity.current.groups or
+                "super" in identity.current.groups):
+                raise GroupMembershipRequiredException(("admin", "super"))
+
+This will work because ``SecureResource`` wraps all exposed methods with code
+that checks permissions and traps (sub-classes of) ``IdentityException`` and
+throws an ``IdentityFailure`` exception if necessary, which will cause a
+redirect to the configured ``identity.failure_url`` (i.e the login page). So
+if your code raises an ``IdentityException`` or a sub-class thereof, everything
+will be handled correctly.
+
+Of course, you can then pull your authorization logic out into a function that
+you call rather than copying and pasting it into each function that requires it.
+
+You can also use the identity predicates in your own code, which makes handling
+error messages a bit more comfortable::
+
+    errors = []
+    if (identity.in_group("admin", errors) and
+            identity.has_permission("edit", errors)):
+        # everything ok
+    else:
+        raise IdentityFailure(errors)
+
+
+.. index:: identity predicates
+
+Identity Predicates
+-------------------
+
+Here are a few commonly-used identity predicates:
+
+
+Single Permission Checks
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Checking that the user is logged in::
+
+    @identity.require(identity.not_anonymous())
+
+Checking access groups::
+
+    @identity.require(identity.in_group("admin"))
+
+You can also specify multiple groups::
+
+    @identity.require(identity.in_all_groups("admin", "editor"))
+
+    @identity.require(identity.in_any_group("admin", "editor"))
+
+Checking access permissions::
+
+    @identity.require(identity.has_permission("edit"))
+
+    @identity.require(identity.has_all_permissions("edit", "delete", "update"))
+
+    @identity.require(identity.has_any_permission("edit", "delete", "update"))
+
+Checking hosts::
+
+    @identity.require(identity.from_host("127.0.0.1"))
+
+    @identity.require(identity.from_any_host(("127.0.0.1", "10.0.0.1")))
+
+
+Combining Predicates
+~~~~~~~~~~~~~~~~~~~~
+
+You can combine several predicates using ``identity.Any`` and ``identity.All``.
+Each of these takes multiple predicates as arguments::
+
+    @identity.require(identity.Any(identity.in_group("admin"),
+        identity.has_permission("edit")))
+
+The decorator above grants access to members of the "admin" group as well as
+any user who has the "edit" permission. A combination of host and permissions
+requirements is quite common::
+
+    @identity.require(identity.All(identity.from_host("127.0.0.1"),
+        identity.has_permission("edit")))
+
+    @identity.require(identity.All(
+        identity.from_any_host(("127.0.0.1", "10.0.0.1")),
+        identity.in_group("editor")))
+
+
+Using Identity in Templates
+---------------------------
+
+Identity checks can also be used in the templates to customize the appearance
+of the page depending on the user's identity. For example, you might show links
+to administrative functions only if the user is an administrator. (You still
+need to check identity in the controllers that handle those links: just hiding
+them doesn't prevent a knowledgeable user from accessing those URIs directly.)
+
+Within a template, ``tg.identity`` is an alias for
+``turbogears.identity.current``.
+
+Checking access groups::
+
+    <a py:if="'admin' in tg.identity.groups" href="/admin">This is a link for
+        admins</a>
+
+Checking access permissions::
+
+    <div py:if="'write' in tg.identity.permissions">This is a write
+        permissions area</div>
+
+Displaying user-specific information::
+
+     <div py:if="tg.identity.anonymous">Welcome, guest!</div>
+     <div py:if="not tg.identity.anonymous">Welcome,
+        ${tg.identity.user.display_name}!</div>
+
+
+Reference
+---------
+
+Configuration
+~~~~~~~~~~~~~
+
+Identity configuration is done in ``app.cfg``. Normally, you shouldn't need to
+change any of the identity configuration options if you use the default identity
+framework setup. But if you won't to customize some aspects of the identity
+model or how identity failures are handled, please refer to the `identity
+configuration reference`_ for a thorough description of the available settings.
+
+.. _identity configuration reference:
+    http://docs.turbogears.org/1.0/Configuration#identity
+
+
+``identity.current`` Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the controller, you have access to ``turbogears.identity.current``, which
+contains the following properties and methods.
+
+
+Properties
+``````````
+
++---------------+-------------------------------------------------------------+
+| Property      | Description                                                 |
++===============+=============================================================+
+| *visit_key*   | Returns a string with a unique visit key (from              |
+|               | ``turbogears.visit``)                                       |
++---------------+-------------------------------------------------------------+
+| *user*        | Returns a User object if the visitor is authenticated,      |
+|               | otherwise returns None                                      |
++---------------+-------------------------------------------------------------+
+| *user_name*   | Returns User.user_name if the visitor is authenticated,     |
+|               | otherwise returns None                                      |
++---------------+-------------------------------------------------------------+
+| *user_id*     | Returns User.user_id if the visitor is authenticated,       |
+|               | otherwise returns None                                      |
++---------------+-------------------------------------------------------------+
+| *anonymous*   | Returns True if the visitor is not authenticated, False     |
+|               | otherwise                                                   |
++---------------+-------------------------------------------------------------+
+| *permissions* | Returns a sequence of Permission.permission_name strings if |
+|               | the visitor is authenticated. Returns an empty sequence for |
+|               | anonymous visitors.                                         |
++---------------+-------------------------------------------------------------+
+| *groups*      | Returns a sequence of Group.group_name strings if the       |
+|               | visitor is authenticated.                                   |
+|               | Returns an empty sequence for anonymous visitors.           |
++---------------+-------------------------------------------------------------+
+| *group_ids*   | Returns a sequence of Group.group_id numbers if the         |
+|               | visitor is authenticated.                                   |
+|               | Returns an empty sequence for anonymous visitors.           |
++---------------+-------------------------------------------------------------+
+| *login_url*   | Returns the URL set by ``identity.failure_url``             |
+|               | :doc:`configuration </Configuration>` setting or - if this  |
+|               | is a callable - the return value of this callable.          |
++---------------+-------------------------------------------------------------+
+
+
+Methods
+```````
+
++-------------------+--------------------------------------------------+
+| Method            | Description                                      |
++===================+==================================================+
+| *login()*         | Associates the identity with the current         |
+|                   | :doc:`visit </Visit/index>`. See  the            |
+|                   | :doc:`identity recipes <Recipes>` page for       |
+|                   | information on how to use this.                  |
++-------------------+--------------------------------------------------+
+| *logout()*        | Removes authentication from the current visitor. |
++-------------------+--------------------------------------------------+
+
+
+Exceptions
+``````````
+
+The identity module defines several types of exception:
+
++------------------------------------------+------------------------------------------------------+
+| *IdentityException*                      | Base exception type                                  |
++------------------------------------------+------------------------------------------------------+
+| *RequestRequiredException*               | Raised when identity features are used outside the   |
+|                                          | scope of an HTTP request.                            |
++------------------------------------------+------------------------------------------------------+
+| *IdentityManagementNotEnabledException*  | Raised when identity features are used without       |
+|                                          | being enabled in the configuration file.             |
++------------------------------------------+------------------------------------------------------+
+| *IdentityConfigurationException*         | Raised when identity features are incorrectly        |
+|                                          | configured (usually when ``failure_url`` is not set).|
++------------------------------------------+------------------------------------------------------+
+| *IdentityFailure*                        | Raise this when an access control check fails.       |
+|                                          | CherryPy will redirect to ``identity.failure_url``.  |
++------------------------------------------+------------------------------------------------------+
+
+Most of the above exceptions are raised by the TurboGears framework. Your code
+can raise *IdentityFailure* if a user attempts to access a resource for which
+they do not possess the necessary permissions. See above under `Explicit
+Permission Checking`_ for an example.
+
+Raising an *IdentityFailure* exception causes CherryPy to perform a redirect to
+the URL set by :doc:`configuration </Configuration>` item ``identity.failure_url``.
+If your configuration files do not set this item then an *IdentityConfigurationException*
+will be raised.
+
+
+Further Reading
+---------------
+
+* Before you can use identity, you must set up your project accordingly. See
+  :doc:`Getting Started With Identity <GettingStarted>` - A tutorial on using the identity system
+  to secure your website - on how to do this.
+
+* Next, be sure to check out the :doc:`Identity Recipes <Recipes>`
+  - A list of useful identity tips and tricks.

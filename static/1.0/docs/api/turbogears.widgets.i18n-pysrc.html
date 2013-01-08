@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.widgets.i18n</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.widgets-module.html">Package&nbsp;widgets</a> ::
+        Module&nbsp;i18n
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.widgets.i18n-module.html">Module turbogears.widgets.i18n</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">codecs</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">request</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module turbogears.command.i18n=turbogears.command.i18n-module.html,Package turbogears.i18n=turbogears.i18n-module.html,Module turbogears.widgets.i18n=turbogears.widgets.i18n-module.html"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-1', 'i18n', 'link-1');">i18n</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Function turbogears.i18n.utils.get_locale()=turbogears.i18n.utils-module.html#get_locale"><a title="turbogears.i18n.utils.get_locale" class="py-name" href="#" onclick="return doclink('link-2', 'get_locale', 'link-2');">get_locale</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-3" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-3', 'turbogears', 'link-0');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-4" class="py-name" targets="Module turbogears.startup=turbogears.startup-module.html"><a title="turbogears.startup" class="py-name" href="#" onclick="return doclink('link-4', 'startup', 'link-4');">startup</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.config=turbogears.command.i18n.InternationalizationTool-class.html#config,Module turbogears.config=turbogears.config-module.html,Variable turbogears.testutil.TGTest.config=turbogears.testutil.TGTest-class.html#config"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-5', 'config', 'link-5');">config</a></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-6', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module turbogears.util=turbogears.util-module.html"><a title="turbogears.util" class="py-name" href="#" onclick="return doclink('link-7', 'util', 'link-7');">util</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Function turbogears.util.parse_http_accept_header()=turbogears.util-module.html#parse_http_accept_header"><a title="turbogears.util.parse_http_accept_header" class="py-name" href="#" onclick="return doclink('link-8', 'parse_http_accept_header', 'link-8');">parse_http_accept_header</a></tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-9" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-9', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-10', 'i18n', 'link-1');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Module turbogears.i18n.utils=turbogears.i18n.utils-module.html"><a title="turbogears.i18n.utils" class="py-name" href="#" onclick="return doclink('link-11', 'utils', 'link-11');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-12" class="py-name" targets="Function turbogears.i18n.utils.lang_in_gettext_format()=turbogears.i18n.utils-module.html#lang_in_gettext_format"><a title="turbogears.i18n.utils.lang_in_gettext_format" class="py-name" href="#" onclick="return doclink('link-12', 'lang_in_gettext_format', 'link-12');">lang_in_gettext_format</a></tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-13" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-13', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Package turbogears.widgets=turbogears.widgets-module.html"><a title="turbogears.widgets" class="py-name" href="#" onclick="return doclink('link-14', 'widgets', 'link-14');">widgets</a></tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Module turbogears.command.base=turbogears.command.base-module.html,Module turbogears.filters.base=turbogears.filters.base-module.html,Module turbogears.identity.base=turbogears.identity.base-module.html,Module turbogears.toolbox.base=turbogears.toolbox.base-module.html,Module turbogears.view.base=turbogears.view.base-module.html,Module turbogears.widgets.base=turbogears.widgets.base-module.html"><a title="turbogears.command.base
+turbogears.filters.base
+turbogears.identity.base
+turbogears.toolbox.base
+turbogears.view.base
+turbogears.widgets.base" class="py-name" href="#" onclick="return doclink('link-15', 'base', 'link-15');">base</a></tt> <tt class="py-keyword">import</tt> <tt id="link-16" class="py-name" targets="Class turbogears.widgets.base.JSLink=turbogears.widgets.base.JSLink-class.html"><a title="turbogears.widgets.base.JSLink" class="py-name" href="#" onclick="return doclink('link-16', 'JSLink', 'link-16');">JSLink</a></tt><tt class="py-op">,</tt> <tt class="py-name">CoreWD</tt><tt class="py-op">,</tt> <tt class="py-name">RenderOnlyWD</tt><tt class="py-op">,</tt> <tt id="link-17" class="py-name" targets="Package turbogears.static=turbogears.static-module.html,Variable turbogears.widgets.base.static=turbogears.widgets.base-module.html#static"><a title="turbogears.static
+turbogears.widgets.base.static" class="py-name" href="#" onclick="return doclink('link-17', 'static', 'link-17');">static</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"LocalizableJSLink"</tt><tt class="py-op">,</tt> <tt class="py-string">"CalendarLangFileLink"</tt><tt class="py-op">]</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="LocalizableJSLink"></a><div id="LocalizableJSLink-def"><a name="L13"></a><tt class="py-lineno"> 13</tt> <a class="py-toggle" href="#" id="LocalizableJSLink-toggle" onclick="return toggle('LocalizableJSLink');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.i18n.LocalizableJSLink-class.html">LocalizableJSLink</a><tt class="py-op">(</tt><tt class="py-base-class">JSLink</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalizableJSLink-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="LocalizableJSLink-expanded"><a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-docstring">"""Provides a simple way to include language-specific data in your JS code.</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">    Language file to use is determined from the user's locale or from the 'language'</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">    parameter. If there is no language file for the language (determined via</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">    'supported_languages' parameter) than 'default_language' is used.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt id="link-18" class="py-name" targets="Variable turbogears.widgets.i18n.LocalizableJSLink.default_language=turbogears.widgets.i18n.LocalizableJSLink-class.html#default_language"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-18', 'default_language', 'link-18');">default_language</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'en'</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt id="link-19" class="py-name" targets="Variable turbogears.widgets.i18n.LocalizableJSLink.supported_languages=turbogears.widgets.i18n.LocalizableJSLink-class.html#supported_languages"><a title="turbogears.widgets.i18n.LocalizableJSLink.supported_languages" class="py-name" href="#" onclick="return doclink('link-19', 'supported_languages', 'link-19');">supported_languages</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'en'</tt><tt class="py-op">]</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">    <tt id="link-20" class="py-name" targets="Variable turbogears.database.AutoConnectHub.params=turbogears.database.AutoConnectHub-class.html#params,Variable turbogears.widgets.base.CSSLink.params=turbogears.widgets.base.CSSLink-class.html#params,Variable turbogears.widgets.base.CSSSource.params=turbogears.widgets.base.CSSSource-class.html#params,Variable turbogears.widgets.base.JSLink.params=turbogears.widgets.base.JSLink-class.html#params,Variable turbogears.widgets.base.JSSource.params=turbogears.widgets.base.JSSource-class.html#params,Variable turbogears.widgets.base.Resource.params=turbogears.widgets.base.Resource-class.html#params,Variable turbogears.widgets.base.Source.params=turbogears.widgets.base.Source-class.html#params,Variable turbogears.widgets.base.Widget.params=turbogears.widgets.base.Widget-class.html#params,Variable turbogears.widgets.big_widgets.AjaxGrid.params=turbogears.widgets.big_widgets.AjaxGrid-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteField.params=turbogears.widgets.big_widgets.AutoCompleteField-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteTextField.params=turbogears.widgets.big_widgets.AutoCompleteTextField-class.html#params,Variable turbogears.widgets.big_widgets.CalendarDatePicker.params=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#params,Variable turbogears.widgets.big_widgets.LinkRemoteFunction.params=turbogears.widgets.big_widgets.LinkRemoteFunction-class.html#params,Variable turbogears.widgets.big_widgets.RemoteForm.params=turbogears.widgets.big_widgets.RemoteForm-class.html#params,Variable turbogears.widgets.big_widgets.URLLink.params=turbogears.widgets.big_widgets.URLLink-class.html#params,Variable turbogears.widgets.forms.Button.params=turbogears.widgets.forms.Button-class.html#params,Variable turbogears.widgets.forms.CheckBox.params=turbogears.widgets.forms.CheckBox-class.html#params,Variable turbogears.widgets.forms.CheckBoxList.params=turbogears.widgets.forms.CheckBoxList-class.html#params,Variable turbogears.widgets.forms.CompoundFormField.params=turbogears.widgets.forms.CompoundFormField-class.html#params,Variable turbogears.widgets.forms.CompoundInputWidget.params=turbogears.widgets.forms.CompoundInputWidget-class.html#params,Variable turbogears.widgets.forms.FieldSet.params=turbogears.widgets.forms.FieldSet-class.html#params,Variable turbogears.widgets.forms.FileField.params=turbogears.widgets.forms.FileField-class.html#params,Variable turbogears.widgets.forms.Form.params=turbogears.widgets.forms.Form-class.html#params,Variable turbogears.widgets.forms.FormField.params=turbogears.widgets.forms.FormField-class.html#params,Variable turbogears.widgets.forms.FormFieldsContainer.params=turbogears.widgets.forms.FormFieldsContainer-class.html#params,Variable turbogears.widgets.forms.HiddenField.params=turbogears.widgets.forms.HiddenField-class.html#params,Variable turbogears.widgets.forms.ImageButton.params=turbogears.widgets.forms.ImageButton-class.html#params,Variable turbogears.widgets.forms.InputWidget.params=turbogears.widgets.forms.InputWidget-class.html#params,Variable turbogears.widgets.forms.Label.params=turbogears.widgets.forms.Label-class.html#params,Variable turbogears.widgets.forms.ListForm.params=turbogears.widgets.forms.ListForm-class.html#params,Variable turbogears.widgets.forms.MultipleSelectField.params=turbogears.widgets.forms.MultipleSelectField-class.html#params,Variable turbogears.widgets.forms.PasswordField.params=turbogears.widgets.forms.PasswordField-class.html#params,Variable turbogears.widgets.forms.RadioButtonList.params=turbogears.widgets.forms.RadioButtonList-class.html#params,Variable turbogears.widgets.forms.RepeatingFieldSet.params=turbogears.widgets.forms.RepeatingFieldSet-class.html#params,Variable turbogears.widgets.forms.RepeatingFormField.params=turbogears.widgets.forms.RepeatingFormField-class.html#params,Variable turbogears.widgets.forms.RepeatingInputWidget.params=turbogears.widgets.forms.RepeatingInputWidget-class.html#params,Variable turbogears.widgets.forms.SelectionField.params=turbogears.widgets.forms.SelectionField-class.html#params,Variable turbogears.widgets.forms.SingleSelectField.params=turbogears.widgets.forms.SingleSelectField-class.html#params,Variable turbogears.widgets.forms.TableForm.params=turbogears.widgets.forms.TableForm-class.html#params,Variable turbogears.widgets.forms.TextArea.params=turbogears.widgets.forms.TextArea-class.html#params,Variable turbogears.widgets.forms.TextField.params=turbogears.widgets.forms.TextField-class.html#params,Variable turbogears.widgets.i18n.LocalizableJSLink.params=turbogears.widgets.i18n.LocalizableJSLink-class.html#params,Variable turbogears.widgets.links.JumpMenu.params=turbogears.widgets.links.JumpMenu-class.html#params,Variable turbogears.widgets.rpc.RPC.params=turbogears.widgets.rpc.RPC-class.html#params"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-20', 'params', 'link-20');">params</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'default_language'</tt><tt class="py-op">,</tt> <tt class="py-string">'language'</tt><tt class="py-op">,</tt> <tt class="py-string">'supported_languages'</tt><tt class="py-op">]</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">    <tt id="link-21" class="py-name" targets="Variable turbogears.widgets.base.CSSLink.params_doc=turbogears.widgets.base.CSSLink-class.html#params_doc,Variable turbogears.widgets.base.CSSSource.params_doc=turbogears.widgets.base.CSSSource-class.html#params_doc,Variable turbogears.widgets.base.JSLink.params_doc=turbogears.widgets.base.JSLink-class.html#params_doc,Variable turbogears.widgets.base.JSSource.params_doc=turbogears.widgets.base.JSSource-class.html#params_doc,Variable turbogears.widgets.base.Resource.params_doc=turbogears.widgets.base.Resource-class.html#params_doc,Variable turbogears.widgets.base.Widget.params_doc=turbogears.widgets.base.Widget-class.html#params_doc,Variable turbogears.widgets.big_widgets.AutoCompleteField.params_doc=turbogears.widgets.big_widgets.AutoCompleteField-class.html#params_doc,Variable turbogears.widgets.big_widgets.AutoCompleteTextField.params_doc=turbogears.widgets.big_widgets.AutoCompleteTextField-class.html#params_doc,Variable turbogears.widgets.big_widgets.CalendarDatePicker.params_doc=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#params_doc,Variable turbogears.widgets.big_widgets.RemoteForm.params_doc=turbogears.widgets.big_widgets.RemoteForm-class.html#params_doc,Variable turbogears.widgets.big_widgets.URLLink.params_doc=turbogears.widgets.big_widgets.URLLink-class.html#params_doc,Variable turbogears.widgets.forms.Button.params_doc=turbogears.widgets.forms.Button-class.html#params_doc,Variable turbogears.widgets.forms.CheckBox.params_doc=turbogears.widgets.forms.CheckBox-class.html#params_doc,Variable turbogears.widgets.forms.CheckBoxList.params_doc=turbogears.widgets.forms.CheckBoxList-class.html#params_doc,Variable turbogears.widgets.forms.CompoundFormField.params_doc=turbogears.widgets.forms.CompoundFormField-class.html#params_doc,Variable turbogears.widgets.forms.CompoundInputWidget.params_doc=turbogears.widgets.forms.CompoundInputWidget-class.html#params_doc,Variable turbogears.widgets.forms.FieldSet.params_doc=turbogears.widgets.forms.FieldSet-class.html#params_doc,Variable turbogears.widgets.forms.FileField.params_doc=turbogears.widgets.forms.FileField-class.html#params_doc,Variable turbogears.widgets.forms.Form.params_doc=turbogears.widgets.forms.Form-class.html#params_doc,Variable turbogears.widgets.forms.FormField.params_doc=turbogears.widgets.forms.FormField-class.html#params_doc,Variable turbogears.widgets.forms.HiddenField.params_doc=turbogears.widgets.forms.HiddenField-class.html#params_doc,Variable turbogears.widgets.forms.ImageButton.params_doc=turbogears.widgets.forms.ImageButton-class.html#params_doc,Variable turbogears.widgets.forms.InputWidget.params_doc=turbogears.widgets.forms.InputWidget-class.html#params_doc,Variable turbogears.widgets.forms.Label.params_doc=turbogears.widgets.forms.Label-class.html#params_doc,Variable turbogears.widgets.forms.ListForm.params_doc=turbogears.widgets.forms.ListForm-class.html#params_doc,Variable turbogears.widgets.forms.MultipleSelectField.params_doc=turbogears.widgets.forms.MultipleSelectField-class.html#params_doc,Variable turbogears.widgets.forms.PasswordField.params_doc=turbogears.widgets.forms.PasswordField-class.html#params_doc,Variable turbogears.widgets.forms.RadioButtonList.params_doc=turbogears.widgets.forms.RadioButtonList-class.html#params_doc,Variable turbogears.widgets.forms.RepeatingFieldSet.params_doc=turbogears.widgets.forms.RepeatingFieldSet-class.html#params_doc,Variable turbogears.widgets.forms.RepeatingFormField.params_doc=turbogears.widgets.forms.RepeatingFormField-class.html#params_doc,Variable turbogears.widgets.forms.RepeatingInputWidget.params_doc=turbogears.widgets.forms.RepeatingInputWidget-class.html#params_doc,Variable turbogears.widgets.forms.SelectionField.params_doc=turbogears.widgets.forms.SelectionField-class.html#params_doc,Variable turbogears.widgets.forms.SingleSelectField.params_doc=turbogears.widgets.forms.SingleSelectField-class.html#params_doc,Variable turbogears.widgets.forms.TableForm.params_doc=turbogears.widgets.forms.TableForm-class.html#params_doc,Variable turbogears.widgets.forms.TextArea.params_doc=turbogears.widgets.forms.TextArea-class.html#params_doc,Variable turbogears.widgets.forms.TextField.params_doc=turbogears.widgets.forms.TextField-class.html#params_doc,Variable turbogears.widgets.i18n.LocalizableJSLink.params_doc=turbogears.widgets.i18n.LocalizableJSLink-class.html#params_doc,Variable turbogears.widgets.links.JumpMenu.params_doc=turbogears.widgets.links.JumpMenu-class.html#params_doc"><a title="turbogears.widgets.base.CSSLink.params_doc
+turbogears.widgets.base.CSSSource.params_doc
+turbogears.widgets.base.JSLink.params_doc
+turbogears.widgets.base.JSSource.params_doc
+turbogears.widgets.base.Resource.params_doc
+turbogears.widgets.base.Widget.params_doc
+turbogears.widgets.big_widgets.AutoCompleteField.params_doc
+turbogears.widgets.big_widgets.AutoCompleteTextField.params_doc
+turbogears.widgets.big_widgets.CalendarDatePicker.params_doc
+turbogears.widgets.big_widgets.RemoteForm.params_doc
+turbogears.widgets.big_widgets.URLLink.params_doc
+turbogears.widgets.forms.Button.params_doc
+turbogears.widgets.forms.CheckBox.params_doc
+turbogears.widgets.forms.CheckBoxList.params_doc
+turbogears.widgets.forms.CompoundFormField.params_doc
+turbogears.widgets.forms.CompoundInputWidget.params_doc
+turbogears.widgets.forms.FieldSet.params_doc
+turbogears.widgets.forms.FileField.params_doc
+turbogears.widgets.forms.Form.params_doc
+turbogears.widgets.forms.FormField.params_doc
+turbogears.widgets.forms.HiddenField.params_doc
+turbogears.widgets.forms.ImageButton.params_doc
+turbogears.widgets.forms.InputWidget.params_doc
+turbogears.widgets.forms.Label.params_doc
+turbogears.widgets.forms.ListForm.params_doc
+turbogears.widgets.forms.MultipleSelectField.params_doc
+turbogears.widgets.forms.PasswordField.params_doc
+turbogears.widgets.forms.RadioButtonList.params_doc
+turbogears.widgets.forms.RepeatingFieldSet.params_doc
+turbogears.widgets.forms.RepeatingFormField.params_doc
+turbogears.widgets.forms.RepeatingInputWidget.params_doc
+turbogears.widgets.forms.SelectionField.params_doc
+turbogears.widgets.forms.SingleSelectField.params_doc
+turbogears.widgets.forms.TableForm.params_doc
+turbogears.widgets.forms.TextArea.params_doc
+turbogears.widgets.forms.TextField.params_doc
+turbogears.widgets.i18n.LocalizableJSLink.params_doc
+turbogears.widgets.links.JumpMenu.params_doc" class="py-name" href="#" onclick="return doclink('link-21', 'params_doc', 'link-21');">params_doc</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-string">'language'</tt> <tt class="py-op">:</tt> <tt class="py-string">'language code to use '</tt> \ </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">            <tt class="py-string">'(overrides user locale setting which is the default)'</tt><tt class="py-op">,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-string">'default_language'</tt> <tt class="py-op">:</tt> <tt class="py-string">'language code to use '</tt> \ </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                <tt class="py-string">'if specified language is not supported'</tt><tt class="py-op">,</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-string">'supported_languages'</tt> <tt class="py-op">:</tt> <tt class="py-string">'list of supported language codes '</tt> \ </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt class="py-string">' (which means corresponding language files exist)'</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="LocalizableJSLink.update_params"></a><div id="LocalizableJSLink.update_params-def"><a name="L33"></a><tt class="py-lineno"> 33</tt> <a class="py-toggle" href="#" id="LocalizableJSLink.update_params-toggle" onclick="return toggle('LocalizableJSLink.update_params');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.i18n.LocalizableJSLink-class.html#update_params">update_params</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalizableJSLink.update_params-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="LocalizableJSLink.update_params-expanded"><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name" targets="Class turbogears.widgets.i18n.LocalizableJSLink=turbogears.widgets.i18n.LocalizableJSLink-class.html"><a title="turbogears.widgets.i18n.LocalizableJSLink" class="py-name" href="#" onclick="return doclink('link-22', 'LocalizableJSLink', 'link-22');">LocalizableJSLink</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method turbogears.widgets.base.CompoundWidget.update_params()=turbogears.widgets.base.CompoundWidget-class.html#update_params,Method turbogears.widgets.base.Link.update_params()=turbogears.widgets.base.Link-class.html#update_params,Method turbogears.widgets.base.Widget.update_params()=turbogears.widgets.base.Widget-class.html#update_params,Method turbogears.widgets.big_widgets.AjaxGrid.update_params()=turbogears.widgets.big_widgets.AjaxGrid-class.html#update_params,Method turbogears.widgets.big_widgets.CalendarDatePicker.update_params()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#update_params,Method turbogears.widgets.big_widgets.RemoteForm.update_params()=turbogears.widgets.big_widgets.RemoteForm-class.html#update_params,Method turbogears.widgets.datagrid.DataGrid.update_params()=turbogears.widgets.datagrid.DataGrid-class.html#update_params,Method turbogears.widgets.forms.Button.update_params()=turbogears.widgets.forms.Button-class.html#update_params,Method turbogears.widgets.forms.CheckBox.update_params()=turbogears.widgets.forms.CheckBox-class.html#update_params,Method turbogears.widgets.forms.CompoundInputWidget.update_params()=turbogears.widgets.forms.CompoundInputWidget-class.html#update_params,Method turbogears.widgets.forms.Form.update_params()=turbogears.widgets.forms.Form-class.html#update_params,Method turbogears.widgets.forms.FormField.update_params()=turbogears.widgets.forms.FormField-class.html#update_params,Method turbogears.widgets.forms.FormFieldsContainer.update_params()=turbogears.widgets.forms.FormFieldsContainer-class.html#update_params,Method turbogears.widgets.forms.InputWidget.update_params()=turbogears.widgets.forms.InputWidget-class.html#update_params,Method turbogears.widgets.forms.RepeatingInputWidget.update_params()=turbogears.widgets.forms.RepeatingInputWidget-class.html#update_params,Method turbogears.widgets.forms.SelectionField.update_params()=turbogears.widgets.forms.SelectionField-class.html#update_params,Method turbogears.widgets.i18n.CalendarLangFileLink.update_params()=turbogears.widgets.i18n.CalendarLangFileLink-class.html#update_params,Method turbogears.widgets.i18n.LocalizableJSLink.update_params()=turbogears.widgets.i18n.LocalizableJSLink-class.html#update_params,Method turbogears.widgets.rpc.RPC.update_params()=turbogears.widgets.rpc.RPC-class.html#update_params"><a title="turbogears.widgets.base.CompoundWidget.update_params
+turbogears.widgets.base.Link.update_params
+turbogears.widgets.base.Widget.update_params
+turbogears.widgets.big_widgets.AjaxGrid.update_params
+turbogears.widgets.big_widgets.CalendarDatePicker.update_params
+turbogears.widgets.big_widgets.RemoteForm.update_params
+turbogears.widgets.datagrid.DataGrid.update_params
+turbogears.widgets.forms.Button.update_params
+turbogears.widgets.forms.CheckBox.update_params
+turbogears.widgets.forms.CompoundInputWidget.update_params
+turbogears.widgets.forms.Form.update_params
+turbogears.widgets.forms.FormField.update_params
+turbogears.widgets.forms.FormFieldsContainer.update_params
+turbogears.widgets.forms.InputWidget.update_params
+turbogears.widgets.forms.RepeatingInputWidget.update_params
+turbogears.widgets.forms.SelectionField.update_params
+turbogears.widgets.i18n.CalendarLangFileLink.update_params
+turbogears.widgets.i18n.LocalizableJSLink.update_params
+turbogears.widgets.rpc.RPC.update_params" class="py-name" href="#" onclick="return doclink('link-23', 'update_params', 'link-23');">update_params</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt id="link-24" class="py-name" targets="Method turbogears.toolbox.admi18n.Internationalization.language()=turbogears.toolbox.admi18n.Internationalization-class.html#language,Variable turbogears.widgets.i18n.LocalizableJSLink.language=turbogears.widgets.i18n.LocalizableJSLink-class.html#language"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-24', 'language', 'link-24');">language</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-25', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'language'</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt id="link-26" class="py-name"><a title="turbogears.i18n.utils.get_locale" class="py-name" href="#" onclick="return doclink('link-26', 'get_locale', 'link-2');">get_locale</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-27" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-27', 'language', 'link-24');">language</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.supported_languages" class="py-name" href="#" onclick="return doclink('link-28', 'supported_languages', 'link-19');">supported_languages</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">            <tt id="link-29" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-29', 'language', 'link-24');">language</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-30', 'default_language', 'link-18');">default_language</a></tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'link'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'link'</tt><tt class="py-op">]</tt> <tt class="py-op">%</tt> <tt class="py-op">{</tt><tt class="py-string">'lang'</tt><tt class="py-op">:</tt><tt id="link-31" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-31', 'language', 'link-24');">language</a></tt><tt class="py-op">}</tt> </tt>
+</div></div><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="LocalizableJSLinkDesc"></a><div id="LocalizableJSLinkDesc-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="LocalizableJSLinkDesc-toggle" onclick="return toggle('LocalizableJSLinkDesc');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.i18n.LocalizableJSLinkDesc-class.html">LocalizableJSLinkDesc</a><tt class="py-op">(</tt><tt class="py-base-class">CoreWD</tt><tt class="py-op">,</tt> <tt class="py-base-class">RenderOnlyWD</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="LocalizableJSLinkDesc-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="LocalizableJSLinkDesc-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-32', 'name', 'link-32');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Localizable JS Link"</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt id="link-33" class="py-name" targets="Variable turbogears.widgets.base.WidgetDescription.for_widget=turbogears.widgets.base.WidgetDescription-class.html#for_widget"><a title="turbogears.widgets.base.WidgetDescription.for_widget" class="py-name" href="#" onclick="return doclink('link-33', 'for_widget', 'link-33');">for_widget</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink" class="py-name" href="#" onclick="return doclink('link-34', 'LocalizableJSLink', 'link-22');">LocalizableJSLink</a></tt><tt class="py-op">(</tt><tt class="py-string">"turbogears"</tt><tt class="py-op">,</tt> <tt class="py-string">"js/yourscript-%(lang)s.js"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt id="link-35" class="py-name" targets="Variable turbogears.widgets.i18n._norm_tag=turbogears.widgets.i18n-module.html#_norm_tag"><a title="turbogears.widgets.i18n._norm_tag" class="py-name" href="#" onclick="return doclink('link-35', '_norm_tag', 'link-35');">_norm_tag</a></tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-op">[</tt><tt class="py-op">(</tt><tt id="link-36" class="py-name" targets="Variable turbogears.widgets.i18n.c=turbogears.widgets.i18n-module.html#c"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-36', 'c', 'link-36');">c</a></tt><tt class="py-op">.</tt><tt class="py-name">islower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt id="link-37" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-37', 'c', 'link-36');">c</a></tt><tt class="py-op">.</tt><tt class="py-name">isdigit</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt id="link-38" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-38', 'c', 'link-36');">c</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'-'</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-keyword">and</tt> <tt id="link-39" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-39', 'c', 'link-36');">c</a></tt> <tt class="py-keyword">or</tt> <tt id="link-40" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-40', 'c', 'link-36');">c</a></tt><tt class="py-op">.</tt><tt class="py-name">isupper</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt id="link-41" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-41', 'c', 'link-36');">c</a></tt><tt class="py-op">.</tt><tt class="py-name">lower</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-string">' '</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-42" class="py-name"><a title="turbogears.widgets.i18n.c" class="py-name" href="#" onclick="return doclink('link-42', 'c', 'link-36');">c</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">chr</tt><tt class="py-op">,</tt> <tt class="py-name">xrange</tt><tt class="py-op">(</tt><tt class="py-number">256</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="norm_tag"></a><div id="norm_tag-def"><a name="L50"></a><tt class="py-lineno"> 50</tt> <a class="py-toggle" href="#" id="norm_tag-toggle" onclick="return toggle('norm_tag');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.i18n-module.html#norm_tag">norm_tag</a><tt class="py-op">(</tt><tt class="py-param">tag</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="norm_tag-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="norm_tag-expanded"><a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-docstring">"""Normalize string to alphanumeric ascii chars, hyphens and underscores.</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">    The length is limited to 16 characters and other characters are</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">    collapsed to single underscore, or ignored at the start or end.</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">tag</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">'_'</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">tag</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">16</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Function turbogears.i18n.kidutils.translate()=turbogears.i18n.kidutils-module.html#translate"><a title="turbogears.i18n.kidutils.translate" class="py-name" href="#" onclick="return doclink('link-43', 'translate', 'link-43');">translate</a></tt><tt class="py-op">(</tt><tt id="link-44" class="py-name"><a title="turbogears.widgets.i18n._norm_tag" class="py-name" href="#" onclick="return doclink('link-44', '_norm_tag', 'link-35');">_norm_tag</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="norm_charset"></a><div id="norm_charset-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="norm_charset-toggle" onclick="return toggle('norm_charset');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.i18n-module.html#norm_charset">norm_charset</a><tt class="py-op">(</tt><tt class="py-param">charset</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="norm_charset-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="norm_charset-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-docstring">"""Normalize the name of a character set."""</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-45" class="py-name" targets="Variable turbogears.widgets.base.JSLink.charset=turbogears.widgets.base.JSLink-class.html#charset"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-45', 'charset', 'link-45');">charset</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt id="link-46" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-46', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">=</tt> <tt class="py-name">norm_tag</tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-47', 'charset', 'link-45');">charset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">            <tt id="link-48" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-48', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">=</tt> <tt class="py-name">norm_tag</tt><tt class="py-op">(</tt><tt class="py-name">codecs</tt><tt class="py-op">.</tt><tt class="py-name">lookup</tt><tt class="py-op">(</tt><tt id="link-49" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-49', 'charset', 'link-45');">charset</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-50', 'name', 'link-32');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-op">(</tt><tt class="py-name">LookupError</tt><tt class="py-op">,</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">            <tt class="py-comment"># AttributeError only needed for Py &lt; 2.5</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-51" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-51', 'charset', 'link-45');">charset</a></tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="CalendarLangFileLink"></a><div id="CalendarLangFileLink-def"><a name="L73"></a><tt class="py-lineno"> 73</tt> <a class="py-toggle" href="#" id="CalendarLangFileLink-toggle" onclick="return toggle('CalendarLangFileLink');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.i18n.CalendarLangFileLink-class.html">CalendarLangFileLink</a><tt class="py-op">(</tt><tt class="py-base-class">LocalizableJSLink</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CalendarLangFileLink-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CalendarLangFileLink-expanded"><a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-docstring">"""Links to proper calendar.js language file depending on HTTP info."""</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt id="link-52" class="py-name" targets="Variable turbogears.widgets.i18n.CalendarLangFileLink.default_charset=turbogears.widgets.i18n.CalendarLangFileLink-class.html#default_charset"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-52', 'default_charset', 'link-52');">default_charset</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'utf-8'</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="CalendarLangFileLink.update_params"></a><div id="CalendarLangFileLink.update_params-def"><a name="L78"></a><tt class="py-lineno"> 78</tt> <a class="py-toggle" href="#" id="CalendarLangFileLink.update_params-toggle" onclick="return toggle('CalendarLangFileLink.update_params');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.i18n.CalendarLangFileLink-class.html#update_params">update_params</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CalendarLangFileLink.update_params-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CalendarLangFileLink.update_params-expanded"><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt id="link-53" class="py-name" targets="Variable turbogears.toolbox.admi18n.Internationalization.languages=turbogears.toolbox.admi18n.Internationalization-class.html#languages"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-53', 'languages', 'link-53');">languages</a></tt> <tt class="py-op">=</tt> <tt id="link-54" class="py-name"><a title="turbogears.util.parse_http_accept_header" class="py-name" href="#" onclick="return doclink('link-54', 'parse_http_accept_header', 'link-8');">parse_http_accept_header</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">headers</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-55', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"Accept-Language"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt id="link-56" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-56', 'language', 'link-24');">language</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-57', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'language'</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-58" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-58', 'language', 'link-24');">language</a></tt> <tt class="py-keyword">and</tt> <tt id="link-59" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-59', 'language', 'link-24');">language</a></tt> <tt class="py-op">!=</tt> <tt class="py-string">'*'</tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt id="link-60" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-60', 'languages', 'link-53');">languages</a></tt><tt class="py-op">.</tt><tt class="py-name">insert</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt id="link-61" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-61', 'language', 'link-24');">language</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-62', 'languages', 'link-53');">languages</a></tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">norm_tag</tt><tt class="py-op">,</tt> <tt id="link-63" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-63', 'languages', 'link-53');">languages</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt id="link-64" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-64', 'default_language', 'link-18');">default_language</a></tt> <tt class="py-op">=</tt> <tt class="py-name">norm_tag</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-65" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-65', 'default_language', 'link-18');">default_language</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt id="link-66" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-66', 'languages', 'link-53');">languages</a></tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-67', 'default_language', 'link-18');">default_language</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-name">charsets</tt> <tt class="py-op">=</tt> <tt id="link-68" class="py-name"><a title="turbogears.util.parse_http_accept_header" class="py-name" href="#" onclick="return doclink('link-68', 'parse_http_accept_header', 'link-8');">parse_http_accept_header</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">headers</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-69', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"Accept-Charset"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">charsets</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">norm_charset</tt><tt class="py-op">,</tt> <tt class="py-name">charsets</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt id="link-70" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-70', 'default_charset', 'link-52');">default_charset</a></tt> <tt class="py-op">=</tt> <tt class="py-name">norm_charset</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-71" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-71', 'default_charset', 'link-52');">default_charset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt id="link-72" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-72', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">=</tt> <tt class="py-name">norm_charset</tt><tt class="py-op">(</tt><tt id="link-73" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-73', 'config', 'link-5');">config</a></tt><tt class="py-op">.</tt><tt id="link-74" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-74', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"kid.encoding"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-75" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-75', 'charset', 'link-45');">charset</a></tt> <tt class="py-keyword">and</tt> <tt id="link-76" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-76', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">!=</tt> <tt id="link-77" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-77', 'default_charset', 'link-52');">default_charset</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt class="py-name">charsets</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-78" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-78', 'charset', 'link-45');">charset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">charsets</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-79" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-79', 'default_charset', 'link-52');">default_charset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">        <tt id="link-80" class="py-name" targets="Variable turbogears.widgets.forms.InputWidget.path=turbogears.widgets.forms.InputWidget-class.html#path"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-80', 'path', 'link-80');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/tg_widgets/%s"</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">mod</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-name">base_dir</tt> <tt class="py-op">=</tt> <tt id="link-81" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-81', 'config', 'link-5');">config</a></tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-82', 'get', 'link-25');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"static_filter.dir"</tt><tt class="py-op">,</tt> <tt id="link-83" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-83', 'path', 'link-80');">path</a></tt><tt class="py-op">=</tt><tt id="link-84" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-84', 'path', 'link-80');">path</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-name">base_name</tt> <tt class="py-op">=</tt> <tt class="py-string">"calendar/lang/calendar-"</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">find_link</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt id="link-85" class="py-name"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-85', 'params', 'link-20');">params</a></tt> <tt class="py-op">=</tt> <tt id="link-86" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-86', 'dict', 'link-86');">dict</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">lang</tt> <tt class="py-keyword">in</tt> <tt id="link-87" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-87', 'languages', 'link-53');">languages</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">lang</tt> <tt class="py-keyword">or</tt> <tt class="py-name">lang</tt> <tt class="py-op">==</tt> <tt class="py-string">'*'</tt><tt class="py-op">:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">                    <tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt id="link-88" class="py-name"><a title="turbogears.widgets.i18n.LocalizableJSLink.default_language" class="py-name" href="#" onclick="return doclink('link-88', 'default_language', 'link-18');">default_language</a></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">                <tt class="py-name">base_lang</tt> <tt class="py-op">=</tt> <tt class="py-name">base_name</tt> <tt class="py-op">+</tt> <tt class="py-name">lang</tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">'-'</tt><tt class="py-op">,</tt> <tt class="py-string">'_'</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt class="py-keyword">for</tt> <tt id="link-89" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-89', 'charset', 'link-45');">charset</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">charsets</tt><tt class="py-op">:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-90" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-90', 'charset', 'link-45');">charset</a></tt> <tt class="py-keyword">or</tt> <tt id="link-91" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-91', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">==</tt> <tt class="py-string">'*'</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">                        <tt id="link-92" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-92', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">=</tt> <tt id="link-93" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-93', 'default_charset', 'link-52');">default_charset</a></tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">                    <tt class="py-name">file_name</tt> <tt class="py-op">=</tt> <tt class="py-name">base_lang</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt id="link-94" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-94', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">!=</tt> <tt id="link-95" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-95', 'default_charset', 'link-52');">default_charset</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                        <tt class="py-name">file_name</tt> <tt class="py-op">+=</tt> <tt class="py-string">'-'</tt> <tt class="py-op">+</tt> <tt id="link-96" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-96', 'charset', 'link-45');">charset</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt class="py-string">'-'</tt><tt class="py-op">,</tt> <tt class="py-string">'_'</tt><tt class="py-op">)</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">                    <tt class="py-name">file_name</tt> <tt class="py-op">+=</tt> <tt class="py-string">'.js'</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-97" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-97', 'path', 'link-80');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-98" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-98', 'path', 'link-80');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-name">base_dir</tt><tt class="py-op">,</tt> <tt class="py-name">file_name</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">                        <tt id="link-99" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-99', 'path', 'link-80');">path</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"/%stg_widgets/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-100" class="py-name"><a title="turbogears.startup" class="py-name" href="#" onclick="return doclink('link-100', 'startup', 'link-4');">startup</a></tt><tt class="py-op">.</tt><tt id="link-101" class="py-name" targets="Variable turbogears.startup.webpath=turbogears.startup-module.html#webpath"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-101', 'webpath', 'link-101');">webpath</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">mod</tt><tt class="py-op">)</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                        <tt id="link-102" class="py-name" targets="Variable turbogears.widgets.big_widgets.URLLink.link=turbogears.widgets.big_widgets.URLLink-class.html#link"><a title="turbogears.widgets.big_widgets.URLLink.link" class="py-name" href="#" onclick="return doclink('link-102', 'link', 'link-102');">link</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"%s/%s"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-103" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-103', 'path', 'link-80');">path</a></tt><tt class="py-op">,</tt> <tt class="py-name">file_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                        <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt id="link-104" class="py-name"><a title="turbogears.widgets.big_widgets.URLLink.link" class="py-name" href="#" onclick="return doclink('link-104', 'link', 'link-102');">link</a></tt><tt class="py-op">,</tt> <tt id="link-105" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.language
+turbogears.widgets.i18n.LocalizableJSLink.language" class="py-name" href="#" onclick="return doclink('link-105', 'language', 'link-24');">language</a></tt><tt class="py-op">,</tt> <tt id="link-106" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-106', 'charset', 'link-45');">charset</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">                    <tt class="py-keyword">if</tt> <tt id="link-107" class="py-name"><a title="turbogears.widgets.base.JSLink.charset" class="py-name" href="#" onclick="return doclink('link-107', 'charset', 'link-45');">charset</a></tt> <tt class="py-op">==</tt> <tt id="link-108" class="py-name"><a title="turbogears.widgets.i18n.CalendarLangFileLink.default_charset" class="py-name" href="#" onclick="return doclink('link-108', 'default_charset', 'link-52');">default_charset</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                        <tt class="py-keyword">break</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">        <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">"link"</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'language'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'charset'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">find_link</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

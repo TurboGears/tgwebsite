@@ -1,0 +1,281 @@
+.. index:: form validation, schema
+
+Widget Form Validation with Schemas
+===================================
+
+.. contents:: Table of Contents
+   :depth: 2
+
+
+In the :doc:`simple form widget tutorial <SimpleForm>` you saw how to create a simple form with
+widgets and how to validate the input to the fields of the form by attaching a
+validator instance to each form field when it was instantiated.
+
+This is fine as long as the successful validation of a field only depends only
+on the value of the field itself. There are, however, situations where this is
+not enough. Examples:
+
+* You want to make certain that the user has filled in at least two (or three,
+  four, etc.) fields within a group of fields, but you don't care which.
+
+* You want to check that the values of two related fields match, e.g. a
+  password entry with a confirmation field.
+
+* You want to do some consistency or plausibility checks on the submitted data
+  as a whole, e.g. when the user entered an address, you could check that the
+  city he entered actually exists in the country he also specified, or you could
+  check the validity of credit card information (credit card number, expiry date
+  and security code).
+
+For problems like these, validation schemas are the answer. A validation schema
+is a collection of validators, both simple and *compound* combined into a
+``validators.Schema``. A `compound validator`_ consists of several field
+validators -- the same ones you used in the previous tutorial -- that work
+together. Technically, field validators are sub-classes of
+``validators.FancyValidator`` (``validator.NotEmpty``,
+``validator.UnicodeString``, etc.) while compound validators inherit from
+``validators.CompoundValidator``. Conveniently ``Schema`` itself is a
+compound validator, which allows schemas to be nested.
+
+The FormEncode site has `some basic documentation`_ about schemas and what you
+can do with them, but when referring to it, bear one caveat in mind: TurboGears
+defines a few extra validators and overrides the behavior of some of the
+``FormEncode`` classes. So, when you use validators in TurboGears, instead of
+importing from ``formencode``, always use the following::
+
+    from turbogears import validators
+
+.. _compound validator:
+    http://formencode.org/Validator.html#compound-validators
+.. _some basic documentation:
+    http://formencode.org/Validator.html#compound-validators
+
+
+Simple Validation Schemas
+-------------------------
+
+Now that we've seen what validation schemas are, we'll walk through a few
+examples to show how they're used. Let's start simple::
+
+    class EmailFormSchema(validators.Schema):
+        id = validators.Int(not_empty=True)
+        name = validators.UnicodeString(not_empty=True, max=50, strip=True)
+        email = validators.Email(not_empty=True, max=255, strip=True)
+
+This schema validates a simple dataset that should consist of an integer ID, a
+Unicode string and another string with a (syntactically) valid email address.
+Let's build a simple form widget that can submit a matching dataset::
+
+    class EmailFormFields(widgets.WidgetsList):
+        id = widgets.HiddenField('id')
+        name = widgets.TextField('name',
+          label=_(u'Name'),
+          attrs=dict(maxlength=50),
+          help_text=_(u'Your name. Required'))
+        email = widgets.TextField('email',
+          label=_(u'Email'),
+          attrs=dict(maxlength=255),
+          help_text=_(u'Your email address. Required'))
+
+Note that the names of the form field widgets (i.e. the first argument to the
+widget constructor) are the same as the attribute names of the matching
+validators in the schema. As a convenience, you can leave this argument out if
+the name is the same as the matching attribute in the ``WidgetsList``. It's
+included here because we're being pedantic. Now we need to pack the widgets
+into a form::
+
+    email_form = widgets.TableForm(
+        name="emailform",
+        fields=EmailFormFields(),
+        validator=EmailFormSchema())
+
+If you compare this to the `example in the simple form widget tutorial`_,
+you'll see that we only add the ``validator`` argument to the form constructor,
+passing a reference to an instance of the validation schema.
+
+.. _example in the simple form widget tutorial:
+    1.0/SimpleWidgetForm#defining-the-form
+
+The usage of the form in your controller is exactly the same as if you attached
+the validators directly to the form field widgets. In fact, the validators you
+attach to the individual fields are turned into a schema behind the scenes by
+TurboGears::
+
+    @expose()
+    @validate(form=email_form)
+    @error_handler(show_form)
+    def save(self, id, name, email):
+        # save data here
+        # id, name and email will be guaranteed to be present
+        # and contain values of the right type
+        # if not, the error_handler method ('show_form' here) will be called
+        pass
+
+So what have we gained by using a schema so far? Admittedly not much, but we
+have separated the definition of the form fields from that of the validators,
+which some (including this author) prefer. In the next sections we will use
+schemas to do more clever things.
+
+
+Compound Validators
+-------------------
+
+Before we examine how to use schemas to check several fields in combination,
+we'll have a look at a simpler, but also very useful way to combine validators:
+the *compound validators* `validators.All`_ and `validators.Any`_.
+
+.. _validators.All: http://formencode.org/class-formencode.compound.All.html
+.. _validators.Any: http://formencode.org/class-formencode.compound.Any.html
+
+These two validator classes allow you to apply several validators to *the same*
+field at the same time, acting similar to the ``AND`` resp. ``OR`` operator in
+boolean logic. As an example, let's say that we would like to allow the user to
+enter *either* an email address *or* a URL (i.e. his homepage address)::
+
+    class EmailFormSchema(validators.Schema):
+
+        ...
+
+        email = validators.Any(
+          validators.Email(strip=True),
+          validators.URL(add_http=True)
+        )
+
+That was simple, huh? Let's try ``validators.All``::
+
+    class EmailFormSchema(validators.Schema):
+
+        ...
+
+        name = validators.All(
+          validators.UnicodeString(not_empty=True, max=50, strip=True),
+          validators.Regex(r'^\w+\s+\w+$')
+        )
+
+This would require that the name is a string (which will be converted to
+unicode) no longer than 50 characters and that it is of the form *word,
+whitespace, word*, e.g. a first and lastname like "John Meyer", but not just
+"John" or "John D. Smith".
+
+.. tip:: You can also use compound validators when attaching a validator to a
+          widget with the ``validator`` keyword argument to its constructor::
+
+            email = widgets.TextEntry('email'
+                validator=validators.Any(
+                  validators.Email(strip=True),
+                  validators.URL(add_http=True)
+                )
+            )
+
+
+Chained Validators
+------------------
+
+A big advantage of validation schemas is that they allow you to validate the
+whole of the form data after the values of the each form fields have been
+validated by themselves. This feature is called *chained validators*. Let's
+extend our example form with two password entry fields. The user must enter the
+same password into both fields for the validation to be successfull. First we
+define the new form field widgets::
+
+    class EmailFormFields(widgets.WidgetsList):
+
+        ...
+
+        password = widgets.PasswordField(
+          label=_(u'Password'),
+          attrs=dict(maxlength=50),
+          help_text=_(u'Specify your password.'))
+        password_confirm = widgets.PasswordField(
+          label=_(u'Confirm'),
+          attrs=dict(maxlength=50),
+          help_text=_(u'Enter the password again to confirm.'))
+
+And now we extend the validation schema::
+
+    class EmailFormSchema(validators.Schema):
+
+        ...
+
+        password = validators.UnicodeString(max=50)
+        password_confirm = validators.UnicodeString(max=50)
+        chained_validators = [
+          validators.FieldsMatch('password', 'password_confirm')
+        ]
+
+And that's it. The ``FieldsMatch`` validator checks that the value of the two
+fields are the same (i.e., that the password matches the confirmation). If they
+don't, the form will be rediplayed with the error message  "Fields do not
+match" (or similar) next to the password and confirmation fields.
+
+.. tip ::
+    If you're using using fields with ``validator`` arguments rather than
+    explicit schemas, you can still make use of ``chained_validators``.
+    Simply create a Schema containing only ``chained_validators`` and pass
+    that as the Form's validator::
+
+        class EmailForm(ListForm):
+            validator = validators.Schema(
+                chained_validators=[
+                    validators.FieldsMatch('password','password_confirm')
+                ])
+            fields = EmailFormFieldsWithValidators()
+
+
+Using Custom Validators in Schemas
+----------------------------------
+
+``FormEncode`` allows you to `define your own custom validators`_ rather easily
+by subclassing the ``validators.FancyValidator`` class. This example will check
+that email addresses entered in our form have to conform to
+``<name>@somedomain.tld``, where ``<name>`` is the name entered in the "Name"
+field with spaces replaced by dots, i.e. if the user entered ``"Joe Doe"`` as
+the name, the email will have to match something like
+``"Joe.Doe@somedomain.tld"``. Here's our custom validator::
+
+    class EmailMatchesName(validators.FancyValidator):
+        def _to_python(self, value, state):
+            name = value.get('name', '').replace(' ', '.')
+            email_prefix = value.get('email', '').split('@', 1)[0]
+            if email_prefix != name:
+                raise validators.Invalid(
+                    'Email does not conform to naming rules.',
+                    value, state)
+            return value
+
+.. _define your own custom validators:
+    http://formencode.org/Validator.html#writing-your-own-validator
+
+The custom validator defines the method ``_to_python``, which receives a
+``value`` and a ``state`` argument. The latter is not important for our purpose
+now, we are only interested in the contents of the ``value`` argument. When
+using this validator as a chained validator, ``value`` will be a dictionary
+with the data from the whole form after all fields have been validated on their
+own. We can pick the values for the fields we're interested in from this
+dictionary and, if our validation condition fails, raise a
+``validators.Invalid`` exception instance with an appropriate message.
+
+
+Conclusion
+----------
+
+Validation schemas are a powerful tool to define complex behavior for widget
+forms. In basic usage they only provide separation of form field declarations
+from their matching validators.
+
+When combining the chained validators feature with custom validators, you can
+use schemas to check interdependencies between form fields or implement dynamic
+validation rules where the requirements for some fields depend on external
+resources or events.
+
+
+Download the Example Project
+----------------------------
+
+To run the example project, which shows a simple form with two password fields,
+validated by a chained validator, download the tarball, extract, change into
+the ``FormsValidationTutorial-1.0`` directory and run::
+
+    ./start-formvaltut.py
+
+:download:`FormValidationTutorial-1.0.tar.gz <downloads/FormValidationTutorial-1.0.tar.gz>`

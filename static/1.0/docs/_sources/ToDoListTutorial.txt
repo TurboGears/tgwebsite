@@ -1,0 +1,1035 @@
+Brian's TurboGears Tutorial
+===========================
+
+.. contents::
+    :depth: 2
+
+Starting a TurboGears project? Here's what you need to know.
+
+This tutorial won't discuss advanced features like the Identity framework or
+automatic form generation and validation. Instead, this tutorial will focus
+on giving you a deeper understanding of the basics behind TurboGears.
+
+The tutorial application will be a multi-user to-do list manager.
+You can :download:`download <downloads/todolist.tar.gz>` the final code here.
+
+
+Installing TurboGears
+---------------------
+
+This tutorial will cover version 1.0.9 of TurboGears. The basics
+should still work across versions.
+
+First of course, you need to install TurboGears as explained in the
+:doc:`instructions <Install/index>` for downloading and installing.
+
+Make sure you did everything right by running ``tg-admin``::
+
+    $ tg-admin
+
+The output should look something like this::
+
+    TurboGears 1.0.9 command line interface
+
+    Usage: /usr/local/bin/tg-admin [options] <command>
+
+    ...
+
+
+Generating a Project Skeleton
+-----------------------------
+
+Type this to make your project skeleton::
+
+    $ tg-admin quickstart
+
+We choose 'tutorial' as project and package name (simply press the return key
+when being asked for the package name and whether you need Identity)::
+
+    Enter project name: tutorial
+    Enter package name [tutorial]:
+    Yo you need Identity (username/passwords) in this project? [no]
+
+Change to the directory created for you by ``tg-admin``. From now on any
+path references during this tutorial will be relative to this directory::
+
+    $ cd tutorial
+
+At this point your project should be operational. Make sure this is
+the case by starting the built-in web server::
+
+    $ python start-tutorial.py
+
+If everything worked, you should be able to browse to http://localhost:8080
+and see the welcome message. If something goes wrong (hard drive erased, monitor
+on fire, etc.), then the TurboGears package was probably installed incorrectly.
+
+To change the port used by the built-in web server, edit ``dev.cfg``::
+
+    server.socket_port = 8080
+
+To use the default 'production' configuration, specify the corresponding
+configuration file when starting the server::
+
+    $ python start-tutorial.py prod.cfg
+
+
+Building Your Model
+-------------------
+
+The very first thing you should customize is the location of the database your
+TurboGears app will use. If you don't need an SQL database, go to the next section.
+
+Open ``dev.cfg`` and find the appropriate commented line for the SQL
+implementation you will be using. For this tutorial we will use SQLite
+because it uses a local file instead of a server connection::
+
+    sqlobject.dburi = "sqlite://%(current_dir_uri)s/tutorial.sqlite"
+
+This will create the database in the project directory, but you can specify
+any other absolute path::
+
+    sqlobject.dburi = "sqlite:///home/brian/tutorial/tutorial.sqlite"
+
+Close ``dev.cfg``, you won't need it for the rest of this tutorial.
+
+To define your database tables, open the existing file ``tutorial/model.py``.
+TurboGears 1.0 uses SQLObject for database abstraction. In SQLObject, classes
+represent tables and class attributes represent columns. Since we're making a
+to-do list application, add the following classes in ``tutorial/model.py``::
+
+    class User(SQLObject):
+        email = StringCol(alternateID=True)
+        lists = MultipleJoin('List')
+
+    class List(SQLObject):
+        title = UnicodeCol(notNone=True)
+        user = ForeignKey('User')
+        items = MultipleJoin('Item')
+
+    class Item(SQLObject):
+        value = UnicodeCol(notNone=True)
+        list = ForeignKey('List')
+
+Also, at the top of the module, make sure you have imported everything you need
+from SQLObject. For us, the following will suffice::
+
+    from sqlobject import SQLObject, SQLObjectNotFound, \
+        ForeignKey, MultipleJoin, StringCol, UnicodeCol
+
+In this model, users are uniquely identified by their e-mail address and can
+have multiple lists. Lists have a title, an owner, and multiple items. Items
+have a value and their containing list.
+
+Note that if you want to use some other databases than SQLite, you may need to
+give the table for storing the users a different name, because ``user`` may be
+a reserved keyword there. In the Identity framework, it is called ``tg_user``.
+You can keep the name for the class if you add the following lines to it::
+
+    class sqlmeta:
+        table = 'tg_user'
+
+See the `SQLObject documentation`_ for help with defining and using your model.
+
+.. _sqlobject documentation: http://sqlobject.org/SQLObject.html
+
+TurboGears now has enough information to generate the newly defined tables using
+the database specified in ``dev.cfg``. To generate the tables, run::
+
+    $ tg-admin sql create
+
+If there were no errors, then your tables were successfully created.
+
+If you need to change your table definitions, make sure to drop whatever
+is currently in your database first. To remake your tables, run::
+
+    $ tg-admin sql drop
+    $ tg-admin sql create
+
+After creating your tables, you can test them and add rows using an
+interactive Python shell suited to your project. To start the shell, type::
+
+    $ tg-admin shell
+
+Any data you add or modify in this shell is handled in a transaction.
+If you quit without committing, no changes will be written to the database.
+To commit the transaction, type this in the shell after making your changes::
+
+    >>> hub.commit()
+
+Here's how I tested my tables using the interactive shell. You should follow
+along in order to insert some items into your database::
+
+    >>> u = User(email="exogen@gmail.com")
+    >>> u.email
+    'exogen@gmail.com'
+    >>> u.id
+    1
+    >>> u.lists
+    []
+
+    >>> t = List(title="Groceries", user=u)
+    >>> t.title
+    u'Groceries'
+    >>> t.user
+    <User 1 email='exogen@gmail.com'>
+    >>> t.user.email
+    'exogen@gmail.com'
+    >>> t.items
+    []
+
+    >>> u.lists
+    [<List 1 title=u'Groceries' userID=1>]
+
+    >>> i1 = Item(list=t, value="Milk")
+    >>> i2 = Item(list=t, value="Eggs")
+    >>> i3 = Item(list=t, value="Bread")
+    >>> [i.value for i in t.items]
+    [u'Milk', u'Eggs', u'Bread']
+    >>> len(t.items)
+    3
+
+Remember to commit your changes if you want them to be saved::
+
+    >>> hub.commit()
+    >>> quit()
+
+If your tables are working and sufficient, then you can close
+``model.py``, you won't need to change it for the rest of this tutorial.
+
+
+Building Your Controllers
+-------------------------
+
+Controllers are your way of specifying what code gets executed when an incoming
+request to your web service is received. To map request URLs and parameters to
+Python functions, TurboGears uses an underlying HTTP framework called CherryPy.
+
+To start adding and modifying controllers, open ``tutorial/controllers.py``.
+
+If we replace the Root class in ``controllers.py`` with the code below, we have
+the TurboGears equivalent of a 'Hello, world' application::
+
+    class Root(controllers.RootController):
+
+        @expose()
+        def index(self):
+            return "Hello, world!"
+
+If you have stopped the server, start the server again and browse to
+http://localhost:8080. You should see "Hello, world!" in plaintext.
+
+How does it work?
+
+The ``Root`` controller corresponds to the root URL of your web service, ``/``.
+When a request for ``/`` is received, TurboGears looks for the default resource
+in the ``Root`` controller: the ``index`` method. The ``index`` method is
+the equivalent of an index.html file in a web directory.
+
+To make the resource public, expose it with the ``expose`` decorator which
+can be imported from turbogears::
+
+
+    @expose()
+
+Any code in an exposed method will be executed when a request for that
+resource is received. You can add more resources to the ``Root`` controller::
+
+    @expose()
+    def about(self):
+        return "This tutorial was written by Brian Beck."
+
+View the above resource by browsing to http://localhost:8080/about.
+
+In development mode, you should be able to see changes made to your controllers
+without even restarting the server.
+
+Requests can also have parameters. These are specified in the URL for GET
+requests and encoded in the form input for POST requests. Both are handled the
+same way in your controllers' method arguments::
+
+        @expose()
+        def about(self, author="Brian Beck"):
+            return "This tutorial was written by %s." % author
+
+Now requesting ``/about`` will print the same text as before, but requesting
+``/about?author=Napoleon`` will print:
+
+    "This tutorial was written by Napoleon."
+
+To add more path components, just add attributes in your ``Root`` controller
+that are class instances containing more resources. Here I added a path
+component ``users`` to the ``Root`` controller::
+
+    from tutorial import model
+
+    class Users:
+
+        @expose()
+        def index(self):
+            users = model.User.select()
+            return ", ".join(user.email for user in users)
+
+    class Root(controllers.RootController):
+
+        users = Users()
+
+        ...
+
+Now browsing to ``/users/index`` or just ``/users/`` will print a list of
+the users in the database.
+
+See the `CherryPy documentation`_ for help with structuring your controllers:
+
+.. _cherrypy documentation: http://www.cherrypy.org/wiki/TableOfContents
+
+In addition, each user should have their own resource in the ``Users``
+controller. However, this would require adding a method for every user in the
+database. Luckily, there is an easy way to specify dynamic path components.
+When a resource is requested that cannot be found in the corresponding
+controller, a method called ``default`` is invoked with the requested resource's
+name as its argument::
+
+    class Users:
+
+        ...
+
+        @expose()
+        def default(self, userID):
+            try:
+                userID = int(userID)
+            except ValueError:
+                return "Invalid user ID!"
+            try:
+                user = model.User.get(userID)
+            except model.SQLObjectNotFound:
+                return "No such user!"
+            else:
+                return user.email
+
+Now requesting ``/users/1`` will print the e-mail address of the user with
+integer ID 1 in the database, or "No such user!" if no user with that ID exists.
+Requesting ``/users/dog`` will print "Invalid user ID!" since by default the
+user IDs in our table are integers.
+
+
+Giving Resources Templates
+--------------------------
+
+So far we've been returning plaintext for every incoming request, for
+demonstration purposes. Now I'll show how to plug real templates into your
+controllers. TurboGears uses the Kid templating system for controlling dynamic
+content in your markup.
+
+For each page on your site, give its corresponding resource in your
+controllers a template. Do this by specifying the ``template`` argument
+of the ``expose`` decorator::
+
+        @expose("tutorial.templates.welcome")
+        def index(self):
+            ...
+
+Each template can optionally take arguments. Template arguments are used to
+pass variables and other dynamic content to the template. You can pass template
+arguments from your controllers by returning a dictionary whose keys are the
+names by which the variables will be accessible in the template::
+
+        @expose("tutorial.templates.users")
+        def index(self):
+            users = model.User.select()
+            return dict(users=users)
+
+Not every template has dynamic content and therefore may not need arguments.
+In that case, just return an empty dictionary::
+
+        @expose("tutorial.templates.welcome")
+        def index(self):
+            return dict()
+
+Here are the modified controllers for our application, now using templates
+instead of returning plaintext::
+
+    class Users:
+
+        @expose("tutorial.templates.users")
+        def index(self):
+            users = model.User.select()
+            return dict(users=users)
+
+        @expose("tutorial.templates.user")
+        def default(self, userID):
+            try:
+                userID = int(userID)
+                user = model.User.get(userID)
+            except (ValueError, model.SQLObjectNotFound):
+                raise cherrypy.NotFound
+            else:
+                return dict(user=user)
+
+
+    class Root(controllers.RootController):
+
+        users = Users()
+
+        @expose("tutorial.templates.welcome")
+        def index(self):
+            return dict()
+
+        @expose("tutorial.templates.about")
+        def about(self, author="Brian Beck"):
+            return dict(author=author)
+
+Accessing the application now won't work because some of the templates don't
+exist yet, and others are no longer given arguments they are expecting.
+
+To create skeletons for your templates, just copy the default ``welcome.kid``
+template that was generated when your project was created::
+
+    $ cp tutorial/templates/welcome.kid tutorial/templates/users.kid
+    $ cp tutorial/templates/welcome.kid tutorial/templates/user.kid
+    $ cp tutorial/templates/welcome.kid tutorial/templates/about.kid
+
+
+Building Your Templates
+-----------------------
+
+Now it's time to modify the markup in your templates.
+
+All the templates used by the resources we exposed inherit from a master
+template called ``master.kid``. If every page on your site has common elements
+like headers, navigation links, and footers, then these pieces belong in
+``master.kid``. This is also the best place to insert CSS and JavaScript that
+will be used by every page on your site.
+
+Open ``tutorial/templates/master.kid``. There are some pieces of the welcome
+screen you saw when you first started up the server, as well as some
+advanced elements I won't use in this tutorial.
+
+You only need two elements in the ``<body>`` of your master template::
+
+    <div id="status_block" class="flash"
+        py:if="value_of('tg_flash', None)" py:content="tg_flash"></div>
+    <div py:replace="[item.text]+item[:]">page content</div>
+
+The first element is for messages that you can show on the page after the user
+has performed some action. The second element is a placeholder for any elements
+that appear in the body of the template that inherits from this one.
+
+For example, if you were to return ``dict(tg_flash="Test message.")`` from a
+controller, and the only element in that controller's template ``<body>`` is
+``<p>Hello, world!</p>``, this is what would be rendered::
+
+    <body>
+        <div id="status_block" class="flash">Test message.</div>
+        <p>Hello, world!</p>
+    </body>
+
+For help with building your templates using Kid, see the
+`Kid language specification`_.
+
+.. _kid language specification: http://www.kid-templating.org/language.html
+
+Note that in the ``<head>`` section of the master template, the CSS file
+``/static/css/style.css`` gets included. The file will be loaded from the
+``static`` directory that has been created inside the ``tutorial`` package
+in order to hold all the static files such as stylesheets, scripts, and images.
+
+Open the default stylesheet ``style.css`` and replace its content with::
+
+    html, body, div, p, form {
+        border: 0;
+        margin: 0;
+        padding: 0;
+    }
+
+    li form {
+        display: inline;
+        clear: both;
+    }
+
+I normally reset some default values in my stylesheets using the above code,
+and later add whatever style elements I like in this file.
+
+You could also include JavaScript files in the ``<head>`` section of the master
+template, e.g. you can include the MochiKit by adding:
+
+    <script type="text/javascript" src="/tg_widgets/turbogears/js/MochiKit.js"/>
+
+In this case, you can achieve the same by adding the following line to the
+configuration file ``config/app.cfg``::
+
+    tg.include_widgets = ['turbogears.mochikit']
+
+MochiKit is a lightweight JavaScript library that adds some Pythonic features to
+JavaScript and makes handling AJAX easier. If you have additional scripts, put
+them in the ``static/javascript/`` subdirectory of your ``tutorial`` package.
+
+The second addition to ``master.kid`` is any page layout markup. I'm just going
+to add links to the three sections of the site on every page. To do this, add
+the following code to the top of the ``<body>`` in ``master.kid``, just before
+the ``main_content`` ``div`` section with the important two elements mentioned
+before, and remove all the rest::
+
+    <h1>Brian's List Manager</h1>
+    <ul id="navigation">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/users/">Users</a></li>
+    </ul>
+
+You're probably getting impatient and wanting to see the changes so far. One
+more thing before we can do that: open the homepage template (``welcome.kid``),
+and any other templates you created when assigning templates to your
+controllers. I opened ``welcome.kid``, ``users.kid``, ``user.kid``, and
+``about.kid``, and changed each of their ``<body>`` contents to only the
+following::
+
+    <p>Hello, world!</p>
+
+Save your templates, restart the server, and browse to http://localhost:8080.
+You should see the three section links at the top of the page and the "Hello,
+world!" message. Note that restarting the server is only necessary if you make
+changes to the master template, because these are not picked up by the auto
+reload mechanism of TurboGears.
+
+If you are satisfied with your master template, you can close ``master.kid``,
+you won't need to change it for the rest of this tutorial.
+
+Now you can add functionality to your page templates. Recall that the ``index``
+method in the ``Root`` controller does not pass any arguments to the template.
+No extra functionality is needed, so close ``welcome.kid``, leaving just the
+"Hello, world!" message.
+
+The ``about`` method passes an ``author`` argument to its template. To reproduce
+the plaintext string substitution we had before, change the contents of
+``<body>`` in ``about.kid`` to the following::
+
+    <p>This tutorial was written by ${author}.</p>
+
+Browse to http://localhost:8080/about to ensure that the changes worked.
+
+Recall that on the Users page, we want to print a list of users in the database.
+Now that we have templates, we should add a link to each user's to-do lists as
+well. Change the contents of ``<body>`` in ``users.kid`` to the following::
+
+    <h2>Users</h2>
+
+    <ol>
+        <li py:for="user in users">
+            $user.email (<a href="$user.id">View lists</a>)
+        </li>
+    </ol>
+
+Now on each user's page, print each of their lists. Change the contents of
+``<body>`` in ``user.kid`` to the following::
+
+    <h2>$user.email's Lists</h2>
+
+    <div py:for="userList in user.lists">
+        <h3 py:content="userList.title"/>
+        <ol>
+            <li py:for="item in userList.items" py:content="item.value"/>
+        </ol>
+    </div>
+
+If you added users to the database using the interactive shell, you should
+be able to browse around to see the output of the above template code. This
+should give you a good starting point for writing templates with Kid.
+
+
+Form Handling
+-------------
+
+The next few additions are forms to let us manage users and lists in our
+application instead of through the interactive shell.
+
+Adding and removing users is the first addition. Both actions will require
+the unique e-mail address of a user. Performing the actions will trigger
+status messages to display, then redirect the client to the Users page at
+``/users/index``.
+
+Since these methods will be the result of a POST request and will immediately
+redirect the client, no new templates are necessary. Here are the two new
+methods to be added to the ``Users`` controller::
+
+    class Users:
+
+        ...
+
+        @expose()
+        def add(self, email):
+            # Remove extra spaces
+            email = email.strip()
+            # Remove null bytes (they can seriously screw up the database)
+            email = email.replace('\x00', '')
+            if email:
+                try:
+                    user = model.User.byEmail(email)
+                except model.SQLObjectNotFound:
+                    user = model.User(email=email)
+                    flash("User %s added!" % email)
+                else:
+                    flash("User %s already exists!" % email)
+            else:
+                flash("E-mail must be non-empty!")
+            redirect('/users/')
+
+        @expose()
+        def remove(self, email):
+            try:
+                user = model.User.byEmail(email)
+            except model.SQLObjectNotFound:
+                flash("The user %s does not exist."
+                    " (Did someone else remove it?)" % email)
+            else:
+                for userlist in user.lists:
+                    for item in userlist.items:
+                        item.destroySelf()
+                    userlist.destroySelf()
+                user.destroySelf()
+                flash("User %s removed!" % email)
+            redirect('/users/')
+
+The ``flash()`` and ``redirect()`` methods must be imported from ``turbogears``
+at the top of the ``controllers.py`` module.
+
+Notice that for the ``add`` method, I rolled my own super-simple validation:
+just checking to make sure that the input email is non-empty. In reality you'd
+use some fancy regular expression here or even better, the ``@validate()``
+decorator. All the ``try``/``except`` blocks are for ensuring that the client
+doesn't add duplicate users or modify users that don't exist. This kind of
+validation is necessary for any public web service.
+
+Now we need to add the forms that will trigger these methods. The form
+``action`` will be the name of the corresponding method we just added to the
+``Users`` controller. Add this to the end of the ``<body>`` in
+``tutorial/templates/users.kid``::
+
+    <form id="addUser" action="add" method="POST">
+        <fieldset>
+            <legend>Add a User</legend>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"/>
+            <input type="submit" value="Add"/>
+        </fieldset>
+    </form>
+
+Next, add a Remove button for each user in the list. Modify the list in
+``users.kid`` to have a button in each list item::
+
+    <div class="list">
+        <ol>
+            <li py:for="(row, user) in enumerate(users)"
+                    class="${row % 2 and 'odd' or None}">
+                <form style="float: right" action="remove" method="POST">
+                    <input type="hidden" name="email" value="$user.email"/>
+                    <input type="submit" value="Remove"/>
+                </form>
+                <span>$user.email (<a href="$user.id">View lists</a>)</span>
+            </li>
+        </ol>
+    </div>
+
+Reload the Users page and try adding and removing a few users. Notice the
+status messages that appear as a result of calling ``flash()``.
+
+Also note that every other row in our list gets the ``odd`` CSS class set,
+which will later allow us to style the rows with alternating colors.
+
+The process is similar for adding forms to modify lists and items, so I won't
+give much explanation for those. Instead, just look at the code I used and see
+if you can follow along.
+
+The new ``<body>`` of ``tutorial/templates/user.kid``::
+
+    <h2>$user.email's Lists</h2>
+
+    <div py:for="userList in user.lists" class="list">
+        <form style="float: right" action="/removeList" method="POST">
+            <input type="hidden" name="userID" value="$user.id"/>
+            <input type="hidden" name="listID" value="$userList.id"/>
+            <input type="submit" value="Delete This List"/>
+        </form>
+        <h3 py:content="userList.title"/>
+        <ol>
+           <li py:for="(row, item) in enumerate(userList.items)"
+                    class="${row % 2 and 'odd' or None}">
+                <form style="float: right" action="/removeItem" method="POST">
+                    <input type="hidden" name="userID" value="$user.id"/>
+                    <input type="hidden" name="itemID" value="$item.id"/>
+                    <input type="submit" value="Remove"/>
+                </form>
+                <span py:content="item.value"/>
+            </li>
+        </ol>
+        <form id="addItem" action="/addItem" method="POST">
+            <input type="hidden" name="userID" value="$user.id"/>
+            <input type="hidden" id="listID" name="listID" value="$userList.id"/>
+            <label>Add Item: <input type="text" name="value"/></label>
+            <input type="submit" value="Add"/>
+        </form>
+    </div>
+    <form id="addList" action="/addList" method="POST">
+        <fieldset>
+            <legend>Create a List</legend>
+            <input type="hidden" name="userID" value="$user.id"/>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title"/>
+            <input type="submit" value="Create"/>
+        </fieldset>
+    </form>
+
+Additions to the ``Root`` controller::
+
+    class Root(controllers.RootController):
+
+        ...
+
+        @expose()
+        def addList(self, userID, title):
+            try:
+                userID = int(userID)
+                user = model.User.get(userID)
+            except (ValueError, model.SQLObjectNotFound):
+                flash("Cannot add list - user not found!")
+            else:
+                # Remove extra spaces
+                title = title.strip()
+                # Remove null bytes (they can seriously screw up the database)
+                title = title.replace('\x00', '')
+                if title:
+                    model.List(title=title, user=user)
+                    flash("List created!")
+                else:
+                    flash("Title must be non-empty!")
+            redirect('/users/%s' % userID)
+
+        @expose()
+        def removeList(self, userID, listID):
+            try:
+                listID = int(listID)
+                userlist = model.List.get(listID)
+            except ValueError:
+                flash("Invalid list!")
+            except model.SQLObjectNotFound:
+                flash("List not found! (Did someone else remove it?)")
+            else:
+                for item in userlist.items:
+                    item.destroySelf()
+                userlist.destroySelf()
+                flash("List deleted!")
+            redirect('/users/%s' % userID)
+
+        @expose()
+        def addItem(self, userID, listID, value):
+            try:
+                listID = int(listID)
+                userlist = model.List.get(listID)
+            except ValueError:
+                flash("Invalid list!")
+            except model.SQLObjectNotFound:
+                flash("List not found! (Did someone else remove it?)")
+            else:
+                # Remove extra spaces
+                value = value.strip()
+                # Remove null bytes (they can seriously screw up the database)
+                value = value.replace('\x00', '')
+                if value:
+                    item = model.Item(listID=listID, value=value)
+                    flash("Item added!")
+                else:
+                    flash("Item must be non-empty!")
+            redirect('/users/%s' % userID)
+
+        @expose()
+        def removeItem(self, userID, itemID):
+            try:
+                itemID = int(itemID)
+                item = model.Item.get(itemID)
+            except ValueError:
+                flash("Invalid item!")
+            except model.SQLObjectNotFound:
+                flash("No such item! (Did someone else remove it?)")
+            else:
+                item.destroySelf()
+                flash("Item removed!")
+            redirect('/users/%s' % userID)
+
+This provides a huge leap in functionality, but the page style is still very
+ugly. Now is probably the time to take a look at your markup and apply more
+style to it in ``tutorial/static/css/style.css``, like this::
+
+    body {
+        font-family: sans-serif;
+        padding: 1em;
+    }
+
+    fieldset {
+        margin-top: 1em;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    h1 {
+        border-bottom: 1px dotted #ccc;
+    }
+
+    h3 {
+        margin-top: 1em;
+    }
+
+    .flash {
+        padding: 0.5em;
+        background-color: #ffa;
+        border: 1px solid #cc8;
+    }
+
+    .list {
+        border: 1px dotted #ccc;
+        padding: 1em;
+        margin: 1em 0;
+    }
+
+    .list li {
+        padding: 0.5em;
+        border-top: 1px dotted #ccc;
+        background-color: #eef;
+    }
+
+    .list li.odd {
+        background-color: #eee;
+    }
+
+
+    #navigation {
+        border: 1px solid #ccc;
+        background-color: #eee;
+        padding: 1em 2em;
+        float: left;
+        margin: 0 1em 1em 0;
+        width: 4em;
+    }
+
+    #main_content {
+        margin-left: 9em;
+    }
+
+    #addUser, #addList {
+        width: 22em;
+    }
+
+    #addUser fieldset, #addList fieldset {
+        text-align: center;
+        border: 1px dashed #338;
+        background-color: #ddf;
+    }
+
+
+Adding Asynchronous JavaScript
+------------------------------
+
+Remember the MochiKit JavaScript library we included to all our pages earlier?
+This section will use pieces of it to add AJAX to our application. (Actually,
+we'll be using JSON instead of XML, but that does not make much difference.
+TurboGears makes using AJAX with JSON very easy.)
+
+One useful ability we can add to the application is the ability to edit
+list items inline, without reloading the page. Before we start coding,
+here's a description of what this entails:
+
+- Add an Edit button next to each list item.
+- Pressing the button will replace the item text with an input field
+  containing the item text.
+- Pressing the button will also turn the Edit button into a Save button.
+- When the client makes changes and presses Save, send the modified
+  value to the server.
+- On the server, a controller method will handle incoming item
+  modifications and write them to the database.
+- Change the input field back into normal text with the updated value.
+
+The first one is easy, put an Edit button next to each list item. In
+``tutorial/templates/user.kid``, add a new form to each list item. Since
+the form will be submitted with JavaScript, no ``action`` or ``method`` is
+necessary. Instead, add an ``onsubmit`` attribute to the form and an
+``onclick`` attribute to the button::
+
+    <ol class="list">
+       <li py:for="(row, item) in enumerate(userList.items)"
+                class="${row % 2 and 'odd' or None}">
+            <form style="float: right" action="/removeItem" method="POST">
+                <input type="hidden" name="userID" value="$user.id"/>
+                <input type="hidden" name="itemID" value="$item.id"/>
+                <input type="submit" value="Remove"/>
+            </form>
+            <form onsubmit="return saveItem(this)" action="">
+                <input type="button" style="float: right" value="Edit"
+                       onclick="editItem(this)"/>
+                <span py:content="item.value"/>
+                <input type="hidden" name="itemID" value="$item.id"/>
+            </form>
+        </li>
+    </ol>
+
+As you can see, we made calls to two JavaScript functions that don't
+actually exist yet. Since this is the only page that will make use of these
+functions, create a new file at ``tutorial/static/javascript/user.js`` and load
+it in the ``<head>`` of ``user.kid``::
+
+    <script type="text/javascript" src="${tg.url('/static/javascript/user.js')}"/>
+
+First, make pressing the Edit button (a call to ``editItem``) replace the
+item text with an input field as described above. In ``user.js``, add::
+
+    var editItem = function(button) {
+        var item = getElementsByTagAndClassName('span', null, button.parentNode)[0];
+        var editBox = INPUT({'type': 'text', 'value': item.innerHTML});
+        swapDOM(item, editBox);
+        swapDOM(button, INPUT({'type': 'submit', 'style': 'float: right',
+                               'value': 'Save'}));
+    }
+
+This JavaScript uses a few helpful MochiKit functions. The less obvious of them
+is ``INPUT``, which creates an ``<input>`` element with the specified attributes.
+``INPUT`` is used here to make the edit field and the Save button.
+
+Now that there is a Save button, pushing it will submit the form. The ``onsubmit``
+attribute of the form calls ``saveItem``, which should look like this::
+
+    var saveItem = function(form) {
+        var fields = getElementsByTagAndClassName('input', null, form);
+        var editBox = fields[1];
+        var itemID = fields[2].value;
+        var button = fields[0];
+        var d = postJSON('/editItem', {'itemID': itemID, 'value': editBox.value});
+        d.addCallback(showChanges, editBox, button);
+        return false;
+    }
+
+The function returns ``false`` because when ``onsubmit`` encounters a ``false``
+return value, it does not trigger the form's ``action``, which normally causes
+the page to reload. (Remember, we didn't give our form an ``action`` because
+we're sending it with JavaScript instead.)
+
+The most important part of this function is the call to ``postJSON``. JSON is
+JavaScript Object Notation, a lightweight format with which to pass around data.
+It is used here as an alternative to XML, since that would require building and
+parsing XML constructs. MochiKit and TurboGears provide automatic conversion
+routines to turn JSON into JavaScript objects where necessary, and into Python
+objects in your controllers. Unfortunately, ``postJSON`` is not part of MochiKit,
+but it should be! Here is the code, just add it to your ``user.js`` file::
+
+    var postJSON = function(url, postVars) {
+        var req = getXMLHttpRequest();
+        req.open('POST', url, true);
+        req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        var data = queryString(postVars);
+        var d = sendXMLHttpRequest(req, data);
+        return d.addCallback(evalJSONRequest);
+    }
+
+When ``postJSON`` is called, it immediately returns a ``Deferred`` object. If
+you're familiar with the Twisted_ library for Python, the concept is the same.
+Adding callbacks to a ``Deferred`` causes them to be invoked when the result of
+the call is ready. In ``saveItem``, we add the ``showChanges`` function as a
+callback. ``showChanges`` will change the client's display of the modified item
+once it is sure that the server received the changes. This requires replacing
+the edit field with the new item text, and replacing the Save button with the
+Edit button::
+
+    var showChanges = function(editBox, button, data) {
+        swapDOM(editBox, SPAN(null, data.value));
+        swapDOM(button, INPUT({'type': 'button',
+                               'style': 'float: right', 'value': 'Edit',
+                               'onclick': function() { editItem(this); }}));
+    }
+
+That's all the JavaScript needed. One more addition to the ``Root`` controller
+and you're done. Notice that our ``postJSON`` call sent its input data to
+``/editItem``. This is the new resource to add::
+
+    class Root(controllers.RootController):
+
+        ...
+
+        @expose(format='json')
+        def editItem(self, itemID, value):
+            try:
+                itemID = int(itemID)
+                item = model.Item.get(itemID)
+            except (ValueError, model.SQLObjectNotFound):
+                pass
+            else:
+                # Remove extra spaces
+                value = value.strip()
+                # Remove null bytes (they can seriously screw up the database)
+                value = value.replace('\x00', '')
+                if value:
+                    item.value = value
+                else:
+                    value = item.value
+            return dict(value=value)
+
+The only new thing here is passing ``format="json"`` to ``expose()``. Since
+the arguments we're returning from this method are being sent to a JavaScript
+callback that's expecting JSON, we tell TurboGears to convert the dictionary
+we're returning into a JSON object.
+
+Start the server if necessary and try to edit a few items. Saving the items
+should be very responsive if you're accessing the site from localhost.
+
+For help with asychronous JavaScript and DOM manipulation using MochiKit,
+see the `MochiKit documentation`_.
+
+.. _mochikit documentation: http://mochi.github.com/mochikit/doc/html/MochiKit/
+.. _Twisted: http://twistedmatrix.com/
+
+
+Advanced Features
+-----------------
+
+There are a few things this application needs that could easily be addressed by
+the more advanced features of TurboGears. One such thing is handling account
+logins. Right now, anyone can modify users and user lists. To enforce any kind
+of permissions would require the use of sessions and the Identity framework.
+
+Some error checking and form generation could also be automated for us using
+the widget and validation pieces of TurboGears. These features are demonstrated
+other tutorials that are part of the official TurboGears documentation.
+
+Here's an advanced feature you can add right now with two lines of code.
+Think of it as your reward for reading all the way to the end. Open
+``controllers.py`` and add this ``import`` statement to the top::
+
+    from turbogears.toolbox.catwalk import CatWalk
+
+Then make the following addition to your ``Root`` controller::
+
+    class Root(controllers.RootController):
+
+        catwalk = CatWalk(model)
+
+        ...
+
+Now browsing to http://localhost:8080/catwalk will allow you to view and
+modify the rows in your database through a nice web interface!
+
+
+License
+-------
+
+This tutorial and accompanying application are available under the MIT license.
+
+Copyright (c) 2006 Brian Beck
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+

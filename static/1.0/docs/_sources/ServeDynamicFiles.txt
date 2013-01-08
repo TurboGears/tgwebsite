@@ -1,0 +1,31 @@
+Serving Dynamically Generated Files
+===================================
+
+.. contents::
+    :depth: 2
+
+
+Here's a short code example, showing how one could serve a dynamically generated
+image - instead of a HTML page - from a controller method::
+
+    @expose(content_type='image/jpg')
+    def captcha(self, **data):
+        my_image = ImageGenerator(**data)
+        return my_image.tostring('jpeg','RGB')
+
+This example assumes that ``ImageGenerator()`` is a callable, which returns a
+PIL_ ``Image`` object, which is then converted into a JPEG encoded binary string
+using the ``tostring`` method of the ``Image`` object and then sent to the
+client.
+
+This method is applicable to any dynamically generated content. As long as you
+can convert it into a string, you can serve it from your controller methods, you
+only need to make sure that you set the ``Content-type`` header of the response
+to the right mime type for the content you are serving. This is done with via
+the ``content_type`` argument to the :doc:`expose <ExposeDecorator>` decorator of the controller method.
+For generic binary content, you can use the mime type
+``"application/octet-stream"``, which in most cases will cause browsers to open
+a download dialog when the user requests your file.
+
+.. _expose: ExposeDecorator
+.. _pil: http://www.pythonware.com/products/pil/

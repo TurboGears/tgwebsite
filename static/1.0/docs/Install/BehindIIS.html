@@ -1,0 +1,112 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Proxying through IIS &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Running TurboGears as a Windows Service" href="WindowsService.html" />
+    <link rel="prev" title="Deploying TurboGears on LightTPD" href="LightTPD.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="WindowsService.html" title="Running TurboGears as a Windows Service"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="LightTPD.html" title="Deploying TurboGears on LightTPD"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="LightTPD.html"
+                        title="previous chapter">Deploying TurboGears on LightTPD</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="WindowsService.html"
+                        title="next chapter">Running TurboGears as a Windows Service</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="proxying-through-iis">
+<span id="index-0"></span><h1>Proxying through IIS<a class="headerlink" href="#proxying-through-iis" title="Permalink to this headline">¶</a></h1>
+<p>In some environments it is preferable to use IIS instead of <a class="reference internal" href="BehindApache.html"><em>Apache</em></a>. This arrangement allows TurboGears to run alongside Microsoft technologies such as ASP.Net, it has good support for <a class="reference internal" href="IntegratedWindowsAuthentication.html"><em>Integrated Windows Authentication</em></a>, and in some oranisations it is a politically easier sell.</p>
+<p>At present (Aug 2007) the only viable option is a reverse proxy deployment, although in the future it may be possible to use Python through <a class="reference external" href="http://support.microsoft.com/kb/276494">ASP</a>, <a class="reference external" href="http://sourceforge.net/projects/pyisapie/">ISAPI</a>, or even <a class="reference external" href="http://www.codeplex.com/Wiki/View.aspx?ProjectName=IronPython">IronPython</a>. A number of reverse proxies are available for IIS. <a class="reference external" href="http://code.google.com/p/iisproxy/">IIS Reverse Proxy</a> is free, and was developed specifically for deploying TurboGears applications in this manner.</p>
+<p>Setup IIS Reverse Proxy using the instructions in the README.txt. Edit web.config to point the proxyUrl to the TurboGears application. The application itself can be run as a Windows service, using <a class="reference internal" href="WindowsService.html"><em>these instructions</em></a>.</p>
+<p>In many deployments it is desirable to run the TurboGears application in a directory that is not the root, e.g. <a class="reference external" href="http://mysite.com/tgapp/page">http://mysite.com/tgapp/page</a>. If the IIS virtual directory is /tgapp, edit web.config so the BackEndSite is something like <a class="reference external" href="http://localhost:8081/tgapp">http://localhost:8081/tgapp</a>, and configure the TG app so server.webpath=&#8217;/tgapp&#8217;. This will make sure all links are consistently in the non-root directory, without any link rewriting. For this to work properly, it is necessary to always use relative URLs inside the TG application.</p>
+<p>There appear to be two outstanding issues with this implementation using server.webpath in TG &lt;= 1.0.5:</p>
+<ul class="simple">
+<li>If you are using Identity, the default templates don&#8217;t respect server.webpath.  To work around this, edit login.kid and replace action=&#8221;${previous_url}&#8221; with action=&#8221;${tg.url(previous_url)}&#8221;.</li>
+<li>The turbogears.redirect function doesn&#8217;t seem to respect server.webpath when you&#8217;re using relative paths.  For example, if you have a nested controller in your Root controller, and you reference that controller without the trailing slash, TurboGears will redirect to a URL with the trailing slash, but without server.webpath.</li>
+</ul>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

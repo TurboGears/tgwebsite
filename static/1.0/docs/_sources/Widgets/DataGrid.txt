@@ -1,0 +1,330 @@
+.. index:: DataGrid
+
+DataGrid
+========
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+``DataGrid`` helps you to present your data on a page in a tabular form.
+DataGrid's purpose is to render a list of same-kind objects (such as a list
+of your model instances) in a nice, tabular layout with minimal efforts. The
+DataGrid subclass, ``FastDataGrid``, integrates nicely with ``FastData``
+controllers by providing inline links to edit or delete an object or create
+new objects of the same type.
+
+
+Differences between DataGrid and FastDataGrid
+---------------------------------------------
+
+DataGrid requires you to describe what you're going to display via
+"``fields``" parameter at construction time. FastDataGrid is sophisticated
+enough to figure out how to display an arbitrary ``SelectResults`` instance
+(this is the type of object returned when you call ``.select()`` on your
+SQLObject model object).
+
+They also have different Kid templates. DataGrid's template is very simple
+and on purpose -- the goal is to be easy to grasp and easy to extend/replace
+with a custom one. On the other hand, the FastData template is much more
+sophisticated, designed to work within FastData environment. It is intended
+to be used "as is", giving the user certain hooks to customize its appearance.
+
+
+Basic DataGrid usage
+--------------------
+
+Suppose you want to display a list of users in your system. Here is a sample
+``User`` class definition (note that it's not an SQLObject -- just a plain
+Python class)::
+
+    class User:
+
+        def __init__(self, ID, name, email_address):
+            self.user_id = ID
+            self.name = name
+            self.email_address = email_address
+
+       @property
+       def display_name(self):
+           return self.name.capitalize()
+
+Note that the ``@property`` decorator is only available since Python 2.4. If
+you are using Python 2.3, you can define ``display_name`` as follows::
+
+        display_name = property(fget=lambda self: self.name.capitalize())
+
+Given the above definition, you may want to display Users in the following
+form::
+
+    from turbogears.widgets import DataGrid
+
+    users_admin_form = DataGrid(fields=[
+        ('ID', 'user_id'),
+        ('Name', 'display_name'),
+        ('E-mail', 'email_address')
+    ])
+
+As you have probably guessed, the ``fields`` parameter defines what would be
+displayed by this DataGrid instance and how. Each tuple defines a single
+column in the resulting table; the first tuple's element defines the
+column title while the second element defines the "accessor'". The accessor
+may be a string, naming an attribute of the model object, such as
+``"user_id"`` or a property's name, such as ``"display_name"``, but it can also
+be a callable, for example a parameterless method of you model object. See
+more on this below, under "Advanced DataGrid Usage".
+
+To display a users' table you pass an iterable yielding ``User`` instances
+to the ``users_admin_form.display()`` method::
+
+    users = [
+        User(1, 'john', 'john@foo.net'),
+        User(2, 'fred', 'fred@foo.net')
+    ]
+    users_admin_form.display(users)
+
+The result will look something like this::
+
+    <table border="0" cellpadding="0" cellspacing="3">
+      <thead>
+        <td>ID</td>
+        <td>Name</td>
+        <td>E-mail</td>
+      </thead>
+      <tr>
+        <td>1</td>
+        <td>John</td>
+        <td>john@foo.net</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Fred</td>
+        <td>fred@foo.net</td>
+      </tr>
+    </table>
+
+
+.. _fastdata_integration:
+
+FastData integration
+--------------------
+
+For a :doc:`FastData </FastData/index>` environment you're mostly likely to use FastDataGrid::
+
+    from tgfastdata import DataController
+    from tgfastdata.datawidgets import FastDataGrid
+    from model import User
+
+    class Root(controllers.RootController):
+        users = DataController(sql_class=User, list_widget=FastDataGrid())
+
+Now, if you access the ``/users/`` page, you should see a table with a list
+of users, along with edit/delete icons and an "Add a record" link at the
+bottom.
+
+Note that, unlike with the plain DataGrid class, you don't need to pass a
+``fields`` parameter to FastDataGrid. Instead, FastDataGrid is able to inspect
+the passed ``SelectResults`` instance to extract SQLObject's metadata. In
+other words, a FastDataGrid instance can easily render arbitrary SQLObjects
+while with DataGrid you need to list the instances' fields explicitly. You
+may still want to pass ''fields'' parameter to FastDataGrid if you want to
+customize the representation of the fields: which fields are shown, their order
+and how they are displayed. In fact, if you don't want to change any FastDataGrid
+options at instantiation time, you don't need to pass a FastDataGrid instance to
+the DataController explicitely at all, as this widget will be used by default for
+lists, if you don't pass a different one::
+
+    class Root(controllers.RootController):
+        users = DataController(
+            sql_class=User,
+            list_widget=FastDataGrid(fields=[
+                ('User', 'user_name'),
+                ('Name', 'display_name'),
+                ('E-mail', 'email_address'),
+            ]),
+            list_template='.templates.admin_users'
+        )
+
+Add something like this to your `admin_users` template::
+
+    ${list_widget.display(data, show_actions=False, add_link_title='Add User')}
+
+.. _fastdata: /FastData
+
+
+Customizing the FastDataGrid representation
+-------------------------------------------
+
+You can tweak FastDataGrid's representation to a certain extent by passing
+configuration options at "display time" (when you call ``grid.display()`` from
+your template). The following options are supported:
+
+* ``show_actions``
+* ``show_add_link``
+* ``add_link_title``,
+* ``delete_link_msg``
+
+I hope their meaning is self-explaining. Most up-to-date list of these
+options can be found at the top of the ``datagrid.kid`` file in the
+``turbogears.fastdata.templates`` sub-package.
+
+
+Using Identity with FastDataGrid
+---------------------------------
+
+To use IdentityManagement with a FastDataGrid, you must create a subclass of
+``DataController`` and ``identity.SecureResource``::
+
+    class SecureDataController(DataController, identity.SecureResource):
+        pass
+
+And to use it in a controller::
+
+    class Root(controllers.RootController):
+        some_fastdatagrid = SecureDataController(sql_class=Whatever)
+        some_fastdatagrid.require = identity.in_group('some_group')
+
+
+Customizing DataGrid representation
+------------------------------------
+
+Unlike, FastDataGrid, DataGrid's template provides no customization hook. On
+the other hand it is really simple and easy to understand so if you need to
+customize DataGrid's representation, simply copy it and tweak as you see fit.
+To use your template with a DataGrid use the ``template`` constructor
+parameter, just like with any Widget.
+
+
+Advanced DataGrid usage
+------------------------
+
+In addition to the simple DataGrid definition shown above, you can use
+``fields`` parameter in a more "advanced" ways.
+
+
+Using a callable instead of an attribute name
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes simply displaying an attribute like ``display_name`` is not
+enough. In the case of an :doc:`identity </Identity/index>`-based ``User`` object,
+you may want to format the permissions a user possesses nicely. To do this,
+you provide a callable object instead of the attribute name. The callable is
+then called with a row object and the returned value is inserted in a table cell.
+
+Example::
+
+    def format_user_permissions(u):
+        # ok, nothing fancy here but you get the idea
+        # Hint: use Kid's XML function to return HTML markup.
+        return ', '.join(u.permissions)
+
+    users_admin_form = DataGrid(
+        fields=[
+            ('ID', 'user_id'),
+            ('Name', 'display_name'),
+            ('Permissions', format_user_permissions)
+        ]
+    )
+
+Note that a parameterless method of your model class is a suitable callable
+object::
+
+    class User:
+
+        # ...
+
+        def get_last_login(self):
+            "Returns last login's timestamp."
+
+    users_admin_form = DataGrid(fields=[
+        ('ID', 'user_id'),
+        ('Name', 'display_name'),
+        ('Last logged in', User.get_last_login)
+    ])
+
+
+Using ``DataGrid.Column``
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instead of a two-element tuple, you can use an instance of
+``DataGrid.Column`` (or subclass thereof) when defining DataGrid's fields.
+This is only useful if you're using a custom DataGrid template as well.
+
+The idea of the DataGrid.Column is to be able to specify arbitrary
+additional ''options'' along with a column which are then used in template
+to alter the template's logic.
+
+As an example, you can add a ``sortable`` option to all columns that shall
+be sortable by clicking on their header::
+
+    users_admin_form = DataGrid(fields=[
+        DataGrid.Column('id', 'user_id', 'ID',
+            options=dict(sortable=True)),
+        DataGrid.Column('name', 'display_name', 'Name',
+            options=dict(sortable=True)),
+        DataGrid.Column('loggedin', 'get_last_login', 'Last logged in'),
+    ])
+
+You would only need to modify the Kid template of DataGrid like that::
+
+  ...
+  <thead py:if="columns">
+    <tr>
+      <th py:for="i, col in enumerate(columns)" class=":doc:`/col`${i}">
+        <a py:strip="not col.get_option('sortable', False)"
+          href="${tg.url('', sort=col.name)}" py:content="col.title"/>
+      </th>
+    </tr>
+  </thead>
+  ...
+
+
+Other ways of specifying columns
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Two side notes (valid for TurboGears > 1.0.4.4 only):
+
+Instead of using ``DataGrid.Column``, you can also pass options
+as a third item in a 3-tuple, or you can pass only the accessor
+(i.e. an attribute name or a function).
+
+You can set the standard option ``align`` to ``'center'`` or ``'right'``
+for specifying centered or right-aligned columns.
+
+
+Using DataGrid without a model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+All the examples above assumed some model class, like User, being used to
+display in DataGrid. In fact, you can use DataGrid with any kind of data,
+not necessarily proper instances. The only "hindrance" is that you have to
+always specify a callable object as a field's accessor. Example::
+
+    from operator import itemgetter
+
+    grid = DataGrid(fields=[
+        ('Name', itemgetter(1)),
+        ('Country', itemgetter(2)),
+        ('Age', itemgetter(0))
+    ])
+
+    data = [
+        (33, "Anton Bykov", "Bulgaria"),
+        (23, "Joe Doe", "Great Britain"),
+        (44, "Pablo Martelli", "Brazil")
+    ]
+    grid.display(data)
+
+
+Note that ``itemgetter()`` is only available since Python 2.4. If you are using
+Python 2.3, you can use ``lambda row: row[n]`` instead of ``itemgetter(n)``.
+
+
+Error handling
+--------------
+
+DataGrid does not intercept any exception that may be raised during
+iteration or accessing a particular object's attribute.

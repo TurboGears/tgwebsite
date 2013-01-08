@@ -1,0 +1,93 @@
+.. index:: multiple databases
+
+Using Multiple Databases
+========================
+
+**Q.** Can I use more than one database handle with TurboGears?
+
+**A.** You sure can! At least with :doc:`SQLAlchemy <SQLAlchemy/index>` (see below).
+Currently, there is no known way to set the database for
+:doc:`SQLObject <SQLObject/index>` model object
+through the TurboGears configuration.
+
+**Q.** What about having the same class read using one handle
+(readonly slave database) and write using another (writing master)?
+
+**A.** Someone else will have to answer that one. Let us know when
+you figure it out!
+
+
+Setting the dburi
+-----------------
+
+In your deployment :doc:`configuration <Configuration>`, change your current
+:ref:`dburi <set_database_uri>` to something
+like the following::
+
+
+    handle_a.sqlalchemy.dburi="postgres://user:pw@localhost/database_a"
+    handle_b.sqlalchemy.dburi="postgres://user:pw@localhost/database_b"
+
+.. _configuration: Configuration
+
+
+Change your model
+-----------------
+
+In ``model.py``, add the following::
+
+    engine_a = __engine_a__ = PackageEngine("handle_a")
+    engine_b = __engine_b__ = PackageEngine("handle_b")
+
+Then just instantiate tables / classes using ``engine_a`` or ``engine_b``.
+
+
+Using SQLAlchemy/Elixir 0.4.x
+-----------------------------
+
+It's very easy with the new versions of SQLAlchemy and Elixir.
+If you use the quickstart template to create your project, you only
+need to change the imports in your ``model.py`` file
+
+Original::
+
+    from turbogears.database import metadata, session
+
+Change to::
+
+    from turbogears.database import metadata as __metadata__
+    from turbogears.database import session as __session__
+
+In any other modules where you define models, you have to define the
+__metadata__ module attribute and bind it::
+
+    __metadata__ = metadata
+    __metadata__.bind = '<database>'
+
+
+Using SQLObject with a "slave" database
+---------------------------------------
+
+In order to use a 'slave' database, the database URL needs to be added to the model thus::
+
+    slave_hub = connectionForURI('mysql://user:passwd@hostname/database?use_unicode=1')
+
+Change the variable 'user', 'passwd' etc as appropriate - the 'use_unicode' argument tells SQLObject to assume strings in the database are in unicode format, otherwise you might get decoding errors (it assumes they are 'ascii' by default), set as appropriate for your database. Don't forget to import the 'connectionForURI' function::
+
+    from sqlobject import connectionForURI
+
+Normally the model.py includes a line like this::
+
+    __connection__ = hub = PackageHub('packagename')
+
+With 'packagename' set to the package you are working on. This is the default database connection hub. So with the extra lines above you have the promary database hub and the slave hub. Then, all you have to do to include a table from the slave database in your application is add a class for it like the following::
+
+    class Table(SQLObject):
+        _connection = slave_hub
+        class sqlmeta:
+            fromDatabase = True
+            table = "tbl_name"
+            idName = "tbl_id"
+
+The above code fragment will tell SQLObject to look for the table definition in the database (you can't do this with a SQLite database). You will most likely have to use the 'idName' and 'table' properties to tell SQLObject what the table is called in the database and what the primary key column is called. Check out `SQLObject documentation on this feature <http://www.sqlobject.org/SQLObject.html#id27>`_.
+

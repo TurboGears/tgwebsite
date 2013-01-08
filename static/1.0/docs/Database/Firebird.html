@@ -1,0 +1,148 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Firebird &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Database Installation" href="index.html" />
+    <link rel="next" title="The Big Picture" href="../GettingStarted/BigPicture.html" />
+    <link rel="prev" title="PostgreSQL" href="PostgreSQL.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../GettingStarted/BigPicture.html" title="The Big Picture"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="PostgreSQL.html" title="PostgreSQL"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Database Installation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Firebird</a><ul>
+<li><a class="reference internal" href="#firebird-installation">Firebird Installation</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#mac">Mac</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connection-string">Connection String</a></li>
+<li><a class="reference internal" href="#warning-default-model-won-t-work">Warning Default Model won&#8217;t work!</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="PostgreSQL.html"
+                        title="previous chapter">PostgreSQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../GettingStarted/BigPicture.html"
+                        title="next chapter">The Big Picture</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="firebird">
+<span id="index-0"></span><h1>Firebird<a class="headerlink" href="#firebird" title="Permalink to this headline">¶</a></h1>
+<p>Starting a new project first create a firebird database using any of the available tools (flamerobin,isql etc.)</p>
+<div class="section" id="firebird-installation">
+<h2>Firebird Installation<a class="headerlink" href="#firebird-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+<div class="section" id="mac">
+<h3>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h3>
+<p>TODO</p>
+</div>
+</div>
+<div class="section" id="connection-string">
+<h2>Connection String<a class="headerlink" href="#connection-string" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="warning-default-model-won-t-work">
+<h2>Warning Default Model won&#8217;t work!<a class="headerlink" href="#warning-default-model-won-t-work" title="Permalink to this headline">¶</a></h2>
+<p>password is a reserved keyword in firebird.  SLQObject&#8217;s &#8216;dbName&#8217; will fix this.</p>
+<p>Just set password to any not reserved word and then do</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">password</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">dbName</span><span class="o">=</span><span class="s">&#39;pwd&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>in your model.py file. then proceed as usual.</p>
+<p>Tested with TG 1.0 , Firebird 2.0 SS 64 on Suse10.1 64</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

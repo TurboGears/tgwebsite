@@ -1,0 +1,137 @@
+Using Your Model Outside of TurboGears Applications
+===================================================
+
+.. contents::
+  :depth: 2
+
+
+Sometimes you want to use classes in your data model outside your TurboGears
+application.
+
+For example, you might want to write a script to:
+
+* Initialize your database
+* Perform scheduled maintenance tasks
+* Insert or update data based on external events, like an email responder.
+
+If you just try to import your model.py, you may get a traceback message that
+ends with this error::
+
+    KeyError: 'No database configuration found!'
+
+The problem is that you haven't told SQLObject where to find your database; this
+information is in your application's :doc:`configuration <Configuration>` files.
+
+
+.. _configuration: Configuration
+
+
+Getting the Database Configuration
+----------------------------------
+
+To use your database from outside the application, create a script that looks
+like this::
+
+    import turbogears
+    turbogears.update_config(configfile="dev.cfg",
+            modulename="packagename.config")
+
+    # import your model and have full access to your model
+    # If you make any changes, you need to manually commit them before exiting.
+
+    from myapp import model
+
+    s = model.SomeClass.select()
+    model.hub.commit()
+
+    model.hub.begin() # some other transaction
+    r = model.SomeClass.get(1)
+    r.some_attribute = 5
+    model.hub.rollback() # I don't like the change
+
+This script assumes that the script will be run **from your top-level project
+directory** and will hook up SQLObject to your database configuration from
+``dev.cfg``. If you want to use the database configuration for the production
+environment instead, change the ``configfile`` parameter in the call to
+``update_config`` to ``prod.cfg``.
+
+The value for ``modulename`` should be of the for ``<packagename>.config``, i.e.
+if your application's Python package was called ``mypackage`` the value should
+be ``mypackage.config``.
+
+If you want the script to be able to run from any directory, you will have to
+provide a full path to your configuration file and set your ``PYTHONPATH`` to
+include your project's top-level directory so that the model import succeeds.
+You can also do this inside you script, just before importing your model::
+
+    import sys
+    sys.path.insert(1, '/path/to/YourProject/yourpackage')
+
+
+Using SQLAlchemy
+----------------
+
+To get this working with SQLAlchemy, you need to add the line::
+
+     turbogears.database.bind_meta_data()
+
+
+
+SQLite Caveats
+--------------
+
+Avoiding Running Into Write-locks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Trying to update/insert records to a SQLite database from within a scheduled
+job doesn't work when the application writes to the database itself. A
+scheduled task runs on it's own thread, and SQLite doesn't allow other threads
+but the main one to change the database.
+
+The workaround is to open a new database connection in the scheduler thread like
+this::
+
+    from turbogears.database import PackageHub
+
+    hub = PackageHub("myapp") con = connectionForURI(hub.uri)
+    MyClass._connection = con
+
+
+Long-running Tasks
+~~~~~~~~~~~~~~~~~~
+
+Note that if you're using SQLite for your database, a long-running script
+outside your application can lock the database for long periods of time. To
+avoid this, isolate your database access from your expensive operations::
+
+    # Script to periodically do expensive things.
+
+    import turbogears
+    turbogears.update_config(configfile="dev.cfg",
+            modulename="project_name.config")
+    from myapp.model import *
+
+    def read_from_db():
+        calculations = ScheduledCalculation.select(
+                ScheduledCalculation.q.result==None)
+        return [(calc.id, calc.what_to_do) for calc in calculations]
+
+    def write_to_db(results):
+        for calc_id, result in results:
+            calc = ScheduledCalculation.get(calc_id)
+            calc.result = result
+
+    # Get the list of what to do from the database.  The result list we get
+    # should not include any SQLObject-derived objects.
+    calculations = read_from_db()
+
+    # Now we can do the expensive calculations, since there won't be any
+    # live objects locking the database.
+    results = []
+    for calc_id, what_to_do in calculations:
+      results.append((calc_id, do_expensive_calc(what_to_do))
+
+    # Now write them all to the database
+    write_to_db(results)
+    hub.commit()
+

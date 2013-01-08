@@ -1,0 +1,390 @@
+.. index:: Elixir
+
+Getting Started with Elixir
+===========================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+In TurboGears the model represents whatever persistent data your application works with.
+
+In practice, we usually use an ORM (object relational mapper) in our model.
+
+Object relational mappers provide a bridge between Python objects and a relational database.
+An ORM lets you use object-oriented programming style for accessing a relational database,
+and provides an abstraction layer over different database backend systems. ORMs are not designed
+to hide away the database 100%, but they go a long way towards letting you write Python and not
+worry about SQL.
+
+TurboGears 1.0 uses :doc:`SQLObject by default </SQLObject/VsSQLAlchemy>`, and will default to SQLAlchemy beginning in 1.1,
+however, :doc:`SQLAlchemy is already well integrated </SQLAlchemy/index>` and can be used by following the short steps below.
+This alternative Getting Started document will use SQLAlchemy with the simplifying Elixir layer,
+read the standard Getting Started document if you prefer to :doc:`start with SQLObject <UseDatabase>`.
+
+.. _start with SQLObject: UseDatabase
+
+Installing SQLAlchemy & Elixir
+------------------------------
+
+::
+
+ easy_install sqlalchemy
+ easy_install elixir
+
+Then when quickstarting your TG project::
+
+ tg-admin quickstart --elixir
+
+
+
+Set the Database URI (dburi)
+----------------------------
+
+The model needs to know where to put/find your database. This is indicated in your project's ``dev.cfg`` file (for development) or the ``prod.cfg`` file (for production use). There,
+you will find the parameter ``sqlalchemy.dburi``, which controls where the database is stored.
+The value is a typical URI scheme. For example::
+
+    sqlalchemy.dburi="sqlite://%(current_dir_uri)s/devdata.sqlite"
+
+The default setting above specifies a ``devdata.sqlite`` SQLite database file within your project's top directory. When you are ready to move from the default setting, you can change
+the dburi to use :doc:`other databases </SQLAlchemy/Configuration>` such as MySQL, Postgres, MS SQL Server, etc.
+
+SQLAlchemy does well against a wide variety of databases. Many aspects of how the database is
+used, such as column names, table names and join table names can be customized as needed to fit
+existing databases.
+
+Define the Data Model
+---------------------
+
+You define your data model in the ``model.py`` file in your project's package.
+
+TurboGears provides two different ways to define your database:
+
+#. Define tables and their relationships in Python.
+#. Get them automatically from your database.
+
+For clarity in your code and database portability, it is often easier to define your
+model in Python terms.
+
+Defining your model in Python requires more typing of Python code, but saves
+you from having to write SQL to create your database.
+
+To define a Python classes to be based on your database, you just do this in model.py ::
+
+      from elixir import *
+
+      class Book(Entity):
+          class sqlmeta:
+              fromDatabase = True
+
+.. note:: This only works with some databases. Check the SQLObject `Automatic Class Generation`_
+    documentation to check whether this works with your database.
+
+.. _automatic class generation: http://sqlobject.org/SQLObject.html#automatic-class-generation
+
+
+.. _define_elixir_model:
+
+Defining the Model
+------------------
+
+This Python code will define a table in your database for books, with unicode columns for
+isbn, title and description of lengths 13, 100 and 200, respectively::
+
+      class Book(Entity):
+          isbn = Field(Unicode(13))
+          title = Field(Unicode(100))
+          description = Field(Unicode(200))
+
+Your model objects should not be dumb data containers. They are full Python objects and can
+have methods of their own to perform more complex calculations and operations.
+
+Column (Field) Types
+~~~~~~~~~~~~~~~~~~~~
+
+``Field`` can inherent from one of many different field types that are then applied when
+SQLAlchemy creates your table columns. Common examples include Unicode, String, Integer,
+Float, PickleType ... See a complete list of `types available in SQLAlchemy <http://www.sqlalchemy.org/docs/04/types.html>`_
+
+In the case of class Book above, Elixir will auto-generate an id column and use it as the primary key for our Entity because we provided no primary key ourselves. If you want to specify the primary key explicitly, just pass primary_key=True to the field(s) you want to act as the primary key. In this example, an appropriate approach would be::
+
+ isbn = Field(Unicode(13), primary_key=True)
+
+
+Create the Database
+-------------------
+
+To create the database from the model definition, you just need to run the following command
+from within your project's top-level directory::
+
+  $ tg-admin sql create
+  Creating tables at sqlite:///devdata.sqlite
+  $
+
+This will create the tables you defined in your model. Of course, this will only work, if you
+defined the model with Python, not if you use ``fromDatabase = True``,
+
+If you would like a more verbose method, instead of using ``tg-admin sql create``, go
+first into the tg-admin shell (described more later) and type::
+
+ $tg-admin shell
+
+ Python 2.4.4 (#1, Oct 18 2006, 10:34:39)
+ [GCC 4.0.1 (Apple Computer, Inc. build 5341)] on darwin
+ Type "help", "copyright", "credits" or "license" for more information.
+ >>> import model
+ >>> setup_all()
+ >>> create_all()
+ 2008-04-02 02:06:23,128 sqlalchemy.engine.base.Engine.0x..10 INFO PRAGMA    table_info("book_model_book")
+ 2008-04-02 02:06:23,129 sqlalchemy.engine.base.Engine.0x..10 INFO {}
+ 2008-04-02 02:06:23,132 sqlalchemy.engine.base.Engine.0x..10 INFO
+ CREATE TABLE book_model_book (
+        id INTEGER NOT NULL,
+        isbn VARCHAR(13),
+        title VARCHAR(100),
+        description VARCHAR(200),
+        PRIMARY KEY (id)
+ )
+
+
+ 2008-04-02 02:06:23,133 sqlalchemy.engine.base.Engine.0x..10 INFO {}
+ 2008-04-02 02:06:23,286 sqlalchemy.engine.base.Engine.0x..10 INFO COMMIT
+
+ >>>
+
+
+
+
+
+Using the Model
+---------------
+
+To experiment with your new model, TurboGears provides a command session for interactive database manipulation with debug logging turned on by default. From your project directory, type::
+
+ $tg-admin shell
+
+ Python 2.4.4 (#1, Oct 18 2006, 10:34:39)
+ [GCC 4.0.1 (Apple Computer, Inc. build 5341)] on darwin
+ Type "help", "copyright", "credits" or "license" for more information.
+ >>> import model
+ >>>
+
+
+
+
+Adding New Data
+~~~~~~~~~~~~~~~
+
+TurboGears makes accessing your database seem very much like using any other
+Python objects.
+
+After you have created the model, you can insert a new row into your database by just
+instantiating an object from the appropriate class in your model. SQL queries are being run
+behind the scenes (shown while debug is enabled, below) as you access and change your data
+object. Assuming you have a Book :ref:`model defined <define_elixir_model>`, here's an example::
+
+  >>> Book(isbn="1234567890", title="A Fistful of Yen",
+           description="An evocative look at Japanese currency "
+                       "surrounded by hands.")
+    <book.model.Book object at 0x22108b0>
+  >>>
+
+
+
+  1/QueryIns:  INSERT INTO book (isbn, description, title)
+                 VALUES ('1234567890',
+                         'An evocative look at Japanese currency surrounded by
+                          hands.', 'A Fistful of Yen')
+    1/QueryIns-  >   1
+    1/COMMIT  :  auto
+    1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1
+    1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1;
+    1/QueryOne-  >   (u'1234567890', u'A Fistful of Yen',
+                      'An evocative look at Japanese currency surrounded by
+                       hands.')
+    1/COMMIT  :  auto
+   <Book 1 isbn='1234567890' title='A Fistful of Yen'
+    description="'An evocative loo...'">
+
+
+
+
+Getting a Database Record
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can get at an object through its primary key using the ``get`` method::
+
+  >>> Book.get(1)
+       <Book 1 isbn='1234567890' title='A Fistful of Yen'
+          description="'An evocative loo...'">
+
+
+Getting a Record by alternateID
+```````````````````````````````
+
+When you specify that a column is an ``alternateID``, as we did for the
+``isbn`` field, SQLObject automatically creates a classmethod so that you can use to
+search on those values:
+
+::
+
+  >>> Book.byIsbn("1234567890")
+      1/QueryOne:  SELECT id, isbn, title, description FROM book
+                    WHERE isbn = '1234567890'
+      1/QueryR  :  SELECT id, isbn, title, description FROM book
+                    WHERE isbn = '1234567890'
+      1/QueryOne-  >   (1, u'1234567890', u'A Fistful of Yen',
+                        'An evocative look at Japanese currency surrounded by
+                         hands.')
+      1/COMMIT  :  auto
+        <Book 1 isbn='1234567890' title='A Fistful of Yen'
+         description="'An evocative loo...'">
+
+
+Selecting Records
+~~~~~~~~~~~~~~~~~
+
+Of course, there are plenty of times when we need to do searches beyond just
+simple ID lookups. SQLObject provides a ``select()`` classmethod that lets you
+specify many queries in more Python-like terms.
+
+Your class has a special ``q`` attribute that gives you access to a placeholder for a real attribute to use in queries.
+
+For example, to query on the isbn column, you would use ``Book.q.isbn``.  Here's a sample query::
+
+  >>> Book.query.title.like("%Fistful%") & Book.query.filter(isbn=="1234567890"))
+      1/Select  :  SELECT book.id, book.isbn, book.title, book.description
+                    FROM book
+                    WHERE ((book.title LIKE '%Fistful%') AND
+                          (book.isbn = '1234567890'))
+      1/QueryR  :  SELECT book.id, book.isbn, book.title, book.description
+                    FROM book
+                    WHERE ((book.title LIKE '%Fistful%') AND
+                          (book.isbn = '1234567890'))
+      1/COMMIT  :  auto
+        [<Book 1 isbn='1234567890' title='A Fistful of Yen'
+          description="'An evocative loo...'">]
+
+
+SelectBy Method
+```````````````
+
+An alternative to .select is .selectBy. It works like:
+
+    >>> peeps = Book.selectBy(title = "%Fistful%", isbn = "1234567890")
+
+
+The neat thing about SelectResults is that until you start pulling data
+out of it, it's just a placeholder for the results.
+
+
+Count the number of selected records
+````````````````````````````````````
+
+Rather than converting the results to a list, we could have added ``.count()`` to the end of the select call in order to just retrieve the number of matching rows.
+
+
+Updating a Record
+~~~~~~~~~~~~~~~~~
+
+Updates are very easy: just change the class attribute!
+
+Every time you change an attribute, SQLObject will run an ``UPDATE SQL`` statement. Sometimes, though, you may need to change several columns at once and don't want to run individual
+updates for each.
+
+Your instances have a ``set()`` method that lets you set them all at once. Here are examples of both styles::
+
+  >>> book.title = "A Fistful of Foobar"
+      1/Query   :  UPDATE book SET title = 'A Fistful of Foobar' WHERE id = 1
+      1/QueryR  :  UPDATE book SET title = 'A Fistful of Foobar' WHERE id = 1
+      1/COMMIT  :  auto
+      >>> book.set(title="A Fistful of Yen 2: Electric Boogaloo", isbn="37")
+      1/Query   :  UPDATE book SET isbn = '37',
+                    title = 'A Fistful of Yen 2: Electric Boogaloo' WHERE id = 1
+      1/QueryR  :  UPDATE book SET isbn = '37',
+                    title = 'A Fistful of Yen 2: Electric Boogaloo' WHERE id = 1
+      1/COMMIT  :  auto
+
+
+Deleting a Record
+~~~~~~~~~~~~~~~~~
+
+A clean approach is to add this method to your model::
+
+ from Elixir import session
+
+ class SomeTable(Entity):
+     ...
+     def destroySelf(self):
+         session.delete(self)
+
+
+Subsequently, deleting a row is pretty simple. If you are using the object directly you would make a call to ``objname.destroySelf()``
+
+Note that by default ``destroySelf`` only removes the object in question. It does not follow references and remove them.
+
+To add this behavior you will have to add such behavior to this destroySelf method.
+Here is a sample class that does this
+
+
+
+Relationships
+~~~~~~~~~~~~~
+
+The relational databases allow you relating tables with each other. Most common relationships are
+One-to-One, One-to-Many, and Many-to-Many.
+
+
+One-to-Many Relationships
+`````````````````````````
+
+Elixir uses ``ManyToOne`` and ``OneToMany`` column-pairs to define a One-to-Many
+relationship.
+
+For example, Persons can have multiple books, but books can only be had by one person,
+so we can extend the ``Book`` class from the initial example::
+
+      class Book(SQLObject):
+          ....
+          owner = ManyToOne('Person')
+
+      class Person(SQLObject):
+          name = Unicode(30)
+          books = OneToMany('Book')
+
+
+Many-to-Many Relationships
+``````````````````````````
+
+Books can be edited by many authors, and authors can write multiple books. Elixir can relate
+these two like this::
+
+      class Book(Entity):
+          ....
+          authors = ManyToMany('Author')
+
+      class Author(Entity):
+          ....
+          books = ManyToMany('Book')
+
+
+
+Specifying the Table Name
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There's a special option to specify the table name that would be created in database::
+
+    class Book(Entity):
+        using_options(tablename='tg_book')
+
+        ...
+
+The 'tg_book' table will be created when you create the database with the ``tg-admin sql create`` command.
+
+
+
+References
+----------
+
+`Elixir Documentation <http://elixir.ematia.de>`_
+`SQLAlchemy Documentation <http://www.sqlalchemy.org/>`_

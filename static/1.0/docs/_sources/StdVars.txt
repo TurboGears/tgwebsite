@@ -1,0 +1,159 @@
+.. index:: global template variables, standard template variables
+
+``stdvars``: Global Template Variables
+======================================
+
+.. contents::
+  :depth: 2
+
+
+TurboGears provides a standard set of variables to all templates as an aid
+to template writers. You can easily add your own functions and variables to
+this standard set, check below for details.
+
+
+TurboGears Provided
+-------------------
+
+
+Standard Variables
+~~~~~~~~~~~~~~~~~~
+
+``tg.errors``
+    Shortcut for ``cherrypy.request.validation_errors``.
+
+``tg.identity``
+    Shortcut for ``turbogears.identity.current``, provides access to the user
+    currently being served. See the :doc:`identity <Identity/index>` documentation for details.
+
+``tg.inputs``
+    Shortcut for ``cherrypy.request.input_values``.
+
+``tg.locale``
+    The current locale as a string, e.g. ``en_US``.
+
+``tg.request``
+    Shortcut for ``cherrypy.request``. For more information see the page
+    on how to :doc:`access request/response information <RequestResponse>`.
+
+``tg.session``
+    Shortcut for ``cherrypy.session``, i.e. the current cherrypy session
+    if ``session_filter.on`` it set to ``True`` in the ``app.cfg``
+    :doc:`configuration <Configuration>` file. If it is ``False`` or not set then ``tg.session``
+    will be ``None``.
+
+``tg.tg_js``
+    The web path to the TurboGears-provided JavaScript libraries.
+
+``tg.useragent``
+    A ``turbogears.view.UserAgent`` object with information about the browser.
+    This object currently provides the browser type (``"msie"``, ``"firefox"``,
+    ``"safari"``) via the ``browser`` attribute and, for Safari only, the
+    ``majorVersion`` and ``minorVersion`` attributes.
+
+.. _access request/response information: RequestResponse
+.. _configuration: Configuration
+.. _identity: Identity
+
+
+Standard Functions
+~~~~~~~~~~~~~~~~~~
+
+``tg.checker(expression)``
+    Takes an ``expression`` for an argument, if ``expression`` is True, returns
+    ``"checked"``, otherwise returns ``None``
+
+``tg.config(config_key [, default_value])``
+    Shortcut to ``turbogears.config.get()``. The first argument is the config
+    key (e.g. ``'sqlobject.dburi'``) and the second is the value to return if the
+    lookup fails.
+
+``tg.cycle(iterator)``
+    Takes an iterator, loops forever over the passed in iterator. This is very
+    similar to the ``itertools.cycle()`` method but it provides a way to get the
+    current iterator value via the ``value`` attribute::
+
+        >>> from turbogears.view.base import cycle
+        >>> oe = cycle(('odd','even'))
+        >>> oe
+        None
+        >>> oe.next()
+        'odd'
+        >>> oe
+        'odd'
+        >>> oe.next()
+        'even'
+        >>> oe.next()
+        'odd'
+        >>> oe.value
+        'odd'
+
+``tg.ipeek(iterator)``
+    Checks if the given iterator returns at least on element. If yes, returns a new
+    generator that returns the same elements as the original one. If the iterator is
+    empty, returns ``None``. This is useful for cases where you will choose not to
+    display a list or table if there is no data present.
+
+``tg.quote_plus(string [,safe])``
+    Shortcut to the standard ``urllib.quote_plus`` function.
+
+    Replaces special characters in ``string`` using the "``%xx``" escape.
+    Letters, digits, and the characters "``_.-``" are never quoted.  Also
+    replaces spaces by plus signs, as required for quoting HTML form values.
+    Plus signs in the original string are escaped unless they are included in
+    ``safe``, a string of characters that do not require escaping.
+
+``tg.selector(expression)``
+    Takes an ``expression`` for an argument, if ``expression`` is True, returns
+    ``"selected"``, otherwise returns ``None``
+
+``tg.url(absolute_path [, params | **kwparams])``
+    This function allows your absolute path URLs to work when the application's
+    root is moved. If, for example, you want your application to be rooted at
+    ``/my_app``, you set ``server.webpath`` to ``'/my_app/'``. After doing this,
+    ``tg.url('/')`` will return ``'/my_app/'`` and ``tg.url('/foo')`` will return
+    ``'/my_app/foo'``.
+
+    Query parameters for the URL can be passed in as a dictionary in
+    the second argument *or* as keyword parameters.
+
+
+Custom Additions
+----------------
+
+To add your own atributes and methods, all you need to do is append a callable
+onto ``turbogears.view.variable_providers``. This callable is passed a ``Bunch``
+(a dictionary that has ``__getattr__`` & friends so it can be treated like an
+object) containing the variables listed above. Simply update the ``Bunch`` with
+your custom attributes/methods and return it.
+
+::
+
+    # This is in 'controllers.py' outside your Controller classes.
+    # Alternatively, put this in 'stdvars.py' and do "import projectname.stdvars"
+
+    import turbogears
+
+    def is_dead(animal):
+        if animal == "parrot":
+            return True
+        elif animal == "cat":
+            from random import choice
+            return choice([True,False])
+        else:
+            return False
+
+    def add_custom_stdvars(vars):
+        return vars.update({"is_dead": is_dead})
+
+    turbogears.view.variable_providers.append(add_custom_stdvars)
+
+    # is_dead will now be accessible as 'tg.is_dead' in your templates
+
+Though this procedure may seem slightly arkward at first, it is much more flexible than just
+adding static values to the template environment. Using a callable you can add as many
+variables or functions to the template variables as you like, with just one callable, you
+just have to add more keys to the passed ``Bunch``. Also, since ``add_custom_stdvars`` gets
+called on every request, the keys and values which you add can change dynamically from request
+to request, if necessary.
+

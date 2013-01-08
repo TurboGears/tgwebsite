@@ -1,0 +1,196 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Downloading and installing a TurboGears beta version &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installing older versions of TurboGears" href="OldVersions.html" />
+    <link rel="prev" title="TurboGears 1.0 Upgrade Guide" href="Upgrade.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="OldVersions.html" title="Installing older versions of TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Upgrade.html" title="TurboGears 1.0 Upgrade Guide"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Downloading and installing a TurboGears beta version</a><ul>
+<li><a class="reference internal" href="#quickstart-instructions">Quickstart instructions</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#detailed-platform-specific-instructions">Detailed platform-specific instructions</a></li>
+<li><a class="reference internal" href="#database-installation-and-configuration">Database installation and configuration</a></li>
+<li><a class="reference internal" href="#where-are-the-download-files">Where are the download files?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Upgrade.html"
+                        title="previous chapter">TurboGears 1.0 Upgrade Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="OldVersions.html"
+                        title="next chapter">Installing older versions of TurboGears</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="downloading-and-installing-a-turbogears-beta-version">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Downloading and installing a TurboGears beta version</a><a class="headerlink" href="#downloading-and-installing-a-turbogears-beta-version" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This page is about installing unfinished, beta versions of TurboGears
+for those who want to try out a new TurboGears version before its release or
+help with development.</p>
+<p class="last">These releases are <strong>not meant</strong> for production use and are <strong>not supported</strong>.
+People who are trying out beta releases are supposed to know what they
+are doing. That being said, if you are having trouble with these releases,
+you can write to the mailing list or submit a <a class="reference external" href="http://trac.turbogears.org/newticket">bug report</a>.
+See also the <a class="reference internal" href="Troubleshooting.html"><em>installation troubleshooting</em></a> page.</p>
+</div>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#downloading-and-installing-a-turbogears-beta-version" id="id1">Downloading and installing a TurboGears beta version</a><ul>
+<li><a class="reference internal" href="#quickstart-instructions" id="id2">Quickstart instructions</a></li>
+<li><a class="reference internal" href="#requirements" id="id3">Requirements</a></li>
+<li><a class="reference internal" href="#detailed-platform-specific-instructions" id="id4">Detailed platform-specific instructions</a></li>
+<li><a class="reference internal" href="#database-installation-and-configuration" id="id5">Database installation and configuration</a></li>
+<li><a class="reference internal" href="#where-are-the-download-files" id="id6">Where are the download files?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="quickstart-instructions">
+<h2><a class="toc-backref" href="#id2">Quickstart instructions</a><a class="headerlink" href="#quickstart-instructions" title="Permalink to this headline">¶</a></h2>
+<p>To install a TurboGears beta version, do the following:</p>
+<ul>
+<li><p class="first">Download <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> from the TurboGears project page at SourceForge.</p>
+</li>
+<li><p class="first">At the beginning of this script, there is a line setting TGVERSION
+to the latest stable version. Change this to the beta version wanted.</p>
+</li>
+<li><p class="first">Run the following in your command shell (use <tt class="docutils literal"><span class="pre">sudo</span></tt> only on Unix/Mac OS X
+if you are installing as a non-root user):</p>
+<div class="highlight-python"><pre>[sudo] python tgsetup.py</pre>
+</div>
+</li>
+</ul>
+<p>This will download and install the TurboGears beta version and all dependencies.
+It will install the <tt class="docutils literal"><span class="pre">tg-admin</span></tt> script and helper scripts for third-party
+packages, like <tt class="docutils literal"><span class="pre">kidc</span></tt>, <tt class="docutils literal"><span class="pre">cheetah</span></tt> etc., into <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> (Unix) resp.
+in the <tt class="docutils literal"><span class="pre">Scripts</span></tt> directory in your Python installation (Windows).</p>
+<p>See section &#8220;Specific version installation&#8221; below for detailed instructions on how
+to install a different (beta) version.</p>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id3">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Windows, Mac OS X 10.3/4/5 or Linux/Unix</li>
+<li>Python &gt;= 2.3.x (Of course. Details see below)</li>
+<li>About 20-25 MB of disk space, depending on your OS, architecture and filesystem</li>
+<li>On some systems you need a C compiler, to compile Python C-extensions from some
+components that are required by TurboGears. See the detailed instructions for your
+platform for details.</li>
+<li>If you need to compile extensions, you&#8217;ll also need Python header files and libraries.
+If they are not included in your Python installation, they can usually be installed
+with a package called <tt class="docutils literal"><span class="pre">python-dev</span></tt>, <tt class="docutils literal"><span class="pre">python-devel</span></tt> or similar.</li>
+<li>(Recommended) A database system (see below)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The recommended Python version to use with TurboGears currently is <strong>2.5.x</strong>,
+but we still support <strong>Python 2.4.x</strong> and (<a class="reference internal" href="Python2.3Support.html"><em>with some restrictions</em></a>)
+<strong>Python 2.3.x</strong>. Python 2.5.x is supported from TurboGears
+version <strong>1.0.2</strong> onwards.</p>
+</div>
+</div>
+<div class="section" id="detailed-platform-specific-instructions">
+<h2><a class="toc-backref" href="#id4">Detailed platform-specific instructions</a><a class="headerlink" href="#detailed-platform-specific-instructions" title="Permalink to this headline">¶</a></h2>
+<p>On some systems you may need to first install some of the above mentioned requirements. Though we don&#8217;t provide detailed instructions for this for the TurboGears beta version, you can refer to the matching section of the <a class="reference internal" href="index.html"><em>installation guide</em></a> for some ideas.</p>
+</div>
+<div class="section" id="database-installation-and-configuration">
+<h2><a class="toc-backref" href="#id5">Database installation and configuration</a><a class="headerlink" href="#database-installation-and-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Please refer to the <a class="reference internal" href="index.html"><em>installation guide</em></a>.</p>
+</div>
+<div class="section" id="where-are-the-download-files">
+<h2><a class="toc-backref" href="#id6">Where are the download files?</a><a class="headerlink" href="#where-are-the-download-files" title="Permalink to this headline">¶</a></h2>
+<p>There is a <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">list of all files</a> hosted on turbogears.org available if you
+need to do something manually.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

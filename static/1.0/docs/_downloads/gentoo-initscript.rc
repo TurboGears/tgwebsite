@@ -1,0 +1,34 @@
+#!/sbin/runscript
+
+# Author: Matthew Bevan
+
+# The initscript I use for Gentoo is really quite simple - I modeled it off of
+# the dbus initscript (though it does use start-stop-daemon, so does every
+# other Gentoo daemon) and only suffers a few problems.  Like forking (thus the
+# -b).  And not storing the actual PID of the running server so it can be
+# killed later. Once it goes live I'll need to re-write it for Fedora anyway. 
+
+start() {
+    ebegin "Starting TurboGears application server"
+
+    start-stop-daemon --start --pidfile /var/run/tg.pid -m -b \
+            --exec /usr/local/bin/start-topfloor.py
+
+    eend $?
+}
+
+stop() {
+    local retval
+
+    ebegin "Stopping TurboGears application server"
+
+    start-stop-daemon --stop --pidfile /var/run/tg.pid
+    retval=$?
+
+    eend ${retval}
+
+    # This should vanish when baselayout-1.12.0 is marked stable.
+    [[ -f /var/run/tg.pid ]] && rm -f /var/run/tg.pid
+
+    return ${retval}
+}

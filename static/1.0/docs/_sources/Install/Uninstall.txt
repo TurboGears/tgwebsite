@@ -1,0 +1,106 @@
+.. index:: uninstalling
+
+Uninstalling TurboGears
+=======================
+
+.. contents::
+  :depth: 2
+
+
+Overview
+--------
+
+So you want to uninstall TurboGears. This could be because:
+
+#. You found a bug or "feature" and you must go back to an earlier version
+   (or something broke on a live server after upgrading).
+#. You install a SVN checkout and want to get back to a release version or vice-versa.
+#. You just got tired of us, which I hope never happens; if so rant on the
+   mailing list, we'll fix/add/remove your problem if reasonable of course. :)
+
+First of all let me say there is no easy_install command for uninstall, at
+least not yet...
+
+Therefore, when you want to build a test environment for TurboGears, we recommend
+using virtualenv". See the page :doc:`NonRoot <NonRoot>` for a short intro on how
+to set up a virtual environment.
+
+
+5 Minute Tutorial on ``site-packages``
+--------------------------------------
+
+#. Go to your ``<prefix>/lib/site-package`` directory.
+
+#. Everything installed by setuptools, is listed either in ``easy-install.pth``,
+   ``setuptools.pth`` or a ``.egg`` (directory or file) the rest (if any) is
+   either plain distutils or stuff you put there manually.
+
+#. You will find either a folder or a file that ends in ``.egg``, they are both
+   packages, the only diference is that some packages are "zip safe" and others
+   aren't, which just means you can run them from a compressed file or you need
+   to uncompress (to a folder). So from now on an egg is whichever applies.
+
+#. Another thing to note is that old versions of all packages are not deleted,
+   so if you have been using turbogears/setuptools for a while you will see many
+   versions of the same package. it is safe to delete old versions, but don't
+   delete the ones shown in ``easy-install.pth``, which we'll cover in a sec.
+
+#. Open the file ``easy-install.pth`` in your favorite text editor, and you will
+   see something like this::
+
+    import sys; sys.__plen = len(sys.path)
+    .\setuptools-0.6c3-py2.4.egg
+    .\turbogears-1.0.1-py2.4.egg
+    .\sqlobject-0.7.3b1-py2.4.egg
+    .\configobj-4.3.2-py2.4.egg
+    .\ruledispatch-0.5a0.dev_r2115-py2.4-win32.egg
+    .\formencode-0.6-py2.4.egg
+    .\celementtree-1.0.5_20051216-py2.4-win32.egg
+    .\pastescript-1.1-py2.4.egg
+    .\elementtree-1.2.6_20050316-py2.4-win32.egg
+    .\simplejson-1.5-py2.4.egg
+    .\cherrypy-2.2.1-py2.4.egg
+    .\turbokid-0.9.9-py2.4.egg
+    .\turbocheetah-0.9.5-py2.4.egg
+    .\turbojson-1.0-py2.4.egg
+    .\pyprotocols-1.0a0dev_r2082-py2.4-win32.egg
+    .\cheetah-2.0rc7-py2.4.egg
+    .\pastedeploy-1.1-py2.4.egg
+    .\paste-1.1.1-py2.4.egg
+    .\kid-0.9.5-py2.4.egg
+    .\sqlalchemy-0.3.4-py2.4.egg
+    <big line that ruins wiki formatting>
+
+#. This lists all packages installed by setuptools (NOT only TurboGears stuff).
+
+If you remove a package from this file, Python won't find it, even if the egg
+is still there: this is the actual list of packages installed not the content
+of the ``site-packages`` directory.
+
+
+Uninstalling the Current TG version
+-----------------------------------
+
+The simplest scenario is when the only thing you installed with ``easy_install``
+/ ``setuptools`` is TurboGears. Then you just need to delete all ``.egg`` files
+and directories and clean the ``easy-install.pth`` to look something like this::
+
+    import sys; sys.__plen = len(sys.path)
+    <big line that ruins wiki formatting>
+
+If not, run ``tg-admin info``, and delete all the listed packages one-by-one from
+``easy-install.pth``. You can leave the eggs there if you later want to reinstall
+the same version.
+
+
+Finally, you can delete the various scripts installed by the eggs from
+``/usr/local/bin`` (Unix/Mac OS X) or ``C:\Python2x\Scripts`` (Windows).
+Here's a list of scripts installed by TurboGears and its dependencies:
+
+* cheetah
+* cheetah-compile
+* kid
+* kidc
+* paster
+* sqlobject-admin
+* tg-admin

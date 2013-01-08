@@ -1,0 +1,31 @@
+.. index:: backends
+
+Overview
+========
+
+TurboGears is very flexible with respect to how you can store data persistently. Currently
+TurboGears supports the two mayor ORMs available in Python, SQLObject_ (SO) and SQLAlchemy_
+(SA). For a comparison between those two with respect to TurboGears, please see :doc:`SQLObject Vs
+SQLAlchemy <SQLObject/VsSQLAlchemy>`.
+
+In a default quickstarted project, your `` model.py`` file will only have a few references to
+SQLObject, and the identity framework may put some classes in there, but all this can be
+manipulated for your needs; if you want, you can even do completely without what TG provides
+and write your data access layer.
+
+.. _sqlobject: http://www.sqlobject.org/
+.. _sqlalchemy: http://www.sqlalchemy.org/
+
+
+Supported backends
+==================
+
+SQLObject
+   is the default for TG 1.0 and every component should work on it, CatWalk, Identity,
+   ModelDesigner,etc; For more information about using SQLObject with TurboGears
+   see :doc:`SQLObject page <SQLObject/index>`.
+SQLAlchemy
+   Will be the default in future versions of TurboGears and is currently suported by
+   most components. The ones really lacking are development tools like Catwalk and
+   ModelDesigner, and of course any third party component/app written on top of SO.
+   For a quick introduction of using SA with 1.0 :doc:`follow this link <SQLAlchemy/index>`.

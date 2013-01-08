@@ -1,0 +1,130 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How many threads should I use? &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Making HTTPS Redirects Work With a Reverse Proxy" href="RedirectHttpsRequests.html" />
+    <link rel="prev" title="Integrated Windows Authentication" href="IntegratedWindowsAuthentication.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RedirectHttpsRequests.html" title="Making HTTPS Redirects Work With a Reverse Proxy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="IntegratedWindowsAuthentication.html" title="Integrated Windows Authentication"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="IntegratedWindowsAuthentication.html"
+                        title="previous chapter">Integrated Windows Authentication</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="RedirectHttpsRequests.html"
+                        title="next chapter">Making HTTPS Redirects Work With a Reverse Proxy</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="how-many-threads-should-i-use">
+<span id="index-0"></span><h1>How many threads should I use?<a class="headerlink" href="#how-many-threads-should-i-use" title="Permalink to this headline">¶</a></h1>
+<p>The consequences of getting the wrong number of threads are:</p>
+<p>Too few: your users will have to wait for a thread to be free. If it takes too
+long, their connection attempt will timeout.</p>
+<p>Too many: you&#8217;ll waste resources (database connections, memory, CPU, etc.).</p>
+<p>Think of concurrent users and the average time each page takes to load. Be
+extra careful with the most common / used pages, the most expensive
+operations, peak traffic and how many concurrent users you&#8217;ll be serving.</p>
+<p>Example: 5 requests per second, an average of 50 ms per hit -&gt; 1 thread would
+handle that. 5 requests per second, an average of 5s per hit -&gt; 5*5 = 25s of
+work requested / second, so you have to calculate how long you want your user
+to wait. In 5 seconds, for the last example, you&#8217;d have 125s of work
+requested. If you want to make nobody wait more than 5s then you&#8217;d have to be
+able to deliver that amount of work. One thread per request, 25 threads (and a
+cache in front of TG, optimising the code to see if it can be sped up, etc.)</p>
+<p>You also need to be aware that a single cherryPy instance can only use one
+processor for all of its threads even if you have multiple processors in a
+machine. You can get around this by starting multiple instances on different
+ports and put a load balancing proxy in front (lighttpd will do nicely). Also
+get lighttpd or whatever your front end is to handle the static content
+directly. This also helps with resilience and scalability.</p>
+<p>If you have two processors (dual core is now common) you might want to start
+two instances with 10 threads rather than one instance with 20 threads for
+example. You&#8217;ll get much better throughput that way.</p>
+<p>Also be aware that SQLAlchemy creates a connection pool rather then blindly
+create a connection per thread. So even if you over estimate the number of
+threads, using SQLAlchemy will not waste your database resources. This only
+applies if you use SQLAlchemy of course!</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A Brief Introduction to MochiKit &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Getting Started With Identity" href="../Identity/GettingStarted.html" />
+    <link rel="prev" title="A Brief Introduction to Kid Templates" href="Kid.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Identity/GettingStarted.html" title="Getting Started With Identity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Kid.html" title="A Brief Introduction to Kid Templates"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Kid.html"
+                        title="previous chapter">A Brief Introduction to Kid Templates</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Identity/GettingStarted.html"
+                        title="next chapter">Getting Started With Identity</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="a-brief-introduction-to-mochikit">
+<span id="index-0"></span><h1>A Brief Introduction to MochiKit<a class="headerlink" href="#a-brief-introduction-to-mochikit" title="Permalink to this headline">¶</a></h1>
+<p>While TurboGears is a Python-based megaframework, a modern webapp <em>has</em> to use
+JavaScript to provide a good user experience. JavaScript includes some of the
+conveniences that we, as Python programmers, are used to: built-in dictionaries
+(hashes) and listish arrays, regular expressions, functions as objects that can
+be passed around, etc. JavaScript also lacks a number of the tools that we&#8217;re
+used to. The basic JavaScript library also does not include everything you&#8217;d
+need for a complete app.</p>
+<p>MochiKit fills in a lot of the gaps in a way that is both natural for Python
+and JavaScript. It is broken down into several packages, but you can have
+immediate access to all of its functionality by adding one line to your page&#8217;s
+<tt class="docutils literal"><span class="pre">&lt;HEAD&gt;</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;script src="${tg.tg_js}/MochiKit.js"/&gt;</pre>
+</div>
+<p>Your templates automatically get the <tt class="docutils literal"><span class="pre">tg.tg_js</span></tt> variable, and MochiKit is
+automatically made available as a static file from the server. When you load
+MochiKit this way, you&#8217;re getting everything from the MochiKit modules.
+MochiKit includes:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">Async</span></tt></dt>
+<dd>manage asynchronous tasks (including AJAX/XMLHttpRequest)</dd>
+<dt><tt class="docutils literal"><span class="pre">Base</span></tt></dt>
+<dd>functional programming and useful comparisons</dd>
+<dt><tt class="docutils literal"><span class="pre">DOM</span></tt></dt>
+<dd>painless DOM manipulation API</dd>
+<dt><tt class="docutils literal"><span class="pre">DateTime</span></tt></dt>
+<dd>&#8220;what time is it anyway?&#8221;</dd>
+<dt><tt class="docutils literal"><span class="pre">Format</span></tt></dt>
+<dd>string formatting goes here</dd>
+<dt><tt class="docutils literal"><span class="pre">Iter</span></tt></dt>
+<dd>itertools for JavaScript; iteration made HARD, and then easy</dd>
+<dt><tt class="docutils literal"><span class="pre">Logging</span></tt></dt>
+<dd>we&#8217;re all tired of alert()</dd>
+</dl>
+<p>MochiKit includes so much functionality, that this module breakdown makes it
+much easier to follow (and work with, if you&#8217;re making improvements to it).</p>
+<p><a class="reference external" href="http://www.mochikit.com/doc/html/MochiKit/index.html">MochiKit&#8217;s documentation</a> is very good, so there&#8217;s no reason to duplicate it
+here. To get an idea what each module has to offer, take a look at the
+introductory material at the top of each module&#8217;s documentation.</p>
+<p>It is worth skimming through the function reference as well, because each
+module has features that will make your life easier. For example, you know from
+the synopsis that <tt class="docutils literal"><span class="pre">MochiKit.Base</span></tt> offers features like <tt class="docutils literal"><span class="pre">map</span></tt> and
+<tt class="docutils literal"><span class="pre">repr</span></tt>... but did you know that it also has functions for putting together
+and parsing HTTP query strings?</p>
+<p>On the last page of the <a class="reference internal" href="../Wiki20/Page6.html"><em>20min wiki tutorial</em></a> you find
+an example how MochiKit can be used to pep up a TurboGears application.</p>
+<p><a class="reference internal" href="../StdVars.html"><em>Previous: Template Variables You Get for Free</em></a></p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

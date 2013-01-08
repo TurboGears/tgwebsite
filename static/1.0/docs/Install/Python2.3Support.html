@@ -1,0 +1,161 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Use TurboGears with Python 2.3 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="TurboGears installation on Unix-like Systems" href="Nix.html" />
+    <link rel="prev" title="Supported Operating Systems" href="SupportedSystems.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Nix.html" title="TurboGears installation on Unix-like Systems"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SupportedSystems.html" title="Supported Operating Systems"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Use TurboGears with Python 2.3</a><ul>
+<li><a class="reference internal" href="#multiple-decorators">Multiple decorators</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SupportedSystems.html"
+                        title="previous chapter">Supported Operating Systems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Nix.html"
+                        title="next chapter">TurboGears installation on Unix-like Systems</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="use-turbogears-with-python-2-3">
+<h1>Use TurboGears with Python 2.3<a class="headerlink" href="#use-turbogears-with-python-2-3" title="Permalink to this headline">¶</a></h1>
+<p>You can use Python 2.3 but TurboGears depends heavily on decorators and the
+occasional decorator sneaks into the codebase. With TurboGears 1.0.x everything
+<em>should</em> work on Python 2.3 (if not, file a bug). Later versions of TurboGears
+(like 1.1 and 2.0) will require at least Python 2.4 to easy the maintenance
+burden for the TurboGears developers.</p>
+<p>The main difference is that all decorators get transformed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;foo.bar.baz&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">foobar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+   <span class="k">pass</span>
+</pre></div>
+</div>
+<p>becomes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;foo.bar.baz&quot;</span><span class="p">)]</span>
+<span class="k">def</span> <span class="nf">foobar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>Alternatively, you can use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">foobar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="n">foobar</span> <span class="o">=</span> <span class="n">expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;foo.bar.baz&quot;</span><span class="p">)(</span><span class="n">foobar</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="multiple-decorators">
+<h2>Multiple decorators<a class="headerlink" href="#multiple-decorators" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes you need to have multiple decorators for a function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">expose</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">,</span> <span class="n">validate</span>
+<span class="o">...</span>
+<span class="k">def</span> <span class="nf">foobar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="n">foobar</span> <span class="o">=</span> <span class="n">expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;foo.bar.baz&quot;</span><span class="p">)(</span><span class="n">foobar</span><span class="p">)</span>
+<span class="n">foobar</span> <span class="o">=</span> <span class="n">error_handler</span><span class="p">(</span><span class="n">your_handler_function</span><span class="p">)(</span><span class="n">foobar</span><span class="p">)</span>
+<span class="n">foobar</span> <span class="o">=</span> <span class="n">validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;email&quot;</span><span class="p">:</span> <span class="n">YourCustomValidator</span><span class="p">()})</span> \
+                            <span class="p">(</span><span class="n">foobar</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can see in the example above that functions using multiple decorators in
+Python 2.3 don&#8217;t look very nice. If you use <em>Python 2.4</em> you can write the code
+above as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">expose</span><span class="p">,</span> <span class="n">error_handler</span><span class="p">,</span> <span class="n">validate</span>
+<span class="o">...</span>
+
+<span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;foo.bar.baz&quot;</span><span class="p">)</span>
+<span class="nd">@error_handler</span><span class="p">(</span><span class="n">your_handler_function</span><span class="p">)</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;email&quot;</span><span class="p">:</span> <span class="n">YourCustomValidator</span><span class="p">()})</span>
+<span class="k">def</span> <span class="nf">foobar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

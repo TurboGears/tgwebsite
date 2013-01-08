@@ -1,0 +1,121 @@
+.. index:: operating systems
+
+Supported Operating Systems
+===========================
+
+.. contents::
+   :depth: 2
+
+
+Introduction
+------------
+
+TurboGears and CherryPy are pure-Python packages, so in theory they should run on every platform that Python supports. However, TurboGears has a few dependencies on C-extension modules, which must be compilable on the target system to be able to install and run TurboGears.
+
+This page will list combinations of operating system, architecture, Python and TurboGears versions that are known to work and whether a compiler is necessary to install a certain combination.
+
+
+C-Extension Modules Required by TurboGears
+------------------------------------------
+
+============================ ================ ========== ==========================
+Extension                    Python 2.3 / 2.4 Python 2.5 Extra library requirements
+============================ ================ ========== ==========================
+cElementTree                 yes              no [1]_    no
+Cheetah                      yes              yes        no
+PyProtocols                  yes              yes        no
+RuleDispatch                 yes              yes        no
+simplejson                   yes              yes        no
+pysqlite2 (optional)         yes              no [2]_    libsqlite3
+psycopg2 (optional)          yes              yes        libpq [3]_
+MySQL-python [4]_ (optional) yes              yes        libmysqlclient
+============================ ================ ========== ==========================
+
+.. [1] uses standard library module xml.etree
+.. [2] uses standard library module sqlite3
+.. [3] might require additional libraries, depending on PostgreSQL client installation, e.g. SSL and Kerberos libraries
+.. [4] a.k.a. MySQLdb
+
+
+Linux
+-----
+
+Standard TurboGears installation should be supported on all systems with a proper build environment and a Python development package installed. Optional database modules will require the appropriate database client libraries and headers when no binary package is available and the package must be compiled on the target system.
+
+Tested for TurboGears version: 1.0.4.4
+
+=============== ======= === === === === === ===
+Python version          2.3 2.4 2.5 2.3 2.4 2.5
+----------------------- --- --- --- --- --- ---
+Architecture            i686        x86_64
+----------------------- ----------- -----------
+Extension       Version Binary available? [5]_
+=============== ======= =======================
+cElementTree    1.0.5   no  yes n/A no  yes n/A
+--------------- ------- --- --- --- --- --- ---
+Cheetah         2.0.1   no  yes yes no  yes yes
+RuleDispatch    r2306   no  yes yes no  yes yes
+PyProtocols     r2302   no  yes yes no  yes yes
+simplejson      1.8.1   no  yes yes no  yes yes
+pysqlite        2.4.1   no  yes n/A no  yes n/A
+Install w/out compiler? no  yes yes no  yes yes
+======================= === === === === === ===
+
+.. [5] from http://turbogears.org/download/
+
+
+Mac OS X
+--------
+
+Standard TurboGears installation should be supported on Mac OS X 10.4 ("Tiger") and 10.5 ("Leopard") with Python >= 2.3 and the Xcode developer tools (includes gcc) installed.
+
+Optional database modules can be downloaded as binary packages from third-party vendors, see the :doc:`Mac OS X installation page <Mac>` for more information.
+
+Tested for TurboGears version: 1.0.4.4
+
+=============== ======= === === ============== === === ============
+Python version          2.3 2.4 2.5            2.3 2.4 2.5
+----------------------- --- --- -------------- --- --- ------------
+OS X version            10.4 (Tiger, ppc/i386) 10.5 (Leopard, ix86)
+----------------------- ---------------------- --------------------
+Extension       Version Binary available? [6]_
+=============== ======= ===========================================
+cElementTree    1.0.5   y/y y/y n/A            no  no  n/A
+--------------- ------- --- --- -------------- --- --- ------------
+Cheetah         2.0.1   no  yes yes            no  no  yes
+RuleDispatch    r2306   n/y yes yes            no  no  yes
+PyProtocols     r2302   n/y yes yes            no  no  yes
+simplejson      1.8.1   no  yes yes            no  no  no
+pysqlite        2.4.1   no  yes n/A            no  no  n/A
+Install w/out compiler? no  yes yes            no  no  no
+======================= === === ============== === === ============
+
+.. [6] from http://turbogears.org/download/
+
+
+Windows
+-------
+
+Tested for TurboGears version: 1.0.4.4
+
+=============== ======= ======== ======== === === === ===
+Python version          2.3      2.4      2.5 2.3 2.4 2.5
+----------------------- -------- -------- --- --- --- ---
+Architecture            win32 (x86)           x86-64
+----------------------- --------------------- -----------
+Extension       Version Binary available? [7]_
+=============== ======= =================================
+cElementTree    1.0.5   yes      yes      n/A no  no  n/A
+--------------- ------- -------- -------- --- --- --- ---
+Cheetah         2.0.1   no [8]_  yes      yes no  no  no
+RuleDispatch    r2306   yes      yes      yes no  no  no
+PyProtocols     r2302   yes      yes      yes no  no  no
+simplejson      1.8.1   no       yes      yes no  no  no
+pysqlite        2.4.1   yes [9]_ yes [9]_ n/A no  no  n/A
+Install w/out compiler? no [10]_ yes      yes no  no  no
+======================= ======== ======== === === === ===
+
+.. [7] from http://turbogears.org/download/
+.. [8] Cheetah installs without C compiler but is much slower)
+.. [9] from http://pypi.python.org/pypi
+.. [10] Python 2.3 support broken in TurboGears 1.0.4.4

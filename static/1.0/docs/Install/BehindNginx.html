@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running TurboGears behind Nginx &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Deployment behind Apache 2 + mod_python" href="ModPython.html" />
+    <link rel="prev" title="Running TurboGears Behind Apache" href="BehindApache.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ModPython.html" title="Deployment behind Apache 2 + mod_python"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BehindApache.html" title="Running TurboGears Behind Apache"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Running TurboGears behind Nginx</a><ul>
+<li><a class="reference internal" href="#using-nginx-as-a-reverse-proxy">Using Nginx as a Reverse Proxy</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BehindApache.html"
+                        title="previous chapter">Running TurboGears Behind Apache</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ModPython.html"
+                        title="next chapter">Deployment behind Apache 2 + mod_python</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="running-turbogears-behind-nginx">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Running TurboGears behind Nginx</a><a class="headerlink" href="#running-turbogears-behind-nginx" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#running-turbogears-behind-nginx" id="id1">Running TurboGears behind Nginx</a><ul>
+<li><a class="reference internal" href="#using-nginx-as-a-reverse-proxy" id="id2">Using Nginx as a Reverse Proxy</a></li>
+<li><a class="reference internal" href="#references" id="id3">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><a class="reference external" href="http://nginx.net/">Nginx</a> is a fast and light HTTP server, reverse proxy, load balancer (and more).</p>
+<div class="section" id="using-nginx-as-a-reverse-proxy">
+<h2><a class="toc-backref" href="#id2">Using Nginx as a Reverse Proxy</a><a class="headerlink" href="#using-nginx-as-a-reverse-proxy" title="Permalink to this headline">¶</a></h2>
+<p>It&#8217;s pretty simple to get TurboGears set up behind a Nginx server so that
+it proxies requests to the CherryPy server. Here is a sample configuration that
+not only proxies to your TurboGears application, but serves static content with
+Nginx and load balances between two TurboGears application instances as well.</p>
+<div class="highlight-python"><pre>http {
+    # boilerplate nginx config ...
+
+    upstream mycluster {
+        server 127.0.0.1:8000;
+        server 127.0.0.1:8001;
+    }
+
+    server {
+        listen 80;
+
+        # static files
+        location ^~ /static/  {
+            root /path/to/YourProject/package;
+        }
+        location = /favicon.ico  {
+            root /path/to/YourProject/package/static/images;
+        }
+
+        # proxy to turbogears app
+        location / {
+            proxy_pass          http://mycluster;
+            proxy_redirect      off;
+            proxy_set_header    Host $host;
+            proxy_set_header    X-Real-IP $remote_addr;
+            proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+}</pre>
+</div>
+<p>Next you need to setup a couple TurboGears backends that will comprise the cluster:</p>
+<p>Edit your production configuration (e.g. <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>) and add/change the
+following lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">server</span><span class="o">.</span><span class="n">socket_host</span><span class="o">=</span><span class="s">&quot;127.0.0.1&quot;</span>
+<span class="n">server</span><span class="o">.</span><span class="n">socket_port</span><span class="o">=</span><span class="mi">8000</span>
+</pre></div>
+</div>
+<p>Copy <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> to <tt class="docutils literal"><span class="pre">prod2.cfg</span></tt> and change the <tt class="docutils literal"><span class="pre">server.socket_port</span></tt> option:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">server</span><span class="o">.</span><span class="n">socket_host</span><span class="o">=</span><span class="s">&quot;127.0.0.1&quot;</span>
+<span class="n">server</span><span class="o">.</span><span class="n">socket_port</span><span class="o">=</span><span class="mi">8001</span>
+</pre></div>
+</div>
+<p>Start both instances of your app:</p>
+<div class="highlight-python"><pre>$ python start-myproject.py prod.cfg &amp;
+$ python start-myproject.py prod2.cfg &amp;</pre>
+</div>
+<p><em>That&#8217;s it!</em> Nginx should now be passing requests across both backends transparently.</p>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id3">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>You can find more information and recipes for setting up Nginx on the
+<a class="reference external" href="http://wiki.nginx.org/Main">Nginx wiki</a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

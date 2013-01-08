@@ -1,0 +1,50 @@
+.. index:: Toolbox
+
+TurboGears Toolbox
+==================
+
+.. contents::
+    :depth: 1
+
+
+The Toolbox is a suite of tools to enable and accelerate application development using TurboGears. Written using TurboGears, it also showcases the many features of TurboGears, including authentication, internationalization, AJAX, etc.
+
+.. image:: images/toolbox.png
+
+
+Start it Up
+-----------
+
+The toolbox is started from the shell using the :doc:`tg-admin utility <TgAdmin>`::
+
+  tg-admin toolbox
+
+The toolbox opens a new browser and points it to the toolbox, now running on port 7654. This restricts access to local requests only (127.0.0.1) so you would want to pass the IP address of the machine you want access from. For example::
+
+  tg-admin toolbox -n -c 192.168.0.1 -c 192.168.0.2
+
+This command will allow access from IPs 192.168.0.1 and 192.168.0.2, and the ``-n`` flag disables the browser window from automatically opening.
+
+
+The Tools
+---------
+
+Current tools in the Toolbox include:
+
+:doc:`Version Info <VersionInfo>`
+  Display the available system packages, their version and location on disk
+
+:doc:`Catwalk <Catwalk>`
+  A model browser, allowing you to view/edit values in the database
+
+:doc:`Web-based Console <WebConsole>`
+  A console for your command-line needs
+
+:doc:`WidgetBrowser <Widgets/Browser>`
+  Browse your widgets
+
+:doc:`ModelDesigner <ModelDesigner>`
+  Who **wouldn't** want to design their own model?
+
+:doc:`Admi18n`
+  Web based interface for creating and maintaining translations of your website

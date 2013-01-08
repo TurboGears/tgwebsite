@@ -1,0 +1,131 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Hibernate vs SqlObject &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLAlchemy Configuration" href="../SQLAlchemy/Configuration.html" />
+    <link rel="prev" title="Views in SQLObject" href="Views.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../SQLAlchemy/Configuration.html" title="SQLAlchemy Configuration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Views.html" title="Views in SQLObject"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Hibernate vs SqlObject</a><ul>
+<li><a class="reference internal" href="#lazy-updates">Lazy Updates</a></li>
+<li><a class="reference internal" href="#new-contender">New Contender</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Views.html"
+                        title="previous chapter">Views in SQLObject</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../SQLAlchemy/Configuration.html"
+                        title="next chapter">SQLAlchemy Configuration</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="hibernate-vs-sqlobject">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Hibernate vs SqlObject</a><a class="headerlink" href="#hibernate-vs-sqlobject" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#hibernate-vs-sqlobject" id="id1">Hibernate vs SqlObject</a><ul>
+<li><a class="reference internal" href="#lazy-updates" id="id2">Lazy Updates</a></li>
+<li><a class="reference internal" href="#new-contender" id="id3">New Contender</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Hibernate is likely the most powerful open source OR mapper. Since it&#8217;s a Java library, it has its hands tied in some respects (and they&#8217;ve worked around this via bytecode manipulation at times). SQLObject has decent power, but there are some parts that are not quite as rich as they are in Hibernate.</p>
+<p>Quite a few people using Python today have previous experience with Hibernate. If we can gather up notes on the areas where Hibernate wins, that can sketch out a roadmap to bring the same power (likely with less code) to SQLObject.</p>
+<div class="section" id="lazy-updates">
+<h2><a class="toc-backref" href="#id2">Lazy Updates</a><a class="headerlink" href="#lazy-updates" title="Permalink to this headline">¶</a></h2>
+<p>Hibernate allows you to instantiate and update objects without any SQL being executed. This is a blessing and a curse. By being able to do this, you can prevent quite a few extra SQL queries being run against your database (only to be rolled back later). The curse, however, is that SQLObject will need to have much more sophisticated transaction handling.</p>
+<p>SQLObject has lazy updates, see <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#lazy-updates">http://www.sqlobject.org/SQLObject.html#lazy-updates</a> This does not extend to new object initialization, however.</p>
+</div>
+<div class="section" id="new-contender">
+<h2><a class="toc-backref" href="#id3">New Contender</a><a class="headerlink" href="#new-contender" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> has a more Hibernate-like method of operation. More on <a class="reference internal" href="../SQLAlchemy/index.html"><em>TurboGears support of SQLAlchemy</em></a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

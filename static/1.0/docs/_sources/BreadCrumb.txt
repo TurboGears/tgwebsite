@@ -1,0 +1,41 @@
+.. index:: breadcrumbs
+
+Breadcrumb Style Navigation
+===========================
+
+There are various ways of implementing `breadcrumb style navigation`__ in TurboGears.
+
+__ http://www.zend.com/zend/spotlight/breadcrumb28.php
+
+This example shows how to implement bread crumb style navigation using introspection.
+This can be done using ``cherrypy._cputil.get_object_trail()``.
+
+Using CherryPy Introspection
+----------------------------
+
+controller.py::
+
+  def createNavBarLinks():
+      """Return link information for constructing bread crumb navigation.
+      """
+      cherry_trail = cherrypy._cputil.get_object_trail()
+      href = '/'
+      crumbs = [(href, 'home')]
+      for item in cherry_trail:
+          # item[0] is the name you use in the URL to access the controller.
+          # item[1] is the actual controller
+          if isinstance(item[1], (Controller, BaseDataController)):
+              if item[0] != 'root':
+                  href = "%s%s/" % (href, item[0])
+                  crumbs.append([href, item[0]])
+      return crumbs
+
+Then, import the function and create your navigation bar in your template::
+
+  <div id="navbar">
+    <span py:for="href in createNavBarLinks()">
+      <a class="menu" href="${href[0]}">${href[1]}</a>
+    </span>
+  </div>
+
+A derivative of this solution can be found at http://code.google.com/p/tg-breadcrumbs/

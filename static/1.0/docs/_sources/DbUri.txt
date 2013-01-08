@@ -1,0 +1,109 @@
+.. index:: dburi, database connection
+
+The DB-URI
+==========
+
+.. contents::
+    :depth: 2
+
+
+A dburi is a URI_ describing a database connection, also called a
+*connection string*. Its syntax is the same for both SQLObject and SQLAlchemy.
+
+.. _uri: http://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+
+
+Samples
+-------
+
+Here are some samples of valid DB-URIs::
+
+    postgres://username@hostname/databasename
+    mysql://username:password@hostname:port/databasename
+    sqlite://path/to/file
+    postgres:///var/run/postgresql/test?debug=1
+    mysql://localhost/database?unix_socket=/var/lib/mysql/socket
+
+Please see the :doc:`Configuration <Configuration>` page file for more info.
+
+.. _configuration: Configuration
+
+
+Tips
+----
+
+* Append ``debug=1`` to a SQLObject DB-URI to see each query the engine
+  executes.
+
+* For SQLAlchemy (info taken from here_):
+
+  ``echo=False``
+    If ``True``, the engine will log all statements as well as a ``repr()`` of
+    their parameter lists to the engines logger, which defaults to
+    ``sys.stdout``. The echo attribute of the engine can be modified at any
+    time to turn logging on and off. If set to the string "debug", result rows
+    will be printed to the standard output as well.
+  ``logger=None``
+    A file-like object where logging output can be sent, if ``echo`` is set to
+    ``True``. Newlines will not be sent with log messages. This defaults to an
+    internal logging object which references ``sys.stdout``.
+
+  .. note:: ``logging`` was introduced in SQLAlchemy 0.3, for 0.2 use only ``echo``.
+
+.. _here: http://www.sqlalchemy.org/docs/dbengine.myt#dbengine_establishing
+
+
+Unix Domain Socket
+------------------
+
+There is a practice of not binding MySQL to an IP socket (following the
+principle that "if you're not connected, you are protected."). In this
+situation the server listens on unix domain socket (i.e. type of file)
+instead.
+
+MySQL
+~~~~~
+
+To specify the socket file for :doc:`MySQL <Database/MySQL>`,
+you need to use the ``unix_socket`` option::
+
+  mysql://localhost/database?unix_socket=/var/lib/mysql/socket
+
+
+PostgreSQL
+~~~~~~~~~~
+
+If your Linux or OS X installation has a standard setup and there's a live socket at
+/tmp/.s.PGSQL.5432, your SQLAlchemy PostgreSQL dburi can be this simple::
+
+    postgres:///dbname
+
+To specify the socket file for :doc:`PostgreSQL <Database/PostgreSQL>`, put the absolute path after the double slash::
+
+    postgres:///var/run/postgresql/test?debug=1
+
+However, there are bugs in the DSN parser for SQLObject, so that it fails to
+separate the socket path from the database name. A DSN like this works around
+that issue::
+
+    postgres:///dbname?host=/path/to/socket
+
+
+Common problems
+---------------
+
+**Problem**
+
+    I want to use TurboGears, but my machine is setup with mysql not bound to
+    the default network socket and I get the following errors when I try to
+    connect::
+
+        _mysql_exceptions.OperationalError:   (2002, "Can't connect to local
+        MySQL server through socket '/tmp/mysql.sock' (2)")
+
+**Solution**
+
+  By default TurboGears, SQLObject and the Python MySQL driver/client will look
+  for the socket file in ``/tmp/mysql.sock``. Many installations seem to use
+  ``/var/lib/mysql/mysql.sock``. You need to set the correct path to the socket
+  file as explained above.

@@ -1,0 +1,374 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Building Dynamic Option Lists From Data Objects &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Guide to the TurboGears Widgets Documentation" href="index.html" />
+    <link rel="next" title="Dynamic Validation" href="../DynamicValidation.html" />
+    <link rel="prev" title="Using JavaScript and CSS with Widgets" href="WithJSandCSS.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../DynamicValidation.html" title="Dynamic Validation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="WithJSandCSS.html" title="Using JavaScript and CSS with Widgets"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Guide to the TurboGears Widgets Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building Dynamic Option Lists From Data Objects</a><ul>
+<li><a class="reference internal" href="#problem">Problem</a></li>
+<li><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li><a class="reference internal" href="#solution">Solution</a></li>
+<li><a class="reference internal" href="#building-usable-lists-from-sqlobject">Building Usable Lists from SQLObject</a></li>
+<li><a class="reference internal" href="#supplying-options-to-select-style-widgets">Supplying Options to Select-Style Widgets</a></li>
+<li><a class="reference internal" href="#final-test-application">Final Test Application</a></li>
+<li><a class="reference internal" href="#discussion">Discussion</a></li>
+<li><a class="reference internal" href="#add-ons">Add-Ons</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="WithJSandCSS.html"
+                        title="previous chapter">Using JavaScript and CSS with Widgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../DynamicValidation.html"
+                        title="next chapter">Dynamic Validation</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="building-dynamic-option-lists-from-data-objects">
+<h1><a class="toc-backref" href="#id1">Building Dynamic Option Lists From Data Objects</a><a class="headerlink" href="#building-dynamic-option-lists-from-data-objects" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#building-dynamic-option-lists-from-data-objects" id="id1">Building Dynamic Option Lists From Data Objects</a><ul>
+<li><a class="reference internal" href="#problem" id="id2">Problem</a></li>
+<li><a class="reference internal" href="#synopsis" id="id3">Synopsis</a></li>
+<li><a class="reference internal" href="#solution" id="id4">Solution</a></li>
+<li><a class="reference internal" href="#building-usable-lists-from-sqlobject" id="id5">Building Usable Lists from SQLObject</a></li>
+<li><a class="reference internal" href="#supplying-options-to-select-style-widgets" id="id6">Supplying Options to Select-Style Widgets</a></li>
+<li><a class="reference internal" href="#final-test-application" id="id7">Final Test Application</a></li>
+<li><a class="reference internal" href="#discussion" id="id8">Discussion</a></li>
+<li><a class="reference internal" href="#add-ons" id="id9">Add-Ons</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="problem">
+<h2><a class="toc-backref" href="#id2">Problem</a><a class="headerlink" href="#problem" title="Permalink to this headline">¶</a></h2>
+<p>You don&#8217;t want to have to keep creating new functions to create lists in <em>just the right way</em> when populating select-style fields on a widget-based form.  You want something a little more generic, more reusable, or you want to (or need to) be able to supply arguments to your callables, without actually calling them.</p>
+</div>
+<div class="section" id="synopsis">
+<h2><a class="toc-backref" href="#id3">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;re going to create a variation on a decorator to solve the above problem.  We will define a function which accepts a callable as an argument, and returns another callable.  This technique is a variation on one called <em>currying</em> (in honor of Haskell Curry, not the food) though it is also referred to as <em>partial application</em>.</p>
+</div>
+<div class="section" id="solution">
+<h2><a class="toc-backref" href="#id4">Solution</a><a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<p>We are going to create two things: a generic method which returns SQLObject records in the correct format (a list of tuples), and a function which modifies that list by prepending optional &#8220;empty&#8221; item, while passing additional arguments to the generic method.</p>
+</div>
+<div class="section" id="building-usable-lists-from-sqlobject">
+<h2><a class="toc-backref" href="#id5">Building Usable Lists from SQLObject</a><a class="headerlink" href="#building-usable-lists-from-sqlobject" title="Permalink to this headline">¶</a></h2>
+<p>This function should be defined (through copy-and-paste or assignment) within each SQLObject class we wish to use as a source of select items:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Note: the <tt class="docutils literal"><span class="pre">&#64;classmethod</span></tt> decorator is only available since Python 2.4. If you are using Python 2.3,
+replace <tt class="docutils literal"><span class="pre">&#64;classmethod</span></tt> before the method with <tt class="docutils literal"><span class="pre">build_list</span> <span class="pre">=</span> <span class="pre">classmethod(build_list)</span></tt> after.</p>
+<p>An alternative to copying and pasting is adding it to SQLObject dynamically.  Define it in the beginning of your model and add this line after this definition:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">SQLObject</span><span class="o">.</span><span class="n">build_list</span> <span class="o">=</span> <span class="n">build_list</span>
+</pre></div>
+</div>
+<p>This way, when your classes inherit from SQLObject, they will already have the <tt class="docutils literal"><span class="pre">build_list</span></tt> method defined within them through inheritance.</p>
+<p>You can test this straight away by running Python over the following application:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__connection__</span> <span class="o">=</span> <span class="n">connectionForURI</span><span class="p">(</span><span class="s">&quot;sqlite:///:memory:&quot;</span><span class="p">)</span>
+<span class="n">hub</span> <span class="o">=</span> <span class="n">__connection__</span>
+
+<span class="k">class</span> <span class="nc">Role</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+
+<span class="n">Role</span><span class="o">.</span><span class="n">createTable</span><span class="p">(</span><span class="n">ifNotExists</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you use the inheritance approach you&#8217;ll end up with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__connection__</span> <span class="o">=</span> <span class="n">connectionForURI</span><span class="p">(</span><span class="s">&quot;sqlite:///:memory:&quot;</span><span class="p">)</span>
+<span class="n">hub</span> <span class="o">=</span> <span class="n">__connection__</span>
+
+<span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+
+<span class="n">SQLObject</span><span class="o">.</span><span class="n">build_list</span> <span class="o">=</span> <span class="n">build_list</span>
+
+<span class="k">class</span> <span class="nc">Role</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="n">Role</span><span class="o">.</span><span class="n">createTable</span><span class="p">(</span><span class="n">ifNotExists</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then, we populate our database for testing purposes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Administrator&quot;</span><span class="p">)</span>
+<span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Anonymous&quot;</span><span class="p">)</span>
+<span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Member&quot;</span><span class="p">)</span>
+<span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Author&quot;</span><span class="p">)</span>
+<span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Editor&quot;</span><span class="p">)</span>
+<span class="n">Role</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Manager&quot;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">Role</span><span class="o">.</span><span class="n">build_list</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Output should be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;Administrator&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;Anonymous&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;Member&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;Author&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;Editor&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s">&#39;Manager&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>We can also change the last line to add any SQLBuilder query or other SQLObject <tt class="docutils literal"><span class="pre">select()</span></tt> argument you wish.  For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">Role</span><span class="o">.</span><span class="n">build_list</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">orderBy</span><span class="o">=</span><span class="n">Role</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Produces:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;Administrator&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;Anonymous&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;Author&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;Editor&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s">&#39;Manager&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;Member&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="supplying-options-to-select-style-widgets">
+<h2><a class="toc-backref" href="#id6">Supplying Options to Select-Style Widgets</a><a class="headerlink" href="#supplying-options-to-select-style-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have nice, pretty, usable lists of tuples (representing the value and caption of the options) we can play with TurboGears&#8217; Widgets system.  Normally we would have something like the following, where I use differing quotes to help identify parts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;red&#39;</span><span class="p">,</span> <span class="s">&quot;Red&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;green&#39;</span><span class="p">,</span> <span class="s">&quot;Green&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s">&#39;blue&#39;</span><span class="p">,</span> <span class="s">&quot;Blue&quot;</span><span class="p">)]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">SingleSelectField</span><span class="p">(</span><span class="s">&#39;colors&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we were to run <tt class="docutils literal"><span class="pre">colors.render()</span></tt> we would get:</p>
+<div class="highlight-python"><pre>&lt;SELECT CLASS="singleselectfield" NAME="bob" ID="bob"&gt;
+    &lt;OPTION VALUE="red"&gt;Red&lt;/OPTION&gt;
+    &lt;OPTION VALUE="green"&gt;Green&lt;/OPTION&gt;
+    &lt;OPTION VALUE="blue"&gt;Blue&lt;/OPTION&gt;
+&lt;/SELECT&gt;</pre>
+</div>
+<p>Not pretty, but it&#8217;s what we&#8217;re looking for; a widget.  Now, we want this to be driven via a database of available colors.  The easy way is the demonstrated in the following application:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__connection__</span> <span class="o">=</span> <span class="n">connectionForURI</span><span class="p">(</span><span class="s">&quot;sqlite:///:memory:&quot;</span><span class="p">)</span>
+<span class="n">hub</span> <span class="o">=</span> <span class="n">__connection__</span>
+
+<span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+
+<span class="n">Color</span><span class="o">.</span><span class="n">createTable</span><span class="p">(</span><span class="n">ifNotExists</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Green&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Blue&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Purple&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Yellow&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Teal&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">Color</span><span class="o">.</span><span class="n">select</span><span class="p">()]</span>
+<span class="n">widget</span> <span class="o">=</span> <span class="n">SingleSelectField</span><span class="p">(</span><span class="s">&#39;colors&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">widget</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The output is:</p>
+<div class="highlight-python"><pre>&lt;SELECT CLASS="singleselectfield" NAME="colors" ID="colors"&gt;
+    &lt;OPTION VALUE="1"&gt;Red&lt;/OPTION&gt;
+    &lt;OPTION VALUE="2"&gt;Green&lt;/OPTION&gt;
+    &lt;OPTION VALUE="3"&gt;Blue&lt;/OPTION&gt;
+    &lt;OPTION VALUE="4"&gt;Purple&lt;/OPTION&gt;
+    &lt;OPTION VALUE="5"&gt;Yellow&lt;/OPTION&gt;
+    &lt;OPTION VALUE="6"&gt;Teal&lt;/OPTION&gt;
+&lt;/SELECT&gt;</pre>
+</div>
+<p>This, however, is a static list.  Making this dynamic is easy, though; simply add the <tt class="docutils literal"><span class="pre">build_list</span></tt> class method to the <tt class="docutils literal"><span class="pre">Color</span></tt> class, remembering to default the field name to <tt class="docutils literal"><span class="pre">'name'</span></tt>, remove the <tt class="docutils literal"><span class="pre">colors</span></tt> assignment third from the bottom, and set <tt class="docutils literal"><span class="pre">options</span></tt> in the widget equal to <tt class="docutils literal"><span class="pre">Color.build_list</span></tt>.  Now the widget gets its values from the DB on every call.  Now how do we sort them?  We need our second magical function, <tt class="docutils literal"><span class="pre">make_list</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">make_list</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">none</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">none</span><span class="p">)]</span> <span class="p">][</span><span class="n">none</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="n">c</span><span class="o">.</span><span class="n">build_list</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_call</span>
+</pre></div>
+</div>
+<p>We can now pass arguments, like <tt class="docutils literal"><span class="pre">sortOrder</span></tt>, to the <tt class="docutils literal"><span class="pre">build_list</span></tt> method as follows:</p>
+<div class="highlight-python"><pre># Only list colors that have some red in them, and sort alphabetically.
+widget = SingleSelectField('colors', options=make_list(Color, None, 'name',
+        Color.q.r &gt; 0, orderBy=Color.q.name)</pre>
+</div>
+<p>You can even create these lists ahead of time by setting properties of the SQLObject class (Color in this case) to the appropriate <tt class="docutils literal"><span class="pre">make_list</span></tt> call.  The final test application, below, does this.</p>
+</div>
+<div class="section" id="final-test-application">
+<h2><a class="toc-backref" href="#id7">Final Test Application</a><a class="headerlink" href="#final-test-application" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">__connection__</span> <span class="o">=</span> <span class="n">connectionForURI</span><span class="p">(</span><span class="s">&quot;sqlite:///:memory:&quot;</span><span class="p">)</span>
+<span class="n">hub</span> <span class="o">=</span> <span class="n">__connection__</span>
+
+<span class="k">def</span> <span class="nf">make_list</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">none</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">none</span><span class="p">)]</span> <span class="p">][</span><span class="n">none</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="n">c</span><span class="o">.</span><span class="n">build_list</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_call</span>
+
+<span class="k">class</span> <span class="nc">Color</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">FloatCol</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">build_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+
+<span class="n">Color</span><span class="o">.</span><span class="n">list_bright</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">make_list</span><span class="p">(</span><span class="n">Color</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span>
+            <span class="n">OR</span><span class="p">(</span><span class="n">OR</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">r</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">g</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">b</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">r</span> <span class="o">+</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">g</span> <span class="o">+</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">),</span>
+                    <span class="n">orderBy</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+<span class="n">Color</span><span class="o">.</span><span class="n">list_shades</span> <span class="o">=</span> <span class="nb">staticmethod</span><span class="p">(</span><span class="n">make_list</span><span class="p">(</span><span class="n">Color</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">,</span>
+            <span class="n">AND</span><span class="p">(</span><span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">r</span> <span class="o">==</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">g</span> <span class="o">==</span> <span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">b</span><span class="p">),</span>
+                    <span class="n">orderBy</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">r</span><span class="p">))</span>
+
+<span class="n">Color</span><span class="o">.</span><span class="n">createTable</span><span class="p">(</span><span class="n">ifNotExists</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Red&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Green&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Blue&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Purple&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Yellow&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Teal&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Orange&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Black&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;25</span><span class="si">% G</span><span class="s">rey&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;50</span><span class="si">% G</span><span class="s">rey&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;75</span><span class="si">% G</span><span class="s">rey&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">Color</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;White&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">Color</span><span class="o">.</span><span class="n">select</span><span class="p">()]</span>
+<span class="n">widget</span> <span class="o">=</span> <span class="n">SingleSelectField</span><span class="p">(</span><span class="s">&#39;bright_colors&#39;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">Color</span><span class="o">.</span><span class="n">list_shades</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">widget</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>&lt;SELECT CLASS="singleselectfield" NAME="bright_colors" ID="bright_colors"&gt;
+    &lt;OPTION VALUE="11"&gt;75% Grey&lt;/OPTION&gt;
+    &lt;OPTION VALUE="3"&gt;Blue&lt;/OPTION&gt;
+    &lt;OPTION VALUE="2"&gt;Green&lt;/OPTION&gt;
+    &lt;OPTION VALUE="7"&gt;Orange&lt;/OPTION&gt;
+    &lt;OPTION VALUE="4"&gt;Purple&lt;/OPTION&gt;
+    &lt;OPTION VALUE="1"&gt;Red&lt;/OPTION&gt;
+    &lt;OPTION VALUE="6"&gt;Teal&lt;/OPTION&gt;
+    &lt;OPTION VALUE="12"&gt;White&lt;/OPTION&gt;
+    &lt;OPTION VALUE="5"&gt;Yellow&lt;/OPTION&gt;
+&lt;/SELECT&gt;</pre>
+</div>
+</div>
+<div class="section" id="discussion">
+<h2><a class="toc-backref" href="#id8">Discussion</a><a class="headerlink" href="#discussion" title="Permalink to this headline">¶</a></h2>
+<p>Currying is described throughly in the Python Cookbook (c. 16.4, p. 594-597) and is also <a class="reference external" href="http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52549">available on-line</a>, although not in as pretty a package, nor as in-depth.</p>
+</div>
+<div class="section" id="add-ons">
+<h2><a class="toc-backref" href="#id9">Add-Ons</a><a class="headerlink" href="#add-ons" title="Permalink to this headline">¶</a></h2>
+<p>Sometimes one wants to use a column other than &#8220;id&#8221; as the ID, i.e., have something else as the first value while using <tt class="docutils literal"><span class="pre">build_list</span></tt>.  These two alternative methods allows that.  Extending this for other needs should be trivial.</p>
+<p>The new <tt class="docutils literal"><span class="pre">build_list</span></tt> is named <tt class="docutils literal"><span class="pre">build_list_with_key</span></tt> and its code is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@classmethod</span>
+<span class="k">def</span> <span class="nf">build_list_with_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">field</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+
+<span class="n">SQLObject</span><span class="o">.</span><span class="n">build_list_with_key</span> <span class="o">=</span> <span class="n">build_list_with_key</span>
+</pre></div>
+</div>
+<p>The new make_list function now can pass a key to <tt class="docutils literal"><span class="pre">build_list_with_key</span></tt>, making it usable with this different value.  The code is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">make_list_with_key</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">none</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[</span> <span class="p">[],</span> <span class="p">[(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">none</span><span class="p">)]</span> <span class="p">][</span><span class="n">none</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> \
+               <span class="n">c</span><span class="o">.</span><span class="n">build_list_with_key</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_call</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

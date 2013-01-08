@@ -1,0 +1,125 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject Foreign Keys &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLObject Quick Guide" href="QuickGuide.html" />
+    <link rel="prev" title="SQLObject direct SQL" href="DirectSQL.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="QuickGuide.html" title="SQLObject Quick Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DirectSQL.html" title="SQLObject direct SQL"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DirectSQL.html"
+                        title="previous chapter">SQLObject direct SQL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="QuickGuide.html"
+                        title="next chapter">SQLObject Quick Guide</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-foreign-keys">
+<h1>SQLObject Foreign Keys<a class="headerlink" href="#sqlobject-foreign-keys" title="Permalink to this headline">¶</a></h1>
+<p>Foreign keys in SQLObject have a little bit of extra requirements due to the fact
+that they are mapping objects onto tables. For SQLObject to interact correctly
+with a foreign key relationship the object representing the table being referred
+to needs to know how the data is related. A code example will probably make this clearer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">firstName</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">lastName</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;Address&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Address</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">street</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="nb">zip</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+    <span class="n">person</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above pair of tables create a one to many relationship between the Person
+class (one) and the Address class (many). In addition to <tt class="docutils literal"><span class="pre">MultipleJoin</span></tt> there
+are methods for many-to-many relationships (<tt class="docutils literal"><span class="pre">RelatedJoin</span></tt>) and one-to-one
+relationships (<tt class="docutils literal"><span class="pre">SingleJoin</span></tt>). There are also additional keywords for these
+functions that add more features. See the <a class="reference external" href="http://sqlobject.org/SQLObject.html">SQLObject Documentation</a> for more
+details, but be aware that newer releases of SQLObject may change how these
+features are handled.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

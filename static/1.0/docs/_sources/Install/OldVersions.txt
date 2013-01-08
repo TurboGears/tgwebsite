@@ -1,0 +1,84 @@
+.. index:: old versions
+
+Installing older versions of TurboGears
+=======================================
+
+.. contents::
+  :depth: 2
+
+
+Sometimes the latest and greatest just won't do. You need an old, perhaps rusty,
+but stable and well tested version of TurboGears.
+
+
+Installing a different version
+------------------------------
+
+If you run ``easy_install`` without arguments, it will get you the lastest version
+(which is probably what you don't want), so you will have to specify the version via::
+
+    easy_install PackageName==1.2.3
+
+Remember that you need to specify a download URL for TurboGears installations or
+easy_install will look for packages directly through the Cheeseshop_, where some
+of the required packages can not be found.
+
+.. _cheeseshop: http://cheeseshop.python.org/pypi
+
+For example if we are at 1.0.9 and you want to go back to 1.0.4.4,
+on a Unix system you will have to run the following::
+
+    sudo easy_install -i http://www.turbogears.org/1.0/downloads/1.0.4.4/index/ \
+        --script-dir /usr/local/bin TurboGears==1.0.4.4
+
+Just add the correct ==<version> to the end of the "normal command".
+
+
+Installing directly from the SVN repository
+-------------------------------------------
+
+What if there are no eggs for my version? Then you will have to
+either upgrade your code or install an SVN tagged version of
+TurboGears with the following command::
+
+  easy_install -f http://www.turbogears.org/1.0/downloads/current/index \
+    http://svn.code.sf.net/p/turbogears1/code/tags/1.0.4.4
+
+Replace the version number at the end of the second URL with the TurboGears
+version you want.
+
+This method requires that you have easy_install (from setuptools_) and
+Subversion_ installed.
+
+.. _setuptools: http://peak.telecommunity.com/DevCenter/setuptools
+.. _subversion: http://subversion.tigris.org/
+
+
+Running from a Subversion working copy
+--------------------------------------
+
+Alternatively, you can run from the Subversion working copy directly:
+
+#. Locate the revision number from http://trac.turbogears.org/turbogears/browser/tags.
+#. Do a Subversion checkout or update to that revision number.
+#. Change into the working copy directory and run::
+
+    python setup.py develop
+
+
+How to uninstall a SVN working copy
+-----------------------------------
+
+Go to your ``<prefix>/lib/site-package`` directory and look for a file called
+``Turbogears.egg-link``. If you open it you will see taht it contains the path
+of your svn working copy. Whatever is there, is what Python will think as your
+"current TurboGears install".
+
+#. delete ``Turbogears.egg-link`` from the ``site-packages`` directory.
+#. you're done! :)
+
+
+Moving between SVN revisions
+----------------------------
+
+Just update your Subversion working copy, setuptools will follow you.

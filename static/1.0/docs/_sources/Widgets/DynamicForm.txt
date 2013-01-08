@@ -1,0 +1,172 @@
+.. index:: AJAX
+
+Dynamically Modifying a Form's Widgets With Ajax
+================================================
+
+Sometimes there is the need to dynamically modify one widget in a form
+based upon what the user has selected in another field. This can be done
+via a page reload, but it is faster and slicker to use Ajax.
+
+Let's take an example and run with it. Say you have a SingleSelect field
+named `client_id`, and based upon what the user selects there, another
+SingleSelect named `projects` will be populated with the proper options.
+
+The basic strategy is:
+
+1. Create a form with the SingleSelect widgets.
+2. Create a controller method that displays it.
+3. Create a controller method to (asynchronously) populate the `projects` field.
+4. Implement the template with the JavaScript that does the autoupdate magic.
+
+For this example we assume a model with objects "Client" and "Project"
+with a one to many relationship from Client to Project, like so::
+
+    class Client(SQLObject):
+
+        clientName  = StringCol()
+
+    class Project(SQLObject):
+
+        projectDesc = StringCol()
+        client = ForeignKey('Client')
+
+    Client.sqlmeta.addJoin(MultipleJoin('Project',
+        joinMethodName='projects'))
+
+Here is our form in controllers.py (the name of the project is assumed
+to be `exampleproject`)::
+
+    from turbogears import validate, validators, widgets
+
+    from exampleproject.model import Client
+
+    client_project_form = widgets.TableForm('clientform',
+        fields=[
+            widgets.SingleSelectField('client_id',
+                options=[(client.id, client.clientName)
+                    for client in Client.select()],
+                default=Client.get(1).id),
+            widgets.SingleSelectField('projects',
+                options=[(p.id, p.projectDesc)
+                    for p in Client.get(1).projects])
+        ]
+    )
+
+This simply displays the two single selects. It will default to displaying the
+first client in the database and it's associated projects. Nothing fancy here.
+
+Equally mundane is the controller method to display it::
+
+    @expose(template='exampleproject.templates.clientprojects')
+    def clientprojects(self):
+        return dict(form=client_project_form, action='save')
+
+This simply returns our form in a dictionary to the ``clientprojects.kid``
+template we are going to create for rendering the form on the page.
+
+Here is the method which we will be calling asynchronously to repopulate
+the project's select field::
+
+    @expose(format='json')
+    @validate(validators={'client_id': validators.Int()})
+    def get_projects(self, client_id=None, tg_errors=None):
+        return dict(projects=model.Client.get(client_id).projects)
+
+It will accept an integer client id, retrieve the associated projects,
+and return them in JSON format.
+
+We want to make use MochiKit for our dynamic form, therefore we set
+
+    tg.include_widgets = ['turbogears.mochikit']
+
+in ``config/app.cfg``. This makes sure MochiKit is included on every page.
+Instead, you can also add MochiKit to the dynamic form widget using its
+`javascript` attribute, or add an explict JavaScript link to the page template.
+
+The following is where things get exciting. This is the clientprojects.kid
+template which will render the form and perform amazing ajaxian feats.
+Again you can add the necessary JavaScript as a JSSource or JSLink to the
+form widget using the `javascript` attribute, but we have simple included
+the JavaScript directly in the template::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'">
+    <head>
+    <meta content="text/html; charset=utf-8"
+          http-equiv="Content-Type" py:replace="''"/>
+    <title>Client Projects</title>
+
+    <script  type="text/javascript">
+    var conn = MochiKit.Signal.connect;
+
+    replace_project = function(res) {
+        replaceChildNodes($('clientform_projects'),
+            map(function(p) {
+                return OPTION({value: p.id}, p.projectDesc);
+            }, res.projects));
+    };
+
+    client_id_changed = function() {
+        loadJSONDoc('get_projects',
+            {client_id: $('clientform_client_id').value}
+        ).addCallback(replace_project);
+    };
+
+    conn(window, 'onload', function() {
+        conn($('clientform_client_id'), 'onchange', client_id_changed);
+        client_id_changed();
+    });
+    </script>
+
+    </head>
+    <body>
+
+    <h2>Client Projects</h2>
+
+    <div py:replace="form(action=action)"/>
+
+    </body>
+    </html>
+
+The line::
+
+    <div py:replace="form(action=action)"/>
+
+merely displays our form. It is the JavaScript in the head of the template
+that does our job of dynamically changing the select fields.
+
+Here is the sequence of events when the page loads:
+
+An `onload` event get registered with MochiKit.Signal::
+
+    conn(window, 'onload', ...);
+
+So, when the page is finished loading, the registered function gets called::
+
+     function() {
+        var client_id = $('clientform_client_id');
+        conn(client_id, 'onchange', client_id_changed);
+        client_id_changed(client_id);
+    }
+
+This function registers the `onchange` event for the element with the id
+`clientform_client_id` (our client select widget) so that the `client_id_changed`
+function will be called any time that field changes.  This must be registered
+after the page is finished loading, which is why we put this in a function
+registered to be called `onload` instead of just registering this onchange event directly.
+After registering the function we also immediately call it to make sure the
+project selector is set up correctly.
+
+The `client_id_changed` function gets the value of the `client_id` field
+and calls the `get_projects` method of our controller asynchronously,
+giving it an argument of the `client_id`.  It then registers a callback function,
+`replace_projects`, and exits.
+
+When the response from `get_projects` comes back, it is handed to `replace_project`.
+`replace_projects` gets the `projects` item of the result, which is a list of
+hashes (dictionaries) containing the project data) and replaces the contents
+of the element with id `clientform_projects` (our projects select field) with
+OPTION nodes generated dynamically from the data in the response. Note that the
+select field is not replaced, only its child nodes, i.e. the OPTION items.

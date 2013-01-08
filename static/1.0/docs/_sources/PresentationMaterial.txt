@@ -1,0 +1,143 @@
+TurboGears presentation material
+================================
+
+On this pages we collect some external documentation
+and materials (presentations, PDF, ...) used to present TurboGears.
+
+------
+
+* Title: **The 20 minute Wiki**
+* Author: Kevin Dangoor
+* Date: 2005-09-18
+* Subject: The goal of this tutorial is to give an overview of putting together an application
+  with TurboGears.
+* Link(s): http://www.turbogears.org/docs/wiki20/index.html,
+  http://www.turbogears.org/docs/wiki20/20MinuteWiki.mov
+
+------
+
+* Title: **TurboTunes tutorial**
+* Authors: Kevin Dangoor, Ronald Jaramillo
+* Date: 2005-11-08
+* Subject: This tutorial will show you how to implement your own music store using TurboGears.
+* Link(s): http://www.turbogears.org/docs/TurboTunes/index.html,
+  http://www.turbogears.org/docs/TurboTunes/TurboTunesTutorial.mov,
+  http://www.turbogears.org/docs/TurboTunes/TurboTunes.mov
+
+------
+
+* Title: **Introduction to TurboGears**
+* Author(s): Mike Pirnat
+* Date: 2005-11-06
+* Subject: A round-up of TurboGears, its components, and some current issues (now somewhat
+  out of date)
+* Link(s): http://www.pirnat.com/geek/turbogears-presentation.pdf
+
+------
+
+* Title: **What Is TurboGears (Hint: Python-Based Framework for Rapid Web Development)**
+* Author(s): Matthew Russell
+* Date: 2005-08-11
+* Subject: 1. It's Kind of Like Rails -- But with Python, 2. Similarities with Rails,
+  3. A Quick Closer Look at the Stack, 4. An Interview with the Creator of TurboGears,
+  5. The TurboGears Are Spinning Fast
+* Link(s): http://www.macdevcenter.com/pub/a/mac/2005/11/08/turbogears.html?page=1
+
+------
+
+* Title: **Basic overview of TurboGears**
+* Author(s): Neil Blakey-Milner
+* Date: 2006-09-09
+* Subject: Basic Overview of TurboGears
+* Link(s): http://nxsy.org/writings/turbogears-overview/
+
+------
+
+* Title: **TurboGears Lecture At Py-IL: Making A Flickr Clone**
+* Author(s): Nadav Samet
+* Date: 2007-02-20
+* Subject: Part I: 1. Overview of TurboGears, 2. Project Philosophy, 3. Comparison with Other Web-Application Frameworks, 4. MVC Paradigm.
+
+  Part II: Webapp Development Walkthrough. Includes SQLObject Models, XHTML Templating, Forms and their Validation, File Uploads, Image Manipulation and basic AJAX (with JSON).
+
+* Link(s): http://www.thesamet.com/blog/2007/02/08/making-a-flickr-killer-with-turbogears-part-1-introduction-to-turbogears/
+  http://www.thesamet.com/blog/2007/02/20/making-a-flickr-killer-with-turbogears-part-2-a-flickr-clone-in-37-minutes-flat/
+
+------
+
+* Title: **Using Python with TurboGears**
+* Author: Daniel Rubio
+* Date: Published November 2007
+* Description: Tutorial on the `Oracle Technology Network <http://otn.oracle.com/>`_ on how to use TurboGears 1.0 with SQLAlchemy and an Oracle database.
+* Link: http://www.oracle.com/technology/pub/articles/rubio-python-turbogears.html
+
+-----
+
+* Title: **Quick web application building with TurboGears**
+* Author: Christopher Arndt
+* Date: 2007-04-14
+* Language: English
+* Subject: a tutorial on how to get started quickly with with the
+  TurboGears web framework.
+* Links:
+
+  * `Abstract
+    <http://chrisarndt.de/talks/rupy/2007/abstract_christopher_arndt.pdf>`_
+  * `Slides (Open Document Format)
+    <http://chrisarndt.de/talks/rupy/2007/quick_webapps_with_tg.odp>`_
+  * `Slides (PDF Format)
+    <http://chrisarndt.de/talks/rupy/2007/quick_webapps_with_tg.pdf>`_
+  * `Example code (Bookmarker application)
+    <http://chrisarndt.de/projects/bookmarker/>`_
+
+-----
+
+* Title: **Webanwendungen mit TurboGears**
+* Author: Christopher Arndt
+* Date: 2006-12-13
+* Language: German
+* Subject: Praktische Einführung in die Entwicklung von Webanwendungen mit
+  TurboGears
+* Links:
+
+  * `Folien (Open Document Format)
+    <http://chrisarndt.de/talks/tg-tutorial/webanwendungen_mit_turbogears.odp>`_
+  * `Folien (PDF Format)
+    <http://chrisarndt.de/talks/tg-tutorial/webanwendungen_mit_turbogears.pdf>`_
+  * `Materialien
+    <http://chrisarndt.de/talks/tg-tutorial/>`_
+
+-----
+
+* Title: **Web RAD : Turbogears + Elixir + Genshi Tutorial**
+* Author(s): Paolo Tagliaferri
+* Date: 2008-04-20
+* Subject: How to set up a simple application with Turbogears, Genshi and Elixir
+* Link(s): http://vortexmind.net/2008-04-20-web-rad-turbogears-elixir-tutorial-part-1/
+
+-----
+
+* Title: **TurboGears, framework de Python per aplicacions web**
+* Author(s): Tomàs Reverter
+* Date: 2009-01-29
+* Language: Catalan
+* Subject: Basic talk about centered in the 20 minuts wiki example
+* Link(s): http://lotomas.net/2009/01/30/conferencia-sobre-turbogears-a-les-i-jornades-gpl-tarragona/
+
+-----
+
+* Title: **TurboGears from Start to Finish**
+* Authors(s): Lukasz Szybalski
+* Date: 2009-04-06
+* Language: English
+* Subject: Tutorial covering many aspects of TurboGears
+* Link(s): http://lucasmanual.com/mywiki/TurboGears
+
+-----
+
+* Title: **Using Python with TurboGears**
+* Authors(s): Daniel Rubio
+* Date: 2007-11-15
+* Language: English:
+* Subject: TurboGears as excellent framework for Web-enabled applications backed by an Oracle database
+* http://www.oracle.com/technetwork/articles/rubio-python-turbogears-098695.html

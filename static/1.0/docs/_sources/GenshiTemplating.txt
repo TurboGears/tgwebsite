@@ -1,0 +1,203 @@
+.. index:: Genshi
+
+Genshi Templating
+=================
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+Genshi is a stream-based XML templating system, heavily inspired by Kid. Major
+improvements are better tracebacks and faster execution. There are a few
+differences in what features are implemented, but most (TurboGears) projects can
+be converted from Kid to Genshi fairly painlessly, as the syntax is largely the same.
+
+Project site:
+    http://genshi.edgewall.org/
+
+Buffet plug-in package:
+    *None* (part of the Genshi package)
+
+What Works:
+    Master template replacement, Widgets in templates, Normal templating
+
+What Doesn't:
+    Widget Templates (but works with ToscaWidgets_)
+
+.. _ToscaWidgets: http://toscawidgets.org
+
+
+Installation
+------------
+
+Installation through easy_install_ and the Cheeseshop_ works as usual::
+
+    easy_install Genshi
+
+This also adds the appropriate plug-in hooks into the system so that
+Genshi is available as a Buffet template plug-in.
+
+.. _easy_install: http://peak.telecommunity.com/DevCenter/EasyInstall
+.. _cheeseshop: http://cheeseshop.python.org/pypi/Genshi
+
+
+Quickstart Template
+~~~~~~~~~~~~~~~~~~~
+
+A :doc:`quickstart template <ExtendingQuickstart>` for TruboGears projects using Genshi templates
+is available_ as a separate TurboGears extension through the Cheeseshop
+as well::
+
+    easy_install gsquickstart
+
+This also includes a ``master.html`` template, which provides all the
+functionality of the ``master.kid`` and ``sitetemplate.kid`` files in
+a project with Kid templates.
+
+.. _quickstart template: ExtendingQuickstart
+.. _available: http://pypi.python.org/pypi/gsquickstart/
+
+
+Genshi vs. Kid
+--------------
+
+The most important difference is the way how master templates work, since
+there is no ``py:extends`` or ``py:layout`` directive in Genshi. Instead it
+supports a sub.set of the XInclude standard and included templates with
+proper ``py:match`` directives can be used as base templates.
+
+Another difference is that Genshi templates should have a ``.html`` file
+extension instead of ``.kid``. For example, if you specify
+
+::
+
+    @expose(template="genshi:example.templates.foobar")
+
+a file named ``foobar.html`` will be searched in the Python module named
+``example.templates``.
+
+Also, there will be no compiled versions with a ``.pyc`` extension for Genshi
+templates.
+
+Because the architecture is very similar to Kid, Genshi can handle widgets
+seamlessly and will most likely replace Kid as the official TurboGears templating
+library in a future TurboGears release.
+
+The project website has a full set of documentation and an SVN checkout
+provides a working `example TG application`_ that uses Genshi throughout.
+
+.. _example TG application:
+     http://genshi.edgewall.org/browser/trunk/examples/turbogears
+
+
+Example
+-------
+
+This TurboGears Genshi templating example takes in a list of ``students`` and a
+``passing_score``.  Each student has a ``name``, a list of ``scores`` (assumed
+to be the same length for all students), and an ``average``. The template
+renders these students into a table, tagging failing scores with the CSS class
+``failing`` and handling the case when there are no students.
+
+::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+    <!--! This would be saved as projectname/templates/students.html -->
+
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:py="http://genshi.edgewall.org/"
+          xmlns:xi="http://www.w3.org/2001/XInclude">
+
+      <!--! Slightly different from Kid, all includes are done with XIncludes -->
+      <xi:include href="master.html" />
+
+      <head>
+        <title>Template Example</title>
+      </head>
+
+      <body>
+        <div py:choose="len(students)" py:strip="True">
+          <table class="students" py:when="0">
+            <tr>
+              <th>No Students Found</th>
+            </tr>
+          </table>
+          <table class="students" py:otherwise="">
+            <tr>
+              <th>Student Name</th>
+              <th colspan="${len(students[0].scores)}">Scores</th>
+              <th>Average</th>
+            </tr>
+            <tr py:for="student in students">
+              <th py:content="student.name">Student Name</th>
+              <span py:for="score in student.scores" py:choose="" py:strip="True">
+                <td class="failing" py:when="score < passing_score">${score}</td>
+                <td py:otherwise="">${score}</td>
+              </span>
+
+              <!--! alternative way of handling the test,
+              yay for the and/or hack -->
+              <td class="average ${student.average < passing_score and 'failing' or ''}">${student.average}</td>
+            </tr>
+          </table>
+        </div>
+      </body>
+    </html>
+
+
+Generating other formats than HTML
+----------------------------------
+
+By default Genshi will generate HTML output. Please note that Genshi does not
+treat "XHTML" as HTML. The effect is that template code like
+
+::
+
+   <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:py="http://genshi.edgewall.org/"
+          xmlns:xi="http://www.w3.org/2001/XInclude">
+   ...
+   <br />
+
+will be changed in the output. The resulting page which is delivered to the
+browser looks like this::
+
+    <html>
+    ...
+    <br>
+
+This behavior causes problems if you want to validate your XHTML pages.
+Fortunately, you can specify output format explicitely. One possibility is to
+do it for a single function as it is shown on the
+:doc:`@expose() page <ExposeDecorator>`::
+
+    @expose(template="project.templates.welcome", format='xhtml')
+    def welcome():
+    pass
+
+But using the method above, the global default would stay ``html``. To change
+the global default use TurboGears' configuration mechanism. The option
+``genshi.outputformat`` will control what the default output format is. Valid
+values are:
+
+  * ``html`` (default)
+  * ``xhtml``
+  * ``xml`` and
+  * ``text``
+
+You may want to change the option ``genshi.default_doctype`` too. The valid
+values are specified in the `Genshi documentation`_.
+
+::
+
+    genshi.default_doctype = 'xhtml-transitional'
+    genshi.outputformat = 'xhtml'
+
+
+.. _genshi documentation:
+    http://genshi.edgewall.org/wiki/Documentation/plugin.html#genshi-default-doctype

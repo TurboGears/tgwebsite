@@ -1,0 +1,84 @@
+Converting Between Cookie Types
+===============================
+
+There are two largely incompatible cookie types in the Python standard library.
+The ``Cookie`` library is used by CherryPy while ``urllib2`` (which is handy
+for accessing other websites as a client) uses ``cookielib``. The code below
+is at least a start at converting between the two.  It has only been lightly tested,
+but is hopefully better than starting from scratch.  If you find a bug, please fix it. :-)
+
+::
+
+    import cookielib
+    import Cookie
+    import time
+
+    class FakeRequest(object):
+        """A request object that pretends it is a urlib2.Request.
+
+        Not a full implementation, but enough to get by.
+        """
+
+        def __init__(self, cherrypy_request):
+            self.req = cherrypy_request
+
+        def get_full_url(self):
+            return self.req.browser_url
+
+        def get_host(self):
+            return self.req.headers['Host']
+
+        def get_type(self):
+            return self.req.scheme
+
+        def is_unverifiable(self):
+            # Assuming everything has been verified
+            return False
+
+        def get_origin_req_host(self):
+            # Again, this is more of a client function, so punting
+            return self.req.headers['Host']
+
+
+    def create_cookiejar(cherrypy_request):
+        "Returns a cookielib.CookieJar based on cookies found in cherrypy.request"
+
+        req = cherrypy_request
+        cookiejar = cookielib.CookieJar()
+        # fake request to make cookielib happy
+        fake_req = FakeRequest(req)
+        for cookie_name, morsel in req.simple_cookie.items():
+            std_attr = {}
+            # copy attributes that have values
+            for attr in morsel.keys():
+                if morsel[attr]:
+                    std_attr[attr]=morsel[attr]
+            tup = (cookie_name, morsel.value, std_attr, {})
+            new_cookie = cookiejar._cookie_from_cookie_tuple(tup, fake_req)
+
+            cookiejar.set_cookie(new_cookie)
+
+        return cookiejar
+
+    def create_simple_cookie(cookiejar):
+        "Returns a Cookie.SimpleCookie based on cookielib.CookieJar."
+        sc = Cookie.SimpleCookie()
+        attrs = ('expires', 'path', 'comment', 'domain', 'secure', 'version')
+        # Doesn't look like Cookie.SimpleCookie allows for nonstandard attributes, so
+        # we only deal with the standard ones.
+        for path_dict in cookiejar._cookies.values(): #iterate through paths
+            for cookie_dict in path_dict.values():
+                for name, cookie in cookie_dict.items():
+                    sc[name] = cookie.value
+                    for attr in attrs:
+                        if getattr(cookie, attr):
+                            if attr == 'expires':
+                                # Cookies thinks an int expires x seconds in future,
+                                # cookielib thinks it is x seconds from epoch,
+                                # so doing the conversion to string for Cookies
+                                fmt = '%a, %d %b %Y %H:%M:%S GMT'
+                                sc[name]['expires'] = time.strftime(fmt,
+                                                        time.gmtime(cookie.expires))
+                            else:
+                                sc[name][attr] = getattr(cookie, attr)
+        return sc

@@ -1,0 +1,29 @@
+SQLObject Foreign Keys
+======================
+
+Foreign keys in SQLObject have a little bit of extra requirements due to the fact
+that they are mapping objects onto tables. For SQLObject to interact correctly
+with a foreign key relationship the object representing the table being referred
+to needs to know how the data is related. A code example will probably make this clearer::
+
+    class Person(SQLObject):
+        firstName = StringCol()
+        lastName = StringCol()
+        address = MultipleJoin('Address')
+
+    class Address(SQLObject):
+        street = StringCol()
+        city = StringCol()
+        state = StringCol(length=2)
+        zip = StringCol(length=9)
+        person = ForeignKey('Person')
+
+The above pair of tables create a one to many relationship between the Person
+class (one) and the Address class (many). In addition to ``MultipleJoin`` there
+are methods for many-to-many relationships (``RelatedJoin``) and one-to-one
+relationships (``SingleJoin``). There are also additional keywords for these
+functions that add more features. See the `SQLObject Documentation`_ for more
+details, but be aware that newer releases of SQLObject may change how these
+features are handled.
+
+.. _SQLObject Documentation: http://sqlobject.org/SQLObject.html

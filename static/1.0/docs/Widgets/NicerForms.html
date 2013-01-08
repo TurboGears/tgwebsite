@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Nicer Forms &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="FastData" href="../FastData/index.html" />
+    <link rel="prev" title="CalendarDatePicker Widget" href="CalendarDatePicker.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../FastData/index.html" title="FastData"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="CalendarDatePicker.html" title="CalendarDatePicker Widget"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Nicer Forms</a><ul>
+<li><a class="reference internal" href="#multicoltableform"><tt class="docutils literal"><span class="pre">MultiColTableForm</span></tt></a></li>
+<li><a class="reference internal" href="#multicoldivform"><tt class="docutils literal"><span class="pre">MultiColDivForm</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="CalendarDatePicker.html"
+                        title="previous chapter">CalendarDatePicker Widget</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../FastData/index.html"
+                        title="next chapter">FastData</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="nicer-forms">
+<span id="index-0"></span><h1>Nicer Forms<a class="headerlink" href="#nicer-forms" title="Permalink to this headline">¶</a></h1>
+<p>The standard widgets for web forms, <tt class="docutils literal"><span class="pre">TableForm</span></tt> and <tt class="docutils literal"><span class="pre">ListForm</span></tt>, are very simple. If you want to have something more sophisticated, e.g. more than one field per row, then you will need to create your own form widget by subclassing a standard widget, overriding the template and probably adding other parameters.</p>
+<p>On this page we are collecting examples and ideas for more sophisticated form classes that you can built upon.</p>
+<div class="section" id="multicoltableform">
+<h2><tt class="docutils literal"><span class="pre">MultiColTableForm</span></tt><a class="headerlink" href="#multicoltableform" title="Permalink to this headline">¶</a></h2>
+<p>Our first example class is similar to a normal <tt class="docutils literal"><span class="pre">TableForm</span></tt>, but instead of placing every field in a row of its own, allows you to align some fields horizontally, simply by adding the field CSS class &#8216;aside&#8217; to the field. We have also included some default CSS so that labels appear on top of the fields and the submit button will be separated a bit vertically. You should modify this according to your needs and move this into the site CSS file instead of making it part of the form widget:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">TableForm</span><span class="p">,</span> <span class="n">CSSSource</span>
+
+
+<span class="k">class</span> <span class="nc">MultiColTableForm</span><span class="p">(</span><span class="n">TableForm</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;TableForm allowing multiple fields per row.</span>
+
+<span class="sd">    Fields having &#39;aside&#39; as one of their css_classes appear on the same row.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &lt;form xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span>
+<span class="s">        name=&quot;${name}&quot; action=&quot;${action}&quot; method=&quot;${method}&quot; class=&quot;tableform&quot;</span>
+<span class="s">        py:attrs=&quot;form_attrs&quot;&gt;</span>
+<span class="s">        &lt;div py:for=&quot;field in hidden_fields&quot;</span>
+<span class="s">            py:replace=&quot;field(value_for(field), **params_for(field))&quot;/&gt;</span>
+<span class="s">        &lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;6&quot;</span>
+<span class="s">                py:for=&quot;row_no, row in rows(fields)&quot; py:attrs=&quot;table_attrs&quot;&gt;</span>
+<span class="s">            &lt;tr class=&quot;${row_no % 2 and &#39;odd&#39; or &#39;even&#39;}&quot;</span>
+<span class="s">                    valign=&quot;top&quot;&gt;&lt;td py:for=&quot;field in row&quot;&gt;</span>
+<span class="s">                &lt;label py:if=&quot;field.label&quot; class=&quot;fieldlabel&quot;</span>
+<span class="s">                    for=&quot;${field.field_id}&quot; py:content=&quot;field.label&quot;/&gt;</span>
+<span class="s">                &lt;span py:replace=&quot;field(value_for(field), **params_for(field))&quot;/&gt;</span>
+<span class="s">                &lt;span py:if=&quot;error_for(field)&quot; class=&quot;fielderror&quot;</span>
+<span class="s">                    py:content=&quot;error_for(field)&quot;/&gt;</span>
+<span class="s">                &lt;span py:if=&quot;field.help_text&quot; class=&quot;fieldhelp&quot;</span>
+<span class="s">                    py:content=&quot;field.help_text&quot;/&gt;</span>
+<span class="s">            &lt;/td&gt;&lt;/tr&gt;</span>
+<span class="s">        &lt;/table&gt;</span>
+<span class="s">        &lt;div class=&quot;submit&quot; py:content=&quot;submit(submit_text)&quot;/&gt;</span>
+<span class="s">    &lt;/form&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+
+    <span class="n">css</span> <span class="o">=</span> <span class="p">[</span><span class="n">CSSSource</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    form.tableform {</span>
+<span class="s">        margin-bottom: 1ex;</span>
+<span class="s">    }</span>
+<span class="s">    form.tableform td {</span>
+<span class="s">        vertical-align: top;</span>
+<span class="s">    }</span>
+<span class="s">    form.tableform label.fieldlabel {</span>
+<span class="s">        display: block;</span>
+<span class="s">    }</span>
+<span class="s">    form.tableform div.submit {</span>
+<span class="s">        padding-top: 2ex;</span>
+<span class="s">    }</span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)]</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;rows&#39;</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">rows</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Return a function for creating the rows.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">gen_rows</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">row_no</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">no</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;aside&#39;</span> <span class="ow">in</span> <span class="n">field</span><span class="o">.</span><span class="n">css_classes</span><span class="p">:</span>
+                    <span class="n">no</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">no</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">groupby</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">row_no</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gen_rows</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">MultiColTableForm</span></tt> class can be used like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">WidgetsList</span><span class="p">,</span> <span class="n">TextField</span>
+
+
+<span class="k">class</span> <span class="nc">MyFields</span><span class="p">(</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="n">firstname</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">))</span>
+    <span class="n">mi</span>        <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>  <span class="n">css_classes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;aside&#39;</span><span class="p">])</span>
+    <span class="n">lastname</span>  <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span> <span class="n">css_classes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;aside&#39;</span><span class="p">])</span>
+    <span class="n">company</span>   <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
+    <span class="n">street</span>    <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
+    <span class="nb">zip</span>       <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">city</span>      <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span> <span class="n">css_classes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;aside&#39;</span><span class="p">])</span>
+    <span class="n">country</span>   <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span> <span class="n">css_classes</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;aside&#39;</span><span class="p">])</span>
+    <span class="n">phone</span>     <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
+    <span class="n">email</span>     <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">40</span><span class="p">))</span>
+
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">MultiColTableForm</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">MyFields</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The resulting form will then have the following layout:</p>
+<img alt="../_images/multicoltableform.png" src="../_images/multicoltableform.png" />
+</div>
+<div class="section" id="multicoldivform">
+<h2><tt class="docutils literal"><span class="pre">MultiColDivForm</span></tt><a class="headerlink" href="#multicoldivform" title="Permalink to this headline">¶</a></h2>
+<p>Our second example is different in that it uses only DIVs and CSS instead of tables. Again, the necessary CSS has already been included in the form widget class; modify or include it in the site CSS as appropriate. The trick with <tt class="docutils literal"><span class="pre">overflow:hidden</span></tt> makes sure that we do not mess up parts of the layout depending on floating elements and works also with MSIE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">Form</span><span class="p">,</span> <span class="n">CSSSource</span>
+
+
+<span class="k">class</span> <span class="nc">MultiColDivForm</span><span class="p">(</span><span class="n">Form</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Form using floating divisions allowing multiple fields per row.</span>
+
+<span class="sd">    Fields having &#39;aside&#39; as one of their css_classes appear on the same row.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    &lt;form xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span>
+<span class="s">        name=&quot;$name&quot; action=&quot;$action&quot; method=&quot;$method&quot; class=&quot;floatform&quot;</span>
+<span class="s">            py:attrs=&quot;form_attrs&quot;&gt;</span>
+<span class="s">        &lt;div py:for=&quot;field in hidden_fields&quot;</span>
+<span class="s">            py:replace=&quot;field(value_for(field), **params_for(field))&quot;/&gt;</span>
+<span class="s">        &lt;div py:for=&quot;row_no, row in rows(fields)&quot;</span>
+<span class="s">                class=&quot;${row_no % 2 and &#39;odd&#39; or &#39;even&#39;} row&quot;&gt;</span>
+<span class="s">            &lt;div py:for=&quot;field in row&quot; class=&quot;field&quot;&gt;</span>
+<span class="s">                &lt;label py:if=&quot;field.label&quot; class=&quot;fieldlabel&quot;</span>
+<span class="s">                    for=&quot;${field.field_id}&quot; py:content=&quot;field.label&quot;/&gt;</span>
+<span class="s">                &lt;span py:replace=&quot;field(value_for(field), **params_for(field))&quot;/&gt;</span>
+<span class="s">                &lt;span py:if=&quot;error_for(field)&quot; class=&quot;fielderror&quot;</span>
+<span class="s">                    py:content=&quot;error_for(field)&quot;/&gt;</span>
+<span class="s">                &lt;span py:if=&quot;field.help_text&quot; class=&quot;fieldhelp&quot;</span>
+<span class="s">                    py:content=&quot;field.help_text&quot;/&gt;</span>
+<span class="s">            &lt;/div&gt;</span>
+<span class="s">        &lt;/div&gt;</span>
+<span class="s">        &lt;div class=&quot;submit row&quot; py:content=&quot;submit(submit_text)&quot;/&gt;</span>
+<span class="s">    &lt;/form&gt;</span>
+<span class="s">    &quot;&quot;&quot;</span>
+
+    <span class="n">css</span> <span class="o">=</span> <span class="p">[</span><span class="n">CSSSource</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    form.floatform {</span>
+<span class="s">        margin-bottom: 1ex;</span>
+<span class="s">    }</span>
+<span class="s">    form.floatform div.row {</span>
+<span class="s">        overflow: hidden;</span>
+<span class="s">        height: 100%;</span>
+<span class="s">        margin-top: 1.5ex;</span>
+<span class="s">    }</span>
+<span class="s">    form.floatform div.field {</span>
+<span class="s">        float: left;</span>
+<span class="s">        margin-right: 1em;</span>
+<span class="s">    }</span>
+<span class="s">    form.floatform label.fieldlabel {</span>
+<span class="s">        display: block;</span>
+<span class="s">    }</span>
+<span class="s">    form.floatform div.submit {</span>
+<span class="s">        margin-top: 3ex;</span>
+<span class="s">    }</span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)]</span>
+
+    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;rows&#39;</span><span class="p">]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">rows</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;Return a function for creating the rows.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">gen_rows</span><span class="p">(</span><span class="n">fields</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">row_no</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">no</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;aside&#39;</span> <span class="ow">in</span> <span class="n">field</span><span class="o">.</span><span class="n">css_classes</span><span class="p">:</span>
+                    <span class="n">no</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">return</span> <span class="n">no</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">groupby</span><span class="p">(</span><span class="n">fields</span><span class="p">,</span> <span class="n">row_no</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gen_rows</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">MultiColDivForm</span></tt> can be used in exactly the same way as the <tt class="docutils literal"><span class="pre">MultiColTableForm</span></tt> and the output will look pretty much the same.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

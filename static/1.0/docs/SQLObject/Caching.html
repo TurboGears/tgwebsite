@@ -1,0 +1,167 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject Caching &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLObject “gotcha’s”" href="Gotchas.html" />
+    <link rel="prev" title="Avoiding SQL reserved words in the model definition" href="ReservedWords.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Gotchas.html" title="SQLObject “gotcha’s”"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ReservedWords.html" title="Avoiding SQL reserved words in the model definition"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject Caching</a><ul>
+<li><a class="reference internal" href="#getting-a-connection">Getting a Connection</a></li>
+<li><a class="reference internal" href="#cachesets">CacheSets</a></li>
+<li><a class="reference internal" href="#what-does-cache-false-do">What does <tt class="docutils literal"><span class="pre">cache=False</span></tt> do?</a></li>
+<li><a class="reference internal" href="#so-how-do-i-turn-caching-off-completely">So how do I turn caching off completely?</a></li>
+<li><a class="reference internal" href="#how-do-transactions-interact-with-the-cache">How do Transactions interact with the cache?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ReservedWords.html"
+                        title="previous chapter">Avoiding SQL reserved words in the model definition</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Gotchas.html"
+                        title="next chapter">SQLObject &#8220;gotcha&#8217;s&#8221;</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-caching">
+<h1><a class="toc-backref" href="#id1">SQLObject Caching</a><a class="headerlink" href="#sqlobject-caching" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlobject-caching" id="id1">SQLObject Caching</a><ul>
+<li><a class="reference internal" href="#getting-a-connection" id="id2">Getting a Connection</a></li>
+<li><a class="reference internal" href="#cachesets" id="id3">CacheSets</a></li>
+<li><a class="reference internal" href="#what-does-cache-false-do" id="id4">What does <tt class="docutils literal"><span class="pre">cache=False</span></tt> do?</a></li>
+<li><a class="reference internal" href="#so-how-do-i-turn-caching-off-completely" id="id5">So how do I turn caching off completely?</a></li>
+<li><a class="reference internal" href="#how-do-transactions-interact-with-the-cache" id="id6">How do Transactions interact with the cache?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><em>This document is based on TurboGears 0.8a4.</em></p>
+<p>This document will dig into the guts of SQLObject caching to help understand what is going on in there. This level of understanding will help you to be sure that you&#8217;re using caching in a way that makes sense for your application. This is based on SQLObject 0.7.</p>
+<div class="section" id="getting-a-connection">
+<h2><a class="toc-backref" href="#id2">Getting a Connection</a><a class="headerlink" href="#getting-a-connection" title="Permalink to this headline">¶</a></h2>
+<p>The TurboGears AutoConnectHub and PackageHub classes automatically call SQLObject&#8217;s connectionForURI as needed to get a database connection. connectionForURI caches SQLObject DBConnection objects, so that only one DBConnection is maintained for a given URI. (Note: As of this writing, TurboGears works around this cache for sqlite. There is a problem with SQLObject&#8217;s connection pooling for sqlite because sqlite requires that a given connection only be used on the thread on which it was created and SQLObject does not maintain this.)</p>
+<p>The DBConnection object maintains the pool of underlying database connections and also maintains the object instance cache. DBConnection takes a &#8220;cache&#8221; parameter that is passed in to the CacheSet object that is created (more about CacheSet coming up). The cache parameter defaults to True. Setting this to false (?cache=0 in your connection URI) will cause items to be only &#8220;partially cached&#8221; (more below).</p>
+</div>
+<div class="section" id="cachesets">
+<h2><a class="toc-backref" href="#id3">CacheSets</a><a class="headerlink" href="#cachesets" title="Permalink to this headline">¶</a></h2>
+<p>The CacheSet for a DBConnection maintains a separate instance cache (CacheFactory) for each class.</p>
+<p>The CacheFactory actually maintains two caches: a primary cache and an &#8220;expired&#8221; cache. The primary cache has strong references to the objects. By default, every 100 times that an item is looked up in the cache, half of the items are moved to the expired cache. The expired cache maintains only weak references. As soon as the items go out of scope elsewhere in your program, they are no longer in the cache.</p>
+</div>
+<div class="section" id="what-does-cache-false-do">
+<h2><a class="toc-backref" href="#id4">What does <tt class="docutils literal"><span class="pre">cache=False</span></tt> do?</a><a class="headerlink" href="#what-does-cache-false-do" title="Permalink to this headline">¶</a></h2>
+<p>When you set cache=False, you may think that you&#8217;re completely turning off caching. This is not the case. When cache=False, items are still put into the &#8220;expired&#8221; cache. This means that as long as the object is in scope somewhere in your program, it will appear in the cache.</p>
+<p>In a multithreaded application (such as a typical TurboGears installation) on a busy site, it&#8217;s possible that a commonly requested resource will stick around indefinitely in the expired cache even with cache=False.</p>
+</div>
+<div class="section" id="so-how-do-i-turn-caching-off-completely">
+<h2><a class="toc-backref" href="#id5">So how do I turn caching off completely?</a><a class="headerlink" href="#so-how-do-i-turn-caching-off-completely" title="Permalink to this headline">¶</a></h2>
+<p>If you set up your class like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+   <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+       <span class="n">cacheValues</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+</div>
+<p>that will cause SQLObject to set the class&#8217; get classmethod up to always access the database rather than using the DBConnection&#8217;s cache.</p>
+<p>There does not appear to be a way to do this globally.</p>
+</div>
+<div class="section" id="how-do-transactions-interact-with-the-cache">
+<h2><a class="toc-backref" href="#id6">How do Transactions interact with the cache?</a><a class="headerlink" href="#how-do-transactions-interact-with-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>Transactions have their own CacheSet. The cache in a Transaction does not interact with the cache in the main DBConnection. This means that you may end up with stale data if you do something like this:</p>
+<ul class="simple">
+<li>pull an object from the database</li>
+<li>switch to a transaction</li>
+<li>pull the same object from the database</li>
+<li>update it</li>
+<li>commit the transaction</li>
+<li>access that object again outside of the Transaction</li>
+</ul>
+<p>More insidious, though, is that the cache that you had outside of the Transaction will outlast single requests. So, it&#8217;s possible that the stale data could show up for a few more requests before finally being dropped from the cache.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,360 @@
+/*
+ * tg.css_t
+ * ~~~~~~~~
+ *
+ * TurboGears docs stylesheet -- based on the Sphinx default theme.
+ * Modifications and improvements made 2010 by Christoph Zwerschke.
+ *
+ * :copyright: Copyright 2007-2010 by the Sphinx team, see AUTHORS.
+ * :license: BSD, see LICENSE for details.
+ *
+ */
+
+@import url("basic.css");
+
+/* Modified default styles from Sphinx */
+
+body {
+  font-family: sans-serif;
+  font-size: 100%;
+  color: #030503;
+  background-color: #f8f9f7;
+  margin: 0;
+  padding: 0;
+}
+
+div.related {
+  color: #f8f9f7;
+  background-color: #2b312b;
+  line-height: 30px;
+  position: fixed;
+  height: 30px;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+div.sphinxsidebar {
+  color: #f8f9f7;
+  background-color: #4c554b;
+  margin-left: 0;
+  float: none;
+  position: fixed;
+  overflow: auto;
+  width: 240px;
+  max-width: 240px;
+  height: auto;
+  z-index: 1;
+  left: 0;
+  top: 30px;
+  bottom: 0;
+}
+
+div.document {
+  position: relative;
+  z-index: 0;
+  margin-left: 240px;
+  top: 30px;
+}
+
+div.footer {
+  font-size: 90%;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 20px;
+  position: relative;
+  height: 30px;
+  z-index: 0;
+  margin-left: 240px;
+}
+
+div.footer span {
+  padding-top: 5px;
+  border-top: 1px solid #9dda96;
+}
+
+div.bodywrapper {
+  margin: 0;
+}
+
+div.body {
+  padding: 0 20px 30px 20px;
+}
+
+div.related a {
+  color: #99f28c;
+}
+
+div.sphinxsidebar h3 {
+  font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, sans-serif;
+  color: #f8f9f7;
+  font-size: 1.4em;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+}
+
+div.sphinxsidebar h3 a {
+  color: #f8f9f7;
+}
+
+div.sphinxsidebar h4 {
+  font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, sans-serif;
+  color: #f8f9f7;
+  font-size: 1.3em;
+  font-weight: normal;
+  margin: 5px 0 0 0;
+  padding: 0;
+}
+
+div.sphinxsidebar p {
+  color: #f8f9f7;
+}
+
+div.sphinxsidebar p.topless {
+  margin: 5px 10px 10px 10px;
+}
+
+div.sphinxsidebar ul {
+  margin: 10px;
+  padding: 0;
+  color: #f8f9f7;
+}
+
+div.sphinxsidebar a {
+  color: #99f28c;
+}
+
+div.sphinxsidebar input {
+  border: 1px solid #99f28c;
+  font-family: sans-serif;
+  font-size: 1em;
+}
+/* for collapsible sidebar */
+div#sidebarbutton {
+  background-color: #4c554b;
+}
+
+div.headerfix :target {
+  /* compensate fixed header in link anchors */
+  padding-top: 30px;
+  margin-top: -30px;
+}
+
+a {
+  color: #216917;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #788975;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+div.body h1,
+div.body h2,
+div.body h3,
+div.body h4,
+div.body h5,
+div.body h6 {
+  font-family: 'Trebuchet MS', Verdana, Arial, Helvetica, sans-serif;
+  background-color: #9dda96;
+  font-weight: normal;
+  color: #030503;
+  border-bottom: 1px solid #ccc;
+  margin: 20px -20px 10px -20px;
+  padding: 3px 0 3px 10px;
+}
+
+div.body h1 { margin-top: 0; font-size: 200%; }
+div.body h2 { font-size: 160%; }
+div.body h3 { font-size: 140%; }
+div.body h4 { font-size: 120%; }
+div.body h5 { font-size: 110%; }
+div.body h6 { font-size: 100%; }
+
+a.headerlink {
+  color: #1C5016;
+  font-size: 0.8em;
+  padding: 0 4px 0 4px;
+  text-decoration: none;
+}
+
+a.headerlink:hover {
+  background-color: #1C5016;
+  color: white;
+}
+
+div.body p, div.body dd, div.body li {
+  text-align: justify;
+  line-height: 130%;
+}
+
+div.admonition p.admonition-title + p {
+  display: inline;
+}
+
+div.admonition p {
+  margin-bottom: 5px;
+}
+
+div.admonition pre {
+  margin-bottom: 5px;
+}
+
+div.admonition ul, div.admonition ol {
+  margin-bottom: 5px;
+}
+
+div.note {
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+div.seealso {
+  background-color: #ffc;
+  border: 1px solid #ff6;
+}
+
+div.topic {
+  background-color: #eee;
+}
+
+div.warning {
+  background-color: #ffe4e4;
+  border: 1px solid #f66;
+}
+
+p.admonition-title {
+  display: inline;
+}
+
+p.admonition-title:after {
+  content: ":";
+}
+
+pre {
+  padding: 5px;
+  background-color: #ffffff;
+  color: #252A24;
+  line-height: 120%;
+  border: 1px solid #ac9;
+  border-left: none;
+  border-right: none;
+}
+
+tt {
+  background-color: #ecf0f3;
+  padding: 0 1px 0 1px;
+  font-size: 0.95em;
+}
+
+th {
+  background-color: #ede;
+}
+
+.warning tt {
+  background: #efc2c2;
+}
+
+.note tt {
+  background: #d6d6d6;
+}
+
+.viewcode-back {
+  font-family: sans-serif;
+}
+
+div.viewcode-block:target {
+  background-color: #f4debf;
+  border-top: 1px solid #ac9;
+  border-bottom: 1px solid #ac9;
+}
+
+/* Added styles for TurboGears */
+
+div#the-turbogears-documentation h1 {
+  text-align: center;
+}
+
+div#the-turbogears-documentation h1 {
+  text-align: center;
+}
+
+div#the-turbogears-documentation table.docutils {
+  margin: 30px auto;
+  border: none !important;
+  border-collapse: separate;
+  width: 720;
+}
+
+div#the-turbogears-documentation table.docutils td {
+  border: none !important;
+  width: 33%;
+}
+
+div.admonition {
+  margin: 5px;
+  padding: 1pt 2pt;
+  border: thin #c0c0c0 solid;
+}
+
+div.admonition p {
+  margin: 1em .5em 1em .5em;
+}
+
+div.admonition p.admonition-title {
+  margin: 0;
+  padding: .25em;
+}
+
+div.warning {
+  border: thin #ffc0c0 solid;
+}
+
+div.warning p.admonition-title {
+  color: #bb2f25;
+}
+
+div.tip {
+  border: thin #c0ffc0 solid;
+}
+
+div.tip p.admonition-title {
+  color: #302710;
+}
+
+div.note {
+  border: thin #c0ffc0 solid;
+}
+
+div.note p.admonition-title {
+  color: #35B925;
+}
+
+div.hint {
+  border: thin #c0c0c0 solid;
+}
+
+div.hint p.admonition-title {
+  color: #252A24;
+}
+
+div.important {
+  border: thin #c0c0c0 solid;
+}
+
+div.admonition-todo {
+  margin: 5px;
+  border: thin #f8f860 solid;
+}
+
+div.admonition-todo p.admonition-title {
+  color: black;
+  background-color: #f8f8c0;
+}

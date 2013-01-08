@@ -1,0 +1,131 @@
+.. index:: PostgreSQL
+
+PostgreSQL
+==========
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+PostgreSQL is somewhat less familiar than :doc:`MySQL <MySQL>` to many people, but offers a lot of
+advantages over most other Open Source databases.
+
+Here's a quick guide to using PostgreSQL with Turbogears.
+
+
+PostgreSQL Setup
+----------------
+
+
+Linux
+~~~~~
+
+You will need psycopg2_ if you're going to use Unicode, otherwise either
+psycopg or psycopg2 will do it. We recommend using psycopg2 because of
+other features besides unicode.
+
+Installation options (recommended first):
+
+#. Use your package manager
+
+#. Look for binaries at the `install page <http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall>`_
+
+#. Build it yourself using `these instructions <http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall>`_.
+
+.. _psycopg2: http://initd.org/tracker/psycopg/wiki/PsycopgTwo
+
+
+Windows
+~~~~~~~
+
+Download and use the installer from `here
+<http://www.stickpeople.com/projects/python/win-psycopg/index.html>`_.
+
+
+Mac
+~~~
+
+For Darwin Ports::
+
+    $ sudo port install postgresql8
+
+or::
+
+    $ sudo port install portgresql7
+
+
+If you are using a different installation of PosgresSQL, for example the `One click
+installer`_, and you need to install the psycopg2_ package for Python support, please
+read this blog article about `Installing psycopg2 on OS X`_, which explains an easy
+fix to an compilation problem on OS X.
+
+.. _one click installer: http://www.postgresql.org/download/macosx
+.. _installing psycopg2 on os x:
+   http://blog.jonypawks.net/2008/06/20/installing-psycopg2-on-os-x/
+
+
+
+The DSN
+-------
+
+The basic form of a DSN for using PostgreSQL is as follows::
+
+    postgres://user:passwd@host:5432/dbname
+
+
+The default port for PostgreSQL is ``5432``, but may vary depending on configuration.
+If your postgres server is listening on its default port, this can be absent from the
+DSN, making it simpler::
+
+    postgres://user:passwd@host/dbname
+
+
+Using a Unix domain socket
+--------------------------
+
+As long as you don't require remote access, using a local socket has a lot of advantages over
+TCP sockets:
+
+* Up to 25% faster
+* Easier to secure (uses filesystem permissions)
+* Doesn't waste a TCP port
+
+With PostgreSQL, if the hostname starts with a /, then the hostname is taken to be an absolute
+path to a Unix domain socket rather than a hostname.  However, there are (as of this writing),
+bugs in the DSN parser for SQLObject that fails to separate the socket path from the database
+name.  A DSN like this works around that issue::
+
+    postgres:///dbname?host=/path/to/socket
+
+Note that I'm not specifying a username or password.  If you are sharing the socket with many
+users, you will want to do so, but if you are running your own instance of PostgreSQL (which I
+recommend) then you can forgo database-level authentication schemes and just use Unix file
+permissions to restrict access.
+
+If there is no local user matching the database user, you would normally configure
+the Postgres server via the ``pg_hba.conf`` file to require a password for this user.
+
+When connecting via a unix domain socket you can specify the username and
+password like this::
+
+    sqlalchemy.dburi="postgres:///dbname?user=mydbuser&password=XXXXXX"
+
+
+Known issues
+------------
+
+* Catwalk has a bug that causes a hang the first time the application is started with Catwalk
+  mounted. The workaround is fairly straightforward: simply create the requisite Catwalk
+  tables by hand then re-run the application.
+
+  The required SQL (at the time of this writing) is::
+
+      CREATE TABLE catwalk_state_table (
+          id SERIAL PRIMARY KEY NOT NULL,
+          state BYTEA
+      );
+
+  Use the ``psql`` command to run this query and you'll be set.

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.identity</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Package&nbsp;identity
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PACKAGE DESCRIPTION ==================== -->
+<h1 class="epydoc">Package identity</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears.identity-pysrc.html">source&nbsp;code</a></span></p>
+<p>The TurboGears identity management package.</p>
+
+<!-- ==================== SUBMODULES ==================== -->
+<a name="section-Submodules"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Submodules</span></td>
+</tr>
+  <tr><td class="summary">
+  <ul class="nomargin">
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.base-module.html" onclick="show_private();">turbogears.identity.base</a></strong>: <em class="summary">The TurboGears identity management package.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.conditions-module.html" onclick="show_private();">turbogears.identity.conditions</a></strong>: <em class="summary">Definition of the identity predicates.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.exceptions-module.html" onclick="show_private();">turbogears.identity.exceptions</a></strong>: <em class="summary">Identity management exceptions.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.identity.saprovider-module.html">turbogears.identity.saprovider</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.soprovider-module.html" onclick="show_private();">turbogears.identity.soprovider</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.visitor-module.html" onclick="show_private();">turbogears.identity.visitor</a></strong>: <em class="summary">The visit and identity management *plugins* are defined here.</em>    </li>
+  </ul></td></tr>
+</table>
+
+<br />
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.SecureResource-class.html" class="summary-name">SecureResource</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.not_anonymous-class.html" class="summary-name">not_anonymous</a><br />
+      Predicate for checking whether current visitor is anonymous.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.Predicate-class.html" class="summary-name">Predicate</a><br />
+      Generic base class for testing true or false for a condition.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.in_any_group-class.html" class="summary-name">in_any_group</a><br />
+      Predicate for requiring membership in at least one group.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.in_all_groups-class.html" class="summary-name">in_all_groups</a><br />
+      Predicate for requiring membership in a number of groups.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.has_all_permissions-class.html" class="summary-name">has_all_permissions</a><br />
+      Predicate for checking whether the visitor has all permissions.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.All-class.html" class="summary-name">All</a><br />
+      Logical 'and' of all sub-predicates.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.in_group-class.html" class="summary-name">in_group</a><br />
+      Predicate for requiring a group.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.from_any_host-class.html" class="summary-name">from_any_host</a><br />
+      Predicate for checking the visitor against a number of allowed 
+        hosts.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.SecureObject-class.html" class="summary-name">SecureObject</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.has_any_permission-class.html" class="summary-name">has_any_permission</a><br />
+      Predicate for checking whether visitor has at least one permission.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.CompoundPredicate-class.html" class="summary-name">CompoundPredicate</a><br />
+      A predicate composed of other predicates.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.from_host-class.html" class="summary-name">from_host</a><br />
+      Predicate for checking whether the visitor's host is a permitted 
+        host.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.has_permission-class.html" class="summary-name">has_permission</a><br />
+      Predicate for checking whether visitor has a particular permission.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.Any-class.html" class="summary-name">Any</a><br />
+      Logical 'or' of all sub-predicates.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.conditions.IdentityPredicateHelper-class.html" class="summary-name">IdentityPredicateHelper</a><br />
+      A mix-in helper class for Identity Predicates.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.exceptions.RequestRequiredException-class.html" class="summary-name">RequestRequiredException</a><br />
+      No request present.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.exceptions.IdentityManagementNotEnabledException-class.html" class="summary-name">IdentityManagementNotEnabledException</a><br />
+      User forgot to enable Identity management.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.exceptions.IdentityConfigurationException-class.html" class="summary-name">IdentityConfigurationException</a><br />
+      Incorrect configuration.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.exceptions.IdentityException-class.html" class="summary-name">IdentityException</a><br />
+      Base class for all Identity exceptions.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.identity.exceptions.IdentityFailure-class.html" class="summary-name">IdentityFailure</a><br />
+      Identity failure.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="encrypt_password"></a><span class="summary-sig-name">encrypt_password</span>(<span class="summary-sig-arg">cleartext</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.base-pysrc.html#encrypt_password">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.identity-module.html#create_default_provider" class="summary-sig-name">create_default_provider</a>()</span><br />
+      Create default identity provider.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.base-pysrc.html#create_default_provider">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="was_login_attempted"></a><span class="summary-sig-name">was_login_attempted</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.base-pysrc.html#was_login_attempted">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_current_provider"></a><span class="summary-sig-name">set_current_provider</span>(<span class="summary-sig-arg">provider</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.base-pysrc.html#set_current_provider">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_current_identity"></a><span class="summary-sig-name">set_current_identity</span>(<span class="summary-sig-arg">identity</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.base-pysrc.html#set_current_identity">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.identity-module.html#require" class="summary-sig-name">require</a>(<span class="summary-sig-arg">predicate</span>,
+        <span class="summary-sig-arg">obj</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Function decorator checking requirements for the current user.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.conditions-pysrc.html#require">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_identity_errors"></a><span class="summary-sig-name">set_identity_errors</span>(<span class="summary-sig-arg">errors</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.exceptions-pysrc.html#set_identity_errors">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_failure_url"></a><span class="summary-sig-name">get_failure_url</span>(<span class="summary-sig-arg">errors</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.exceptions-pysrc.html#get_failure_url">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_identity_errors"></a><span class="summary-sig-name">get_identity_errors</span>()</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.identity.exceptions-pysrc.html#get_identity_errors">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="current_provider"></a><span class="summary-name">current_provider</span> = <code title="ProviderWrapper()">ProviderWrapper()</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="current"></a><span class="summary-name">current</span> = <code title="IdentityWrapper()">IdentityWrapper()</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="create_default_provider"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">create_default_provider</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.identity.base-pysrc.html#create_default_provider">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Create default identity provider.</p>
+  <p>Creates an identity provider according to what is found in the 
+  configuration file for the current TurboGears application</p>
+  <p>Returns an identity provider instance or raises an 
+  IdentityConfigurationException.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="require"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">require</span>(<span class="sig-arg">predicate</span>,
+        <span class="sig-arg">obj</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.identity.conditions-pysrc.html#require">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Function decorator checking requirements for the current user.</p>
+  <p>This function decorator checks whether the current user is a member of
+  the groups specified and has the permissions required.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:36 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

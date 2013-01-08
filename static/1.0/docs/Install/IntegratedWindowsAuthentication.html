@@ -1,0 +1,148 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Integrated Windows Authentication &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="How many threads should I use?" href="NumberOfThreads.html" />
+    <link rel="prev" title="Running TurboGears as a Windows Service" href="WindowsService.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="NumberOfThreads.html" title="How many threads should I use?"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="WindowsService.html" title="Running TurboGears as a Windows Service"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Integrated Windows Authentication</a></li>
+<li><a class="reference internal" href="#iis">IIS</a></li>
+<li><a class="reference internal" href="#apache">Apache</a></li>
+<li><a class="reference internal" href="#application-interface">Application Interface</a></li>
+<li><a class="reference internal" href="#reverse-proxy-considerations">Reverse Proxy Considerations</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="WindowsService.html"
+                        title="previous chapter">Running TurboGears as a Windows Service</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="NumberOfThreads.html"
+                        title="next chapter">How many threads should I use?</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="integrated-windows-authentication">
+<span id="index-0"></span><h1>Integrated Windows Authentication<a class="headerlink" href="#integrated-windows-authentication" title="Permalink to this headline">¶</a></h1>
+<p>Integrated Windows Authentication (IWA) is an authentication system for web applications, where the web site automatically associates with the user&#8217;s Windows logon ID. This is more convenient for users than remembering and entering a password, and reduces administration for the site manager. It is generally only possible on Intranets, as the web server must be in a domain that has a trust relationship with the client&#8217;s domain.</p>
+<p>On a technical level the, web browser conducts NTLM authentication over a series of HTTP requests. The protocol is a Microsoft extension and not strictly HTTP compliant. However, some third-party software supports NTLM-over-HTTP, including Firefox as a client and an Apache extension as a server. Low level details of the protocol are documented at <a class="reference external" href="http://www.innovation.ch/personal/ronald/ntlm.html">http://www.innovation.ch/personal/ronald/ntlm.html</a> One significant point is that the connection is authenticated, not each request. If HTTP keep-alive is enabled (and it usually is), the second and subsequent requests will not have authentication headers.</p>
+<dl class="docutils">
+<dt>TurboGears can be used with IWA; there are two reasonable options for deployment:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="BehindIIS.html"><em>IIS</em></a> as the web server.</li>
+<li><a class="reference internal" href="BehindApache.html"><em>Apache</em></a> as the web server, with <a class="reference external" href="http://sourceforge.net/projects/mod-auth-sspi">mod_auth_sspi</a> to perform authentication.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="iis">
+<h1>IIS<a class="headerlink" href="#iis" title="Permalink to this headline">¶</a></h1>
+<p>Setup the application using <a class="reference internal" href="BehindIIS.html"><em>these instructions</em></a>.</p>
+</div>
+<div class="section" id="apache">
+<h1>Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h1>
+<p>Details of configuring Apache for IWA will depend on deployment choices, e.g. reverse proxy, mod_python, mod_wsgi, etc. It is possible for Apache on Unix to support IWA, although this appears somewhat harder to set up.</p>
+</div>
+<div class="section" id="application-interface">
+<h1>Application Interface<a class="headerlink" href="#application-interface" title="Permalink to this headline">¶</a></h1>
+<p>If using IIS as described above, the user ID will appear to the application as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s">&#39;Remote-User&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Currently (Aug 2007) IWA does not integrate with the <a class="reference internal" href="../Identity/index.html"><em>Identity module</em></a>, so it is necessary for applications to implement their own access control.</p>
+<p>The recommended approach is to create a CherryPy filter to perform authorization; I use the name NtlmAuthFilter. The before_request_body is the most appropriate filter hook to use. The filter can be incorporated with a controller by setting _cp_filters. This must be set explicitly on all controllers; nested controllers do not inherit this from their parents. Also, be aware that any TurboGears standard filters that are needed, such as NestedVariablesFilter, must be manually specified.</p>
+</div>
+<div class="section" id="reverse-proxy-considerations">
+<h1>Reverse Proxy Considerations<a class="headerlink" href="#reverse-proxy-considerations" title="Permalink to this headline">¶</a></h1>
+<p>Careful consideration is required for using IWA in a reverse proxy configuration. The NTLM authentication takes place between the browser and front-end web server. The front-end server needs to pass the user ID to the back-end application. The current recommended method is to have the front-end web server pass this in the &#8220;Remote-User&#8221; header (a non-standard HTTP header). A security concern with this is that anyone who can directly access the back-end application can supply a false identity.</p>
+<p>The main protection against this is to ensure the back-end application only listens on the localhost interface, by including the following in the configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">server</span><span class="o">.</span><span class="n">socket_host</span><span class="o">=</span><span class="s">&#39;127.0.0.1&#39;</span>
+</pre></div>
+</div>
+<p>This prevents attacks over the network, although a user on the same box could still bypass security. If this is unacceptable, one option is to have the front-end web server authenticate to the back-end application, using a fixed secret.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

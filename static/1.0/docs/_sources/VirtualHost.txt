@@ -1,0 +1,55 @@
+.. index:: virtual host
+
+Virtual Host
+============
+
+.. contents::
+    :depth: 2
+
+
+Recipe
+------
+
+Sometimes you may want to route visitor to different page who visits your site with different domain names. As known as "Virtual Host", it is possible to achieve this with ``TurboGears``. As far as ``TurboGears`` based on ``cherrypy``, what you need is to use a cherrypy filter ``VirtualHostFilter``. The filter can be found at cherrypy/filters/virtualhostfilter.py under cherrypy 2.3 package. You can use directly with simple configuration.
+
+::
+
+    virtual_host_filter.on = True
+    #use this option if your site is under a proxy
+    #virtual_host_filter.use_x_forwarded_host = True
+    virtual_host_filter.examplesite.com = "/examplesite_com"
+    virtual_host_filter.anothersite.com = "/anothersite_com"
+
+
+And modify the root controller
+
+::
+
+    from cherrypy.filters.virtualhostfilter import VirtualHostFilter
+    class Root(tg.controllers.RootController):
+        _cp_filters = [VirtualHostFilter()]
+
+        [...]
+
+
+Here you are, all visitor visit your site with examplesite.com will be internal redirected to /examplesite_com/.
+
+If you want to do more than static route, you can even route dynamically. For example:
+
+::
+
+    class VirtualHostFilter(BaseFilter):
+        def before_request_body(self):
+            if not cherrypy.config.get('site_virtual_host_filter.on', False):
+               return
+
+            domain = cherrypy.request.headers.get('Host', '')
+            if cherrypy.config.get("site_virtual_host_filter.use_x_forwarded_host", True):
+                domain = cherrypy.request.headers.get("X-Forwarded-Host", domain)
+            site = model.Site.get_by(domain_name=domain)
+            if site:
+                prefix = "/site/%s" % site.site_name
+                cherrypy.request.object_path = prefix + cherrypy.request.object_path
+
+    class Root(tg.controllers.RootController):
+        _cp_filters = [VirtualHostFilter()]

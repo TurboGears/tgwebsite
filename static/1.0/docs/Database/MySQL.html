@@ -1,0 +1,380 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using a MySQL database &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Database Installation" href="index.html" />
+    <link rel="next" title="PostgreSQL" href="PostgreSQL.html" />
+    <link rel="prev" title="SQLite Database" href="SQLite.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="PostgreSQL.html" title="PostgreSQL"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SQLite.html" title="SQLite Database"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Database Installation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using a MySQL database</a><ul>
+<li><a class="reference internal" href="#mysql-installation">MySQL installation</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-a-database-for-turbogears">Creating a database for TurboGears</a></li>
+<li><a class="reference internal" href="#to-transaction-or-not-to-transaction">To transaction or not to transaction</a></li>
+<li><a class="reference internal" href="#changing-the-default-storage-engine">Changing the default storage engine</a></li>
+<li><a class="reference internal" href="#using-utf-8-encoding-with-mysql">Using utf-8 encoding with MySQL</a></li>
+<li><a class="reference internal" href="#mysql-on-rhel-4-incompatible-mysqldb">MySQL on RHEL 4 (incompatible MySQLdb)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SQLite.html"
+                        title="previous chapter">SQLite Database</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="PostgreSQL.html"
+                        title="next chapter">PostgreSQL</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="using-a-mysql-database">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Using a MySQL database</a><a class="headerlink" href="#using-a-mysql-database" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-a-mysql-database" id="id1">Using a MySQL database</a><ul>
+<li><a class="reference internal" href="#mysql-installation" id="id2">MySQL installation</a></li>
+<li><a class="reference internal" href="#creating-a-database-for-turbogears" id="id3">Creating a database for TurboGears</a></li>
+<li><a class="reference internal" href="#to-transaction-or-not-to-transaction" id="id4">To transaction or not to transaction</a></li>
+<li><a class="reference internal" href="#changing-the-default-storage-engine" id="id5">Changing the default storage engine</a></li>
+<li><a class="reference internal" href="#using-utf-8-encoding-with-mysql" id="id6">Using utf-8 encoding with MySQL</a></li>
+<li><a class="reference internal" href="#mysql-on-rhel-4-incompatible-mysqldb" id="id7">MySQL on RHEL 4 (incompatible MySQLdb)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="mysql-installation">
+<h2><a class="toc-backref" href="#id2">MySQL installation</a><a class="headerlink" href="#mysql-installation" title="Permalink to this headline">¶</a></h2>
+<p>You will need the MySQLdb Python module. The main development site for this
+module is found at <a class="reference external" href="http://sourceforge.net/projects/mysql-python">sourceforge</a>. There is also a <a class="reference external" href="http://cheeseshop.python.org/pypi/MySQL-python">cheeseshop</a> page.</p>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>Best Approach:</p>
+<ul class="simple">
+<li>Use your package manager. The package may be called <tt class="docutils literal"><span class="pre">python-mysqldb</span></tt>
+(Debian/Ubuntu) or <tt class="docutils literal"><span class="pre">MySQL-python</span></tt> (Redhat).</li>
+</ul>
+<p>If that fails:</p>
+<ul class="simple">
+<li>Install development tools (gcc,make,etc.).</li>
+<li>Install mysql development tools (e.g. <tt class="docutils literal"><span class="pre">libmysqlclient15-dev</span></tt> on
+Debian/Ubuntu).</li>
+<li>Then install the module via <tt class="docutils literal"><span class="pre">easy_install</span></tt> from the <a class="reference external" href="http://cheeseshop.python.org/pypi/MySQL-python">cheeseshop</a>.</li>
+</ul>
+<div class="highlight-python"><pre>$ easy_install MySQL-python</pre>
+</div>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>You will need the <a class="reference external" href="http://sourceforge.net/project/showfiles.php?group_id=22307">MySQLdb binary installer for Windows</a> (the file will be
+called something like <tt class="docutils literal"><span class="pre">MySQL-python-1.2.2.win32-py2.5.exe</span></tt>).</p>
+</div>
+<div class="section" id="mac-os-x">
+<h3>Mac OS X<a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports:</p>
+<div class="highlight-python"><pre>$ sudo port install mysql4 +server</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>$ sudo port install mysql5 +server</pre>
+</div>
+<p>Alternatively, you can just download the MySQL package format installer from
+the <a class="reference external" href="http://mirrors.sunsite.dk/mysql/downloads/mysql/5.0.html">MySQL site</a> (Mirror).</p>
+<p>There have been reports about problems when trying to install MySQLdb via
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> on Mac OS X, so you may be better of using one of the above
+alternatives.</p>
+<p>Another issue with installing mysql-python on OS X Leopard (and a work-around
+for it) is described in the article the <a class="reference external" href="http://www.davidcramer.net/code/57/mysqldb-on-leopard.html">MySQLdb on Leopard</a>. In short, before
+attempting to install, ensure that the MySQL <tt class="docutils literal"><span class="pre">bin</span></tt> directory is in your path,
+otherwise <tt class="docutils literal"><span class="pre">mysql_config</span></tt> will not be found.</p>
+</div>
+</div>
+<div class="section" id="creating-a-database-for-turbogears">
+<h2><a class="toc-backref" href="#id3">Creating a database for TurboGears</a><a class="headerlink" href="#creating-a-database-for-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>First set the database connection string in your project&#8217;s deployment
+configuration (i.e. <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> for a development environment, <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> for
+a production environment):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span><span class="o">=</span><span class="s">&quot;mysql://george@localhost/test&quot;</span>
+</pre></div>
+</div>
+<p>assuming <tt class="docutils literal"><span class="pre">george</span></tt> as the database user name, <tt class="docutils literal"><span class="pre">localhost</span></tt> as the hostname of
+the database server and <tt class="docutils literal"><span class="pre">test</span></tt> as the database name. See the <a class="reference external" href="Configuration">TurboGears
+Configuration</a> page for more information on TurboGears&#8217; configuration files.</p>
+<p>Then we need to create database using the mysql shell (give the password for the
+<em>MySQL</em> <tt class="docutils literal"><span class="pre">root</span></tt> user when prompted for):</p>
+<div class="highlight-python"><pre>$ mysql -h localhost -u root -p
+
+mysql&gt; CREATE DATABASE test;
+Query OK, 1 row affected (0.03 sec)
+
+mysql&gt; GRANT ALL ON test.* TO 'george'@'localhost';
+Query OK, 0 rows affected (0.11 sec)
+
+mysql&gt; [Press CTRL+D]
+Bye</pre>
+</div>
+<p>Now we can test the DB connection as follows:</p>
+<div class="highlight-python"><pre>shell&gt; mysql -h localhost -u george -p test
+Enter password: ENTER</pre>
+</div>
+<p>Now it is everything prepared and we can create database structure using our
+model:</p>
+<div class="highlight-python"><pre>tg-admin sql create</pre>
+</div>
+</div>
+<div class="section" id="to-transaction-or-not-to-transaction">
+<h2><a class="toc-backref" href="#id4">To transaction or not to transaction</a><a class="headerlink" href="#to-transaction-or-not-to-transaction" title="Permalink to this headline">¶</a></h2>
+<p>MySQL includes several storage engines (e.g. MyISAM and InnoDB). MyISAM is older
+and most sites only use this engine. MyISAM is somewhat faster than InnoDB but
+is not able to handle transactions (and you like to keep your data integrity,
+right? ;-).</p>
+<p>Note that transactions are not the only reason why using InnoDB is a good idea.
+InnoDB also enforces data integrity more strictly than MyISAM and also has many
+more features.</p>
+<p>Every table in MySQL can have its own engine. When creating a table, you can
+specify which engine to use. The default engine in MySQL is MyISAM.</p>
+<p>Unfortunately, SQLObject <a class="reference external" href="http://wiki.sqlobject.org/sqlobjectdbconnection.html">does not allow</a> the specification of a storage engine
+as most databases only use one storage engine.</p>
+<p>When the command <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt> is issued, the default table type is
+used.</p>
+<p>There are several ways to use InnoDB with MySQL:</p>
+<ol class="arabic simple">
+<li>Create the tables by hand before TurboGears does it.</li>
+<li>Change the default storage engine for MySQL (requires MySQL administrator
+privileges).</li>
+<li>Change the table types by hand after TurboGears created them:
+&#8220;<tt class="docutils literal"><span class="pre">ALTER</span> <span class="pre">TABLE</span> <span class="pre">mytable</span> <span class="pre">TYPE=INNODB</span></tt>&#8220;</li>
+</ol>
+<p>By default TurboGears uses transactions. But there is a hook that allows you to
+disable transactions in TurboGears. If you do not want TurboGears to manage
+transactions put <tt class="docutils literal"><span class="pre">:doc:`/notrans`</span></tt> in front of the <tt class="docutils literal"><span class="pre">dburi</span></tt>, TurboGears will
+silently ignore all begin / commit / rollback / end instructions. Here is the
+above <tt class="docutils literal"><span class="pre">dburi</span></tt> string with transactions disabled:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span><span class="o">=</span><span class="s">&quot;notrans_mysql://george@localhost/test&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="changing-the-default-storage-engine">
+<h2><a class="toc-backref" href="#id5">Changing the default storage engine</a><a class="headerlink" href="#changing-the-default-storage-engine" title="Permalink to this headline">¶</a></h2>
+<p>To change the default storage engine of MySQL to InnoDB, you have to add the
+following line to the <tt class="docutils literal"><span class="pre">[mysqld]</span></tt> section of your <tt class="docutils literal"><span class="pre">my.ini</span></tt> / <tt class="docutils literal"><span class="pre">my.cnf</span></tt>
+file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">default</span><span class="o">-</span><span class="n">storage</span><span class="o">-</span><span class="n">engine</span><span class="o">=</span><span class="n">INNODB</span>
+</pre></div>
+</div>
+<p>This will have the effect that when you issue a <tt class="docutils literal"><span class="pre">CREATE</span> <span class="pre">TABLE</span></tt> statement,
+MySQL will create an InnoDB table by default.  Under Windows the file is
+usually found in the <tt class="docutils literal"><span class="pre">C:\Program</span> <span class="pre">Files\MySQL\MySQL</span> <span class="pre">Server</span> <span class="pre">X.Y</span></tt> directory and
+on Linux under the path name <tt class="docutils literal"><span class="pre">/etc/my.cnf</span></tt> or <tt class="docutils literal"><span class="pre">/etc/mysql/my.cnf</span></tt>.</p>
+<p>If you have the MySQL Administrator GUI installed, you can also change this
+setting from within this program.</p>
+<ol class="arabic">
+<li><p class="first">Select &#8220;StartUp Variables&#8221; from the left pane</p>
+</li>
+<li><p class="first">Then choose the &#8220;General Parameters tab&#8221;</p>
+<p>Down the bottom you&#8217;ll see a &#8220;Default Storage&#8221; section.</p>
+</li>
+<li><p class="first">Choose &#8220;InnoDB&#8221; from the drop-down.</p>
+</li>
+</ol>
+<p>For detailed information on this topic, see the <a class="reference external" href="http://dev.mysql.com/doc/refman/5.1/en/storage-engine-setting.html">MySQL Reference Manual</a>.</p>
+</div>
+<div class="section" id="using-utf-8-encoding-with-mysql">
+<h2><a class="toc-backref" href="#id6">Using utf-8 encoding with MySQL</a><a class="headerlink" href="#using-utf-8-encoding-with-mysql" title="Permalink to this headline">¶</a></h2>
+<p>If you want to store international characters in your database (and who doesn&#8217;t
+want to?), there are several things your should take care of:</p>
+<ol class="arabic">
+<li><p class="first">Use an UTF-8 <a class="reference external" href="http://www.python.org/dev/peps/pep-0263/">encoding declaration</a> for all your Python source files by
+writing the following on the first line of every <tt class="docutils literal"><span class="pre">.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># -*- coding: utf-8 -*-</span>
+</pre></div>
+</div>
+<p>and make sure that you really save the files with UTF-8 encoding.</p>
+</li>
+<li><p class="first">In your deployment configuration file (i.e. <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> for development,
+<tt class="docutils literal"><span class="pre">prod.cfg</span></tt> for production), add the follwing suffix to the <tt class="docutils literal"><span class="pre">dburi</span></tt>:</p>
+<div class="highlight-python"><pre>?charset=utf8&amp;sqlobject_encoding=utf8</pre>
+</div>
+<p>For example, your <tt class="docutils literal"><span class="pre">dburi</span></tt> may now look like this (all on one line):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> \
+    <span class="s">&quot;mysql://george:secret@localhost/mydb?charset=utf8&amp;sqlobject_encoding=utf8&quot;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please note, that the encoding name used here is <tt class="docutils literal"><span class="pre">utf8</span></tt>
+<strong>not</strong> <tt class="docutils literal"><span class="pre">utf-8</span></tt>.</p>
+</div>
+</li>
+<li><p class="first">In your application&#8217;s configuration (<tt class="docutils literal"><span class="pre">&lt;yourpackage&gt;/config/app.cfg</span></tt>),
+make sure that you have the following setting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">kid</span><span class="o">.</span><span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">In your <tt class="docutils literal"><span class="pre">my.ini</span></tt> / <tt class="docutils literal"><span class="pre">my.cnf</span></tt> file, make sure that you have the following
+setting in the <tt class="docutils literal"><span class="pre">[mysql]</span></tt> section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">default</span><span class="o">-</span><span class="n">character</span><span class="o">-</span><span class="nb">set</span><span class="o">=</span><span class="n">utf8</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Now you can verify that everything is OK in the database. Open the MySQL command
+line client and try the following SQL statements:</p>
+<div class="highlight-python"><pre>mysql&gt; SHOW VARIABLES LIKE '%character_set%';
++--------------------------+------------------------------+
+| Variable_name            | Value                        |
++--------------------------+------------------------------+
+| character_set_client     | utf8                         |
+| character_set_connection | utf8                         |
+| character_set_database   | utf8                         |
+| character_set_filesystem | binary                       |
+| character_set_results    | utf8                         |
+| character_set_server     | utf8                         |
+| character_set_system     | utf8                         |
+| character_sets_dir       | &lt;mysql home&gt;\share\charsets\ |
++--------------------------+------------------------------+
+8 rows in set (0.00 sec)
+
+mysql&gt; SHOW CREATE DATABASE my_db;
++----------+----------------------------------------------------------------+
+| Database | Create Database                                                |
++----------+----------------------------------------------------------------+
+| my_db    | CREATE DATABASE `my_db` /*!40100 DEFAULT CHARACTER SET utf8 */ |
++----------+----------------------------------------------------------------+
+1 row in set (0.24 sec)</pre>
+</div>
+<p>To change the default character set of an existing database, execute the
+following SQL statement:</p>
+<div class="highlight-python"><pre>ALTER DATABASE data_base DEFAULT CHARACTER SET=utf8;</pre>
+</div>
+<p>Or to change the character set of a table:</p>
+<div class="highlight-python"><pre>ALTER TABLE table_name DEFAULT CHARACTER SET=utf8;</pre>
+</div>
+</div>
+<div class="section" id="mysql-on-rhel-4-incompatible-mysqldb">
+<h2><a class="toc-backref" href="#id7">MySQL on RHEL 4 (incompatible MySQLdb)</a><a class="headerlink" href="#mysql-on-rhel-4-incompatible-mysqldb" title="Permalink to this headline">¶</a></h2>
+<p>Your version of the MySQLdb module must be compatible with the database you want
+to connect to. Old versions of MySQLdb may not support newer MySQL versions as
+data formats may have changed or the underlying C libraries behave differently
+in certain situations (such as &#8220;Connection lost&#8221;).</p>
+<p>If you experience problems because your MySQL server version is too new, the
+correct solution to this problem is to update your MySQLdb module.</p>
+<p>Unfortunately, Redhat ships incompatible versions of MySQLdb (version 1.0) and
+MySQL (version 4.1) in its Redhat Enterprise Linux 4 (Update 4). You may
+experience problems with that configuration if you have database fields with the
+MySQL type <tt class="docutils literal"><span class="pre">TIMESTAMP</span></tt> which changed its format from MySQL 4.0 to 4.1. If your
+SQLObject class is being autogenerated from the database, this error will be
+raised:</p>
+<div class="highlight-python"><pre>File "/usr/lib/python2.3/site-packages/MySQLdb/connections.py", line 33, in
+    defaulterrorhandler
+    raise errorclass, errorvalue
+ValueError: invalid literal for int(): 1-</pre>
+</div>
+<p>Due to the popularity of this platform, a special workaround was added in
+TurboGears 1.0.1. This workaround consists of a custom converter for timestamp
+fields.</p>
+<p>You can enable this converter by adding this option to your configuration file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">turbogears</span><span class="o">.</span><span class="n">enable_mysql41_timestamp_workaround</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+<p>This option defaults to <tt class="docutils literal"><span class="pre">False</span></tt>, and is only in effect if your version of
+MySQLdb is &lt;= 1.0.</p>
+<p>Please note that this workaround is currently implemented for SQLObject only.
+However, you are welcome to submit a patch for SQLAlchemy, too.</p>
+<p>Further information:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://trac.turbogears.org/ticket/1235">TurboGears Trac Ticket 1235</a></li>
+<li><a class="reference external" href="http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=155341">Redhat Bug 155341</a></li>
+<li><a class="reference external" href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=1608916&amp;group_id=22307&amp;atid=374932">MySQLdb Bug</a></li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

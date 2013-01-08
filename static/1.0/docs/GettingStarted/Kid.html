@@ -1,0 +1,344 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>A Brief Introduction to Kid Templates &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Alternative Components" href="../AlternativeComponents.html" />
+    <link rel="next" title="Using ToscaWidgets in TurboGears 1.0" href="../ToscaWidgets.html" />
+    <link rel="prev" title="Genshi Templating" href="../GenshiTemplating.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../ToscaWidgets.html" title="Using ToscaWidgets in TurboGears 1.0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../GenshiTemplating.html" title="Genshi Templating"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="../AlternativeComponents.html" accesskey="U">Alternative Components</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A Brief Introduction to Kid Templates</a><ul>
+<li><a class="reference internal" href="#substitution">Substitution</a></li>
+<li><a class="reference internal" href="#attributes">Attributes</a><ul>
+<li><a class="reference internal" href="#the-attribute-language">The Attribute Language</a><ul>
+<li><a class="reference internal" href="#py-for">py:for</a></li>
+<li><a class="reference internal" href="#py-content-py-replace">py:content &amp; py:replace</a></li>
+<li><a class="reference internal" href="#py-strip">py:strip</a></li>
+<li><a class="reference internal" href="#py-match">py:match</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#namespace">Namespace</a></li>
+<li><a class="reference internal" href="#important-tips-on-kid-templates">Important Tips on Kid Templates</a></li>
+<li><a class="reference internal" href="#replacing-kid-with-genshi">Replacing Kid with Genshi</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../GenshiTemplating.html"
+                        title="previous chapter">Genshi Templating</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../ToscaWidgets.html"
+                        title="next chapter">Using ToscaWidgets in TurboGears 1.0</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="a-brief-introduction-to-kid-templates">
+<span id="index-0"></span><h1>A Brief Introduction to Kid Templates<a class="headerlink" href="#a-brief-introduction-to-kid-templates" title="Permalink to this headline">¶</a></h1>
+<p><strong>Kid</strong> is a template languages that provides inline code capability within a markup
+document similar to PHP or ASP, except the language used here is (of course) Python.
+Code can exist in a separate block like:</p>
+<div class="highlight-python"><pre>&lt;?python
+x = 5
+y = 7
+?&gt;</pre>
+</div>
+<p>But although Kid understands Python code in the template, placing lots of code there
+is not, when building with TurboGears, the objective. In this integrated approach,
+most code is kept separate in the controller classes (MVC paradigm) and inline Python
+is used mainly to deliver and place data coming from the controller. This is done
+with <a class="reference internal" href="#substitution"><em>substitution</em></a> strings and with <a class="reference internal" href="#attributes"><em>attributes</em></a>
+to specific markup elements.</p>
+<p>Kid templates can be any XML document with namespaced attributes that tells Kid
+how to process the template. In practice, your templates will be XHTML
+documents that will be processed and transformed into valid HTML documents.</p>
+<p>This example (straight from Kid&#8217;s documentation) shows what Kid is like:</p>
+<div class="highlight-python"><pre>&lt;?python
+title = "A Kid Test Document"
+fruits = ["apple", "orange", "kiwi", "M&amp;M"]
+from platform import system
+?&gt;
+&lt;html xmlns:py="http://purl.org/kid/ns#"&gt;
+  &lt;head&gt;
+    &lt;title py:content="title"&gt;This is replaced.&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;These are some of my favorite fruits:&lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li py:for="fruit in fruits"&gt;
+        I like ${fruit}s
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p py:if="system() == 'Linux'"&gt;
+      Good for you!
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>One of the great things about Kid is that everything you know about Python
+applies here. Kid templates get compiled to Python code this makes it easier to
+predict how things will behave. For example, that <tt class="docutils literal"><span class="pre">py:for=&quot;fruit</span> <span class="pre">in</span> <span class="pre">fruits&quot;</span></tt>
+behaves just like <tt class="docutils literal"><span class="pre">for</span> <span class="pre">fruit</span> <span class="pre">in</span> <span class="pre">fruits:</span></tt> in Python.</p>
+<div class="section" id="substitution">
+<span id="id1"></span><h2>Substitution<a class="headerlink" href="#substitution" title="Permalink to this headline">¶</a></h2>
+<p>The variables that you defined in the <a class="reference external" href="Controller">dictionary</a> returned by your controller
+are all available for use anywhere in your template.  So
+if the dictionary contained an item {&#8216;food&#8217;:&#8217;apple&#8217;}, your template would replace
+any occurrences of ${food} with the text <tt class="docutils literal"><span class="pre">apple</span></tt>.</p>
+<p>When variables are dropped into your template, Kid will automatically escape
+them, e.g. you need not worry about values that contain <tt class="docutils literal"><span class="pre">&lt;&amp;%?</span></tt> etc.</p>
+<p>The time when you <strong>do</strong> need to care is when you actually
+have XHTML itself to drop into place. When you do, wrap your substitution value in
+<a class="reference external" href="http://www.kid-templating.org/language.html#xml-function">XML()</a>. For example, say we had an XHTML fragment called <tt class="docutils literal"><span class="pre">header</span></tt>. You could
+write <tt class="docutils literal"><span class="pre">${XML(header)}</span></tt>, and the header would be dropped in <em>without</em> being escaped.</p>
+</div>
+<div class="section" id="attributes">
+<span id="id2"></span><h2>Attributes<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<p>This approach adds Python logic as an attribute of an element, effecting specifically
+that element:</p>
+<div class="highlight-python"><pre>&lt;h2 py:if="x&lt;7"&gt;
+Title
+&lt;/h2&gt;</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">if</span></tt> statement above has the effect of controlling the appearance of the <tt class="docutils literal"><span class="pre">h2</span></tt>
+element. If <tt class="docutils literal"><span class="pre">x</span></tt> is not less than seven, then this heading element, neither the content
+<tt class="docutils literal"><span class="pre">Title</span></tt> nor the <tt class="docutils literal"><span class="pre">&lt;h2&gt;</span></tt> tag, will appear in the rendering of this page.</p>
+<p>In any of the <tt class="docutils literal"><span class="pre">py</span></tt> attributes, unlike substitutions, just use the variable
+from the dictionary as you
+would a local variable in Python, i.e. without the <tt class="docutils literal"><span class="pre">${}</span></tt>.</p>
+<div class="section" id="the-attribute-language">
+<h3>The Attribute Language<a class="headerlink" href="#the-attribute-language" title="Permalink to this headline">¶</a></h3>
+<p>Primary source references on the template language syntax can be found in:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://kid.lesscode.org/language.html#attribute-language">The Kid Documentation</a></li>
+</ul>
+<p>The following is a minimal overview.</p>
+<div class="section" id="py-for">
+<h4>py:for<a class="headerlink" href="#py-for" title="Permalink to this headline">¶</a></h4>
+<p>One of the great things about Kid is that everything you know about Python
+applies here. For example, <tt class="docutils literal"><span class="pre">py:for=&quot;fruit</span> <span class="pre">in</span> <span class="pre">fruits&quot;</span></tt>
+behaves just like <tt class="docutils literal"><span class="pre">for</span> <span class="pre">fruit</span> <span class="pre">in</span> <span class="pre">fruits:</span></tt> in Python. In this case, <tt class="docutils literal"><span class="pre">fruits</span></tt>
+is expected to be some kind of iterable object passed in via the dictionary.
+Whatever element the <tt class="docutils literal"><span class="pre">py:for</span></tt> attribute is attached to will be rendered,
+along with all of its contained sub-elements, again for every item in the loop.</p>
+<p>For example, if <tt class="docutils literal"><span class="pre">fruits</span></tt> contains [&#8216;pears&#8217;, &#8216;apples&#8217;, &#8216;oranges&#8217;], and
+the <tt class="docutils literal"><span class="pre">py</span></tt> attribute above is added to an <tt class="docutils literal"><span class="pre">&lt;li&gt;</span></tt> element:</p>
+<div class="highlight-python"><pre>&lt;ul&gt;
+&lt;li py:for="fruit in fruits"&gt;&lt;b&gt;${fruit}&lt;/b&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+<p>will be rendered as:</p>
+<div class="highlight-python"><pre>&lt;ul&gt;
+&lt;li&gt;&lt;b&gt;pears&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;apples&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;oranges&lt;/b&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+</div>
+<div class="section" id="py-content-py-replace">
+<h4>py:content &amp; py:replace<a class="headerlink" href="#py-content-py-replace" title="Permalink to this headline">¶</a></h4>
+<p>These two attribute functions are almost the same. They replace the content and all
+sub-elements of the element they tag. The distinction between the two is:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">py:content</span></tt></dt>
+<dd><p class="first">Replaces all content within the element, including any sub-elements:</p>
+<div class="highlight-python"><pre>&lt;h1 py:content="Hello"&gt;&lt;i&gt;Good Morning&lt;/i&gt;&lt;/h1&gt;</pre>
+</div>
+<p>is rendered as:</p>
+<div class="last highlight-python"><pre>&lt;h1&gt;Hello&lt;/h1&gt;</pre>
+</div>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">py:replace</span></tt></dt>
+<dd><p class="first">Also replaces the element tag itself:</p>
+<div class="highlight-python"><pre>&lt;h1 py:replace="Hello"&gt;&lt;i&gt;Good Morning&lt;/i&gt;&lt;/h1&gt;</pre>
+</div>
+<p>is rendered as simply:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">Hello</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="py-strip">
+<h4>py:strip<a class="headerlink" href="#py-strip" title="Permalink to this headline">¶</a></h4>
+<p>Nearly opposite of <tt class="docutils literal"><span class="pre">py:if</span></tt>. If evaluated <tt class="docutils literal"><span class="pre">True</span></tt>, <em>removes</em> the element, but
+unlike <tt class="docutils literal"><span class="pre">py:if</span></tt>, leaves sub-elements intact.</p>
+</div>
+<div class="section" id="py-match">
+<h4>py:match<a class="headerlink" href="#py-match" title="Permalink to this headline">¶</a></h4>
+<p>Behaves somewhat like a macro substitution. Elements tagged with the <tt class="docutils literal"><span class="pre">py:match</span></tt>
+attribute are not output when they are encountered. Instead, the entire document
+is compared to the match condition and when a match is found, the element that was
+matched, along with all of its decendents, is replaced by the match element and
+all of its decendants.</p>
+</div>
+</div>
+</div>
+<div class="section" id="namespace">
+<span id="id3"></span><h2>Namespace<a class="headerlink" href="#namespace" title="Permalink to this headline">¶</a></h2>
+<p>Kid templates can be any XML document with namespaced attributes that tells Kid
+how to process the template. In practice, your templates will be XHTML
+documents that will be processed and transformed into valid HTML documents.</p>
+<p>Don&#8217;t forget to define the <tt class="docutils literal"><span class="pre">py</span></tt> XML namespace in the <tt class="docutils literal"><span class="pre">&lt;html&gt;</span></tt>
+tag of your template. This is key to having your template understood as valid XML.
+Two common examples:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">xmlns:py=&quot;http://genshi.edgewall.org/&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span></tt></li>
+</ul>
+</div>
+<div class="section" id="important-tips-on-kid-templates">
+<h2>Important Tips on Kid Templates<a class="headerlink" href="#important-tips-on-kid-templates" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Don&#8217;t forget to define the <tt class="docutils literal"><span class="pre">py</span></tt> XML namespace (as is done in the <tt class="docutils literal"><span class="pre">&lt;html&gt;</span></tt>
+tag above). That&#8217;s key to having your template understood as valid XML.</li>
+<li><tt class="docutils literal"><span class="pre">${}</span></tt> lets you easily substitute in a Python expression anywhere in your
+document.</li>
+<li><tt class="docutils literal"><span class="pre">$foo</span></tt> lets you substitute in the variable foo, but it&#8217;s not as safe as
+using the {} because it can be harder to detect where you substitution is
+supposed to end</li>
+<li>This is XHTML, so you need to close <em>all</em> of your tags. For example, in HTML
+you&#8217;d write <tt class="docutils literal"><span class="pre">&lt;br&gt;</span></tt> to put a line break. In XHTML, you need to write
+<tt class="docutils literal"><span class="pre">&lt;br/&gt;</span></tt>. This will get converted properly to HTML on the way out.</li>
+<li>Since the template needs to be valid XML, if you have JavaScript with &lt; and
+&gt;, you should enclose the script in a <tt class="docutils literal"><span class="pre">&lt;![CDATA[</span></tt> <em>javascript here</em> <tt class="docutils literal"><span class="pre">]]&gt;</span></tt>
+section.</li>
+<li>Though the input is required to be valid XML, Kid can produce output in
+different markup formats, e.g. normal HTML instead of XHTML. Kid will
+automatically generate the proper DOCTYPE. The output can also be formatted
+in various ways. This influences how whitespace is dealt with, but can also
+be used to automatically generate typographic quotes and the like. This all
+can be configured with the <tt class="docutils literal"><span class="pre">kid.outputformat</span></tt> setting.</li>
+<li>There are some reserved words in Kid templates: <tt class="docutils literal"><span class="pre">write</span></tt>, <tt class="docutils literal"><span class="pre">serializer</span></tt>,
+<tt class="docutils literal"><span class="pre">serialize</span></tt>, <tt class="docutils literal"><span class="pre">generate</span></tt>, <tt class="docutils literal"><span class="pre">initialize</span></tt>, <tt class="docutils literal"><span class="pre">pull</span></tt>, <tt class="docutils literal"><span class="pre">content</span></tt>,
+<tt class="docutils literal"><span class="pre">transform</span></tt>. If you use those words as template variable names, you&#8217;ll
+likely get an error.</li>
+</ul>
+</div>
+<div class="section" id="replacing-kid-with-genshi">
+<h2>Replacing Kid with Genshi<a class="headerlink" href="#replacing-kid-with-genshi" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears 1.0 chose Kid as the default template language, but now there is a successor
+project called <strong>Genshi</strong>. The Genshi template language is very similar, but contrary to
+Kid, Genshi does not compile templates to Python. Nevertheless, it has better performance.</p>
+<p>Therefore, Genshi will replace Kid as the TurboGears default template language, beginning
+with TG 1.1. But Genshi can be already be used now in TG 1.0 as described below. Everything
+else described within this document is the same for both <a class="reference internal" href="../GenshiTemplating.html"><em>Genshi</em></a> and Kid.</p>
+<p>Note however, that TG 1.0 and TG 1.1 widgets were written for and only work in <em>Kid</em>.
+This has been improved in TG 1.5 where Genshi is also the default templating language
+for TG widgets. Anyway, Kid can still be used in TG 1.5 for both page and widget templates.</p>
+<p>Primary source references on the Genshi template language syntax can be found in:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://genshi.edgewall.org/wiki/Documentation/xml-templates.html">The Genshi Documentation</a></li>
+</ul>
+<p>To add Genshi support to TG 1.0:</p>
+<div class="highlight-python"><pre>easy_install Genshi</pre>
+</div>
+<p>Then either specify Genshi templates on a per case basis in your expose statements:</p>
+<div class="highlight-python"><pre>@expose(template="genshi:example.templates.foobar")</pre>
+</div>
+<p>or, set up your project to use Genshi by default by using the Genshi quickstart-template <a class="footnote-reference" href="#id5" id="id4">[1]</a>:</p>
+<div class="highlight-python"><pre>easy_install gsquickstart
+tg-admin quickstart -t tggenshi</pre>
+</div>
+<p>You can still serve pages with Kid by adding a prefix in the expose statement:</p>
+<div class="highlight-python"><pre>@expose(template="kid:example.templates.foobar")</pre>
+</div>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[1]</a></td><td><a class="reference internal" href="../ExtendingQuickstart.html"><em>Quickstart templates</em></a> should not be confused with
+<a class="reference internal" href="../ExposeDecorator.html"><em>&#64;expose</em></a> templates described in this document.
+&#64;expose templates use Kid, Genshi, or other XML templating language,
+while a quickstart template is specific to the TG quickstart command.</td></tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="UseDatabase.html"><em>Previous: Using Your Model</em></a> :
+<a class="reference internal" href="../StdVars.html"><em>Next: Template Variables You Get for Free</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

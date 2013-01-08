@@ -1,0 +1,265 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>I Wanted An Argument! &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Using URLs" href="URLs.html" />
+    <link rel="prev" title="Solving specific problems" href="../SpecificProblems.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="URLs.html" title="Using URLs"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../SpecificProblems.html" title="Solving specific problems"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">I Wanted An Argument!</a><ul>
+<li><a class="reference internal" href="#multiple-parameters">Multiple Parameters</a></li>
+<li><a class="reference internal" href="#handling-mistyped-urls-or-extra-parameters">Handling Mistyped URLs or Extra Parameters</a></li>
+<li><a class="reference internal" href="#convert-and-validate-arguments">Convert and Validate Arguments</a></li>
+<li><a class="reference internal" href="#validate">&#64;validate</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../SpecificProblems.html"
+                        title="previous chapter">Solving specific problems</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="URLs.html"
+                        title="next chapter">Using URLs</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="i-wanted-an-argument">
+<h1><a class="toc-backref" href="#id1">I Wanted An Argument!</a><a class="headerlink" href="#i-wanted-an-argument" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#i-wanted-an-argument" id="id1">I Wanted An Argument!</a><ul>
+<li><a class="reference internal" href="#multiple-parameters" id="id2">Multiple Parameters</a></li>
+<li><a class="reference internal" href="#handling-mistyped-urls-or-extra-parameters" id="id3">Handling Mistyped URLs or Extra Parameters</a></li>
+<li><a class="reference internal" href="#convert-and-validate-arguments" id="id4">Convert and Validate Arguments</a></li>
+<li><a class="reference internal" href="#validate" id="id5">&#64;validate</a></li>
+<li><a class="reference internal" href="#references" id="id6">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>One of the features that makes TurboGears so much fun to use is &#8216;parameter
+mapping&#8217;: the parameters coming in from a web request are automatically turned
+into parameters for your method.</p>
+<p>This makes handling web requests about as natural as can be.</p>
+<p>Let&#8217;s change our <tt class="docutils literal"><span class="pre">controller.py</span></tt> like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Arthur&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;I am </span><span class="si">%s</span><span class="s">, King of the Britons&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</pre></div>
+</div>
+<p>You probably won&#8217;t be surprised to learn that accessing <tt class="docutils literal"><span class="pre">/</span></tt> will return:</p>
+<div class="highlight-python"><pre>I am Arthur, King of the Britons</pre>
+</div>
+<p>Default arguments work exactly as you&#8217;d expect them to.</p>
+<p>Now you&#8217;re ready for direct parameter mapping.</p>
+<p>Access the URLs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://localhost:8080/?name=Lancelot">http://localhost:8080/?name=Lancelot</a></li>
+<li><a class="reference external" href="http://localhost:8080/index/Lancelot">http://localhost:8080/index/Lancelot</a></li>
+</ul>
+</div></blockquote>
+<p>A request to <tt class="docutils literal"><span class="pre">/?name=Lancelot</span></tt> (ugly) or <tt class="docutils literal"><span class="pre">/index/Lancelot</span></tt> (pretty) will
+return:</p>
+<div class="highlight-python"><pre>I am Lancelot, King of the Britons</pre>
+</div>
+<div class="section" id="multiple-parameters">
+<h2><a class="toc-backref" href="#id2">Multiple Parameters</a><a class="headerlink" href="#multiple-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s extend the above example to two parameters:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Arthur&quot;</span><span class="p">,</span> <span class="n">place</span><span class="o">=</span><span class="s">&quot;Britons&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;I am </span><span class="si">%s</span><span class="s">, King of the </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">place</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We just changed the return value to take two parameters (a &#8216;name, place&#8217; tuple).
+You probably won&#8217;t be surprised to learn that accessing <tt class="docutils literal"><span class="pre">/</span></tt> will return:</p>
+<div class="highlight-python"><pre>I am Arthur, King of the Britons</pre>
+</div>
+<p>So which URLs can I use to replace the default value?</p>
+<p>You&#8217;ll get the answer by trying to access the following URLs:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://localhost:8080/?name=Jack&amp;place=World">http://localhost:8080/?name=Jack&amp;place=World</a></li>
+<li><a class="reference external" href="http://localhost:8080/index/Jack/World">http://localhost:8080/index/Jack/World</a></li>
+</ul>
+</div></blockquote>
+<p>Accessing <tt class="docutils literal"><span class="pre">/?name=Jack&amp;place=World</span></tt> (ugly) or <tt class="docutils literal"><span class="pre">/index/Jack/World</span></tt> (pretty)
+will return a titanic result:</p>
+<div class="highlight-python"><pre>I am Jack, King of the World</pre>
+</div>
+<p>Boom! Those request parameters do more work than you expected :-)</p>
+</div>
+<div class="section" id="handling-mistyped-urls-or-extra-parameters">
+<h2><a class="toc-backref" href="#id3">Handling Mistyped URLs or Extra Parameters</a><a class="headerlink" href="#handling-mistyped-urls-or-extra-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Just as in a Python method itself, calling <tt class="docutils literal"><span class="pre">/?foobar=baz</span></tt> (which will be
+converted to an unknown parameter <tt class="docutils literal"><span class="pre">foobar</span></tt>) will raise an exception because
+it will try to call the <tt class="docutils literal"><span class="pre">index</span></tt> method like this: <tt class="docutils literal"><span class="pre">root.index(foobar=&quot;baz&quot;)</span></tt></p>
+<p>On the web, getting a &#8220;500&#8221; server exception error is ugly for mistyped URLs or
+extra parameters.</p>
+<p>For that reason, there is a configuration option: <tt class="docutils literal"><span class="pre">tg.strict_parameters</span></tt>,
+which is on by default in development and off in production. When it&#8217;s turned
+off, extra parameters are simply ignored.</p>
+<p>If you want to be able to handle any parameter that comes in from the web, you
+can always just do what you&#8217;d do in Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;Arthur&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;I am </span><span class="si">%s</span><span class="s">, King of the Britons&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</pre></div>
+</div>
+<p>Just as in standard Python, <tt class="docutils literal"><span class="pre">kw</span></tt> will be set to a dictionary holding the rest
+of the request arguments.</p>
+<p>You can access them as with a normal dictionary object, such as calling:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">kw</span><span class="p">[</span><span class="s">&#39;foobar&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The return value will be &#8220;baz&#8221;.</p>
+</div>
+<div class="section" id="convert-and-validate-arguments">
+<h2><a class="toc-backref" href="#id4">Convert and Validate Arguments</a><a class="headerlink" href="#convert-and-validate-arguments" title="Permalink to this headline">¶</a></h2>
+<p>You may not yet have noticed that the URL mapper only returns &#8216;string&#8217; type
+parameters. For example, accessing <tt class="docutils literal"><span class="pre">http://localhost:8080/2/3</span></tt> will pass the
+Python strings &#8220;<tt class="docutils literal"><span class="pre">2</span></tt>&#8221; and &#8220;<tt class="docutils literal"><span class="pre">3</span></tt>&#8221;, not the numbers <tt class="docutils literal"><span class="pre">2</span></tt> and <tt class="docutils literal"><span class="pre">3</span></tt>, to your
+function. Attempting to perform arithmetic on these values will result in an
+exception.</p>
+<p>Instead, you have to check that each parameter is a valid numeric string, and
+then convert it to an integer. Because you are clever, you must already suspect
+that TurboGears is prepared for this challenge.</p>
+<p>How to convert URL strings to other Python types gracefully? The answer is to use the <tt class="docutils literal"><span class="pre">&#64;validate</span></tt> decorator.</p>
+</div>
+<div class="section" id="validate">
+<h2><a class="toc-backref" href="#id5">&#64;validate</a><a class="headerlink" href="#validate" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s look at this example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">validate</span>
+<span class="kn">from</span> <span class="nn">turbogears.validators</span> <span class="kn">import</span> <span class="n">Int</span>
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="o">....</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;x&#39;</span><span class="p">:</span> <span class="n">Int</span><span class="p">(),</span> <span class="s">&#39;y&#39;</span><span class="p">:</span> <span class="n">Int</span><span class="p">()})</span>
+    <span class="k">def</span> <span class="nf">addnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the result of x+y.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To check and convert the string parameter, you pass a dictionary to the
+<tt class="docutils literal"><span class="pre">validators</span></tt> argument of the <tt class="docutils literal"><span class="pre">&#64;validate</span></tt> decorator. You can also use the
+builtin <tt class="docutils literal"><span class="pre">dict()</span></tt> function to define the dictionary with an easier syntax.</p>
+<p>Thus, the above <tt class="docutils literal"><span class="pre">&#64;validate</span></tt> decorator can be also written as:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@validate</span><span class="p">(</span><span class="n">validators</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">Int</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">Int</span><span class="p">()))</span>
+<span class="k">def</span> <span class="nf">addnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+      <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case we use the &#8216;string to integer&#8217; validator <tt class="docutils literal"><span class="pre">validators.Int()</span></tt>
+to help us validate the parameters. The <tt class="docutils literal"><span class="pre">turbogears.validators</span></tt> module is a
+wrapper of the <a class="reference external" href="http://formencode.org/">FormEncode</a> module, which is able to validate and convert strings to proper types.</p>
+<p>There is also a page with a more detailed explanation of the
+<a class="reference internal" href="../ValidateDecorator.html"><em>&#64;validate decorator</em></a> available.</p>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id6">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="http://formencode.org/Validator.html">FormEncode validation documentation</a> for more details.</p>
+<p><a class="reference internal" href="Controller.html"><em>Previous: Exposing Methods to URL</em></a> :
+<a class="reference internal" href="DefineDatabase.html"><em>Next: Defining Your Model</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

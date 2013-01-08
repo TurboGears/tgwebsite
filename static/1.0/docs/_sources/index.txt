@@ -1,0 +1,734 @@
+.. index:: API reference
+
+TurboGears 1.0 Documentation
+============================
+
+This is the official `TurboGears <http://www.turbogears.org>`_ 1.0
+documentation. If you don't see what you're looking for here, you
+might want to check out the :doc:`API reference <API>` documentation.
+
+If you're new to TurboGears, you should check out the :doc:`20 Minute Wiki <Wiki20/Page1>`
+tutorial first.
+
+
+.. contents::
+   :depth: 2
+
+
+FAQ
+---
+
+.. toctree::
+   :hidden:
+
+   FAQ
+
+* :doc:`Frequently Asked Questions <FAQ>` about TurboGears 1.0.
+
+
+Installation
+------------
+
+.. toctree::
+   :hidden:
+
+   Install/index
+   Install/Deployment
+   Database/index
+
+* :doc:`Installation Guide <Install/index>`
+* :doc:`Deployment <Install/Deployment>`
+* :doc:`Database Installation <Database/index>`
+
+
+Getting Started
+---------------
+
+
+Architecture and Organization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   GettingStarted/BigPicture
+
+- :doc:`The Big Picture <GettingStarted/BigPicture>`
+
+
+Screencasts
+~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   TGScreencasts
+
+* `20 Minute Wiki Screencast`_
+
+* :doc:`Screencast Directory <TGScreencasts>`
+
+.. _20 Minute Wiki Screencast:
+    http://showmedo.com/videos/series?name=TurboGears20MinWiki
+
+
+Tutorials
+~~~~~~~~~
+
+**Beginners**
+
+.. toctree::
+   :hidden:
+
+   Wiki20/Page1
+   GettingStarted/Controller
+   GettingStarted/Arguments
+   GettingStarted/UseDatabase
+   GettingStarted/Kid
+   GettingStarted/MochiKit
+
+
+* :doc:`20 Minute Wiki <Wiki20/Page1>` (updated text version of screencast)
+
+* :doc:`Getting Started: Controller and Templating <GettingStarted/Controller>`
+
+* :doc:`Passing Arguments to the Controller <GettingStarted/Arguments>`
+
+* :doc:`Data Model Overview <GettingStarted/UseDatabase>`
+
+* :doc:`A Brief Introduction to Kid Templates <GettingStarted/Kid>`
+
+* :doc:`A Brief Introduction to MochiKit <GettingStarted/MochiKit>`
+
+
+**Intermediate:**
+
+.. toctree::
+   :hidden:
+
+   Identity/GettingStarted
+   Widgets/Introduction
+   Widgets/SimpleForm
+   FileUploadTutorial
+   ToDoListTutorial
+
+* :doc:`Getting Started With Identity <Identity/GettingStarted>`
+
+* :doc:`Introduction to Widgets <Widgets/Introduction>`
+
+* :doc:`Simple Widget Form Tutorial <Widgets/SimpleForm>`
+
+* :doc:`File Upload Tutorial <FileUploadTutorial>`
+
+* :doc:`Multiuser Todo List Tutorial <ToDoListTutorial>`
+
+
+Documentation by Components and Topics
+--------------------------------------
+
+Project Setup
+~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   TgAdmin
+   QuickStart
+   GettingStarted/Server
+   Configuration
+   CreatingBigApplications
+   SpecificProblems
+
+* The TurboGears Administration Tool: :doc:`tg-admin <TgAdmin>`
+
+* :doc:`Quickstart Your Project <QuickStart>`
+
+* :doc:`Starting Up The Server <GettingStarted/Server>`
+
+* :doc:`Configuration <Configuration>`
+
+* :doc:`Creating Big Applications <CreatingBigApplications>`
+
+* :doc:`Solving specific problems <SpecificProblems>`
+
+
+Controller
+~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   GettingStarted/Arguments
+   GettingStarted/URLs
+   CreatingBigApplications
+   RequestResponse
+   StaticFiles
+   Cookies
+   Sessions
+   FeedController
+   UnifiedControllers
+
+* :doc:`URL Parsing and Argument Variables <GettingStarted/Arguments>`
+
+* :doc:`Absolute URLs That Won't Break <GettingStarted/URLs>`
+
+* :doc:`Getting Request and Response Information <RequestResponse>`
+
+* :doc:`Host Static Files <StaticFiles>`
+
+* :doc:`Store Information Client-side: Cookies <Cookies>`
+
+* :doc:`Store Information Server-side: Sessions <Sessions>`
+
+* :doc:`Generate RSS and Atom Feeds <FeedController>`
+
+* :doc:`Alternative Form Display and Action Pattern <UnifiedControllers>`
+
+* `Send Email: TurboMail <http://www.python-turbomail.org>`_
+
+* `Create XML-RPC, SOAP and Other Web Services <http://cheeseshop.python.org/pypi/TGWebServices>`_
+
+
+Controller Decorators
+`````````````````````
+
+.. toctree::
+   :hidden:
+
+   ExposeDecorator
+   ValidateDecorator
+   ErrorHandling
+   Identity/Usage
+   PaginateDecorator
+
+* :doc:`@expose <ExposeDecorator>`
+
+* :doc:`@validate <ValidateDecorator>`
+
+* :doc:`@error_handler <ErrorHandling>`
+
+* :doc:`@exception_handler <ErrorHandling>`
+
+* :doc:`@identity.require <Identity/Usage>`
+
+* :doc:`@paginate <PaginateDecorator>`
+
+
+View and Template
+~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   StdVars
+   HeadersFooters
+   JSON
+   Designer
+   DummyTemplate
+   KidHTMLEntities
+   CheckedCheckBox
+   BreadCrumb
+   CreatingBigApplications
+   NonPackagedKidTemplates
+   GenshiInternationalizationWithBabel
+   AdvancedCheetahTemplates
+
+* :doc:`Standard Template Variables <StdVars>`
+
+* :doc:`Application-wide Headers and Footers <HeadersFooters>`
+
+* :doc:`JSON: Returning Data for AJAX Requests <JSON>`
+
+* :doc:`Designer Friendly Kid Templates <Designer>`
+
+* :doc:`Using a Dummy Template for Debugging <DummyTemplate>`
+
+* :doc:`Using HTML Entities in Kid Templates <KidHTMLEntities>`
+
+* :doc:`Auto Checked Checkboxes and Radio Buttons <CheckedCheckBox>`
+
+* :doc:`Bread Crumb Navigation <BreadCrumb>`
+
+* :doc:`Putting Templates in Subdirectories <CreatingBigApplications>`
+
+* :doc:`Using External Kid Templates <NonPackagedKidTemplates>`
+
+* :doc:`Genshi Internationalization with Babel <GenshiInternationalizationWithBabel>`
+
+* :doc:`Tips for Working with Cheetah Templates <AdvancedCheetahTemplates>`
+
+
+Model
+~~~~~
+
+.. toctree::
+   :hidden:
+
+   GettingStarted/DefineDatabase
+   BackEndOverview
+   DbUri
+   SQLObject/index
+   TgAdminSqlUpgrade
+   ModelOutsideTG
+   MultipleDatabases
+   SQLObject/AutoUpdateField
+   SQLObject/Debug
+   SQLObject/DirectSQL
+   SQLObject/ForeignKeys
+   SQLObject/QuickGuide
+   SQLObject/ReservedWords
+   SQLObject/Caching
+   SQLObject/Gotchas
+   SQLObject/StoringAndRetrievingFiles
+   SQLObject/Views
+   SQLObject/VsHibernate
+   SQLAlchemy/Configuration
+
+* :doc:`Data Model Guide <GettingStarted/DefineDatabase>`
+
+* :doc:`Database Backends Available in TurboGears <BackEndOverview>`
+
+* :doc:`The DB-URI <DbUri>`
+
+* :doc:`Overview of SQLObject <SQLObject/index>`
+
+* :doc:`How to Use "tg-admin sql upgrade" With SQLObject <TgAdminSqlUpgrade>`
+
+* :doc:`Using Your Model Outside of TurboGears applications <ModelOutsideTG>`
+
+* :doc:`Using Multiple Databases with TurboGears <MultipleDatabases>`
+
+* :doc:`Auto-updating an Attribute with SQLObject <SQLObject/AutoUpdateField>`
+
+* :doc:`Debugging SQLObject SQL Queries <SQLObject/Debug>`
+
+* :doc:`Dropping Down to Raw SQL With SQLObject <SQLObject/DirectSQL>`
+
+* :doc:`Using ForeignKeys in SQLObject <SQLObject/ForeignKeys>`
+
+* :doc:`SQLObject Quick Guide <SQLObject/QuickGuide>`
+
+* :doc:`Avoiding SQL Reserved Words <SQLObject/ReservedWords>`
+
+* :doc:`SQLObject Caching <SQLObject/Caching>`
+
+* :doc:`SQLObject "Gotcha" Hazard Warnings <SQLObject/Gotchas>`
+
+* :doc:`Storing and Retrieving Data Blobs from Database <SQLObject/StoringAndRetrievingFiles>`
+
+* :doc:`Views in SQLObject <SQLObject/Views>`
+
+* :doc:`Hibernate Compared to SQLObject <SQLObject/VsHibernate>`
+
+* :doc:`Configuration for SQLAlchemy <SQLAlchemy/Configuration>`
+
+
+Widgets and Validation
+~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Widgets/Overview
+   Widgets/index
+   Widgets/Browser
+   Widgets/Explore
+   Widgets/SimpleForm
+   Widgets/FormValidationWithSchemas
+   Widgets/ModifyDefaults
+   Widgets/DynamicForm
+   DynamicValidation
+   Widgets/Packages
+   Widgets/StatelessWidgets
+   Widgets/DataGrid
+   Widgets/AjaxGrid
+   Widgets/AutoCompleteField
+   Widgets/RemoteForm
+   Widgets/RemoteLink
+   Widgets/CompoundWidgets
+   Widgets/RepeatingFieldSet
+   Widgets/CalendarDatePicker
+   Widgets/NicerForms
+   FastData/index
+   FastData/DataController
+   Widgets/Recipes
+   Widgets/Tips
+   ToscaWidgets
+
+* :doc:`Widgets Overview <Widgets/Overview>`
+
+* :doc:`Guide to the TurboGears Widgets Documentation <Widgets/index>`
+
+* :doc:`The Widget Browser <Widgets/Browser>`
+
+* :doc:`Dive Into Widgets <Widgets/Explore>`
+
+* :doc:`Creating a Widget Based Form <Widgets/SimpleForm>`
+
+* :doc:`Widget Form Validation with Schemas <Widgets/FormValidationWithSchemas>`
+
+* :doc:`Changing Widget Defaults at Run Time <Widgets/ModifyDefaults>`
+
+* :doc:`Dynamic Form Widgets with AJAX <Widgets/DynamicForm>`
+
+* :doc:`DynamicValidation <DynamicValidation>`
+
+* :doc:`Widget Packages <Widgets/Packages>`
+
+* :doc:`The Stateless Nature of Widgets <Widgets/StatelessWidgets>`
+
+* Specific Widgets:
+
+  - :doc:`Data Grid Widget <Widgets/DataGrid>`
+
+  - :doc:`AJAX Grid Widget <Widgets/AjaxGrid>`
+
+  - :doc:`Auto Complete Field <Widgets/AutoCompleteField>`
+
+  - :doc:`Remote Form Widget Tutorial <Widgets/RemoteForm>`
+
+  - :doc:`Remote Link AJAX wrapper Widget <Widgets/RemoteLink>`
+
+  - :doc:`Compound Widgets <Widgets/CompoundWidgets>`
+
+  - :doc:`Repeating Field Set <Widgets/RepeatingFieldSet>`
+
+  - :doc:`Calendar Date Picker Widget <Widgets/CalendarDatePicker>`
+
+  - :doc:`Nicer Form Widgets <Widgets/NicerForms>`
+
+  - :doc:`Fast Data Extension </FastData/index>`
+
+  - :doc:`Data Controller <FastData/DataController>`
+
+* :doc:`Miscellaneous Widget Recipes <Widgets/Recipes>`
+
+* :doc:`Miscellanetous Widget Tips and Tricks <Widgets/Tips>`
+
+* :doc:`Using ToscaWidgets <ToscaWidgets>`
+
+
+Visit and Identity
+~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Visit/index
+   Visit/Extending
+   Visit/UserTrackedLogging
+   Visit/PermanentLogin
+   Identity/index
+   Identity/GettingStarted
+   Identity/Usage
+   Identity/EncryptedPassword
+   Identity/Recipes
+   Identity/OpenID
+
+* :doc:`Using the Visit Framework <Visit/index>`
+
+  - :doc:`Extending the Visit Framework <Visit/Extending>`
+
+  - :doc:`User Tracked Logging <Visit/UserTrackedLogging>`
+
+  - :doc:`A Visit Plugin for Permanent Login <Visit/PermanentLogin>`
+
+* :doc:`Identity Overview <Identity/index>`
+
+  - :doc:`Getting Started With Identity <Identity/GettingStarted>`
+
+  - :doc:`Using Identity <Identity/Usage>`
+
+  - :doc:`Encrypted Passwords <Identity/EncryptedPassword>`
+
+  - :doc:`Identity Recipes <Identity/Recipes>`
+
+* User Registration and Maintenance with `tg-registration`_
+
+* :doc:`OpenID With Identity <Identity/OpenID>`
+
+.. _tg-registration: http://code.google.com/p/tg-registration/
+
+
+Tests and Logging
+~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Testing
+   LoggingSystem
+   ErrorReporting
+
+* :doc:`Agile Testing: testutil and nosetests <Testing>`
+
+* :doc:`Error Logging: The TurboGears Logging System <LoggingSystem>`
+
+* :doc:`Custom Error Reporting <ErrorReporting>`
+
+
+Debugging
+~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Debugging
+   DummyTemplate
+   SQLObject/Debug
+
+* :doc:`Debugging a TurboGears Application <Debugging>`
+
+* :doc:`Using a Dummy Template for Debugging <DummyTemplate>`
+
+* :doc:`Debugging SQLObject SQL Queries <SQLObject/Debug>`
+
+
+Optimization
+~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Optimization
+   CachingTechniques
+   GzipCompressing
+   UsingPylint
+
+* :doc:`Optimizing a TurboGears Application <Optimization>`
+
+* :doc:`Caching Techniques <CachingTechniques>`
+
+* :doc:`Using Content Compression <GzipCompressing>`
+
+* :doc:`Improving Code Quality with PyLint <UsingPylint>`
+
+
+Developer Tools
+~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Toolbox
+   Admi18n
+   Catwalk
+   FastData/DataController
+   VersionInfo
+   ModelDesigner
+   WebConsole
+   Widgets/Browser
+   DreamWeaverIntegration
+   VimIntegration
+
+* Web-based Utilities: :doc:`TurboGears ToolBox <Toolbox>`
+
+  - Localize Strings: :doc:`admi18n <Admi18n>`
+
+  - Edit Data Models: :doc:`Catwalk <Catwalk>` and FastData
+    :doc:`DataController <FastData/DataController>`
+
+  - List Installed Packages: :doc:`Version Info <VersionInfo>`
+
+  - Design Models: :doc:`ModelDesigner <ModelDesigner>`
+
+  - Interactive Console: :doc:`Web-Based Console <WebConsole>`
+
+  - Browse Widgets: :doc:`Widget Browser <Widgets/Browser>`
+
+* Integration with External Tools, Editors and IDEs
+
+  - :doc:`DreamWeaver <DreamWeaverIntegration>`
+
+  - :doc:`Vim <VimIntegration>`
+
+  - `WingIDE <http://wingware.com/doc/howtos/turbogears>`_
+
+
+Other Topics and Recipes
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   FlashNotes
+   JsonifyDecorator
+   Internationalization
+   UnicodeTips
+   Scheduler
+   ErrorReporting
+   ZeroConfSupport
+   StartupHook
+   CRUDTemplate
+   RESTfulPath
+   RESTfulPaginate
+   WebServices
+   OAuthAuthentication
+   GenerateFigures
+   FileUploadTutorial
+   FileUploadProgressBar
+   AlternativeComponents
+   GettingStarted/UseElixir
+   RoutesIntegration
+   EntryPointList
+   MakingYourAppExtensible
+   TurboGearsAndMicroApps
+   UsingSphinx
+   CookieDefault
+   ConvertCookies
+   ExtraRequestParams
+   RouteByHttpMethod
+   VirtualHost
+   GenshiRenderingWithoutExpose
+   ServeDynamicFiles
+   HybridNestedSetModel
+   SockFile
+   SelectingOption
+   DojoIEWorkaround
+
+* :doc:`Using Flash Notes <FlashNotes>`
+
+* :doc:`Automatic JSON Serialization <JsonifyDecorator>`
+
+* :doc:`Internationalization <Internationalization>`
+
+* :doc:`Some Tips for Using Non-ASCII characters <UnicodeTips>`
+
+* :doc:`Handling Recurring Tasks: The TurboGears Scheduler <Scheduler>`
+
+* :doc:`Custom Error Reporting <ErrorReporting>`
+
+* :doc:`ZeroConf Support in TurboGears <ZeroConfSupport>`
+
+* :doc:`Using the Startup Hook in TurboGears <StartupHook>`
+
+* :doc:`Generating a Basic CRUD Interface with tgcrud <CRUDTemplate>`
+
+* :doc:`Creating RESTful URLs with TurboGears <RESTfulPath>`
+
+* :doc:`RESTful Pagination Using the Paginate Decorator <RESTfulPaginate>`
+
+* :doc:`Web Services with TGWebServices <WebServices>`
+
+* :doc:`Validating OAuth Signed Requests <OAuthAuthentication>`
+
+* :doc:`Generating Graphs and Figures in TurboGears <GenerateFigures>`
+
+* :doc:`File Upload and Download <FileUploadTutorial>`
+
+* :doc:`Creating a File Upload Progress Bar <FileUploadProgressBar>`
+
+* :doc:`Using Non-Standard Components <AlternativeComponents>`
+
+* :doc:`Getting Started with Elixir <GettingStarted/UseElixir>`
+
+* :doc:`Using Routes with TurboGears <RoutesIntegration>`
+
+* :doc:`TurboGears Entry-Point Reference <EntryPointList>`
+
+* :doc:`Making Extensible Applications <MakingYourAppExtensible>`
+
+* :doc:`TurboGears and MicroApps <TurboGearsAndMicroApps>`
+
+* :doc:`Using Sphinx for Documentation <UsingSphinx>`
+
+* :doc:`Saving Page Parameters with Cookie Defaults <CookieDefault>`
+
+* :doc:`Converting Between Cookie Types <ConvertCookies>`
+
+* :doc:`Handling Extra Request Parameters with CherryPy Filters <ExtraRequestParams>`
+
+* :doc:`Routing Requests According to HTTP Request Method <RouteByHttpMethod>`
+
+* :doc:`Creating Virtual Hosts with TurboGears <VirtualHost>`
+
+* :doc:`Genshi Rendering without using the expose decorator <GenshiRenderingWithoutExpose>`
+
+* :doc:`Serving Dynamically Generated Files <ServeDynamicFiles>`
+
+* :doc:`Hybrid Nested Set Model for SQLObject <HybridNestedSetModel>`
+
+* :doc:`Connecting to MySQL via a socket file <SockFile>`
+
+* :doc:`Setting the selected option of a select list <SelectingOption>`
+
+* :doc:`Workarounds for using TurboGears with Dojo <DojoIEWorkaround>`
+
+* `Full Text Search with TurboLucene <http://atwork.wordpress.com/2007/03/14/full-text-search-with-turbolucene/>`_
+
+
+Extending TurboGears
+~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Philosophy
+   Plugins
+   TemplatePlugins
+   CommandPlugins
+   ExtendingQuickstart
+   License
+
+* :doc:`TurboGears Philosophy <Philosophy>`
+
+* :doc:`Writing TurboGears Plugins <Plugins>`
+
+  - :doc:`Writing a Template Plugin <TemplatePlugins>`
+  - :doc:`Writing a tg-admin Command Plugins <CommandPlugins>`
+  - :doc:`Extending Quickstart <ExtendingQuickstart>`
+
+* :doc:`License <License>`
+
+
+Reference
+---------
+
+.. toctree::
+   :hidden:
+
+   ThirdParty
+   API
+   ChangeLog
+
+* :doc:`Standard Component Documentation Links <ThirdParty>`
+
+* :doc:`API Reference <API>`
+
+* :doc:`Changelog <ChangeLog>`
+
+* :ref:`genindex`
+* :ref:`search`
+
+
+Books
+~~~~~
+
+.. toctree::
+   :hidden:
+
+   TGBooks
+
+* :doc:`Rapid Web Applications with TurboGears <TGBooks>` by Mark Ramm et al.
+
+
+Resources
+---------
+
+.. toctree::
+   :hidden:
+
+   TGArticles
+   PresentationMaterial
+
+* :doc:`TuboGears Articles <TGArticles>`
+* :doc:`External Documentation and Presentations <PresentationMaterial>`
+
+
+Errors
+------
+
+If you find an error in the documentation, please open a `SourceForge ticket`_
+setting the Component field to 'documentation'.
+
+.. _SourceForge ticket: https://sourceforge.net/p/turbogears1/tickets/new/

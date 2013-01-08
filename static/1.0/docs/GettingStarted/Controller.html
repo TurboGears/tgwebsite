@@ -1,0 +1,359 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Controller Getting Started Guide &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="I Wanted An Argument!" href="Arguments.html" />
+    <link rel="prev" title="20 Minute Wiki Page 6" href="../Wiki20/Page6.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Arguments.html" title="I Wanted An Argument!"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Wiki20/Page6.html" title="20 Minute Wiki Page 6"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Controller Getting Started Guide</a><ul>
+<li><a class="reference internal" href="#the-controller">The Controller</a></li>
+<li><a class="reference internal" href="#quick-example">Quick Example</a><ul>
+<li><a class="reference internal" href="#implementing-a-catch-all-url-via-the-default-method">Implementing a Catch-All URL via the <tt class="docutils literal"><span class="pre">default()</span></tt> Method</a></li>
+<li><a class="reference internal" href="#adding-more-pages">Adding More Pages</a></li>
+<li><a class="reference internal" href="#line-by-line-explanation">Line by Line Explanation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exposing-your-website">Exposing Your Website</a><ul>
+<li><a class="reference internal" href="#using-a-template">Using a Template</a></li>
+<li><a class="reference internal" href="#example-use-of-templates">Example Use of Templates</a></li>
+<li><a class="reference internal" href="#where-to-find-templates">Where to Find Templates</a></li>
+<li><a class="reference internal" href="#intelligent-templates">Intelligent Templates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#passing-arguments-to-the-controller">Passing Arguments to the Controller</a></li>
+<li><a class="reference internal" href="#subdividing">Subdividing</a></li>
+<li><a class="reference internal" href="#footnotes">Footnotes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Wiki20/Page6.html"
+                        title="previous chapter">20 Minute Wiki Page 6</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Arguments.html"
+                        title="next chapter">I Wanted An Argument!</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="controller-getting-started-guide">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id3">Controller Getting Started Guide</a><a class="headerlink" href="#controller-getting-started-guide" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#controller-getting-started-guide" id="id3">Controller Getting Started Guide</a><ul>
+<li><a class="reference internal" href="#the-controller" id="id4">The Controller</a></li>
+<li><a class="reference internal" href="#quick-example" id="id5">Quick Example</a></li>
+<li><a class="reference internal" href="#exposing-your-website" id="id6">Exposing Your Website</a></li>
+<li><a class="reference internal" href="#passing-arguments-to-the-controller" id="id7">Passing Arguments to the Controller</a></li>
+<li><a class="reference internal" href="#subdividing" id="id8">Subdividing</a></li>
+<li><a class="reference internal" href="#footnotes" id="id9">Footnotes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="the-controller">
+<h2><a class="toc-backref" href="#id4">The Controller</a><a class="headerlink" href="#the-controller" title="Permalink to this headline">¶</a></h2>
+<p>The nerve center of Turbo Gears is <strong>the controller</strong>. All HTTP requests arrive
+here first. The controller acts on the request and can call upon other TurboGears
+components (the template engines, database layers, etc.) as its logic directs.</p>
+<p>When the TurboGears server receives an HTTP request, the requested URL is mapped
+as a call to your controller code located in <tt class="docutils literal"><span class="pre">controllers.py</span></tt>. Page names map
+to functions within the controller class.</p>
+<p>For example:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="61%" />
+<col width="39%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">URL</th>
+<th class="head">Maps to</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">http://localhost:8080/index</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">Root.index()</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">http://localhost:8080/mypage</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">Root.mypage()</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="quick-example">
+<h2><a class="toc-backref" href="#id5">Quick Example</a><a class="headerlink" href="#quick-example" title="Permalink to this headline">¶</a></h2>
+<p>Suppose using <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> you generate a TurboGears project named
+&#8220;gs&#8221;. Your default controller code would be created in the file
+<tt class="docutils literal"><span class="pre">gs/gs/controllers.py</span></tt>.</p>
+<p>Modify the default <tt class="docutils literal"><span class="pre">controllers.py</span></tt> to read as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;h1&gt;Hello World&lt;/h1&gt;&quot;</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;This page is not ready&quot;</span>
+</pre></div>
+</div>
+<p>It is important that you indent the lines in the same way as above.</p>
+<p>When you load the root URL <tt class="docutils literal"><span class="pre">http://localhost:8080/index</span></tt> in your web
+browser, you&#8217;ll see a page with the message &#8220;Hello World&#8221; on it. In
+addition, any of <a class="reference internal" href="#these-urls">these URLs</a> will return the same result.</p>
+<div class="section" id="implementing-a-catch-all-url-via-the-default-method">
+<h3>Implementing a Catch-All URL via the <tt class="docutils literal"><span class="pre">default()</span></tt> Method<a class="headerlink" href="#implementing-a-catch-all-url-via-the-default-method" title="Permalink to this headline">¶</a></h3>
+<p>URLs not explicitly mapped to other methods of the controller will be directed
+to the method named <tt class="docutils literal"><span class="pre">default()</span></tt>. With the above example, requesting any URL
+besides <tt class="docutils literal"><span class="pre">/index</span></tt>, for example <tt class="docutils literal"><span class="pre">http://localhost:8080/hello</span></tt>, will return the
+message &#8220;This page is not ready&#8221;.</p>
+</div>
+<div class="section" id="adding-more-pages">
+<h3>Adding More Pages<a class="headerlink" href="#adding-more-pages" title="Permalink to this headline">¶</a></h3>
+<p>When you are ready to add another page to your site, for example at the URL</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">http://localhost:8080/anotherpage</span></tt></div></blockquote>
+<p>add another method to class Root as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">anotherpage</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;&lt;h1&gt;There are more pages in my website&lt;/h1&gt;&quot;</span>
+</pre></div>
+</div>
+<p>Now, the URL <tt class="docutils literal"><span class="pre">/anotherpage</span></tt> will return</p>
+<p><strong>There are more pages in my website</strong></p>
+</div>
+<div class="section" id="line-by-line-explanation">
+<h3>Line by Line Explanation<a class="headerlink" href="#line-by-line-explanation" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+</pre></div>
+</div>
+<p>First you need to import the required modules from the TurboGears package.</p>
+<p><tt class="docutils literal"><span class="pre">Controller</span></tt> classes and the <a class="reference internal" href="../ExposeDecorator.html"><em>expose decorator</em></a> are
+the basis of TurboGears controllers.:</p>
+<div class="highlight-python"><pre>class Root(controllers.RootController):</pre>
+</div>
+<p>The required standard name for the root controller class of a TurboGears
+application is <tt class="docutils literal"><span class="pre">Root</span></tt> and it should be inherited from <tt class="docutils literal"><span class="pre">RootController</span></tt>
+class (from the <tt class="docutils literal"><span class="pre">controllers</span></tt> module, which we just imported). It is
+thereby specified as the request handler class for the website&#8217;s root.</p>
+<p>In TurboGears (and CherryPy, on which TurboGears 1.x builds), the web site is
+represented by a tree of controller objects and their methods, and a TurboGears
+website always grows out from the <tt class="docutils literal"><span class="pre">Root</span></tt> class.</p>
+<p>We look at the methods of the <tt class="docutils literal"><span class="pre">Root</span></tt> class next:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;&lt;h1&gt;Hello World&lt;/h1&gt;&quot;</span>
+</pre></div>
+</div>
+<p id="three-urls"><span id="these-urls"></span>The <tt class="docutils literal"><span class="pre">index</span></tt> method is the start point of any TurboGears/CherryPy class. When
+you access a URL like</p>
+<ul class="simple">
+<li><a class="reference external" href="http://localhost:8080">http://localhost:8080</a></li>
+<li><a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a></li>
+<li><a class="reference external" href="http://localhost:8080/index">http://localhost:8080/index</a></li>
+</ul>
+<p>they are all mapped to the <tt class="docutils literal"><span class="pre">Root.index()</span></tt> method.</p>
+<p>If a URL is requested that does not map to a specific method, the
+<tt class="docutils literal"><span class="pre">default()</span></tt> method of the controller class is called:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;This page is not ready&quot;</span>
+</pre></div>
+</div>
+<p>In this example, all pages except the <a class="reference internal" href="#three-urls">three URLs</a> listed above will map to the
+default method.</p>
+<p>As you can see from the examples, the response to a given URL is determined by
+the method it maps to.</p>
+<div class="highlight-python"><pre>@expose()</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt> seen before each controller method directs TurboGears to make
+the method accessible through the web server. Methods in the controller class
+that are <em>not</em> &#8220;exposed&#8221; can not be called directly by requesting a URL from the
+server.</p>
+<p>There is much more to &#64;expose(). It will be our access to TurboGears&#8217;
+sophisticated rendering features that we will explore shortly.</p>
+</div>
+</div>
+<div class="section" id="exposing-your-website">
+<h2><a class="toc-backref" href="#id6">Exposing Your Website</a><a class="headerlink" href="#exposing-your-website" title="Permalink to this headline">¶</a></h2>
+<p>As shown above, controller methods return the data of your website. So far, we
+have returned this data as literal strings. You could produce a whole site by
+returning only strings containing raw HTML from your controller methods but it
+would be difficult to maintain, since Python code and HTML code would not be
+cleanly separated.</p>
+<div class="section" id="using-a-template">
+<h3>Using a Template<a class="headerlink" href="#using-a-template" title="Permalink to this headline">¶</a></h3>
+<p>To enable a cleaner solution, data from your TurboGears controller can be
+returned as strings, <strong>or</strong> as a dictionary.</p>
+<p>With <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt>, a dictionary can be passed from the controller to a template
+which fills in its placeholder keys with the dictionary values and then returns
+the filled template output to the browser.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because Python 2.3 doesn&#8217;t support decorator syntax, you
+have to use <tt class="docutils literal"><span class="pre">[&#64;expose()]</span></tt> instead of <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt> with Python 2.3. For
+more details on the <tt class="docutils literal"><span class="pre">&#64;expose</span></tt> decorator, see the <a class="reference internal" href="../ExposeDecorator.html"><em>expose decorator</em></a> page.</p>
+</div>
+</div>
+<div class="section" id="example-use-of-templates">
+<h3>Example Use of Templates<a class="headerlink" href="#example-use-of-templates" title="Permalink to this headline">¶</a></h3>
+<p>A simple template file called <tt class="docutils literal"><span class="pre">sample</span></tt> could be made like
+this:</p>
+<div class="highlight-python"><pre>&lt;html&gt;
+  &lt;head&gt;
+&lt;title&gt;TurboGears Templating Example&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;h2&gt;I just want to say that ${person} should be the next
+        ${office} of the United States.&lt;/h2&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>By adding a method to the controller like this ...</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;gs.templates.sample&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">example</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">mydata</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;person&#39;</span><span class="p">:</span><span class="s">&#39;Tony Blair&#39;</span><span class="p">,</span><span class="s">&#39;office&#39;</span><span class="p">:</span><span class="s">&#39;President&#39;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">mydata</span>
+</pre></div>
+</div>
+<p>... the following is made possible:</p>
+<ul class="simple">
+<li>The web user goes to <tt class="docutils literal"><span class="pre">http://localhost:8080/example</span></tt>.</li>
+<li>The <tt class="docutils literal"><span class="pre">example</span></tt> method is called.</li>
+<li>The method <tt class="docutils literal"><span class="pre">example</span></tt> returns a Python <tt class="docutils literal"><span class="pre">dict</span></tt>.</li>
+<li>&#64;expose processes the dict through the template file named
+<tt class="docutils literal"><span class="pre">sample.kid</span></tt>. <a class="footnote-reference" href="#id2" id="id1">[1]</a></li>
+<li>The dict values are substituted into the final web response.</li>
+<li>The web user sees a marked up page saying:</li>
+</ul>
+<p><strong>I just want to say that Tony Blair should be the next President
+of the United States.</strong></p>
+<p>Template files can thus house all markup information, maintaining clean
+separation from controller code.</p>
+</div>
+<div class="section" id="where-to-find-templates">
+<h3>Where to Find Templates<a class="headerlink" href="#where-to-find-templates" title="Permalink to this headline">¶</a></h3>
+<p>In TurboGears, template files are collected together in the <tt class="docutils literal"><span class="pre">templates</span></tt>
+sub-package, i.e. in the folder named <tt class="docutils literal"><span class="pre">templates</span></tt> below your application&#8217;s
+main package directory, in this case, <tt class="docutils literal"><span class="pre">./gs/gs/templates</span></tt> and referred to
+in &#64;expose by the syntax <tt class="docutils literal"><span class="pre">[packagename].templates.[filenameroot]</span></tt>, as in
+the example.</p>
+</div>
+<div class="section" id="intelligent-templates">
+<h3>Intelligent Templates<a class="headerlink" href="#intelligent-templates" title="Permalink to this headline">¶</a></h3>
+<p>In the above <a class="reference internal" href="#example-use-of-templates">Example Use of Templates</a>, our template used the <tt class="docutils literal"><span class="pre">mydata</span></tt>
+values simply as direct content replacement strings. Templates are much more
+capable than this. They can run their own Python code snippets to aid in
+rendering, such as obeying conditionals or iterating through lists. To learn
+more, read <a class="reference internal" href="Kid.html"><em>Getting Started with Kid</em></a>.</p>
+</div>
+</div>
+<div class="section" id="passing-arguments-to-the-controller">
+<h2><a class="toc-backref" href="#id7">Passing Arguments to the Controller</a><a class="headerlink" href="#passing-arguments-to-the-controller" title="Permalink to this headline">¶</a></h2>
+<p>In typical Pythonic elegance, arguments can be passed to the controller methods
+from the web browser.  To learn how, read <a class="reference internal" href="Arguments.html"><em>I wanted an argument</em></a>.</p>
+</div>
+<div class="section" id="subdividing">
+<h2><a class="toc-backref" href="#id8">Subdividing</a><a class="headerlink" href="#subdividing" title="Permalink to this headline">¶</a></h2>
+<p>The example above shows your controller methods all contained within the single
+Root class. Your controller can <a class="reference internal" href="../CreatingBigApplications.html"><em>grow</em></a> into
+multiple sub-classes, and from there into multiple modules and files.
+See <a class="reference internal" href="../CreatingBigApplications.html"><em>Creating Big Applications</em></a>.</p>
+</div>
+<div class="section" id="footnotes">
+<h2><a class="toc-backref" href="#id9">Footnotes</a><a class="headerlink" href="#footnotes" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Note that the suffix on a template file depends on the template engine
+employed. TurboGears allows <a class="reference internal" href="../AlternativeTemplating.html"><em>choice</em></a>.
+For example, the current default Kid template files end in <tt class="docutils literal"><span class="pre">.kid</span></tt>
+(as in this example), while Genshi files end in <tt class="docutils literal"><span class="pre">.html</span></tt>.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

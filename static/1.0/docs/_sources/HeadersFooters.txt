@@ -1,0 +1,74 @@
+.. index:: headers, footers
+
+Application-wide Headers and Footers
+====================================
+
+Kid offers a number of ways to do application-wide headers and footers. Let's focus on a couple particular approaches: the cool approach and the fast approach.
+
+Kid has a really, really useful command called py:match. What makes it so useful is that you can write individual page templates that know nothing about the site-wide styling that will be applied. The quickstart command starts you off with this kind of setup.
+
+Let's start with a page template that we want to have headers/footers applied to (this is based on gs/templates/welcome.kid):
+
+::
+
+
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+          <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+              py:extends="'master.kid'">
+
+          <head>
+              <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+              <title>Welcome to TurboGears</title>
+          </head>
+
+          <body>
+              <h2>You're running TurboGears!</h2>
+
+              <p>Your TurboGears server is running as of <span py:replace="now">now</span>.</p>
+              <div py:replace="phraseOfTheDay()"/>
+          </body>
+          </html>
+
+
+
+The *only* thing in this template that is necessary to get headers and footers applied is the py:extends up in the HTML tag. Kid allows one template to extend or subclass another template. When you do this, your template inherits the parent's py:match and py:def blocks. py:extends works with a string that looks for a file relative to the current template, or a template module object that you have imported.
+
+What does the master template look like?
+
+::
+
+
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+      <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#">
+
+      <head>
+          <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+          <title>Your title goes here</title>
+      </head>
+
+      <body py:match="item.tag=='{http://www.w3.org/1999/xhtml}body'">
+          <h1>TurboGears is Running</h1>
+
+          <div py:def="phraseOfTheDay()">There's no better time than the present!</div>
+
+          <p>This text appears in the header provided by master.html.</p>
+
+          <div py:if="tg_flash" class="flash" py:content="tg_flash"></div>
+
+          <div py:replace="item[:]"/>
+      </body>
+      </html>
+
+
+
+This master template can be viewed in a browser, just as individual page templates can. The py:match attribute on the body looks for the body of the child template (note the use of XML namespaces). In the py:match statement, "item" gives you access to the element_ at that point in the document. You can look at the tag or the attributes (through dictionary-style lookup on item.attrib) of the element to see if you're looking at one you care about. In this case, we're just going to take over the body element.
+
+.. _element: http://effbot.org/zone/pythondoc-elementtree-ElementTree.htm#elementtree.ElementTree.Element-function
+
+When a match is found, the body of the child (individual page) template is *replaced* by the one in the master template. How do you get your content in there? At the bottom of this master template, there is a div that is replaced by "item[:]". In this particular example, that says to put everything *under* the body of the page template into this spot in the master template. Usually, you'll want all of the elements, so item[:] is what you'll use.
+
+Kid offers another approach to sharing between templates: template functions. These work just like normal template functions and they are inherited from the master template. There is a simple one in the example above: phraseOfTheDay.
+
+phraseOfTheDay is defined in the master by py:def on a div. In the page template, it shows up as a py:replace in a div. So, the div in the child page template will just get replaced by the div from the master. This lets you include headers, footers, search boxes and the like easily.
+
+Template functions can also take parameters just like normal Python functions. You could, for instance, have a title parameter that gets passed in from the child template in order to format a heading.

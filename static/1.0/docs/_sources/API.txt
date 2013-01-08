@@ -1,0 +1,39 @@
+API documentation
+=================
+
+
+Quick Reference Guide
+---------------------
+
+Mark Ramm has created a `TurboGears Quick Reference Guide
+<http://compoundthinking.com/blog/wp-content/tg-0.9-quickref.pdf>`_
+(based on version 0.9).
+
+
+API
+---
+
+You can find the epydoc-generated `TurboGears API reference
+<http://www.turbogears.org/1.0/docs/api/>`_ here.
+
+This is for the latest version in the TurboGears 1.0 branch.
+
+If you want to build the API reference for the HEAD of the
+1.0 SVN branch, do the following:
+
+#. Export the full branch sources from SVN::
+
+        svn export http://svn.turbogears.org/branches/1.0 turbogears
+
+#. See the file ``turbogears/doc/README.txt`` and follow the instructions
+   given there. For the impatient, here's a quick summary:
+
+   #. Make sure that you have epydoc >= 3.0 installed.
+
+   #. Run the following commands from a terminal::
+
+        $ cd turbogears
+        $ ./doc/build_api_docs.sh
+
+      If you are on Windows, you have to look at the ``docs/build-api_docs.sh``
+      Bash script and figure out the commands you have to run yourself.

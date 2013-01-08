@@ -1,0 +1,274 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>StatelessWidgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="DataGrid" href="DataGrid.html" />
+    <link rel="prev" title="Widget Packages" href="Packages.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DataGrid.html" title="DataGrid"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Packages.html" title="Widget Packages"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">StatelessWidgets</a><ul>
+<li><a class="reference internal" href="#motivations-for-stateless-widgets">Motivations for stateless widgets:</a><ul>
+<li><a class="reference internal" href="#reuse-widgets-instances-inside-your-application">1) Reuse widgets instances inside your application</a><ul>
+<li><a class="reference internal" href="#do">DO</a></li>
+<li><a class="reference internal" href="#don-t-do">DON&#8217;T DO</a></li>
+<li><a class="reference internal" href="#id1">DON&#8217;T DO</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#treat-widget-instances-as-immutable-after-creation">2) Treat widget instances as immutable after creation</a><ul>
+<li><a class="reference internal" href="#id2">DO</a></li>
+<li><a class="reference internal" href="#rather-not">RATHER NOT:</a></li>
+<li><a class="reference internal" href="#definitely-not">DEFINITELY NOT</a></li>
+<li><a class="reference internal" href="#id3">DEFINITELY NOT</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Packages.html"
+                        title="previous chapter">Widget Packages</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DataGrid.html"
+                        title="next chapter">DataGrid</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="statelesswidgets">
+<h1>StatelessWidgets<a class="headerlink" href="#statelesswidgets" title="Permalink to this headline">¶</a></h1>
+<p>Widgets have been designed from the ground up to be
+<a class="reference external" href="http://ootips.org/stateless-distributed-objects.html">stateless objects</a>.
+This means that a widget instance does not hold any knowledge of what happened
+previously, thus the same instance can be reused across all requests.</p>
+<div class="section" id="motivations-for-stateless-widgets">
+<h2>Motivations for stateless widgets:<a class="headerlink" href="#motivations-for-stateless-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Performance is not the main one, basically reusing the same instance fits well
+with the way you work with TG controllers and decorators (for example you pass
+a form instance to the &#64;validate decorator). This has also been discussed <a class="reference external" href="http://groups.google.com/group/turbogears/browse_frm/thread/74926e779c1da137/f3ad1971f7e5ab2a">on our mailing list</a>.</p>
+<p>While writing your application there are two important rules you should keep in mind
+when working with widgets:</p>
+<div class="section" id="reuse-widgets-instances-inside-your-application">
+<h3>1) Reuse widgets instances inside your application<a class="headerlink" href="#reuse-widgets-instances-inside-your-application" title="Permalink to this headline">¶</a></h3>
+<p>To effectively share the same widget instance across all requests you should
+take care of using <em>only one instance</em> of a given widget inside your application.</p>
+<div class="section" id="do">
+<h4>DO<a class="headerlink" href="#do" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">banana_widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;my.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">banana_widget</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">AnotherController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;another.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">fruit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fruit_widget</span><span class="o">=</span><span class="n">banana_widget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="don-t-do">
+<h4>DON&#8217;T DO<a class="headerlink" href="#don-t-do" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;my.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">widget</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">AnotherController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;another.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">fruit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">fruit_widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">fruit_widget</span><span class="o">=</span><span class="n">fruit_widget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>DON&#8217;T DO<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><pre>&lt;?py from my.widgets import BananaWidget ?&gt;
+
+&lt;div py:content="BananaWidget().display()" /&gt;</pre>
+</div>
+</div>
+</div>
+<div class="section" id="treat-widget-instances-as-immutable-after-creation">
+<h3>2) Treat widget instances as immutable after creation<a class="headerlink" href="#treat-widget-instances-as-immutable-after-creation" title="Permalink to this headline">¶</a></h3>
+<p>Since the same widget instance is used across all requests its instance
+attributes should be immutable so that any thread has a consistent view
+of the instance. In particular, changing widget instance&#8217;s attributes
+inside a request is not threadsafe.</p>
+<div class="section" id="id2">
+<h4>DO<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">BananaWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Widget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="n">foo</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="rather-not">
+<h4>RATHER NOT:<a class="headerlink" href="#rather-not" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">banana_widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+<span class="n">banana_widget</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="s">&quot;bar&quot;</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;my.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">banana_widget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="definitely-not">
+<h4>DEFINITELY NOT<a class="headerlink" href="#definitely-not" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">banana_widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;my.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">banana_widget</span><span class="o">.</span><span class="n">foo</span> <span class="o">=</span> <span class="s">&quot;bar&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">banana_widget</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h4>DEFINITELY NOT<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">BananaWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_params</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Widget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s">&quot;bar&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Whenever you see <tt class="docutils literal"><span class="pre">self.&lt;attribute&gt;</span> <span class="pre">=</span> <span class="pre">&lt;value&gt;</span></tt> in a widget class outside its
+constructor, you know you&#8217;re in trouble. If two requests come in simultaneously
+and both try to render that widget at the same time, the two users might end up
+getting the same value appearing for their widget. Basically, you can&#8217;t put
+<em>any</em> values that need to vary from request to request in self.</p>
+<p>If the same widget instance is being used for every requests and its
+attributes are immutable how the widget can behave differently from request
+to request?</p>
+<ol class="arabic simple">
+<li>Define the widget&#8217;s <em>request-independent</em> knowledge and behavior at construction time.</li>
+<li>Define the widget&#8217;s <em>per-request</em> knowledge and behavior at render time.</li>
+</ol>
+<p>In this sense, a widget is similar to a controller&#8217;s method:
+the widget appearance is defined by its template attribute, and at render time
+you send to its template (via its <tt class="docutils literal"><span class="pre">display()</span></tt> or <tt class="docutils literal"><span class="pre">render()</span></tt> methods)
+a set of parameters that are request-dependent and that the widget manipulates
+(using its <tt class="docutils literal"><span class="pre">adjust_value()</span></tt> and <tt class="docutils literal"><span class="pre">update_params()</span></tt> methods) to behave correctly.</p>
+<p>Although the widget/controller&#8217;s method parallelism can help to understand
+how a widget works, it&#8217;s important to remember that unlike a controller&#8217;s
+method a widget is not responsible for directly responding to a given request.
+This job is always left to the controller method that interacts with the widget
+and sends request-dependent parameters to it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">banana_widget</span> <span class="o">=</span> <span class="n">BananaWidget</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">html</span><span class="o">=</span><span class="s">&quot;my.template&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;Brasilian banana&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">banana_widget</span><span class="o">=</span><span class="n">banana_widget</span><span class="p">,</span> <span class="n">banana_value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>inside <tt class="docutils literal"><span class="pre">my/template.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;div py:content="banana_widget.display(value=banana_value)" /&gt;</pre>
+</div>
+<div class="section" id="references">
+<h5>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h5>
+<p>This document also takes inspiration from some discussions that took place in our mailing list
+(for example <a class="reference external" href="http://groups.google.com/group/turbogears/tree/browse_frm/thread/74926e779c1da137/0189b1618e09b9c4">Bob Ippolito&#8217;s reply</a>
+that clearly tells why you shouldn&#8217;t change an instance attribute inside a request,
+and <a class="reference external" href="http://https://groups.google.com/group/turbogears/tree/browse_frm/thread/84db7a65b100c0f0/1073c7b5eedef90e">some replies by Kevin</a>)
+and <a class="reference external" href="http://http://ootips.org/stateless-distributed-objects.html">elsewhere</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

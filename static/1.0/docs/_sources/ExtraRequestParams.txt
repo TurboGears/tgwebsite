@@ -1,0 +1,76 @@
+Handling Extra Request Parameters With CherryPy Filters
+=======================================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+The Problem
+-----------
+
+You want to add the same GET/POST parameter to **each** controller method, but
+using ``**kwargs`` on every controller method is cumbersome. Imagine you want
+to be able to change the "skin" variable on any controller.
+
+
+The Solution
+------------
+
+Using CherryPy filters you can intercept the request before it reaches the
+controller method and add/remove parameters from the request object. You could
+then, for example, put this request into the session.
+
+So the way to go about this is:
+
+#. Write a CherryPy filter.
+#. Append the filter to a controller.
+
+   .. important::
+       Note that the filter will be also active for all sub-controllers inside
+       that controller!
+
+
+The Filter Class
+----------------
+
+::
+
+    from cherrypy.filters.basefilter import BaseFilter
+    from cherrypy import request, session
+
+    class SkinFilter(BaseFilter):
+        """If the request parameters contain a "skin" variable, pull it out of
+        the request and put it into the session.
+
+        """
+        __detected_skin = None
+
+        def before_request_body(self):
+            try:
+                if "skin" in request.params:
+                    skin = request.params.pop("skin")
+                    if skin is not None:
+                        self.__detected_skin = skin
+            except Exception, exc:
+               log.warning("Error in %s:\n%s", self.__class__.__name__, exc)
+
+        def before_main(self):
+            if self.__detected_skin is not None:
+                session['skin'] = self.__detected_skin
+
+
+Adding the Filter to the Controller
+-----------------------------------
+
+Top activate the filter, you have to add it to the ``_cp_filters`` attribute
+(a list) of your root controller::
+
+    class Root(controllers.RootController):
+
+        # attach cherrypy filters
+        _cp_filters = [SkinFilter()]
+
+       ...
+
+The filter can also be attached to non-root controllers so only parts of your
+application are affected by the filter.

@@ -1,0 +1,287 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deploying TurboGears on LightTPD &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Proxying through IIS" href="BehindIIS.html" />
+    <link rel="prev" title="Deployment behind Apache 2 + mod_python" href="ModPython.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="BehindIIS.html" title="Proxying through IIS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ModPython.html" title="Deployment behind Apache 2 + mod_python"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deploying TurboGears on LightTPD</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#the-simple-proxy-method">The Simple Proxy Method</a></li>
+<li><a class="reference internal" href="#the-scgi-wsgi-method">The SCGI/WSGI Method</a><ul>
+<li><a class="reference internal" href="#flup-it-up">Flup it up</a></li>
+<li><a class="reference internal" href="#scgi-python-module">SCGI Python Module</a></li>
+<li><a class="reference internal" href="#a-turbogears-wsgi-server">A TurboGears WSGI Server</a></li>
+<li><a class="reference internal" href="#lighttpd-scgi-configuration">Lighttpd SCGI Configuration</a></li>
+<li><a class="reference internal" href="#some-caveats">Some Caveats</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ModPython.html"
+                        title="previous chapter">Deployment behind Apache 2 + mod_python</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="BehindIIS.html"
+                        title="next chapter">Proxying through IIS</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="deploying-turbogears-on-lighttpd">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Deploying TurboGears on LightTPD</a><a class="headerlink" href="#deploying-turbogears-on-lighttpd" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deploying-turbogears-on-lighttpd" id="id1">Deploying TurboGears on LightTPD</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#the-simple-proxy-method" id="id3">The Simple Proxy Method</a></li>
+<li><a class="reference internal" href="#the-scgi-wsgi-method" id="id4">The SCGI/WSGI Method</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This document intended to convey a best-practice method of deploying TurboGears
+using the <a class="reference external" href="http://www.lighttpd.net/">LightTPD</a> web server. It assumes you have an instance of LightTP
+already installed.</p>
+<p>There are currently two ways to deploy TurboGears with LightTPD:</p>
+<ol class="arabic simple">
+<li>The Simple Proxy Method</li>
+<li>The SCGI/WSGI Method</li>
+</ol>
+</div>
+<div class="section" id="the-simple-proxy-method">
+<h2><a class="toc-backref" href="#id3">The Simple Proxy Method</a><a class="headerlink" href="#the-simple-proxy-method" title="Permalink to this headline">¶</a></h2>
+<p>This method is a very simple way to deploy TurboGears applications. The idea is
+that LightTPD serves all static files and forwards all dynamic requests to a
+TurboGears application running on its own port. For example, let&#8217;s say we have
+a TurboGears instance for the domain <tt class="docutils literal"><span class="pre">example.org</span></tt> running on port 1082, in
+the <tt class="docutils literal"><span class="pre">/var/www/example.org/</span></tt> directory.</p>
+<p>Our <tt class="docutils literal"><span class="pre">lighttpd.conf</span></tt> would include the following:</p>
+<div class="highlight-python"><pre>server.modules = (
+  # We *must* enable mod_proxy
+  "mod_proxy"
+
+  # Other modules follow
+)
+
+$HTTP["host"] == "example.org" {
+   server.document-root = "/var/www/example.org/"
+
+   $HTTP["url"] !~ "^/static" {
+      proxy.server = (
+                      "" =&gt; (
+                              (
+                               "host" =&gt; "127.0.0.1",
+                               "port" =&gt; 1082
+                              )
+                            )
+                      )
+   }
+}</pre>
+</div>
+<p>Start the TurboGears application and (re)start LightTPD. You&#8217;re good to go!</p>
+</div>
+<div class="section" id="the-scgi-wsgi-method">
+<h2><a class="toc-backref" href="#id4">The SCGI/WSGI Method</a><a class="headerlink" href="#the-scgi-wsgi-method" title="Permalink to this headline">¶</a></h2>
+<p>(This article was originally written by <a class="reference external" href="http://cleverdevil.org/">Jonathan LaCour</a>, used with permission.)</p>
+<p>Though the following method is more complex to set up, there have been reports
+about better performance and stability using it. Read the comments for <a class="reference external" href="http://trac.turbogears.org/ticket/193">ticket 193</a>
+on the TurboGears Trac, if you want to know more.</p>
+<div class="section" id="flup-it-up">
+<h3>Flup it up<a class="headerlink" href="#flup-it-up" title="Permalink to this headline">¶</a></h3>
+<p>The first step is to download and install <a class="reference external" href="http://www.saddi.com/software/flup/">the flup WSGI toolkit</a> by Allan Saddi.
+This is a great little toolkit that provides a host of WSGI servers for FastCGI,
+SCGI, and more in both threaded and pre-forking versions.</p>
+<div class="highlight-python"><pre>sudo easy_install flup</pre>
+</div>
+</div>
+<div class="section" id="scgi-python-module">
+<h3>SCGI Python Module<a class="headerlink" href="#scgi-python-module" title="Permalink to this headline">¶</a></h3>
+<p>Next, we install the <tt class="docutils literal"><span class="pre">scgi</span></tt> module:</p>
+<div class="highlight-python"><pre>sudo easy_install scgi</pre>
+</div>
+<p>The <a class="reference external" href="http://www.mems-exchange.org/software/scgi/">SCGI protocol</a> is &#8220;a replacement for the Common Gateway Interface (CGI)
+protocol. It is a standard for applications to interface with HTTP servers.
+It is similar to FastCGI but is designed to be easier to implement.&#8221;</p>
+</div>
+<div class="section" id="a-turbogears-wsgi-server">
+<h3>A TurboGears WSGI Server<a class="headerlink" href="#a-turbogears-wsgi-server" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have all the various parts and pieces that we need, we create a script
+that will run the TurboGears application as a WSGI server over the SCGI protocol.
+Thanks to Flup, this is pretty easy. In the TurboGears project, a script exists
+to start the application with the built-in CherryPy web server. Copy it to a new
+file called <tt class="docutils literal"><span class="pre">ProjectName-start-scgi.py</span></tt> and replace its contents with the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">pkg_resources</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s">&quot;TurboGears&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">cherrypy._cpwsgi</span>       <span class="kn">import</span> <span class="n">wsgiApp</span>
+<span class="kn">from</span> <span class="nn">flup.server.scgi_fork</span>  <span class="kn">import</span> <span class="n">WSGIServer</span>
+<span class="kn">from</span> <span class="nn">os.path</span>                <span class="kn">import</span> <span class="o">*</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">elif</span> <span class="n">exists</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">),</span> <span class="s">&quot;setup.py&quot;</span><span class="p">)):</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="s">&quot;dev.cfg&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">cherrypy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="s">&quot;prod.cfg&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">ProjectName.controllers</span> <span class="kn">import</span> <span class="n">Root</span>
+
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Root</span><span class="p">()</span>
+
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">initOnly</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">serverClass</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="n">WSGIServer</span><span class="p">(</span><span class="n">application</span><span class="o">=</span><span class="n">wsgiApp</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Important</strong>: <em>Don&#8217;t forget to modify the script to reflect your settings!</em></p>
+<p>Executing this script will start your application as a WSGI application that
+listens on port 4000 for SCGI requests.</p>
+</div>
+<div class="section" id="lighttpd-scgi-configuration">
+<h3>Lighttpd SCGI Configuration<a class="headerlink" href="#lighttpd-scgi-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Now we configure <tt class="docutils literal"><span class="pre">lighttpd.conf</span></tt> to listen to the SCGI server we just created,
+in a similar manner to the Proxy Method described above:</p>
+<div class="highlight-python"><pre>server.modules = ( "mod_access",
+                   "mod_scgi",
+                   "mod_accesslog",
+                   "mod_rewrite",
+                   "mod_staticfile" )
+
+server.document-root = "/full/path/to/your/application"
+server.errorlog      = "/tmp/lighttpd.error.log"
+
+# Use the following line for Mac OS X and FreeBSD
+server.event-handler = "freebsd-kqueue"
+
+accesslog.filename   = "/tmp/access.log"
+
+$HTTP["url"] !~ "^/static/" {
+  scgi.server = (
+                  "/" =&gt;
+                    ( "127.0.0.1" =&gt;
+                      (
+                        "host" =&gt; "127.0.0.1",
+                        "port" =&gt; 4000,
+                        "check-local" =&gt; "disable"
+                      )
+                    )
+                )
+}</pre>
+</div>
+<p>Run the new startup script, then (re)start LightTPD with this configuration file,
+and you should be good to go! To really feel the speed, make sure that you pass
+<tt class="docutils literal"><span class="pre">prod.cfg</span></tt> to the startup script so that your TurboGears application is running
+under &#8220;production mode&#8221; which turns off a host of debugging features.</p>
+</div>
+<div class="section" id="some-caveats">
+<h3>Some Caveats<a class="headerlink" href="#some-caveats" title="Permalink to this headline">¶</a></h3>
+<p>The SCGI method described here uses the pre-forking WSGI server from flup. If you
+are using in-memory sessions, or the standard visit model, this seems to go insane.
+It is recommended that you use the database or on-disk session backend. You could
+also try using the threaded WSGI server in flup, but your mileage may vary.</p>
+<p>Fo use the threaded version of the WSGI server, change this line from the startup script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flup.server.scgi_fork</span>  <span class="kn">import</span> <span class="n">WSGIServer</span>
+</pre></div>
+</div>
+<p>to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">flup.server.scgi</span> <span class="kn">import</span> <span class="n">WSGIServer</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

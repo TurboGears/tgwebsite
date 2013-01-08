@@ -1,0 +1,267 @@
+.. index:: Kid, templates
+
+A Brief Introduction to Kid Templates
+=====================================
+
+**Kid** is a template languages that provides inline code capability within a markup
+document similar to PHP or ASP, except the language used here is (of course) Python.
+Code can exist in a separate block like::
+
+ <?python
+ x = 5
+ y = 7
+ ?>
+
+But although Kid understands Python code in the template, placing lots of code there
+is not, when building with TurboGears, the objective. In this integrated approach,
+most code is kept separate in the controller classes (MVC paradigm) and inline Python
+is used mainly to deliver and place data coming from the controller. This is done
+with :ref:`substitution <Substitution>` strings and with :ref:`attributes <Attributes>`
+to specific markup elements.
+
+Kid templates can be any XML document with namespaced attributes that tells Kid
+how to process the template. In practice, your templates will be XHTML
+documents that will be processed and transformed into valid HTML documents.
+
+This example (straight from Kid's documentation) shows what Kid is like::
+
+      <?python
+      title = "A Kid Test Document"
+      fruits = ["apple", "orange", "kiwi", "M&M"]
+      from platform import system
+      ?>
+      <html xmlns:py="http://purl.org/kid/ns#">
+        <head>
+          <title py:content="title">This is replaced.</title>
+        </head>
+        <body>
+          <p>These are some of my favorite fruits:</p>
+          <ul>
+            <li py:for="fruit in fruits">
+              I like ${fruit}s
+            </li>
+          </ul>
+          <p py:if="system() == 'Linux'">
+            Good for you!
+          </p>
+        </body>
+      </html>
+
+One of the great things about Kid is that everything you know about Python
+applies here. Kid templates get compiled to Python code this makes it easier to
+predict how things will behave. For example, that ``py:for="fruit in fruits"``
+behaves just like ``for fruit in fruits:`` in Python.
+
+
+.. _Substitution:
+
+Substitution
+------------
+
+The variables that you defined in the `dictionary`_ returned by your controller
+are all available for use anywhere in your template.  So
+if the dictionary contained an item {'food':'apple'}, your template would replace
+any occurrences of ${food} with the text ``apple``.
+
+When variables are dropped into your template, Kid will automatically escape
+them, e.g. you need not worry about values that contain ``<&%?`` etc.
+
+The time when you **do** need to care is when you actually
+have XHTML itself to drop into place. When you do, wrap your substitution value in
+`XML()`_. For example, say we had an XHTML fragment called ``header``. You could
+write ``${XML(header)}``, and the header would be dropped in *without* being escaped.
+
+.. _dictionary: Controller
+.. _XML(): http://www.kid-templating.org/language.html#xml-function
+
+
+.. _Attributes:
+
+Attributes
+----------
+
+This approach adds Python logic as an attribute of an element, effecting specifically
+that element::
+
+ <h2 py:if="x<7">
+ Title
+ </h2>
+
+The ``if`` statement above has the effect of controlling the appearance of the ``h2``
+element. If ``x`` is not less than seven, then this heading element, neither the content
+``Title`` nor the ``<h2>`` tag, will appear in the rendering of this page.
+
+In any of the ``py`` attributes, unlike substitutions, just use the variable
+from the dictionary as you
+would a local variable in Python, i.e. without the ``${}``.
+
+
+The Attribute Language
+~~~~~~~~~~~~~~~~~~~~~~
+
+Primary source references on the template language syntax can be found in:
+
+* `The Kid Documentation`_
+
+The following is a minimal overview.
+
+.. _The Kid Documentation: http://kid.lesscode.org/language.html#attribute-language
+
+
+py:for
+``````
+
+One of the great things about Kid is that everything you know about Python
+applies here. For example, ``py:for="fruit in fruits"``
+behaves just like ``for fruit in fruits:`` in Python. In this case, ``fruits``
+is expected to be some kind of iterable object passed in via the dictionary.
+Whatever element the ``py:for`` attribute is attached to will be rendered,
+along with all of its contained sub-elements, again for every item in the loop.
+
+For example, if ``fruits`` contains ['pears', 'apples', 'oranges'], and
+the ``py`` attribute above is added to an ``<li>`` element::
+
+ <ul>
+ <li py:for="fruit in fruits"><b>${fruit}</b></li>
+ </ul>
+
+will be rendered as::
+
+ <ul>
+ <li><b>pears</b></li>
+ <li><b>apples</b></li>
+ <li><b>oranges</b></li>
+ </ul>
+
+
+py:content & py:replace
+```````````````````````
+
+These two attribute functions are almost the same. They replace the content and all
+sub-elements of the element they tag. The distinction between the two is:
+
+``py:content``
+   Replaces all content within the element, including any sub-elements::
+
+    <h1 py:content="Hello"><i>Good Morning</i></h1>
+
+   is rendered as::
+
+    <h1>Hello</h1>
+
+``py:replace``
+   Also replaces the element tag itself::
+
+    <h1 py:replace="Hello"><i>Good Morning</i></h1>
+
+   is rendered as simply::
+
+    Hello
+
+
+py:strip
+````````
+Nearly opposite of ``py:if``. If evaluated ``True``, *removes* the element, but
+unlike ``py:if``, leaves sub-elements intact.
+
+
+py:match
+````````
+
+Behaves somewhat like a macro substitution. Elements tagged with the ``py:match``
+attribute are not output when they are encountered. Instead, the entire document
+is compared to the match condition and when a match is found, the element that was
+matched, along with all of its decendents, is replaced by the match element and
+all of its decendants.
+
+
+.. _Namespace:
+
+Namespace
+---------
+
+Kid templates can be any XML document with namespaced attributes that tells Kid
+how to process the template. In practice, your templates will be XHTML
+documents that will be processed and transformed into valid HTML documents.
+
+Don't forget to define the ``py`` XML namespace in the ``<html>``
+tag of your template. This is key to having your template understood as valid XML.
+Two common examples:
+
++ ``xmlns:py="http://genshi.edgewall.org/"``
++ ``xmlns:py="http://purl.org/kid/ns#"``
+
+
+Important Tips on Kid Templates
+-------------------------------
+
+- Don't forget to define the ``py`` XML namespace (as is done in the ``<html>``
+  tag above). That's key to having your template understood as valid XML.
+- ``${}`` lets you easily substitute in a Python expression anywhere in your
+  document.
+- ``$foo`` lets you substitute in the variable foo, but it's not as safe as
+  using the {} because it can be harder to detect where you substitution is
+  supposed to end
+- This is XHTML, so you need to close *all* of your tags. For example, in HTML
+  you'd write ``<br>`` to put a line break. In XHTML, you need to write
+  ``<br/>``. This will get converted properly to HTML on the way out.
+- Since the template needs to be valid XML, if you have JavaScript with < and
+  >, you should enclose the script in a ``<![CDATA[`` *javascript here* ``]]>``
+  section.
+- Though the input is required to be valid XML, Kid can produce output in
+  different markup formats, e.g. normal HTML instead of XHTML. Kid will
+  automatically generate the proper DOCTYPE. The output can also be formatted
+  in various ways. This influences how whitespace is dealt with, but can also
+  be used to automatically generate typographic quotes and the like. This all
+  can be configured with the ``kid.outputformat`` setting.
+- There are some reserved words in Kid templates: ``write``, ``serializer``,
+  ``serialize``, ``generate``, ``initialize``, ``pull``, ``content``,
+  ``transform``. If you use those words as template variable names, you'll
+  likely get an error.
+
+
+Replacing Kid with Genshi
+-------------------------
+
+TurboGears 1.0 chose Kid as the default template language, but now there is a successor
+project called **Genshi**. The Genshi template language is very similar, but contrary to
+Kid, Genshi does not compile templates to Python. Nevertheless, it has better performance.
+
+Therefore, Genshi will replace Kid as the TurboGears default template language, beginning
+with TG 1.1. But Genshi can be already be used now in TG 1.0 as described below. Everything
+else described within this document is the same for both :doc:`Genshi </GenshiTemplating>` and Kid.
+
+Note however, that TG 1.0 and TG 1.1 widgets were written for and only work in *Kid*.
+This has been improved in TG 1.5 where Genshi is also the default templating language
+for TG widgets. Anyway, Kid can still be used in TG 1.5 for both page and widget templates.
+
+Primary source references on the Genshi template language syntax can be found in:
+
+* `The Genshi Documentation`_
+
+To add Genshi support to TG 1.0::
+
+ easy_install Genshi
+
+Then either specify Genshi templates on a per case basis in your expose statements::
+
+ @expose(template="genshi:example.templates.foobar")
+
+or, set up your project to use Genshi by default by using the Genshi quickstart-template [#]_::
+
+ easy_install gsquickstart
+ tg-admin quickstart -t tggenshi
+
+You can still serve pages with Kid by adding a prefix in the expose statement::
+
+ @expose(template="kid:example.templates.foobar")
+
+.. _The Genshi Documentation: http://genshi.edgewall.org/wiki/Documentation/xml-templates.html
+
+.. [#] :doc:`Quickstart templates </ExtendingQuickstart>` should not be confused with
+       :doc:`@expose </ExposeDecorator>` templates described in this document.
+       @expose templates use Kid, Genshi, or other XML templating language,
+       while a quickstart template is specific to the TG quickstart command.
+
+:doc:`Previous: Using Your Model <UseDatabase>` :
+:doc:`Next: Template Variables You Get for Free </StdVars>`

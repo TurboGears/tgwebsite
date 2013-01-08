@@ -1,0 +1,162 @@
+Dive Into Widgets
+=================
+
+This document shows how you can explore the features of the widgets framework
+from an interactive Python interpreter session. For a structured overview about
+widgets, reference documentation and more tutorials, please read the :doc:`Widgets
+Overview <Overview>`.
+
+The examples below demonstrate some important widgets properties, like
+``template``, ``name``, ``value``, ``params`` and subclassing. It is suggested
+that you fire up an interactive session yourself and try to reproduce the
+examples exactly as given. When you have succeeded with that, try supplying
+different arguments and values to the widgets constructor or the ``render``
+method or change the widget template and see how that changes the output of
+``widget.render()``. You can use the built-in ``help`` function of the
+interpreter to find out the signature of the different methods.
+
+Next, define your own ``turbogears.widgets.Widget`` subclass and add some custom
+parameters to be passed to the widget template by setting class attributes and
+adding them to the ``params`` class attribute. Again, try what happens if you
+give different values for those parameters or if you leave them out.
+**Have fun!**
+
+
+Diving in
+---------
+
+Now, let's dive in::
+
+    >>> from turbogears.widgets import Widget
+    >>> class HelloWorldWidget(Widget):
+    ...     template = """
+    ...     <div>Hello World!</div>
+    ...     """
+    ...
+    >>> hello = HelloWorldWidget()
+    >>> hello.render()
+    '<DIV>Hello World!</DIV>'
+
+``render()`` will fail if no templating engine has been loaded yet. To load the
+default templating engine, excute::
+
+    >>> from turbogears.view import load_engines
+    >>> load_engines()
+
+Back to the widget classes::
+
+    >>> class FooBarWidget(Widget):
+    ...     template = """
+    ...     <ul>
+    ...             <li>my name is ${name}</li>
+    ...             <li>my value is ${value}</li>
+    ...     </ul>
+    ...     """
+    ...
+    >>> foobar = FooBarWidget(name="foobar")
+    >>> print foobar.render()
+    '<UL>
+                    <LI>my name is foobar</LI>
+                    <LI>my value is </LI>
+            </UL>'
+    >>> print foobar.render(value=5)
+    '<UL>
+                    <LI>my name is foobar</LI>
+                    <LI>my value is 5</LI>
+            </UL>'
+    >>> foobar = FooBarWidget(name="foobar", default=10)
+    >>> print foobar.render()
+    '<UL>
+                    <LI>my name is foobar</LI>
+                    <LI>my value is 10</LI>
+            </UL>'
+    >>> print foobar.render(value=60)
+    '<UL>
+                    <LI>my name is foobar</LI>
+                    <LI>my value is 60</LI>
+            </UL>'
+    >>> print foobar.render(value=60, name="wrong")
+    '<UL>
+                    <LI>my name is foobar</LI>
+                    <LI>my value is 60</LI>
+            </UL>'
+    >>> class ParamsWidget(Widget):
+    ...     template = """
+    ...     <div>my attitude is ${attitude}</div>
+    ...     """
+    ...     params = ["attitude"]
+    ...     attitude = "high"
+    ...
+    >>> param = ParamsWidget()
+    >>> param.render()
+    '<DIV>my attitude is high</DIV>'
+    >>> param = ParamsWidget(attitude="medium")
+    >>> param.render()
+    '<DIV>my attitude is medium</DIV>'
+    >>> param.render(attitude="low")
+    '<DIV>my attitude is low</DIV>'
+    >>> param.params
+    ['attitude']
+    >>> param.attitude
+    'medium'
+    >>> ParamsWidget.attitude
+    'high'
+    >>> class AnotherParamsWidget(ParamsWidget):
+    ...     template = """
+    ...     <div>my attitude is ${attitude} and my favourite language is ${language}</div>
+    ...     """
+    ...     params = ["language"]
+    ...     language = "python"
+    ...
+    >>> another = AnotherParamsWidget()
+    >>> another.render()
+    '<DIV>my attitude is high and my favourite language is python</DIV>'
+    >>> AnotherParamsWidget.params
+    ['attitude', 'language']
+    >>> another.params
+    ['attitude', 'language']
+    >>> AnotherParamsWidget.attitude
+    'high'
+    >>> another.attitude
+    'high'
+    >>> AnotherParamsWidget.language
+    'python'
+    >>> another.language
+    'python'
+    >>> another = AnotherParamsWidget(attitude="nice", language="java")
+    >>> AnotherParamsWidget.attitude
+    'high'
+    >>> another.attitude
+    'nice'
+    >>> AnotherParamsWidget.language
+    'python'
+    >>> another.language
+    'java'
+    >>> another.render()
+    '<DIV>my attitude is nice and my favourite language is java</DIV>'
+    >>> another.render(attitude="very low", language="ruby")
+    '<DIV>my attitude is very low and my favourite language is ruby</DIV>'
+
+
+Dive into ToscaWidgets
+----------------------
+
+All the examples should work with the ToscaWidgets_ package as well.
+After you have installed ToscWidgets with
+
+::
+
+    $ easy_install ToscaWidgets
+
+just replace the initial import with
+
+::
+
+    >>> from tw.api import Widget
+
+
+You don't need to import ``turbogears`` or load a template engine when using
+ToscaWidgets.
+
+
+.. _toscawidgets: http://www.toscawidgets.org/

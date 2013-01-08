@@ -1,0 +1,24 @@
+Updating the tg2 index
+--This line, and those below, will be ignored--
+
+AM   simplejson-2.0.4-py2.5-linux-i686.egg
+AM   simplejson-2.0.3.tar.gz
+AM   simplejson-2.0.4-py2.5-linux-x86_64.egg
+AM   simplejson-2.0.4-py2.4-win32.egg
+D    WebError-0.8.tar.gz
+D    Pylons-0.9.7rc1.tar.gz
+AM   simplejson-2.0.4-py2.4-linux-i686.egg
+D    tg.devtools-1.9.7a3.tar.gz
+AM   Beaker-1.0.3.tar.gz
+AM   simplejson-2.0.4-py2.5-win32.egg
+D    Beaker-0.9.5.tar.gz
+AM   pysqlite-2.4.1.win32-py2.4.exe
+AM   pysqlite-2.4.1.win32-py2.5.exe
+D    TurboGears2-1.9.7a3dev-r5035.tar.gz
+AM   simplejson-2.0.4-py2.4-macosx-10.3-fat.egg
+AM   simplejson-2.0.4-py2.5-macosx-10.3-fat.egg
+AM   simplejson-2.0.4-py2.4-linux-x86_64.egg
+AM   simplejson-2.0.4-py2.5-macosx-10.3-i386.egg
+AM   WebError-0.9.tar.gz
+AM   TurboGears2-1.9.7a4.tar.gz
+AM   Pylons-0.9.7rc2.tar.gz

@@ -1,0 +1,336 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Widgets Overview &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Guide to the TurboGears Widgets Documentation" href="index.html" />
+    <link rel="next" title="Simple Widget Form Tutorial" href="SimpleForm.html" />
+    <link rel="prev" title="Guide to the TurboGears Widgets Documentation" href="index.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SimpleForm.html" title="Simple Widget Form Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Guide to the TurboGears Widgets Documentation"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Guide to the TurboGears Widgets Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Widgets Overview</a><ul>
+<li><a class="reference internal" href="#simple-widget-example">Simple Widget Example</a></li>
+<li><a class="reference internal" href="#setting-widget-parameters">Setting Widget Parameters</a><ul>
+<li><a class="reference internal" href="#thread-safety-for-widgets">Thread Safety for Widgets</a></li>
+<li><a class="reference internal" href="#general-widget-attributes">General Widget Attributes</a></li>
+<li><a class="reference internal" href="#setting-parameters-with-callables">Setting Parameters with Callables</a></li>
+<li><a class="reference internal" href="#template-replacement">Template Replacement</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#going-beyond-simple-widgets">Going Beyond Simple Widgets</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Guide to the TurboGears Widgets Documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SimpleForm.html"
+                        title="next chapter">Simple Widget Form Tutorial</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="widgets-overview">
+<h1><a class="toc-backref" href="#id1">Widgets Overview</a><a class="headerlink" href="#widgets-overview" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#widgets-overview" id="id1">Widgets Overview</a><ul>
+<li><a class="reference internal" href="#simple-widget-example" id="id2">Simple Widget Example</a></li>
+<li><a class="reference internal" href="#setting-widget-parameters" id="id3">Setting Widget Parameters</a></li>
+<li><a class="reference internal" href="#going-beyond-simple-widgets" id="id4">Going Beyond Simple Widgets</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>TurboGears widgets are a simple, yet powerful way to bundle up bits of
+HTML, CSS and Javascript into reusable components.   As a consumer of
+Widgets, you can use them to create everything from HTML Forms, to Ajax
+based AutoComplete fields.</p>
+<p>Perhaps the most common use of Widgets right now is as a convenient way
+to include form controls in a web page.</p>
+<p>In this case, each field is a widget, and the whole form is also a widget
+- a compound widget that contains the field widgets. In a simple case the
+fields would use standard form controls such as text boxes.</p>
+<p>Widget based forms have a number of useful properties.  For example, you
+can set up the individual form fields to know their validation rules, and
+when you do this, the Form Widget knows how to display any validation
+error messages next to the appropriate field if a user enters bad data.</p>
+<p>The beauty of widgets is that replacing standard text entry fieds with
+&#8220;fancy&#8221; alternatives is easy for the programmer. For example, you could
+use a CalendarDatePicker instead of a TextField, to get a pop-up calendar.</p>
+<div class="section" id="simple-widget-example">
+<h2><a class="toc-backref" href="#id2">Simple Widget Example</a><a class="headerlink" href="#simple-widget-example" title="Permalink to this headline">¶</a></h2>
+<p>Widgets are python objects, which need to be instantiated and setup
+before you can use them in your view code.  The standard way to do this
+is to instantiate a widget in your controllers.py file.   We&#8217;ll start
+with a simple TextField widget that isn&#8217;t very exciting, but is easy to
+understand in full.  Don&#8217;t worry, though this isn&#8217;t all there is.  We&#8217;ve
+got fancy javascript heavy widgets that do animation, lightboxes, and
+autocomplete fields.</p>
+<p>To instantiate a TextField widget instance in your controller you&#8217;ll need
+to import turbogears.widgets into your controller, and create a widget
+instance like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fname</span> <span class="o">=</span> <span class="n">TextField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s">&quot;Enter your First Name&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create a widget instance, which you can pass into a template
+and display using it&#8217;s <tt class="docutils literal"><span class="pre">.display()</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fname</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will automatically add a text input field to your page.  The
+rendered HTML should look something like this:</p>
+<div class="highlight-python"><pre>&lt;INPUT ID="widget" TYPE="text" NAME="widget"
+ VALUE="Enter your First Name" CLASS="textfield"&gt;</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">VALUE</span></tt> is picked up from the default value we provided at
+instantiation time.</p>
+<p>But you can override the default at render time, just by passing a value
+to the display method, either as the first parameter, or explicitly as
+the named parameter value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fname</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="s">&quot;mark&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Which would create the following HTML:</p>
+<div class="highlight-python"><pre>&lt;INPUT ID="widget" TYPE="text"
+ VALUE="mark" CLASS="textfield"&gt;'</pre>
+</div>
+<p>As we mentioned, you can also assign values with the <tt class="docutils literal"><span class="pre">value</span></tt> parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">fname</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;karl&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-widget-parameters">
+<h2><a class="toc-backref" href="#id3">Setting Widget Parameters</a><a class="headerlink" href="#setting-widget-parameters" title="Permalink to this headline">¶</a></h2>
+<p>So, now that we&#8217;ve seen a couple of simple examples how we create a
+widget and assign parameters, it&#8217;s probably worth taking a deeper look at
+how all of this works.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Widgets instances are <strong>stateless,</strong>
+which means that they should not try to have any <em>request specific</em>
+data stored in a widget.</p>
+</div>
+<div class="section" id="thread-safety-for-widgets">
+<h3>Thread Safety for Widgets<a class="headerlink" href="#thread-safety-for-widgets" title="Permalink to this headline">¶</a></h3>
+<p>Because widgets are stateless, it&#8217;s really only safe to assign widget
+attributes at instantiation time or display time.</p>
+<p>In fact, to keep you from shooting yourself in the foot, if you try to
+modify an attribute after the widget is instantiate, (other than as a
+<tt class="docutils literal"><span class="pre">.display()</span></tt> option) you&#8217;ll receive a friendly warning message
+reminding you that widgets are display logic, not a place to store data.</p>
+</div>
+<div class="section" id="general-widget-attributes">
+<h3>General Widget Attributes<a class="headerlink" href="#general-widget-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s take a look at the various attributes all widgets have, and what
+they do.</p>
+<ul class="simple">
+<li><strong>name</strong> &#8211; Defines the name of the widget, for form fields this is
+used  to define the field&#8217;s <cite>name</cite> attribute.</li>
+<li><strong>template</strong> &#8211; Defines the Kid template which is used to render the
+HTML for this widget.   In a way this is very standard TurboGears
+stuff. The template can either be a string that is valid Kid Syntax or
+it can be a reference to a .kid template file.  We&#8217;ll look at
+overriding the template in a bit more depth in the next section, since
+this is a very common requirement for widget users.</li>
+<li><strong>default</strong> &#8211; As seen above, this just defines the default <tt class="docutils literal"><span class="pre">value</span></tt>
+of the widget.</li>
+<li><strong>params</strong> &#8211;  Widgets <tt class="docutils literal"><span class="pre">params</span></tt> are where any special characteristics
+of the widget would be defined.   Widgets also have some special
+functions to make sure that any given widget instance has all the
+<tt class="docutils literal"><span class="pre">params</span></tt>, not just from the widget itself, but also from all of its
+bases.</li>
+<li><strong>attrs</strong> &#8211; You can pass a dictionary to this attribute to set
+arbitrary HTML attributes of the generated HTML element.</li>
+</ul>
+<p>In addition several widgets have other attributes which you can setup.
+For example, form widgets have an <tt class="docutils literal"><span class="pre">action</span></tt> attribute which defines what
+URL the form will send it&#8217;s HTTP Post to for processing. Another common
+example is the select field widget which has an <tt class="docutils literal"><span class="pre">options</span></tt> parameter
+which takes a list of tuples which define the value returned by the drop
+down list and the name that should be displayed in the list.</p>
+<p>We will be documenting the complete list of attributes for each of the
+built in widgets on the <a class="reference internal" href="List.html"><em>WidgetList</em></a> page.</p>
+</div>
+<div class="section" id="setting-parameters-with-callables">
+<h3>Setting Parameters with Callables<a class="headerlink" href="#setting-parameters-with-callables" title="Permalink to this headline">¶</a></h3>
+<p>But for now, let&#8217;s just use the <tt class="docutils literal"><span class="pre">options</span></tt> attribute of the SelectField
+widget as an example of the final way that you can pass information to
+widget attributes.  You can define a callable (generally a function, but
+any callable will do) which returns the data needed by the widget, and
+pass that callable into the widget at instantiation time.  The widget
+will automatically call that function whenever you display the widget on
+a page.</p>
+<p>So, you might want to create a function which gets data from the
+database, and creates an options list for display in some widget.  In
+this case, we&#8217;re just going to define list statically in our function,
+but extending this to do interesting stuff is just standard python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">get_options</span><span class="p">():</span>
+     <span class="n">options</span><span class="o">=</span> <span class="p">[]</span>
+     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+         <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="s">&quot;item </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">item</span><span class="p">))</span>
+     <span class="k">return</span> <span class="n">options</span>
+
+<span class="n">my_selector</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">SingleSelectField</span><span class="p">(</span><span class="n">options</span><span class="o">=</span><span class="n">get_options</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This creates a new my_selector widget with a bunch of selection options.
+When you do a my_selector.display on your page template you&#8217;ll get code
+like this:</p>
+<div class="highlight-python"><pre>&lt;SELECT CLASS="singleselectfield" NAME="widget" ID="widget"&gt;
+     &lt;OPTION VALUE="0"&gt;item 0&lt;/OPTION&gt;
+     &lt;OPTION VALUE="1"&gt;item 1&lt;/OPTION&gt;
+     &lt;OPTION VALUE="2"&gt;item 2&lt;/OPTION&gt;
+     ...
+     &lt;OPTION VALUE="10"&gt;item 10&lt;/OPTION&gt;
+ &lt;/SELECT&gt;</pre>
+</div>
+<p>In addition to the above attributes, there are a couple more, which
+define CSS and JavaScript files that need to be imported into your
+template for the widget itself to work properly.   These can only be
+setup at instantiation time (at render time, it&#8217;s too late to inject them
+into the form itself).</p>
+<ul class="simple">
+<li><strong>css</strong> &#8211; This is where you can define any CSSlinks that are required
+to properly display your widget.  For more details on how all this
+works, see <a class="reference internal" href="WithJSandCSS.html"><em>Using JavaScript and CSS with widgets</em></a>.</li>
+<li><strong>javascript</strong> &#8211; This is where you define any JSLink and JSSource for
+the widget.</li>
+</ul>
+<p>If you&#8217;re just using existing widgets, you shouldn&#8217;t ever have to worry
+about <tt class="docutils literal"><span class="pre">css</span></tt> and <tt class="docutils literal"><span class="pre">javascript</span></tt> attributes, they should already be set
+up for you.</p>
+</div>
+<div class="section" id="template-replacement">
+<h3>Template Replacement<a class="headerlink" href="#template-replacement" title="Permalink to this headline">¶</a></h3>
+<p>On of the most common cusomization needs when working with Widgets is
+some slight modification of the widget template code.   The Turbogears
+Toolbox includes a WidgetBrowser application which, among other things,
+shows you all the template code for every widget you have installed.   If
+for instance you need to edit the TextField widget&#8217;s template to include
+a &lt;br /&gt; tag after the field you could easily do that by grabbing the
+existing template code from the widget browser and modifying it.</p>
+<p>Once you&#8217;ve got a modified template, you can either create a new file
+(say widgettemplate.kid) and saving it in your templates directory, or
+you can pass it to the template attribute as a string.</p>
+<p>So if you&#8217;ve saved your new template as widgettemplate.kid you can
+instantiate a new text field widget that uses this new template with code
+like this:</p>
+<div class="highlight-python"><pre>field1 = widgets.TextField(name='Field one",
+                           template='yourapp.templates.widgettemplate')</pre>
+</div>
+<p>Or if you don&#8217;t want to bother with the extra template file for short
+templates, you can just pass your template definition to the template
+attribute as a string like this:</p>
+<div class="highlight-python"><pre>field1 = widgets.TextField(name='Field one",
+                           template="""
+ &lt;input xmlns:py="http://purl.org/kid/ns#"
+     type="text"
+     name="${name}"
+     class="${field_class}"
+     id="${field_id}"
+     value="${value}"
+     py:attrs="attrs"
+ /&gt;
+ &lt;br /&gt;
+ """)</pre>
+</div>
+</div>
+</div>
+<div class="section" id="going-beyond-simple-widgets">
+<h2><a class="toc-backref" href="#id4">Going Beyond Simple Widgets</a><a class="headerlink" href="#going-beyond-simple-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Single widgets are pretty simple, and you can use them to create reusable
+view elements pretty easily.</p>
+<p>But there&#8217;s a whole lot more that&#8217;s a available to you if you&#8217;re willing
+to go beyond single widgets, and look at the way that Widget based Form
+handling integrates Form handling tasks, making it easy to reuse the same
+widget to get new data, edit existing data, and handle the display of
+validation errors.</p>
+<p>Your next step in the Widgets Journey is <a class="reference internal" href="SimpleForm.html"><em>creating a Widget-based form</em></a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

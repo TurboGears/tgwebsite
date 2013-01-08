@@ -1,0 +1,28 @@
+.. index:: URLs
+
+Using URLs
+==========
+
+CherryPy makes defining what happens for a given URL quite easy: you just give
+your Python objects the methods you need. In your templates and your code, you
+can just use the URLs based on how you've defined them for CherryPy.
+
+Sometimes, however, the URLs you use are affected by the environment they're
+in. For example, if your whole TurboGears site is running at
+``http://yoursite.com/~yourusername/tg``, you'll need to be sure that absolute
+URLs take that into account.
+
+TurboGears provides a convenient url function to create these URLs. Let's say
+you want to redirect to ``/view?id=5&page=10``. You can call
+``turbogears.url("/view", id=5, page=10)`` to get a URL that takes into account
+the top of the site. How does it know where the top of the site is? The
+``server.webpath`` configuration variable will tell it where the top of your
+site is.
+
+The url function is also available in templates as ``tg.url``.
+
+Future versions of TurboGears will also make it easy to wire up multiple TurboGears applications in one site. The ``url`` function already understands the concept of an application root and will generate absolute URLs relative to the application root.
+
+**Note**: in order for the ``url`` function to recognize the application root,
+our root must extend from ``turbogears.controllers.RootController``. It is also recommended
+that your controllers extend from ``turbogears.controllers.Controller``.

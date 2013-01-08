@@ -1,0 +1,191 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>20 Minute Wiki Page 5 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="The 20 Minutes Wiki" href="Page1.html" />
+    <link rel="next" title="20 Minute Wiki Page 6" href="Page6.html" />
+    <link rel="prev" title="20 Minute Wiki Page 4" href="Page4.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Page6.html" title="20 Minute Wiki Page 6"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Page4.html" title="20 Minute Wiki Page 4"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Page1.html" accesskey="U">The 20 Minutes Wiki</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">20 Minute Wiki Page 5</a><ul>
+<li><a class="reference internal" href="#adding-a-page-list">Adding a page list</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Page4.html"
+                        title="previous chapter">20 Minute Wiki Page 4</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Page6.html"
+                        title="next chapter">20 Minute Wiki Page 6</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="minute-wiki-page-5">
+<h1>20 Minute Wiki Page 5<a class="headerlink" href="#minute-wiki-page-5" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="adding-a-page-list">
+<h2>Adding a page list<a class="headerlink" href="#adding-a-page-list" title="Permalink to this headline">¶</a></h2>
+<p>Our wiki is functional, but we&#8217;ll add a few more features to make it nicer and
+because we have more TurboGears features to demo.</p>
+<p>Most wikis have a feature that lets you view an index of the pages. We can add
+that to our wiki easily, so let&#8217;s do it!</p>
+<p>We&#8217;ll start with a new template, <tt class="docutils literal"><span class="pre">pagelist.kid</span></tt>. Again, we&#8217;ll start with <tt class="docutils literal"><span class="pre">page.kid</span></tt> so that we don&#8217;t have to write the boilerplate.</p>
+<div class="highlight-python"><pre>cd wiki20/templates
+cp page.kid pagelist.kid
+cd ../..</pre>
+</div>
+<p>Our <tt class="docutils literal"><span class="pre">pagelist.kid</span></tt> will look like:</p>
+<pre class="literal-block">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;<a class="reference external" href="http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd</a>&quot;&gt;
+&lt;html xmlns=&quot;<a class="reference external" href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&quot;
+      xmlns:py=&quot;http://purl.org/kid/ns#&quot;
+      py:extends=&quot;'master.kid'&quot;&gt;
+&lt;head&gt;
+&lt;meta content=&quot;text/html; charset=utf-8&quot; http-equiv=&quot;Content-Type&quot;
+      py:replace=&quot;''&quot;/&gt;
+&lt;title&gt; <strong>Page Listing</strong> - 20 Minute Wiki&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;main_content&quot;&gt;
+        <strong>&lt;h1&gt;All Of Your Pages&lt;/h1&gt;</strong>
+        <strong>&lt;ul&gt;</strong>
+            <strong>&lt;li py:for=&quot;pagename in pages&quot;&gt;</strong>
+            <strong>&lt;a href=&quot;${tg.url('/' + pagename)}&quot;</strong>
+                <strong>py:content=&quot;pagename&quot;&gt;Page Name Here.&lt;/a&gt;</strong>
+            <strong>&lt;/li&gt;</strong>
+        <strong>&lt;/ul&gt;</strong>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Feel free to add &#8220;<a class="reference external" href="http://en.wikipedia.org/wiki/All_your_base_are_belong_to_us">Are Belong To Us</a>&#8221; to the heading, if you feel you must.</p>
+<p>Just as with the other templates, you can open <tt class="docutils literal"><span class="pre">pagelist.kid</span></tt> directly in a
+browser. You can see that we&#8217;ll get a bulleted list of links to the pages. This
+is our first use of <tt class="docutils literal"><span class="pre">py:for</span></tt>, and you can see it&#8217;s straightforward. The li
+element will be repeated for each iteration of the for loop, and the for loop
+is specified just as it is in Python.</p>
+<p>Let&#8217;s add a link at the bottom of the <tt class="docutils literal"><span class="pre">master.kid</span></tt> template so that we&#8217;ll get our page listing link at the bottom of every page:</p>
+<pre class="literal-block">
+&lt;!-- End of main_content --&gt;
+&lt;div id=&quot;footer&quot;&gt;
+<strong>&lt;p&gt;View the &lt;a href=&quot;${tg.url('/pagelist')}&quot;&gt;complete list of pages.&lt;/a&gt;&lt;/p&gt;</strong>
+&lt;img src=&quot;/static/images/under_the_hood_blue.png&quot; /&gt;
+  &lt;p&gt;TurboGears is a open source front-to-back web development
+    framework written in Python&lt;/p&gt;
+  &lt;p&gt;Copyright &amp;copy; 2006 Kevin Dangoor&lt;/p&gt;
+&lt;/div&gt;
+</pre>
+<p>Since we&#8217;re referring to a <tt class="docutils literal"><span class="pre">pagelist</span></tt> method, we should probably create it:</p>
+<pre class="literal-block">
+&#64;expose(template=&quot;wiki20.templates.edit&quot;)
+def edit(self, pagename):
+    page = Page.byPagename(pagename)
+    return dict(page=page)
+
+<strong>&#64;expose(&quot;wiki20.templates.pagelist&quot;)</strong>
+<strong>def pagelist(self):</strong>
+    <strong>pages = [page.pagename for page in Page.select(orderBy=Page.q.pagename)]</strong>
+    <strong>return dict(pages=pages)</strong>
+
+&#64;expose()
+def save(self, pagename, data, submit):
+    #...
+</pre>
+<p>Now you see that this page listing is just a contrived reason to introduce you to SQLObject&#8217;s querying facilities (tricky aren&#8217;t we). This particular use of <tt class="docutils literal"><span class="pre">Page.select()</span></tt> isn&#8217;t particularly fancy. We&#8217;re selecting all of the Page objects from the database, and ordering them by pagename. <tt class="docutils literal"><span class="pre">Page.select</span></tt> returns an iterable <tt class="docutils literal"><span class="pre">SelectResults</span></tt> object, which allows us to snag the titles via list comprehension.</p>
+<p>The <tt class="docutils literal"><span class="pre">Page.q.pagename</span></tt> represents the <tt class="docutils literal"><span class="pre">pagename</span></tt> field of the underlying
+table rather than any particlar <tt class="docutils literal"><span class="pre">Page</span></tt> object&#8217;s pagename attributes. The
+underlying fields are only used doing queries, so the <tt class="docutils literal"><span class="pre">.q</span></tt> is a mnemonic for
+&#8220;query&#8221;.</p>
+<p>The <tt class="docutils literal"><span class="pre">select</span></tt> method attached to your object classes provides methods to
+construct almost any query you&#8217;d like to run on them. Check the <a class="reference external" href="http://sqlobject.org/SQLObject.html#selecting-multiple-objects">sqlobject
+docs</a> for more details.</p>
+<p>You can see your pagelist by clicking the link at the bottom of your pages or going directly to <a class="reference external" href="http://localhost:8080/pagelist">http://localhost:8080/pagelist</a>.</p>
+<p><a class="reference internal" href="Page4.html"><em>Go back to Page 4</em></a> | <a class="reference internal" href="Page6.html"><em>Continue on to page 6</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

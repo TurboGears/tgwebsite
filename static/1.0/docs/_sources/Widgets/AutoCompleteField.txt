@@ -1,0 +1,136 @@
+.. index:: AutoCompleteField
+
+The AutoCompleteField Widget
+============================
+
+.. contents:
+    :depth: 2
+
+
+Check out `Google Suggest <http://labs.google.com/suggest/>`_ to see an example of input completion in action. The AutoCompleteField widgets allows you to very easily create a similar effect in TurboGears. See also the `AutoCompleteField <http://trac.turbogears.org/turbogears/browser/trunk/turbogears/widgets/big_widgets.py#L83>`_ and the `AutoCompleteDesc <http://trac.turbogears.org/turbogears/browser/trunk/turbogears/widgets/big_widgets.py#L83>`_ classes source code.
+
+
+How to use AutoCompleteField
+----------------------------
+
+#. Create a new probject (`tg-admin quickstart`) and name it autocomplete, or reuse an old one. We will mount the code required for the `AutoCompleteField` one level below your `RootController`.
+
+#. If you created a new project, remove the methods `login` and `logout` from your `controllers.py` file. We won't use them for this tutorial.
+
+#. Import the AutoCompleteField widget to `controllers.py` with:
+
+    ::
+
+        from turbogears.widgets import AutoCompleteField
+
+#. Create a controller-class with an index-method that shows an empty page (for now):
+
+    ::
+
+        class TestInputCompletion(controllers.Controller):
+            @turbogears.expose(template="autocomplete.templates.complete")
+            def index(self):
+                return dict()
+
+#. Mount an instance of your new controller:
+
+    ::
+
+        class Root(controllers.RootController):
+            testcompletion = TestInputCompletion()
+
+#. Create the `complete.kid` file necessary to display the empty page by copying `welcome.kid` to `complete.kid` and clearing out everything inside the body. The file should look like this:
+
+    ::
+
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML#.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+            py:extends="'master.kid'">
+
+        <head>
+            <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+            <title>Testing the AutoCompleteField widget!</title>
+        </head>
+
+        <body>
+        </body>
+        </html>
+
+#. You can check if everything works OK so far by going to `localhost:8080/testcompletion`. You should see a blank page.
+
+#. Add an `__init__` method to `TestInputCompletion` where you instantiate the AutoCompleteField widget:
+
+    ::
+
+        def __init__(self):
+            self.acfield = AutoCompleteField()
+
+#. Modify complete.kid and add ``${acfield.display()}`` inside the `<body>` tag. That code automagically inserts all the HTML and Javascript code necessary to display the AutoCompleteField if we pass it an instance. It should look something like:
+
+    ::
+
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML#.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+            py:extends="'master.kid'">
+
+        <head>
+            <meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/>
+            <title>Testing the AutoCompleteField widget!</title>
+        </head>
+
+        <body>
+            ${acfield.display()}
+        </body>
+        </html>
+
+#. Then change the `index` method so that the template gets passed our widget:
+
+    ::
+
+        @turbogears.expose(template="autocomplete.templates.complete")
+        def index(self):
+            return dict(acfield = self.acfield)
+
+#. You should now be able to see a lonely input-box if you go to http://localhost:8080/testcompletion. However, it doesn't complete any input yet.
+
+#. The next step is to give the AutoCompleteField some data with which it can complete input. In a real program the data probably comes from a database, but here we just add the strings to the TestInputCompletion class that we wan't completed:
+
+    ::
+
+        class TestInputCompletion(controllers.Controller):
+            countries = ["Abkhazia", "Afghanistan", "Akrotiri", "Ã…land", "Albania",
+                         "Algeria",  "American Samoa", "Andorra", "Angola", "Anguilla",
+                         "Antigua and Barbuda", "Argentina", "Armenia", "Aruba",
+                         "Ascension Island", "Austria", "Azerbaijan"]
+
+#. Add a `search` method to TestInputCompletion:
+
+    ::
+
+        @turbogears.expose(format = "json")
+        def search(self, input):
+            input = input.lower()
+            matches = [country for country in self.countries \
+                       if country.lower().startswith(input)]
+            return dict(matches = matches)
+
+   This method takes as it's input a search string and returns a page in JSON format with all the countries it thinks matches the search string. You can test it out by going to: http://localhost:8080/testcompletion/search?input=a.
+
+#. Change how the AutoCompleteField is constructed so that it can interact witht the search method:
+
+   ::
+
+        def __init__(self):
+            self.acfield = AutoCompleteField(search_controller = "search",
+                                             search_param = "input",
+                                             result_name = "matches")
+
+
+That's it! You should now have an awesome AutoCompleteField that completes on countrynames. If not, state your problem here and the tutorial will be updated.
+
+
+Possible additions
+------------------
+
+* It would be cool if the AutoCompleteField updated a FastDataGrid in realtime. Only those rows that matches the input in the AutoCompleteField should be shown.
+* Instead of hardcoding which strings that should be completed, the strings should come from a database.

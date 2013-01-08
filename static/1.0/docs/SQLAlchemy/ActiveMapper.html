@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ActiveMapper Crash Course &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="SQLAlchemy" href="index.html" />
+    <link rel="next" title="Getting Started with Elixir" href="../GettingStarted/UseElixir.html" />
+    <link rel="prev" title="SQLAlchemy" href="index.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../GettingStarted/UseElixir.html" title="Getting Started with Elixir"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="SQLAlchemy"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="../AlternativeComponents.html" >Alternative Components</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">SQLAlchemy</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">ActiveMapper Crash Course</a><ul>
+<li><a class="reference internal" href="#one-to-one-one-to-many"><tt class="docutils literal"><span class="pre">one_to_one</span></tt> &amp; <tt class="docutils literal"><span class="pre">one_to_many</span></tt></a></li>
+<li><a class="reference internal" href="#many-to-many"><tt class="docutils literal"><span class="pre">many_to_many</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">SQLAlchemy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../GettingStarted/UseElixir.html"
+                        title="next chapter">Getting Started with Elixir</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="activemapper-crash-course">
+<span id="index-0"></span><h1>ActiveMapper Crash Course<a class="headerlink" href="#activemapper-crash-course" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://cleverdevil.org/computing/35/">ActiveMapper</a> is a SQLAlchemy extension developed by <a class="reference external" href="http://cleverdevil.org/">Jonathan LaCour</a> which
+provides a declarative interface to the SQLAlchemy mapper. This page
+briefly covers all the extension&#8217;s features but doesn&#8217;t explain them in depth.</p>
+<p>Note that ActiveMapper has been discontinued in favor of the <a class="reference external" href="http://elixir.ematia.de/">Elixir</a> declarative
+layer, and recent versions of SQLAlchemy come with built-in <a class="reference external" href="http://www.sqlalchemy.org/docs/orm/extensions/declarative.html">declarative</a> support.</p>
+<p>We&#8217;ll start off with an example:</p>
+<div class="highlight-python"><pre>class Demo(ActiveMapper):
+    class mapping:
+        ## Showing options here with default values
+        #__table__ = "demo"      # class_name.lower()
+        #__autoload__ = False"
+        demo_key = column(Unicode(16), primary_key=True)
+        name = column(Unicode(20))
+        active_count = column(Integer,colname="ACTIVECOUNT")
+
+        # a foreign key reference, note the string is the db column
+        group = column(Integer, foreign_key="group.group_id", index=True)
+
+        ## This also works
+        #group = column(Integer, foreign_key= ForeignKey("group.group_id"),
+                        index= True)
+
+        #one_to_one and one_to_many only need the target AM class
+        demo_link = one_to_one("DemoLink", backref="linked_demo")
+
+        # A many_to_many mapping requires the target ActiveMapper class and
+        #  an intermediate table.
+        user = many_to_many("User",demo_user)</pre>
+</div>
+<p>Similar to SQLObject, you declare a class that inherits from <tt class="docutils literal"><span class="pre">ActiveMapper</span></tt>.
+Unlike SQLObject, you must declare an internal class called <tt class="docutils literal"><span class="pre">mapping</span></tt>, which
+will contain all your column definitions. <tt class="docutils literal"><span class="pre">column()</span></tt> itself is a straight
+wrapper around the standard SQLAlchemy <tt class="docutils literal"><span class="pre">Column</span></tt> and takes the same arguments.</p>
+<p>The relationship columns, <tt class="docutils literal"><span class="pre">one_to_one</span></tt> and <tt class="docutils literal"><span class="pre">many_to_many</span></tt> are a bit more
+restrictive, they take (only) the following arguments:</p>
+<div class="section" id="one-to-one-one-to-many">
+<h2><tt class="docutils literal"><span class="pre">one_to_one</span></tt> &amp; <tt class="docutils literal"><span class="pre">one_to_many</span></tt><a class="headerlink" href="#one-to-one-one-to-many" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>classname</dt>
+<dd>The linked table, either as a reference or as a string containing the class
+name. <em>Required.</em></dd>
+<dt>colname</dt>
+<dd>The database name of the constraint, default is <tt class="docutils literal"><span class="pre">None</span></tt></dd>
+<dt>backref</dt>
+<dd>Same as standard SA, if present it creates a reference back to the current
+object with the same name as the passed string, default is <tt class="docutils literal"><span class="pre">None</span></tt></dd>
+<dt>private</dt>
+<dd>If <tt class="docutils literal"><span class="pre">True</span></tt>, cascades deletion, default <tt class="docutils literal"><span class="pre">False</span></tt></dd>
+<dt>lazy</dt>
+<dd>Delays loading the referenced object untill it is accessed, default <tt class="docutils literal"><span class="pre">True</span></tt></dd>
+<dt>order_by</dt>
+<dd>Same as standard SA</dd>
+</dl>
+</div>
+<div class="section" id="many-to-many">
+<h2><tt class="docutils literal"><span class="pre">many_to_many</span></tt><a class="headerlink" href="#many-to-many" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>classname</dt>
+<dd>The linked table, either as a reference or as a string containing the class
+name. <em>Required.</em></dd>
+<dt>secondary</dt>
+<dd>A reference to the intermediate table. <em>Required.</em></dd>
+<dt>backref</dt>
+<dd>Same as standard SA, if present it creates a reference back to the current
+object with the same name as the passed string, default is <tt class="docutils literal"><span class="pre">None</span></tt></dd>
+<dt>lazy</dt>
+<dd>Delays loading the referenced object untill it is accessed, default <tt class="docutils literal"><span class="pre">True</span></tt></dd>
+<dt>order_by</dt>
+<dd>Same as standard SA</dd>
+</dl>
+<p>Most of this is demonstrated by the Identity classes created during quickstart.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

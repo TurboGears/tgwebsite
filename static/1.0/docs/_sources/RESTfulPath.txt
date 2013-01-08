@@ -1,0 +1,56 @@
+.. index:: REST
+
+RESTful URLs with TurboGears
+============================
+
+One idea behind a RESTful API is to make use of URLs like
+``http://mysite/id/verb``, where ``id`` is a database identifier
+and ``verb`` is an action to take, like "show".
+
+So, examples can be::
+
+    http://mysite/testpage/show
+    http://mysite/testpage/edit
+
+To help you create such an API, you can define the following mixin class::
+
+    class content:
+
+        @turbogears.expose()
+        def default(self, *vpath, **params):
+            if len(vpath) == 1:
+                identifier = vpath[0]
+                action = self.show
+            elif len(vpath) == 2:
+                identifier, verb = vpath
+                verb = verb.replace('.', '_')
+                action = getattr(self, verb, None)
+                if not action:
+                    raise cherrypy.NotFound
+                if not action.exposed:
+                    raise cherrypy.NotFound
+            else:
+                raise cherrypy.NotFound
+            items = self.query(identifier)
+            if items.count() == 0:
+                raise cherrypy.NotFound
+            else:
+                return action(items[0], **params)
+
+Using this class, you can implement your restful API as follows::
+
+    class Root(controllers.RootController, content):
+
+        @turbogears.expose(template='myapp.templates.show_thing')
+        def show(self, thing):
+            return dict(text=thing.text)
+
+        @turbogears.expose(template='myapp.templates.edit_form')
+        def edit(self, thing):
+            return dict(text=thing.text)
+
+        def query(self, name):
+            return model.something.byName(name=name)
+
+See http://www.xfront.com/REST-Web-Services.html for information
+on why RESTful urls are useful.

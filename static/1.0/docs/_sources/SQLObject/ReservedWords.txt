@@ -1,0 +1,30 @@
+Avoiding SQL reserved words in the model definition
+===================================================
+
+When naming classes or column attributes in your model, using names that are reserved words
+in SQL, such as "Group" or "Order", will cause an SQL syntax error during table creation.
+
+Reserved words that commonly cause errors:
+
+* Order
+* Group
+* Option
+* User
+* password column in firebird.
+
+To avoid this, you can either use a prefix (e.g. the TurboGears identity framework used to
+call the user class ``TG_User``), or else use an "sqlmeta" inner class in your model object::
+
+    class Group(SQLObject):
+        class sqlmeta:
+            table=app_group
+
+This way, your model object's name can still be (for example) "Group", but the table name SQLObject uses will be "app_group".
+
+More information:
+
+* `Mailing list: <http://groups.google.com/group/turbogears/browse_thread/thread/0f6ff19c6e933bef/c7ea323bb006cc08>`_ do NOT use Group or Order as SQLObject classes
+
+* `SQLObject sqlmeta documentation <http://www.sqlobject.org/SQLObject.html#class-sqlmeta>`_ use sqlmeta's table attribute to override how a table is named
+
+* `MySQL reserved words <http://dev.mysql.com/doc/refman/5.0/en/reserved-words.html>`_

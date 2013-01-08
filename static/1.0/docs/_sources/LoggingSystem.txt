@@ -1,0 +1,312 @@
+.. index:: logging
+
+Understanding the Logging System
+================================
+
+.. contents::
+    :depth: 2
+
+TurboGears uses the Python standard library logger module, which you can read
+about in detail in the `official Python library reference
+<http://docs.python.org/lib/module-logging.html>`_ .
+
+The default Turbogears logging is defined in two places:
+
+* ``dev.cfg`` and ``prod.cfg``
+
+  From your quickstart directory, contains configuration specific to your
+  environment.
+
+* ``<your package>/config/log.cfg``
+
+  Contains configuration for your logging that won't change based on your
+  environment.
+
+Logging specific configuration is marked by the tag ``[logging]`` in both of
+these files.
+
+In addition, there is also the configuration file ``test.cfg``. This takes the
+role of ``dev.cfg``/``prod.cfg`` when you run the unit tests for your project.
+
+Please note the ``<your package>`` used throughout this doc. Remember to
+substitute your app's package name when you try these things out for yourself.
+
+
+Using the logging system
+------------------------
+
+To get the most out of this section, check out the `first page
+<http://docs.python.org/lib/module-logging.html>`_ of the logging module
+documentation.
+
+Two lines in your ``controllers.py`` are all you need to get going. First,
+create a logger::
+
+    log = logging.getLogger("<your package>.controllers")
+
+That is the preferred way to create a logger. The param string is the name of
+your new logger. Although this could be anything you want, it's good practice
+to follow a convention and keep your logs organized from the get go. Here we
+name the logger after the package/module since this is a unique name.
+
+One way to easily set up logger names by package is::
+
+    log = logging.getLogger(__name__)
+
+Next, send some info to our new logger object::
+
+    log.debug("Happy TurboGears Controller Responding For Duty")
+
+Which, as you can read in the official docs, is a log with level 10, the debug
+level of severity. You can probably just ignore the level numbers, unless you
+want to create log levels of your own.
+
+
+Why not just use logging.debug(msg)?
+------------------------------------
+
+Because then you'd be shorting yourself on the power and flexibility of the
+Python logging module.
+
+We want to be able to send our logs to `Multiple Destinations`_, as defined by
+you. So you can later find out if the error is on your side or on the framework
+just by looking at the logs.
+
+You can also send different logs to different places, all without sprinkling
+your app code with needless boilerplate code, thanks to the config files.
+
+In general is a better practice to do it the first way and take full advantage
+of the Python logging module. If not, it's only one extra line of code anyways.
+
+.. _Multiple Destinations:
+    http://docs.python.org/lib/multiple-destinations.html
+
+
+Configure TurboGears .cfg files
+-------------------------------
+
+Logging configuration with TurboGears' ``.cfg`` files is a bit different from
+the "normal" way of creating loggers, either by loggingConfig_ or
+`config files`_.
+
+So let's take a look at the format. This config file is read by *ConfigObj* and
+you can check out the documentation for the `ConfigObj File Format`_ for more
+detail. For our purposes here the only difference from standard
+library ConfigParser_ is the nested tags, which will generate a dictionary of
+the tag name and fill it with whatever's in that nested section.
+
+If you want to explore the goodness of ConfigObj, take a look at the docs,
+especially the part about storing Python types in a config file
+`storing python types in a config file`_, which might clear up what's going on
+in the default log.cfg.
+
+.. note:: Think of ``*()`` as ``%()``, since we can't put ``%()`` into a config
+    file.
+
+    The reason is that ConfigObj module will interpret ``%()`` as something
+    else.
+
+.. _loggingConfig: http://docs.python.org/lib/logging-config-api.html
+.. _config files: http://docs.python.org/lib/logging-config-fileformat.html
+.. _ConfigObj File Format:
+    http://www.voidspace.org.uk/python/configobj.html#the-config-file-format
+.. _ConfigParser: http://docs.python.org/lib/module-ConfigParser.html
+.. _storing python types in a config file:
+    http://www.voidspace.org.uk/python/configobj.html#unrepr-mode
+
+
+Putting it all together
+-----------------------
+
+The tg-admin quickstart command will create 3 loggers for you:
+
+    * ``your_project`` - The one we used at the start of this tutorial, prints
+      ``DEBUG`` messages to stdout
+    * ``allinfo`` - The main logger (note the missing qualname)
+    * ``access`` - Prints ``INFO`` messages to stdout.
+
+Let's take a look at how TurboGears does it! We'll go through file by file.
+
+``dev.cfg``::
+
+    [logging]
+
+    [[loggers]]
+    [[[<your_package>]]]
+    level='DEBUG'
+    qualname='<your package>'
+    handlers=['debug_out']
+
+    [[[allinfo]]]
+    level='INFO'
+    handlers=['debug_out']
+
+    [[[access]]]
+    level='INFO'
+    qualname='turbogears.access'
+    handlers=['access_out']
+    propagate=0
+
+
+Logging config format
+---------------------
+
+In your config files, always start the logging specific stuff with::
+
+    [logging]
+
+like in ``dev/prod.cfg``. They'll all load up into the same dict thanks to
+ConfigObj so in practice defining things in either file is ok.
+
+When all is said and done, you have 3 sections defined somewhere in your config
+files like so::
+
+    [[formatters]]
+    [[handlers]]
+    [[loggers]]
+
+While all three are technically optional, it's recommended you have at least
+the "handlers" and "loggers" sections.
+
+Let's go over these sections and their keys and what they do. Remember that
+these will be read into the dictionary as keyword arguments, so make sure you
+keep them unique:
+
+
+Formatters
+----------
+
+Each subsection within this section should have only one key as per the
+following:
+
+*format*
+
+    The format string which initializes a `Formatter Object`_. Just like in the
+    standard docs, but remember to replace ``%(`` with ``*(`` like we said
+    above.
+
+.. _Formatter Object: http://docs.python.org/lib/node422.html
+
+
+Handlers
+--------
+
+Each subsection within this section is required to have a class key.
+
+*class*
+
+    Should be one of the `Handler Objects`_ or a subclass thereof. If you
+    subclass, you might get some errors from TG since your class is not in
+    ``logging.dict``.
+
+*args*
+
+    Parameters pass to each subclass of Handler and will vary based on which on
+    you pick.
+
+*level*
+
+    Indicates the logging level of this handler and can be any of the default
+    levels ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR`` and ``CRITICAL``.
+    With a patch it can also be a string with a level number (Is this fixed
+    yet?). Defaults to NOTSET.
+
+*formatter*
+
+    Can be the name of any subsection that you defined under the Formatters_
+    section. Defaults to ``%(message)s``.
+
+.. _Handler Objects: http://docs.python.org/lib/node410.html
+.. _formatters: http://trac.turbogears.org/turbogears/wiki/logging#Formatters
+
+
+Loggers
+-------
+
+This is another way to create `Logger Objects`_. You can either define them here or do the calls in your code, it depends on your situation/taste. Code
+accomplishing the same thing follow the descriptions of the parameters.
+
+*qualname*
+
+    Name of the logger
+
+::
+
+    if qualname:
+        log = logging.getLogger(qualname)
+    else:
+        log = logging.getLogger()
+
+*level*
+
+    The level threshold for this logger. Levels less severe than this will be
+    ignored.
+
+::
+
+    log.setLevel(level)
+
+*handlers*
+
+    Equivalent to calling the ``addhandler`` method of `logger objects`_.
+    Useful for sending logs to multiple places.
+
+::
+
+  for handler in handlers:
+      log.addHandlers(handler)
+
+*propagate*
+
+    Same as the ``propagate`` class attribute of `logger objects`_. Sets
+    whether or not log messages are passed to parent loggers. Defaults to 1.
+
+::
+
+    log.propagate=propagate
+
+.. _Logger Objects: http://docs.python.org/lib/node406.html
+
+
+log.cfg::
+
+    [logging]
+    [[formatters]]
+    [[[message_only]]]
+    format='*(message)s'
+
+    [[[full_content]]]
+    format='*(asctime)s *(name)s *(levelname)s *(message)s'
+
+    [[handlers]]
+    [[[debug_out]]]
+    class='StreamHandler'
+    level='DEBUG'
+    args='(sys.stdout,)'
+    formatter='full_content'
+
+    [[[access_out]]]
+    class='StreamHandler'
+    level='INFO'
+    args='(sys.stdout,)'
+    formatter='message_only'
+
+    [[[error_out]]]
+    class='StreamHandler'
+    level='ERROR'
+    args='(sys.stdout,)'
+
+Can you follow it yet? We define 2 formatters named "message_only" and
+"full_content", then we pick 3 handlers which all stream to stdout but with
+different levels and using the two formatters we defined in the same file.
+
+
+Conclusion
+----------
+
+Now that you understand how it works it's time to turn it around and do lots of
+stuff with it. Check out `LoggingConfigurationExamples`_ for more.
+
+.. _LoggingConfigurationExamples:
+    http://trac.turbogears.org/turbogears/wiki/LoggingConfigurationExamples
+

@@ -1,0 +1,91 @@
+How to Use ``tgadmin sql upgrade`` with SQLObject
+=================================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+The :doc:`tg-admin <TgAdmin>` script that is bundled with TurboGears is really helpful, but I had
+a hard time learning how to use it.
+
+These are my notes on how I use ``tg-admin`` to upgrade an existing database.
+
+* I have a production database that uses ``prod.cfg``;
+* I have a development database that uses ``dev.cfg``;
+* Neither databases have a ``sqlobject_db_version`` table initially, because I never
+  payed attention to it yet.
+
+The development database has a bunch of new columns, tables, and indexes that I
+want to add to the production database. For this example, I’ll pretend that all
+I want to do is add an index to a table.
+
+First, I made sure that the dev database matches sqlobject classes::
+
+    tg-admin -c dev.cfg sql status
+
+If those are out of sync, then do whatever you need to do to make sure your
+actual dev database matches your classes. Of course, tg-admin sql status is not
+perfect. For example, it overlooks missing indexes and constraints, at least
+with postgres.
+
+Next, I recorded the state of the development database::
+
+    tg-admin -c dev.cfg sql record --force-db-version=2008-03-21
+
+This will make a new table in the dev database called sqlobject_db_version. I am
+forcing it to have a value of today’s date (March 21st, 2008).
+
+Now I connect to the production database and set a version on it with
+yesterday’s date::
+
+    tg-admin -c prod.cfg sql record --force-db-version=2008-03-20
+
+Now I run this to try to upgrade the production database to match the
+development database::
+
+    tg-admin -c prod.cfg sql upgrade
+
+Of course, that should fail, and I see some error message sort of like this::
+
+    $ tg-admin -c prod.cfg sql upgrade
+    Using database URI postgres://staffknex:staffknex@localhost/staffknex320
+    No way to upgrade from 2008-03-20 to 2008-03-21
+    (you need a 2008-03-20/upgrade_postgres_2008-03-21.sql script)
+
+This is an example of a helpful error message. I need to write a script that
+will explain how to upgrade from yesterday’s version to today’s version.
+
+That script will be really simple::
+
+    BEGIN;
+    CREATE UNIQUE INDEX majestic12 ON ufo_theorists (first_name, last_name);
+    END;
+
+I suggest using ``BEGIN`` and ``END`` so that in case something goes wrong in
+the middle, your transaction will be rolled back automatically.
+
+Now I can run this::
+
+    tg-admin -c prod.cfg sql upgrade
+
+And my production database will be upgraded with the new index.
+
+Now for some complaints:
+
+* Why isn’t this advertised better? This is a really nice feature.
+* You’re supposed to be able to specify the URI on the command-line with the –
+  connection option, but I could never get it to work.
+* I really wish that ``tg-admin sql status`` detected stuff like missing indexes and
+  constraints. I use these things heavily.
+* It would be nice to be able to mix python into the upgrade script, rather than
+  just SQL. For example, I recently dropped a column that had both an employee’s
+  first and last name, and separated this into two columns. I used SQL to make
+  the new columns, then I used python to read data out of the old single column
+  and write it to the two new columns. Then I used SQL again to drop the old
+  column.
+
+Like I said at the beginning, this is a really helpful script and I’m very
+grateful to whoever wrote it.
+
+
+.. _tg-admin: TgAdmin

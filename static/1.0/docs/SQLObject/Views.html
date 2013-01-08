@@ -1,0 +1,194 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Views in SQLObject &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Hibernate vs SqlObject" href="VsHibernate.html" />
+    <link rel="prev" title="Storing and Retrieving Files from a Database" href="StoringAndRetrievingFiles.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="VsHibernate.html" title="Hibernate vs SqlObject"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="StoringAndRetrievingFiles.html" title="Storing and Retrieving Files from a Database"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="StoringAndRetrievingFiles.html"
+                        title="previous chapter">Storing and Retrieving Files from a Database</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="VsHibernate.html"
+                        title="next chapter">Hibernate vs SqlObject</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="views-in-sqlobject">
+<h1><a class="toc-backref" href="#id1">Views in SQLObject</a><a class="headerlink" href="#views-in-sqlobject" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#views-in-sqlobject" id="id1">Views in SQLObject</a></li>
+</ul>
+</div>
+<p>This is not a real example, my use-case for a view had left-joins on 6 tables, not just one, but it&#8217;s a good template to work from. Note that you always have to have an &#8216;id&#8217; column come back, and it has to be a valid primary key for the view, otherwise SQLObjet magic blows up.</p>
+<p>This will only work on databases that support views, obviously. You should be able to put this straight into model.py, modify to actually work with your SQL database, and then do tg-admin sql create. After that, you can treat it like a normal SQLObject table.</p>
+<div class="highlight-python"><pre>class MyView(SQLObject):
+    name_one = StringCol()
+    name_two = StringCol()
+    somebool = BoolCol()
+
+    @classmethod
+    def createTable(cls, ifNotExists=False, createJoinTables=True,
+            createIndexes=True, applyConstraints=True,
+            connection=None):
+    conn = connection or cls._connection
+    if ifNotExists and conn.tableExists(cls.sqlmeta.table):
+        return
+
+    sql, constraints = cls.createTableSQL()
+
+    # Treat the view like a constraint, only create it
+    # after all the other tables have been created.
+    return [sql]
+
+    @classmethod
+    def createTableSQL(cls, createJoinTables=True, createIndexes=True,
+               connection=None):
+    return """CREATE VIEW %s as (
+    SELECT table_one.id as id,
+           table_one.some_name as name_one,
+           table_two.some_name as name_two,
+           SOMEFUNC(table_one.foo + table_two.bar) as somebool
+    FROM
+        table_one
+        LEFT JOIN table_two ON (table_one.foo_id = table_one.id)
+    ) """ % (cls.sqlmeta.table,), []</pre>
+</div>
+<p>This example also doesn&#8217;t cover the case where you don&#8217;t have an ID or you&#8217;d have to fake one. The best solution I&#8217;ve found is concatenating IDs from tables involved and then using this result as the id for the view.</p>
+<div class="highlight-python"><pre>class MyView(SQLObject):
+    class sqlmeta:
+    idType = 'str'
+    idName = 'concatenated_ids'
+
+    name_one = StringCol()
+    name_two = StringCol()
+    somebool = BoolCol()</pre>
+</div>
+<p>For PostgreSQL, creating this should be something like:</p>
+<div class="highlight-python"><pre>CREATE VIEW myView AS
+       SELECT table1.id::text || '.'::text || table2.id::text || '.'::text || table3.id::text as concatenated_ids,
+          table1.col1, table2.col2, table3.col3
+       FROM table1, table2, table3
+       WHERE table1.something  = table2.otherthing AND table1.anotherthing = table3.yetanotherthing;</pre>
+</div>
+<p>Since all tables have an id column that is unique, we grant that the resulting concatenation will also be unique and be the best choice for a complex view.</p>
+<blockquote>
+<div><em>Jorge Godoy</em></div></blockquote>
+<p>We had some trouble with the above method, but we are trying to do something a little different.</p>
+<p>We already have database schema defined and wanted to use the views we already had defined. The view was created by:</p>
+<div class="highlight-python"><pre>CREATE VIEW collection_metrics AS
+    SELECT
+    collection_id             AS id,
+    SUM(duration)             AS duration,
+    SUM(size)                 AS size,
+    COUNT(collection_id)      AS files,
+    COUNT(DISTINCT item_id)   AS items
+    FROM
+    files
+    GROUP BY
+    collection_id
+    ORDER BY
+    collection_id;</pre>
+</div>
+<p>At first I tried this SQLObject:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">collectionMetrics</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+   <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+       <span class="n">fromDatabase</span><span class="o">=</span><span class="bp">True</span>
+</pre></div>
+</div>
+<p>Which would fail because SQLObject couldn&#8217;t find a PRIMARY KEY from the database. The solution is fairly simple, just manually define the columns, and tell SQLObject which table to use.:</p>
+<div class="highlight-python"><pre>class collectionMetrics(SQLObject):
+    duration = FloatCol()
+    size = FloatCol()
+    files = IntCol()
+    items = IntCol()
+    class sqlmeta:
+    table = 'collection_metrics'</pre>
+</div>
+<p>Hope that helps!</p>
+<p>Paul Warren. 2006-03-14</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

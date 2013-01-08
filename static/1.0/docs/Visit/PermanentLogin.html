@@ -1,0 +1,247 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Permanent Login &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Identity Management" href="../Identity/index.html" />
+    <link rel="prev" title="User Tracked Logging" href="UserTrackedLogging.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Identity/index.html" title="Identity Management"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="UserTrackedLogging.html" title="User Tracked Logging"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Permanent Login</a><ul>
+<li><a class="reference internal" href="#creating-a-new-project">Creating a new project</a></li>
+<li><a class="reference internal" href="#updating-the-model">Updating the model</a></li>
+<li><a class="reference internal" href="#updating-the-controller">Updating the controller</a></li>
+<li><a class="reference internal" href="#creating-the-visit-plugin">Creating the Visit plugin</a></li>
+<li><a class="reference internal" href="#populating-the-database">Populating the database</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="UserTrackedLogging.html"
+                        title="previous chapter">User Tracked Logging</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Identity/index.html"
+                        title="next chapter">Identity Management</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="permanent-login">
+<span id="index-0"></span><h1>Permanent Login<a class="headerlink" href="#permanent-login" title="Permalink to this headline">¶</a></h1>
+<p>Many web sites provide some kind of &#8220;remember me&#8221; feature which allows users
+to stay logged in after they closed and reopened browser. Usually, this is
+achieved by setting a permanent cookie, if requested on login.</p>
+<p>TurboGears ships with an extensible identity and visit tracking framework which
+can be used to add such functionality to your application. This page explains
+how to do this in an example TurboGears application.</p>
+<div class="section" id="creating-a-new-project">
+<h2>Creating a new project<a class="headerlink" href="#creating-a-new-project" title="Permalink to this headline">¶</a></h2>
+<p>In order to get started, create a new project named <tt class="docutils literal"><span class="pre">PermLogin</span></tt> with
+Identity and Visit enabled
+(see <a class="reference internal" href="../Identity/GettingStarted.html"><em>Getting Started With Identity</em></a>)
+but don&#8217;t create the tables yet:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart --identity PermLogin</pre>
+</div>
+</div>
+<div class="section" id="updating-the-model">
+<h2>Updating the model<a class="headerlink" href="#updating-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Now you need to customize the model class responsible for representing
+site visit in your application. We will add a new attribute to the
+<tt class="docutils literal"><span class="pre">permlogin.model.Visit</span></tt> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A visit to our site.&quot;&quot;&quot;</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&#39;visit&#39;</span>
+
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                          <span class="n">alternateMethodName</span><span class="o">=</span><span class="s">&#39;by_visit_key&#39;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">expiry</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">()</span>
+
+    <span class="n">permanent</span> <span class="o">=</span> <span class="n">BoolCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span> <span class="c"># new field</span>
+
+    <span class="o">...</span> <span class="c"># keep the rest of the class definition</span>
+</pre></div>
+</div>
+<p>We added the <cite>permanent</cite> boolean column which needs to be explicitly
+set to True if a permanent visit is desired.
+After that the database tables can be created:</p>
+<div class="highlight-python"><pre>$ tg-admin sql create</pre>
+</div>
+</div>
+<div class="section" id="updating-the-controller">
+<h2>Updating the controller<a class="headerlink" href="#updating-the-controller" title="Permalink to this headline">¶</a></h2>
+<p>At this point you need to add some logic for setting the newly added field.
+In our example we will be using the <tt class="docutils literal"><span class="pre">remember_me</span></tt> argument to instruct the
+<tt class="docutils literal"><span class="pre">login</span></tt> controller method that current visit is requested to be permanent:</p>
+<div class="highlight-python"><pre>@expose(template='permlogin.templates.login')
+def login(self, forward_url=None, previous_url=None,
+          remember_me=None, *args, **kw):
+    if (not identity.current.anonymous and identity.was_login_attempted()
+            and not identity.get_identity_errors()):
+        tg_visit = tg.visit.current()
+        if remember_me == 'on' and tg_visit:
+            visit = model.Visit.lookup_visit(tg_visit.key)
+            if visit:
+                visit.permanent = True
+        raise redirect(tg.url(forward_url or previous_url or '/', kw))
+
+     ... # keep the rest of the function definition</pre>
+</div>
+<p>The above snippet assumes that you have added a checkbox input named
+<cite>remember_me</cite> on your login.kid template.</p>
+<p>Next, you need to clear the <tt class="docutils literal"><span class="pre">permanent</span></tt> field on user logout:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">logout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">logout</span><span class="p">()</span>
+    <span class="n">tg_visit</span> <span class="o">=</span> <span class="n">tg</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">current</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">tg_visit</span><span class="p">:</span>
+        <span class="n">visit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Visit</span><span class="o">.</span><span class="n">lookup_visit</span><span class="p">(</span><span class="n">tg_visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">visit</span><span class="p">:</span>
+            <span class="n">visit</span><span class="o">.</span><span class="n">permanent</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">raise</span> <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-the-visit-plugin">
+<h2>Creating the Visit plugin<a class="headerlink" href="#creating-the-visit-plugin" title="Permalink to this headline">¶</a></h2>
+<p>Now you need to create a Visit plugin which will be sending your permanent
+visit cookie. The Visit framework expects plugins to implement the
+<tt class="docutils literal"><span class="pre">record_visit(visit)</span></tt> method. The <tt class="docutils literal"><span class="pre">visit</span></tt> object passed to this method
+is stores the key which can be used to retrieve the persistent visit object
+from the database.</p>
+<p>The plugin module (let&#8217;s call it <tt class="docutils literal"><span class="pre">permlogin.visit</span></tt>) shown bellow sends a
+permanent cookie using the settings from config if the visit is set permanent:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears</span> <span class="kn">as</span> <span class="nn">tg</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span> <span class="kn">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">permlogin</span> <span class="kn">import</span> <span class="n">model</span>
+
+<span class="k">def</span> <span class="nf">load</span><span class="p">():</span>
+    <span class="n">tg</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">enable_visit_plugin</span><span class="p">(</span><span class="n">PermanentLoginPlugin</span><span class="p">())</span>
+
+<span class="k">class</span> <span class="nc">PermanentLoginPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">record_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit</span><span class="p">):</span>
+        <span class="n">model_visit</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Visit</span><span class="o">.</span><span class="n">lookup_visit</span><span class="p">(</span><span class="n">visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;model_visit: </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">model_visit</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">model_visit</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">model_visit</span><span class="o">.</span><span class="n">permanent</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">cookies</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">simple_cookie</span>
+        <span class="n">cookie_name</span> <span class="o">=</span> <span class="n">tg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;visit.cookie.name&#39;</span><span class="p">,</span> <span class="s">&#39;tg-visit&#39;</span><span class="p">)</span>
+        <span class="n">max_age</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tg</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;visit.timeout&#39;</span><span class="p">,</span> <span class="s">&#39;20&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="mi">60</span> <span class="ow">or</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">cookie_name</span> <span class="ow">in</span> <span class="n">cookies</span><span class="p">:</span>
+            <span class="c"># use &#39;expires&#39; because MSIE ignores &#39;max-age&#39;</span>
+            <span class="n">cookies</span><span class="p">[</span><span class="n">cookie_name</span><span class="p">][</span><span class="s">&#39;expires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span>
+                 <span class="s">&#39;%a, </span><span class="si">%d</span><span class="s">-%b-%Y %H:%M:%S GMT&#39;</span><span class="p">,</span>
+                 <span class="n">time</span><span class="o">.</span><span class="n">gmtime</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="n">max_age</span><span class="p">))</span>
+            <span class="c"># &#39;max-age&#39; takes precedence on standard conformant browsers</span>
+            <span class="c"># (this is better because there of no time sync issues here)</span>
+            <span class="n">cookies</span><span class="p">[</span><span class="n">cookie_name</span><span class="p">][</span><span class="s">&#39;max-age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_age</span>
+
+<span class="n">tg</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">call_on_startup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">load</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After you import the permlogin.visit module into your controller,
+the plugin will be loaded on application startup. Optionally, you
+can introduce a special config variable to enable or disable it.</p>
+</div>
+<div class="section" id="populating-the-database">
+<h2>Populating the database<a class="headerlink" href="#populating-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Use <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> to create a new user as explained in
+<a class="reference internal" href="../Identity/GettingStarted.html#setup-users-using-the-shell"><em>Using the Shell</em></a>. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user_name</span><span class="o">=</span><span class="s">&#39;guest&#39;</span><span class="p">,</span>
+<span class="gp">... </span><span class="n">email_address</span><span class="o">=</span><span class="s">&#39;guest@localhost&#39;</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Once this is done, you can start your application and try to login with the
+<tt class="docutils literal"><span class="pre">remember_me</span></tt> checkbox activated. If everything works fine you should see
+the <cite>tg-visit</cite> cookie in your browser with expiration time set (20 minutes by default).</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

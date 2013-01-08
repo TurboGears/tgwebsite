@@ -1,0 +1,50 @@
+.. index:: plugins
+
+TurboGears Plugins
+==================
+
+Starting with 0.9, TurboGears accepts plugins to extend parts of its functionality seamlessly.
+
+* :doc:`Template Engines <TemplatePlugins>` - Add support for additional template engines.
+* :doc:`tg-admin commands <CommandPlugins>` - Add new commands to ``tg-admin``.
+* :doc:`Extending Quickstart <ExtendingQuickstart>` - Extend ``tg-admin quickstart`` to include your own templates.
+
+.. _Template Engines: TemplatePlugins
+.. _tg-admin commands: CommandPlugins
+.. _Extending Quickstart: ExtendingQuickstart
+
+
+How to make your project available on the Cheeseshop
+----------------------------------------------------
+
+Before you can upload your project to the Cheeseshop_, you will need an account. You can create one `on the PyPi registration page. <http://www.python.org/pypi?:action=register_form>`_
+
+After you have created an account, you will need to tell ``setuptools`` your account information for uploading the file. `This tutorial <http://www.python.org/~jeremy/weblog/030924.html>`_ should be enough to get you going.
+
+Now that you have your account configured, you need to register a page for your application. ``setuptools`` can do this for you automatically with the following command::
+
+    python setup.py register
+
+Once you have everything configured, setuptools can upload your .egg automatically. Here is the command you need::
+
+    python setup.py bdist_egg upload
+
+You can also register projects and upload your eggs manually. See the PyPi documentation for details on this. Any eggs you created should be available in the dist/ folder of your project.
+
+.. _cheeseshop: http://cheeseshop.python.org/pypi/
+
+
+Making your project available in the CogBin
+-------------------------------------------
+
+The CogBin_ scans the CheeseShop for updated packages and looks for keywords it recognizes. To make your project available in the CogBin, simply add the appropriate keyword(s) to your ``setup.py`` file:
+
+* Applications:  	``turbogears.app``
+* Widgets:	``turbogears.widgets``
+* Template Plugins: 	``python.templating.engines``
+* Identity Providers: 	``turbogears.identity.provider``
+* tg-admin Commands: 	``turbogears.command``
+
+This goes in the ``keywords`` argument to ``setup()`` in your ``setup.py`` file. If you are using the file provided in a quickstarted project these options should already be listed, just uncomment the ones you need.
+
+.. _cogbin: http://www.turbogears.org/cogbin/

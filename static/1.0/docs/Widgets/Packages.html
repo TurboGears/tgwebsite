@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Widget Packages &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="StatelessWidgets" href="StatelessWidgets.html" />
+    <link rel="prev" title="Dynamic Validation" href="../DynamicValidation.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="StatelessWidgets.html" title="StatelessWidgets"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../DynamicValidation.html" title="Dynamic Validation"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Widget Packages</a><ul>
+<li><a class="reference internal" href="#widget-resources">Widget Resources</a></li>
+<li><a class="reference internal" href="#using-pkg-resources">Using <tt class="docutils literal"><span class="pre">pkg_resources</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../DynamicValidation.html"
+                        title="previous chapter">Dynamic Validation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="StatelessWidgets.html"
+                        title="next chapter">StatelessWidgets</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="widget-packages">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Widget Packages</a><a class="headerlink" href="#widget-packages" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#widget-packages" id="id1">Widget Packages</a><ul>
+<li><a class="reference internal" href="#widget-resources" id="id2">Widget Resources</a></li>
+<li><a class="reference internal" href="#using-pkg-resources" id="id3">Using <tt class="docutils literal"><span class="pre">pkg_resources</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This information mostly comes from Kevin Dangoor&#8217;s devcast at
+<a class="reference external" href="http://www.turbogears.org/videos/">http://www.turbogears.org/videos/</a>.</p>
+</div>
+<div class="section" id="widget-resources">
+<h2><a class="toc-backref" href="#id2">Widget Resources</a><a class="headerlink" href="#widget-resources" title="Permalink to this headline">¶</a></h2>
+<p>Most widgets use resources to control various aspects of themselves. For
+example, in the TurboGears widget library (the files in <a class="reference external" href="http://trac.turbogears.org/browser/branches/1.0/turbogears/widgets">turbogears/widgets/</a>)
+there is a widget named CalendarDatePicker that displays a JavaScript-enhanced
+calendar. The widget uses the following resource files:</p>
+<ul class="simple">
+<li>The CSS file <tt class="docutils literal"><span class="pre">turbogears/widgets/static/calendar/calendar-system.css</span></tt></li>
+<li>The Javascript file <tt class="docutils literal"><span class="pre">turbogears/widgets/static/calendar/calendar.js</span></tt></li>
+<li>The Javascript file <tt class="docutils literal"><span class="pre">turbogears/widgets/static/calendar/calendar-setup.js</span></tt></li>
+<li>Plus some more locale-specific Javascript files located in
+<tt class="docutils literal"><span class="pre">turbogears/widgets/static/calendar/lang</span></tt></li>
+</ul>
+<p>The DataGrid widget uses:</p>
+<ul class="simple">
+<li>The CSS file <tt class="docutils literal"><span class="pre">turbogears/widgets/static/grid.css</span></tt></li>
+<li>The KID template <tt class="docutils literal"><span class="pre">turbogears/widgets/templates/datagrid.kid</span></tt></li>
+</ul>
+<p>When you build your own widgets it is likely that you will also need to use
+resource files. You specify which resource files your widget requires by using
+the attributes <tt class="docutils literal"><span class="pre">css</span></tt>, <tt class="docutils literal"><span class="pre">javascript</span></tt> and <tt class="docutils literal"><span class="pre">template</span></tt> in your widget class.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">CSSLink</span><span class="p">,</span> <span class="n">JSLink</span><span class="p">,</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">mochikit</span>
+
+<span class="k">class</span> <span class="nc">ComboBox</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">css</span> <span class="o">=</span> <span class="n">CSSLink</span><span class="p">(</span><span class="s">&quot;package.name&quot;</span><span class="p">,</span> <span class="s">&quot;combo.css&quot;</span><span class="p">)</span>
+    <span class="n">javascript</span> <span class="o">=</span> <span class="p">[</span><span class="n">mochikit</span><span class="p">,</span> <span class="n">JSLink</span><span class="p">(</span><span class="s">&quot;package.name&quot;</span><span class="p">,</span> <span class="s">&quot;combo.js&quot;</span><span class="p">)]</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;package.name.templates.combo&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-pkg-resources">
+<h2><a class="toc-backref" href="#id3">Using <tt class="docutils literal"><span class="pre">pkg_resources</span></tt></a><a class="headerlink" href="#using-pkg-resources" title="Permalink to this headline">¶</a></h2>
+<p>Note that you do not retrieve resource files using a normal file path, instead
+you use TurboGears packaging system, which is an abstraction on top of a
+regular file system. Its usefulness comes from being able to specify a URL by
+using a package name plus a filename and not have to bother with where exactly
+the file is mounted on your web server. It can also be confusing because the
+file has three &#8220;locations&#8221; - the path on your disk, the mounted path on your
+web server and the name of the package it belongs to.</p>
+<p>In this example, the ComboBox widget requests the three files <tt class="docutils literal"><span class="pre">combo.css</span></tt>,
+<tt class="docutils literal"><span class="pre">combo.js</span></tt> and <tt class="docutils literal"><span class="pre">combo.kid</span></tt>. <tt class="docutils literal"><span class="pre">package.name</span></tt> is the name of the package
+where you have put your resource files. You must first create a package by
+registering it. Say that you have a normal directory tree for your project
+looking like this:</p>
+<div class="highlight-python"><pre>pkgname/
+    static/
+        css/
+        images/
+        javascript/
+    templates/
+    test/
+projname.egg-info</pre>
+</div>
+<p>Lets also say that you want to package the stuff inside the static directory.
+One way to do it would be to make three packages: <tt class="docutils literal"><span class="pre">foobar.css</span></tt> for the
+stylesheets, <tt class="docutils literal"><span class="pre">foobar.javascript</span></tt> for the javascripts and <tt class="docutils literal"><span class="pre">foobar.images</span></tt>
+for the images. You accomplish that by first obtaining a filename for a
+resource and then registering it as a directory. Write this in your
+<tt class="docutils literal"><span class="pre">controllers.py</span></tt> file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+
+<span class="n">pkg_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;static&quot;</span><span class="p">,</span> <span class="s">&quot;javascript&quot;</span><span class="p">))</span>
+<span class="n">register_static_directory</span><span class="p">(</span><span class="s">&quot;foobar.javascript&quot;</span><span class="p">,</span> <span class="n">pkg_path</span><span class="p">)</span>
+<span class="n">pkg_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;static&quot;</span><span class="p">,</span> <span class="s">&quot;css&quot;</span><span class="p">))</span>
+<span class="n">register_static_directory</span><span class="p">(</span><span class="s">&quot;foobar.css&quot;</span><span class="p">,</span> <span class="n">pkg_path</span><span class="p">)</span>
+<span class="n">pkg_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="n">__name__</span><span class="p">,</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;static&quot;</span><span class="p">,</span> <span class="s">&quot;images&quot;</span><span class="p">))</span>
+<span class="n">register_static_directory</span><span class="p">(</span><span class="s">&quot;foobar.images&quot;</span><span class="p">,</span> <span class="n">pkg_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/PkgResources">pkg_resources documentation</a> for more information on how to use
+the <tt class="docutils literal"><span class="pre">pkg_resources</span></tt> module.</p>
+</div>
+<p>Now you can define resource files using your packages:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">l</span> <span class="o">=</span> <span class="n">CSSLink</span><span class="p">(</span><span class="s">&quot;foobar.css&quot;</span><span class="p">,</span> <span class="s">&quot;combo.css&quot;</span><span class="p">)</span>
+<span class="n">js</span> <span class="o">=</span> <span class="n">JSLink</span><span class="p">(</span><span class="s">&quot;foobar.javascript&quot;</span><span class="p">,</span> <span class="s">&quot;foobar.js&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also browse your package by going to the url
+<tt class="docutils literal"><span class="pre">http://localhost:8080/tg_widgets/foobar.javascript/</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">pkg_resources probably also contains heaps more useful functionality and it
+would be good if someone who knows about can write it down here.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

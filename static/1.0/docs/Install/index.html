@@ -1,0 +1,259 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Downloading and Installing TurboGears &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Supported Operating Systems" href="SupportedSystems.html" />
+    <link rel="prev" title="TurboGears 1.0 FAQ" href="../FAQ.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SupportedSystems.html" title="Supported Operating Systems"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../FAQ.html" title="TurboGears 1.0 FAQ"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Downloading and Installing TurboGears</a><ul>
+<li><a class="reference internal" href="#quickstart-instructions">Quickstart Instructions</a></li>
+<li><a class="reference internal" href="#the-standard-way-tgsetup-py">The Standard Way (tgsetup.py)</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#detailed-platform-specific-instructions">Detailed Platform-specific Instructions</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-installation-and-configuration">Database Installation and Configuration</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-are-the-download-files">Where Are the Download Files?</a></li>
+<li><a class="reference internal" href="#specific-version-installation">Specific Version Installation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../FAQ.html"
+                        title="previous chapter">TurboGears 1.0 FAQ</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SupportedSystems.html"
+                        title="next chapter">Supported Operating Systems</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="downloading-and-installing-turbogears">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Downloading and Installing TurboGears</a><a class="headerlink" href="#downloading-and-installing-turbogears" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#downloading-and-installing-turbogears" id="id1">Downloading and Installing TurboGears</a><ul>
+<li><a class="reference internal" href="#quickstart-instructions" id="id2">Quickstart Instructions</a></li>
+<li><a class="reference internal" href="#the-standard-way-tgsetup-py" id="id3">The Standard Way (tgsetup.py)</a></li>
+<li><a class="reference internal" href="#requirements" id="id4">Requirements</a></li>
+<li><a class="reference internal" href="#detailed-platform-specific-instructions" id="id5">Detailed Platform-specific Instructions</a></li>
+<li><a class="reference internal" href="#database-installation-and-configuration" id="id6">Database Installation and Configuration</a></li>
+<li><a class="reference internal" href="#where-are-the-download-files" id="id7">Where Are the Download Files?</a></li>
+<li><a class="reference internal" href="#specific-version-installation" id="id8">Specific Version Installation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="quickstart-instructions">
+<h2><a class="toc-backref" href="#id2">Quickstart Instructions</a><a class="headerlink" href="#quickstart-instructions" title="Permalink to this headline">¶</a></h2>
+<p>Installing the latest stable version of TurboGears 1.0 from scratch is most
+easily achieved with the <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> script.</p>
+</div>
+<div class="section" id="the-standard-way-tgsetup-py">
+<h2><a class="toc-backref" href="#id3">The Standard Way (tgsetup.py)</a><a class="headerlink" href="#the-standard-way-tgsetup-py" title="Permalink to this headline">¶</a></h2>
+<p>There are only two steps necessary to install TurboGears, if you already have Python
+installed. If you don&#8217;t have Python installed on your system (or are not sure about it),
+please refer to the detailed installation instructions in the next section.</p>
+<ol class="arabic">
+<li><p class="first">Download the <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> script.</p>
+</li>
+<li><p class="first">Run the script from the command-line:</p>
+<div class="highlight-python"><pre>$ python tgsetup.py</pre>
+</div>
+</li>
+</ol>
+<p>We strongly suggest that you also refer to the system-specific installation instructions
+for details.</p>
+</div>
+<div class="section" id="requirements">
+<h2><a class="toc-backref" href="#id4">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li>Windows, Mac OS X 10.3/4 or Linux/Unix,
+see also <a class="reference internal" href="SupportedSystems.html"><em>Supported Operating Systems</em></a></li>
+<li>Python &gt;= 2.3.x, &lt; 3.x (naturally, details see below)</li>
+<li>An internet connection (for off-line installation see below)</li>
+<li>About 20-25 MB of disk space, depending on your OS, architecture and filesystem</li>
+<li>On some systems you need a C compiler, to compile Python C-extensions from some
+components that are required by TurboGears. See the detailed instructions for your
+platform for details.</li>
+<li>If you need to compile extensions, you&#8217;ll also need Python header files and libraries.
+If they are not included in your Python installation, they can usually be installed
+with a package called <tt class="docutils literal"><span class="pre">python-dev</span></tt>, <tt class="docutils literal"><span class="pre">python-devel</span></tt> or similar.</li>
+<li>(Recommended) A database system (see below)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The recommended Python version to use with TurboGears 1.0 currently is <strong>2.5.x</strong>,
+but we still support <strong>Python 2.4.x</strong> and (<a class="reference internal" href="Python2.3Support.html"><em>with some restrictions</em></a>)
+<strong>Python 2.3.x</strong>. Python 2.5.x is supported from TurboGears version <strong>1.0.2</strong> onwards and
+Python 2.6.x from 1.0.9 and later.</p>
+<p class="last">TurboGears <strong>does not support</strong> Python 3.x yet.</p>
+</div>
+</div>
+<div class="section" id="detailed-platform-specific-instructions">
+<h2><a class="toc-backref" href="#id5">Detailed Platform-specific Instructions</a><a class="headerlink" href="#detailed-platform-specific-instructions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>There are some detailed installation instructions for different platforms
+and setups, starting with instructions for installing Python to
+platform-specific configuration issues.</p>
+<p>Please choose the instructions that match your setup:</p>
+<ul class="simple">
+<li><a class="reference internal" href="Nix.html"><em>Installation on Unix-like systems</em></a></li>
+<li><a class="reference internal" href="Windows.html"><em>Installation on Windows</em></a></li>
+<li><a class="reference internal" href="Mac.html"><em>Installation on Mac OS X</em></a></li>
+<li><a class="reference internal" href="Debian.html"><em>Installing on Debian</em></a></li>
+<li><a class="reference internal" href="Ubuntu.html"><em>Intalling TurboGears on Ubuntu Linux</em></a></li>
+<li><a class="reference internal" href="FreeBSD.html"><em>Installing TurboGears on FreeBSD</em></a></li>
+<li><a class="reference internal" href="NonRoot.html"><em>Installation Without root Privileges</em></a></li>
+<li><a class="reference internal" href="Offline.html"><em>Installation Without an Internet Connection (off-line Install)</em></a></li>
+<li><a class="reference internal" href="BehindProxy.html"><em>Installing TurboGears on a host behind a proxy</em></a></li>
+<li><a class="reference internal" href="Troubleshooting.html"><em>Installation Troubleshooting</em></a></li>
+<li><a class="reference internal" href="Upgrade.html"><em>Upgrading From an Earlier Version of TurboGears</em></a></li>
+<li><a class="reference internal" href="Beta.html"><em>Downloading and installing a TurboGears beta version</em></a></li>
+<li><a class="reference internal" href="OldVersions.html"><em>Installing Older Versions of TurboGears</em></a></li>
+<li><a class="reference internal" href="FromSubversion.html"><em>Installing from Subversion</em></a></li>
+<li><a class="reference internal" href="Uninstall.html"><em>Uninstalling TurboGears</em></a></li>
+</ul>
+</div>
+<div class="section" id="database-installation-and-configuration">
+<h2><a class="toc-backref" href="#id6">Database Installation and Configuration</a><a class="headerlink" href="#database-installation-and-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>TurboGears is designed to work in conjunction with an object-relational mapper
+such as <a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a> or <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a>,
+so TurboGears can use all the databases supported by these ORMs.
+If you have one of the supported DBAPI implementations in
+<a class="reference internal" href="../Database/index.html"><em>Database Options</em></a>, you should be settled.</p>
+<p>If you need to choose a database option, SQLite is an easy-to-use database to get
+started with, which works with plain files or in-memory databases. If you are
+using Python 2.5, SQLite is supported out of the box and you don&#8217;t need to install pysqlite.</p>
+<p>Here we list installation and configuration instructions for the most common databases:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../Database/SQLite.html"><em>SQLite</em></a></li>
+<li><a class="reference internal" href="../Database/MySQL.html"><em>MySQL</em></a></li>
+<li><a class="reference internal" href="../Database/PostgreSQL.html"><em>PostgreSQL</em></a></li>
+<li><a class="reference internal" href="../Database/Firebird.html"><em>Firebird</em></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="where-are-the-download-files">
+<h2><a class="toc-backref" href="#id7">Where Are the Download Files?</a><a class="headerlink" href="#where-are-the-download-files" title="Permalink to this headline">¶</a></h2>
+<p>Generally, downloads are done through the easy_install-based <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a>
+script.  There is a <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">list of files</a> available if you need to do something
+manually.</p>
+</div>
+<div class="section" id="specific-version-installation">
+<h2><a class="toc-backref" href="#id8">Specific Version Installation</a><a class="headerlink" href="#specific-version-installation" title="Permalink to this headline">¶</a></h2>
+<p>Installing an older version of TurboGears is possible, too. To install a
+specific version of TurboGears run a command line similar to this one:</p>
+<div class="highlight-python"><pre>$ easy_install -i http://www.turbogears.org/1.0/downloads/1.0.x/index TurboGears==1.0.x</pre>
+</div>
+<p>Replace <tt class="docutils literal"><span class="pre">1.0.x</span></tt> with the number of the version of TurboGears which you want
+to install. This form requires <a class="reference external" href="http://cheeseshop.org/pypi/setuptools">setuptools</a> to be present on your machine. If
+you don&#8217;t have setuptools yet, download and run <a class="reference external" href="http://peak.telecommunity.com/dist/ez_setup.py">ez_setup.py</a> to install it:</p>
+<div class="highlight-python"><pre>$ wget http://peak.telecommunity.com/dist/ez_setup.py
+$ python ez_setup.py</pre>
+</div>
+<p>After installing TurboGears you probably also want to install at least one of
+the object-relational mappers, <a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a>
+or <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a>:</p>
+<div class="highlight-python"><pre>$ easy_install SQLAlchemy</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>$ easy_install SQLObject</pre>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

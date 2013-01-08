@@ -1,0 +1,150 @@
+Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data
+==================================================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+Introduction
+------------
+
+I've been working on a content management system off and on for quite some time.  In the process of creating as generic a product as I could, I came across several structures that simply weren't documented, or were not documented well enough for me to translate them to SQLObject without difficulty.  So it was difficult.  In the end I decided that SQLObject, while nice, wouldn't serve me as well as SQLAlchemy, so I'm releasing this code as-is and will create a copy of this document for SQLAlchemy users as well, once I get the port finished.
+
+This is not for the faint-hearted.  Some of the methods which manage the specialized structure are simply maddening.  I make extensive use of lambda properties to perform relationship queries in the most compact space possible.  You have been warned.
+
+
+The Completed Code
+------------------
+
+::
+
+    class Atom(InheritableSQLObject):
+        class sqlmeta:
+            table = "atoms"
+            defaultOrder = ['l']
+            cacheValues = False
+
+        # Nested Set Model
+        l, r = IntCol(default=0), IntCol(default=0)
+        nestedset_index = DatabaseIndex('l', 'r')
+
+        # Adjacency List Model
+        parent = ForeignKey('Atom', default=None)
+        children = SQLMultipleJoin('Atom', joinColumn="parent_id")
+        adjacency_index = DatabaseIndex('parent')
+
+        # Your properties here, or remove these and just use inheritance.
+        name = StringCol(length=200)
+        title = UnicodeCol(length=255)
+        description = UnicodeCol(default=None)
+
+        # Nested Set Magic Accessors
+        ancestors = property(lambda self: Atom.select(AND(Atom.q.r > self.r, Atom.q.l < self.l)),
+            doc="Return all ancestors of this node.")
+        descendants = property(lambda self: Atom.select(AND(Atom.q.l > self.l, Atom.q.r < self.r)),
+            doc="Return all descendants of this node.")
+        depth = property(lambda self: self.ancestors.count() + 1,
+            doc="Return the current element's depth in the tree.")
+        siblings = property(lambda self: (self.parent.children.filter(Atom.q.r < self.r),
+            self.parent.children.filter(Atom.q.l > self.l)),
+            doc="Return two lists; the first are siblings to the left; the second, to the right.")
+
+        path = property(
+            lambda self: "/" + url([i.name for i in self.ancestors if i.id != 1] + [self.name]),
+            doc="Return the full path to this Atom.")
+
+
+        query = classmethod(lambda cls, q: cls._connection.queryAll(q.__sqlrepr__(cls._connection)))
+
+        def stargate(self, conditions, value=2):
+            """Open a hole in the left/right structure.
+               Alternatively, with a negative value, close a hole."""
+            table = Atom.sqlmeta.table
+
+            if conditions[0] is conditions[1]:
+                self.query(Update(table,
+                    dict(l = self.q.l + value, r = self.q.r + value),
+                    where=conditions[0]))
+
+            else:
+                if conditions[0] is not None:
+                    self.query(Update(table, dict(l = self.q.l + value),
+                        where=conditions[0]))
+                if conditions[1] is not None:
+                    self.query(Update(table, dict(r = self.q.r + value),
+                        where=conditions[1]))
+
+            # TODO: Find out how to clear the object cache so we can enable caching on this object.
+            # Note that caching descendant objects is A-OK, it's just that we do scary things to l and r.
+
+        def attach(self, node, after=True, below=True):
+            """Attach a node as a child or sibling of the current node."""
+
+            assert self is not node, "You can not attach a node to itself."
+            assert node not in self.ancestors, "I don't like infinite loops, I have nightmares about the sentence 'I don't like infinite loops, I have nightmares about the sentence 'I don..."
+
+            if node.l and node.r:
+                # Run some additional integrity checks before modifying the database.
+                assert node.l < node.r, "This node can not be moved as its positional relationship information is corrupt."
+                assert node.descendants.count() == ( node.r - node.l - 1 ) / 2, "This node is missing descendants and can not be moved."
+
+            count = 1 + node.descendants.count()
+
+            hub.begin()
+            try:
+
+                if below:
+                    if after: self.stargate(( self.q.l >= self.r, self.q.r >= self.r ), 2 * count)
+                    else: self.stargate(( self.q.l > self.l, self.q.r > self.l ), 2 * count)
+                else:
+                    if after: self.stargate(( self.q.l > self.r, self.q.r > self.r ), 2 * count)
+                    else: self.stargate(( self.q.l >= self.l, self.q.r >= self.l ), 2 * count)
+
+                if not node.l or not node.r:
+                    # This node is currently unassigned and/or corrupt.
+                    if below:
+                        if after: node.l, node.r = self.r - 2, self.r - 1
+                        else: node.l, node.r = self.l + 1, self.l + 2
+                        node.parent = self
+                        return
+                    else:
+                        if after: node.l, node.r = self.r + 1, self.r + 2
+                        else: node.l, node.r = self.l - 2, self.l - 1
+                        node.parent = self.parent
+                        return
+
+                # This node was already placed in the tree and needs to be moved.  How far?
+                if below:
+                    if right: delta = self.r - node.r - 1
+                    else: delta = self.l - node.l + 1
+                else:
+                    if after: delta = self.r - node.r + 2
+                    else: delta = self.l - node.l - 2
+
+                # Migrate the node and its ancestors to its new location.
+                hole = node.l
+                migrate = AND( self.q.l >= node.l, self.q.r <= node.r )
+                self.stargate(( migrate, migrate ), delta)
+
+                # Close the resulting hole.
+                self.stargate(( self.q.l >= hole, self.q.r >= hole ), -2 * count)
+
+                node.parent = self
+
+            except:
+                hub.rollback()
+            else:
+                hub.commit()
+
+            hub.end()
+
+        @classmethod
+        def delete(cls, id):
+            self = cls.get(id)
+            count = self.descendants.count()
+            descendants = list(self.descendants)
+
+            for node in descendants: node.destroySelf()
+
+            self.stargate(( cls.q.l > self.l, cls.q.r > self.r ), value=-2 * (count + 1))
+            self.destroySelf()

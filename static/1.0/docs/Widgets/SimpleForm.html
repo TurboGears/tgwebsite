@@ -1,0 +1,517 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Simple Widget Form Tutorial &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Widget Form Validation with Schemas" href="FormValidationWithSchemas.html" />
+    <link rel="prev" title="Dive Into Widgets" href="Explore.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FormValidationWithSchemas.html" title="Widget Form Validation with Schemas"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Explore.html" title="Dive Into Widgets"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Simple Widget Form Tutorial</a><ul>
+<li><a class="reference internal" href="#starting-the-project">Starting the Project</a></li>
+<li><a class="reference internal" href="#intro-to-widgets-and-forms">Intro to Widgets and Forms</a></li>
+<li><a class="reference internal" href="#defining-the-form">Defining the Form</a><ul>
+<li><a class="reference internal" href="#interlude-various-ways-to-declare-forms">Interlude: Various Ways to Declare Forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#displaying-the-comment-form">Displaying the Comment Form</a><ul>
+<li><a class="reference internal" href="#form-display-continued">Form Display Continued</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#form-field-validators">Form Field Validators</a></li>
+<li><a class="reference internal" href="#form-processing">Form Processing</a><ul>
+<li><a class="reference internal" href="#data-validation">Data Validation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-project">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Explore.html"
+                        title="previous chapter">Dive Into Widgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FormValidationWithSchemas.html"
+                        title="next chapter">Widget Form Validation with Schemas</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="simple-widget-form-tutorial">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Simple Widget Form Tutorial</a><a class="headerlink" href="#simple-widget-form-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#simple-widget-form-tutorial" id="id1">Simple Widget Form Tutorial</a><ul>
+<li><a class="reference internal" href="#starting-the-project" id="id2">Starting the Project</a></li>
+<li><a class="reference internal" href="#intro-to-widgets-and-forms" id="id3">Intro to Widgets and Forms</a></li>
+<li><a class="reference internal" href="#defining-the-form" id="id4">Defining the Form</a></li>
+<li><a class="reference internal" href="#displaying-the-comment-form" id="id5">Displaying the Comment Form</a></li>
+<li><a class="reference internal" href="#form-field-validators" id="id6">Form Field Validators</a></li>
+<li><a class="reference internal" href="#form-processing" id="id7">Form Processing</a></li>
+<li><a class="reference internal" href="#conclusion" id="id8">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-project" id="id9">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This tutorial introduces you to the widget form system by building a simple
+application that accepts and displays comments.</p>
+<p>The comments are listed on the index page and a link at the bottom of the page
+directs the user to add a comment. To keep things simple, we&#8217;re going to skip
+the database and just keep track of our comments in memory using a global
+<tt class="docutils literal"><span class="pre">comments</span></tt> variable.</p>
+<p>The comments form itself requires both a name, an email address and a comment
+to be entered. If input to one of the fields is missing, the form is
+redisplayed along with a message next to the appropriate field. We&#8217;ve tossed
+in a checkbox field to give an example that widgets also handle values of other
+type than strings, i.e. booleans, integers etc.</p>
+<p>Successfully completing a form adds the comment to the global comments
+variable and displays a success message on the index page.</p>
+<div class="section" id="starting-the-project">
+<h2><a class="toc-backref" href="#id2">Starting the Project</a><a class="headerlink" href="#starting-the-project" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial starts with a <a class="reference download internal" href="../_downloads/FormsTutorial-1.0.tgz"><tt class="xref download docutils literal"><span class="pre">pre-built</span> <span class="pre">project</span></tt></a>.
+Please download and unpack the provided archive with the complete example project
+and read the source code along with the tutorial.  For a detailed explanation on
+how to create a new project, please read <a class="reference internal" href="../Wiki20/Page1.html"><em>20 Minute Wiki Tutorial</em></a>.</p>
+<p>If you&#8217;re not already familiar with the basics of what widgets are, and how they
+work, you&#8217;ll probably want to take a look at <a class="reference internal" href="Overview.html"><em>the widgets overview page</em></a>.</p>
+</div>
+<div class="section" id="intro-to-widgets-and-forms">
+<h2><a class="toc-backref" href="#id3">Intro to Widgets and Forms</a><a class="headerlink" href="#intro-to-widgets-and-forms" title="Permalink to this headline">¶</a></h2>
+<p>The single most common use of Widgets in a TurboGears project is in building
+forms.</p>
+<p>Widgets make form creation really easy, because they address all the important
+aspects of form handling:</p>
+<ul class="simple">
+<li>Defining which fields the form has</li>
+<li>Injecting Javascript and CSS for a field if necessary</li>
+<li>Defining which kind of input each field expects</li>
+<li>Wrapping the fields into a form</li>
+<li>Displaying the form</li>
+<li>Validating form input</li>
+<li>Displaying validation errors and re-displaying user input</li>
+</ul>
+<p>For the purpose of this tutorial, we are interested in two main types of
+widgets: <em>simple</em> form field widgets &#8211; text inputs and checkboxes &#8211; and
+<em>compound</em> widgets like the form itself.</p>
+<p>Simple form field widgets generally correspond to the default browser inputs
+but some, like the date picker, have extra smarts to make your user&#8217;s lives
+easier. You can get an overview of which widgets are available on your install
+by checking out the <a class="reference internal" href="Browser.html"><em>widget browser</em></a> in the <a class="reference internal" href="../Toolbox.html"><em>toolbox</em></a>.</p>
+<p>Compound widgets, like forms, usually act as containers for fields. In
+particular, a forms provides layout (Table or List) for it&#8217;s fields and is
+responsible for labels and error display.</p>
+<p>There are many other types of standard widgets, and you can create you own
+custom widgets, but this is a simple widgets tutorial, so we&#8217;re keeping it
+simple. For more information about the widgets framework, you can start
+reading at the general <a class="reference internal" href="Overview.html"><em>widgets overview</em></a>.</p>
+</div>
+<div class="section" id="defining-the-form">
+<h2><a class="toc-backref" href="#id4">Defining the Form</a><a class="headerlink" href="#defining-the-form" title="Permalink to this headline">¶</a></h2>
+<p>With the introduction out of the way, let&#8217;s dive into the code. This is the
+form field declaration in <tt class="docutils literal"><span class="pre">FormsTutorial/controllers.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">CommentFields</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The WidgetsList defines the fields of the form.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">NotEmpty</span><span class="p">())</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Email</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;size&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">})</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextArea</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">NotEmpty</span><span class="p">())</span>
+    <span class="n">notify</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">CheckBox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Notify me&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, the declaration looks quite a bit like a SQLObject class
+definition. The <tt class="docutils literal"><span class="pre">CommentFields</span></tt> class declares a list of four widgets, all
+of which are simple widgets corresponding to the similarly named <tt class="docutils literal"><span class="pre">&lt;INPUT&gt;</span></tt>
+tags in HTML. The first three are required text fields and the <tt class="docutils literal"><span class="pre">email</span></tt> field
+requires a well-formed email address.</p>
+<p>Notice that we have not defined a field widget for the submit button. The
+<tt class="docutils literal"><span class="pre">TableForm</span></tt> and <tt class="docutils literal"><span class="pre">ListForm</span></tt> widgets take care of this for you by default
+and you can tweak it using their <tt class="docutils literal"><span class="pre">submit_text</span></tt> argument.</p>
+<p>Now the above snippet won&#8217;t get you a form as is, it&#8217;s just a list of widgets.
+To build a form, you pass the list of widgets into a form constructor (both
+<tt class="docutils literal"><span class="pre">TableForm</span></tt> and <tt class="docutils literal"><span class="pre">ListForm</span></tt> are standard widgets) and get a compound
+form widget:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">comment_form</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="n">CommentFields</span><span class="p">(),</span>
+    <span class="n">action</span><span class="o">=</span><span class="s">&quot;save&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Maybe you can guess what the extra <tt class="docutils literal"><span class="pre">action</span></tt> argument is for: it defines the
+<tt class="docutils literal"><span class="pre">action</span></tt> attribute of the form element in the generated HTML, which means
+that submissions from the form will go to <tt class="docutils literal"><span class="pre">http://mysite/save</span></tt> and will be
+handled by the <tt class="docutils literal"><span class="pre">save</span></tt> method of our controller.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">If, for some reason, you do want to manage the submit button
+yourself, derive your own widget form class from <tt class="docutils literal"><span class="pre">TableForm</span></tt> or
+<tt class="docutils literal"><span class="pre">ListForm</span></tt> and overwrite the <tt class="docutils literal"><span class="pre">submit</span></tt> attribute with your own
+instance of a <tt class="docutils literal"><span class="pre">widgets.SubmitButton</span></tt>.</p>
+</div>
+<div class="section" id="interlude-various-ways-to-declare-forms">
+<h3>Interlude: Various Ways to Declare Forms<a class="headerlink" href="#interlude-various-ways-to-declare-forms" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;ve run across some widget code samples elsewhere, the above may look a
+bit unusual. There are, in fact, two different ways to declare forms. This
+tutorial uses the declarative syntax, but you can pass a standard Python list
+of widgets directly to the form constructor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#example only, not part of the tutorial code</span>
+
+<span class="n">example_form</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Example&quot;</span><span class="p">)],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Widgets declared using a <tt class="docutils literal"><span class="pre">widgets.WidgetList</span></tt> will automatically have their
+name set to the attribute name but are otherwise exactly as they would be if
+you created them as a list. When instantiated, the declarative form gets
+transformed (via some metaclass magic) into a standard Python list, so you can
+do list-like things before you use the list to create a form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#example only, not part of the tutorial code</span>
+
+<span class="n">comment_fields2</span> <span class="o">=</span> <span class="n">CommentFields</span><span class="p">()</span>
+<span class="n">comment_fields2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;added&#39;</span><span class="p">))</span>
+<span class="n">comment_form_2</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span>
+    <span class="n">fields</span><span class="o">=</span><span class="n">comment_fields2</span><span class="p">,</span>
+    <span class="n">submit_text</span><span class="o">=</span><span class="s">&quot;Submit Tweaked Form&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>So why bother with the declarative setup? The declarative syntax provides more
+space to hang documentation and some think that it looks nicer. It also makes
+it easy to reuse a particular list of widgets in multiple forms and pages.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The project structure for this tutorial is intentionally simple, but
+most developers wind up creating a separate file (think <tt class="docutils literal"><span class="pre">forms.py</span></tt>
+is like <tt class="docutils literal"><span class="pre">model.py</span></tt>) or even a package to keep their forms organized.</p>
+</div>
+</div>
+</div>
+<div class="section" id="displaying-the-comment-form">
+<h2><a class="toc-backref" href="#id5">Displaying the Comment Form</a><a class="headerlink" href="#displaying-the-comment-form" title="Permalink to this headline">¶</a></h2>
+<p>Working our way down <tt class="docutils literal"><span class="pre">controllers.py</span></tt>, our first stop is the <tt class="docutils literal"><span class="pre">add</span></tt> method.
+This method passes the widget form instance <tt class="docutils literal"><span class="pre">comment_form</span></tt>, which we just
+covered, to the template <tt class="docutils literal"><span class="pre">add.kid</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&#39;.templates.add&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Show the comment form.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;There was a problem with the form!&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">comment_form</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You may notice that templates passed to <tt class="docutils literal"><span class="pre">&#64;expose</span></tt> in this example
+don&#8217;t start with &#8220;formstutorial&#8221;. This is the relative import feature
+in Kid. Naming your templates this way simplifies project renaming.</p>
+</div>
+<p>We&#8217;ll talk about the <tt class="docutils literal"><span class="pre">tg_errors</span></tt> argument later. First, let&#8217;s have a look
+how the form widget is used in the template. Here&#8217;s the body contents of
+<tt class="docutils literal"><span class="pre">formstutorial/templates/add.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;p py:content="form.display(submit_text='Add Comment')"&gt;Comment form&lt;/p&gt;</pre>
+</div>
+<p>Yep, that&#8217;s all there is to it.</p>
+<p>The <tt class="docutils literal"><span class="pre">display</span></tt> method of a widget instance emits the HTML code to display the form on your page.</p>
+<div class="section" id="form-display-continued">
+<h3>Form Display Continued<a class="headerlink" href="#form-display-continued" title="Permalink to this headline">¶</a></h3>
+<p>Now that you know the basics of declaring and instantiating forms, let&#8217;s take
+a closer look at the possibilities you have when you display the form.</p>
+<p>The simplest way to display the form, as we just saw, is to call the forms
+<tt class="docutils literal"><span class="pre">display</span></tt> method:</p>
+<div class="highlight-python"><pre>${form.display()}</pre>
+</div>
+<p>It&#8217;s also possible to call the instance directly and get the same behavior:</p>
+<div class="highlight-python"><pre>${form()}</pre>
+</div>
+<p>For our comment form, this will produce the HTML output similar to the following:</p>
+<div class="highlight-python"><pre>&lt;FORM ACTION="save" NAME="form" METHOD="post"&gt;
+  &lt;TABLE BORDER="0"&gt;
+    &lt;TR&gt;
+       &lt;TD&gt;
+        &lt;LABEL CLASS="fieldlabel" FOR="form_name"&gt;Name&lt;/LABEL&gt;
+        &lt;/TD&gt;
+        &lt;TD&gt;
+          &lt;INPUT CLASS="textfield" TYPE="text" ID="form_name" NAME="name"&gt;
+        &lt;/TD&gt;
+      &lt;/TR&gt;
+      ...
+      &lt;TR&gt;
+        &lt;TD&gt;
+        &lt;/TD&gt;
+        &lt;TD&gt;
+          &lt;INPUT TYPE="submit" CLASS="submitbutton"&gt;
+        &lt;/TD&gt;
+      &lt;/TR&gt;
+    &lt;/TABLE&gt;
+&lt;/FORM&gt;</pre>
+</div>
+<p>You can see that the submit button has no value and will therefore be
+displayed with a language dependant default label because we didn&#8217;t set the
+form&#8217;s <tt class="docutils literal"><span class="pre">submit_text</span></tt>.</p>
+<p>If you look at the generated FORM element, you&#8217;ll also note that its
+<tt class="docutils literal"><span class="pre">action</span></tt> attribute is set to the value of the <tt class="docutils literal"><span class="pre">action</span></tt> argument, which we
+specified when we created the form instance.</p>
+<p>As a convenience, you can override both the <tt class="docutils literal"><span class="pre">action</span></tt> and <tt class="docutils literal"><span class="pre">submit_text</span></tt>
+arguments at display time:</p>
+<div class="highlight-python"><pre>${form(action="preview", submit_text='Preview Comment')}</pre>
+</div>
+<p>Whether you want to specify <tt class="docutils literal"><span class="pre">action</span></tt> (or <tt class="docutils literal"><span class="pre">submit_text</span></tt> for that matter)
+when you create the form or when you display it, depends on whether you are
+reusing the form in another context or not and how closely coupled the form
+widget and the controller methods handling the form are in your application.</p>
+<p>If you want to preset the form field values - for instance to edit already
+existing data - you pass the form values as the first argument:</p>
+<div class="highlight-python"><pre>${form(data, submit_text='Add Comment')}</pre>
+</div>
+<p>You can also explicitly specify it as the <tt class="docutils literal"><span class="pre">value</span></tt> keyword argument:</p>
+<div class="highlight-python"><pre>${form(value=data, submit_text='Add Comment')}</pre>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">data</span></tt> is a dictionary of the form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Joe&#39;</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s">&#39;Hello World&#39;</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Displaying forms is nice, but it really doesn&#8217;t help you out <em>that</em> much.
+Admittedly, some people write entire toolkits to do just this
+sort of thing (GWT, Pyjamas), but TurboGears widgets offer you more.</p>
+</div>
+</div>
+<div class="section" id="form-field-validators">
+<h2><a class="toc-backref" href="#id6">Form Field Validators</a><a class="headerlink" href="#form-field-validators" title="Permalink to this headline">¶</a></h2>
+<p>Validation ensures that the values you&#8217;re getting are the values your method
+is expecting. Sometimes this is critically important, other times it&#8217;s
+convenient, but quite a bit of time in web programming is traditionally tied
+up in displaying a form, processing the form, validating it&#8217;s values, and &#8211;
+in the event of errors&#8211; redisplaying the form with the errors marked.
+TurboGears widgets were created explicitly to solve this problem.</p>
+<p>In practice, you get validation by adding validators to your widget
+declarations and setting the appropriate decorators on your form handling
+method. You can get super-fancy and do it <a class="reference internal" href="FormValidationWithSchemas.html"><em>other ways</em></a> if necessary,
+but we&#8217;ll take the simple solutions for simple problems approach here.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c">#repeat, for convenience</span>
+
+<span class="k">class</span> <span class="nc">CommentFields</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The WidgetsList defines the fields of the form.&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">NotEmpty</span><span class="p">())</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">Email</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;size&#39;</span><span class="p">:</span><span class="mi">30</span><span class="p">})</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextArea</span><span class="p">(</span><span class="n">validator</span><span class="o">=</span><span class="n">validators</span><span class="o">.</span><span class="n">NotEmpty</span><span class="p">())</span>
+    <span class="n">notify</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">CheckBox</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Notify me&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you look at the definition of <tt class="docutils literal"><span class="pre">CommentFields</span></tt> repeated above, you&#8217;ll see
+that there is a validator for each of the first three fields. These validators
+are part of the <tt class="docutils literal"><span class="pre">turbogears.validators</span></tt> package, which is a thin wrapper
+around Ian Bicking&#8217;s <a class="reference external" href="http://www.formencode.org">FormEncode</a> project. Since all values in a form are sent
+as strings, validators will both,</p>
+<ol class="arabic simple">
+<li>convert the value to the appropriate Python type, and ...</li>
+<li>check that the value matches your designated criteria.</li>
+</ol>
+<p>Validators perform the two steps together because the value criteria frequently
+mean little until type conversion has taken place, or vice versa. In our
+tutorial, no type conversions were needed. But if, for example, your validator
+requires a numeric input be greater than 5 but your form input was <tt class="docutils literal"><span class="pre">&quot;10&quot;</span></tt>,
+you have to convert the string <tt class="docutils literal"><span class="pre">&quot;10&quot;</span></tt> to the int <tt class="docutils literal"><span class="pre">10</span></tt> before a meaningful
+comparison can be made.</p>
+<p>The first and third fields have a <tt class="docutils literal"><span class="pre">validators.NotEmpty</span></tt> validator, which
+explicitly states that they are required fields. The second field, with a
+<tt class="docutils literal"><span class="pre">validators.Email</span></tt> validator, is required as well.  We explicitly state this
+by passing a <tt class="docutils literal"><span class="pre">not_empty=True</span></tt>, but adding a validator to the field generally
+makes that field required. The empty string, for example, is not a valid email
+address, so the email validator will fail.  You can get validation on
+non-required fields by passing an <tt class="docutils literal"><span class="pre">if_empty=&quot;default</span> <span class="pre">value&quot;</span></tt> argument to the
+validator&#8217;s constructor.</p>
+</div>
+<div class="section" id="form-processing">
+<h2><a class="toc-backref" href="#id7">Form Processing</a><a class="headerlink" href="#form-processing" title="Permalink to this headline">¶</a></h2>
+<p>Turning our attention to the <tt class="docutils literal"><span class="pre">save</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">comment_form</span><span class="p">)</span>
+<span class="nd">@error_handler</span><span class="p">(</span><span class="n">add</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="n">notify</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle submission from the comment form and save the comment.&quot;&quot;&quot;</span>
+
+    <span class="n">comments</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">comment</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">notify</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Comment added! You will be notified.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&#39;Comment added!&#39;</span><span class="p">)</span>
+    <span class="n">redirect</span><span class="p">(</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Our method itself takes a set of arguments corresponding to the fields in the
+form. Tracking large numbers of fields is very inconvenient, so it&#8217;s common to
+just use keyword arguments instead:</p>
+<div class="highlight-python"><pre>@expose()
+@validate(form=comment_form)
+@error_handler(add)
+def save(self, **data):
+    comments.add(
+        data['name'],
+        data['email'],
+        data['comment'
+        data.get('notify', False)
+    )
+    #...</pre>
+</div>
+<p>Using this syntax you get the data as a dictionary and you have to extract the
+field values from there. The use of <tt class="docutils literal"><span class="pre">.get()</span></tt> above is needed for the
+<tt class="docutils literal"><span class="pre">notify</span></tt> field, since this is not guaranteed to be included in the data
+and because there is no validator checking for its presence, while the other
+fields will be present for sure if there was no validation error.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The form handling strips off the default submit field so that you
+don&#8217;t have to deal with it. If you add your own, it won&#8217;t be stripped.</p>
+</div>
+<p>Finally, the <tt class="docutils literal"><span class="pre">flash</span></tt> method displays a confirmation notice on the next page
+the user is redirected to, which is the index page with the list of comments.</p>
+<div class="section" id="data-validation">
+<h3>Data Validation<a class="headerlink" href="#data-validation" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s take another, closer look at the <tt class="docutils literal"><span class="pre">save</span></tt> method.  Our interest now lies
+not in its contents, but rather the decorators.  We can see that the method is
+exposed without a template. It does need to be exposed or CherryPy will raise
+a <tt class="docutils literal"><span class="pre">404</span></tt>. The lack of a template is fine because we&#8217;re going to redirect the
+user to another (output-providing) method depending on whether the input is
+valid or not.</p>
+<p>The <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator extracts the various validators from the form,
+loops through them, and throws an error if problems are found. We&#8217;re <a class="reference external" href="ValidateDecorator">glossing
+over details</a>, but that&#8217;s the basic idea.</p>
+<p>If <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> does throw an error, the <tt class="docutils literal"><span class="pre">&#64;error_handler</span></tt> decorator takes
+care of them. The first argument to <tt class="docutils literal"><span class="pre">&#64;error_handler()</span></tt> is the error handling
+method. If a validation error occurs, <tt class="docutils literal"><span class="pre">&#64;error_handler</span></tt> will call the error
+handling method with a <tt class="docutils literal"><span class="pre">tg_errors</span></tt> keyword argument receiving a dictionary of
+FormEncode validation errors.</p>
+<p>In the example, we&#8217;re re-using <tt class="docutils literal"><span class="pre">add</span></tt> so that the form will be re-displayed
+if errors occur. Let&#8217;s have a look at the <tt class="docutils literal"><span class="pre">add</span></tt> method again:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;.templates.form&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span>
+        <span class="n">flash</span><span class="p">(</span><span class="s">&quot;There was a problem with the form!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">comment_form</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The error handling method, if desired, could look into the <tt class="docutils literal"><span class="pre">tg_errors</span></tt>
+dictionary to see which fields validation has failed and act accordingly. In
+practice, most form error handlers simply do what we do here: put up a
+notification message and display the form showing the validation errors.</p>
+<p>How do the errors show up on the form? Magic!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Well, not really magic. The <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt> decorator puts the error
+dictionary into a request variable. The form checks for that variable
+at display time and routes errors appropriately if they&#8217;re present.</p>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id8">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial you have learned how to create a simple form widget composed
+of several form fields. You have seen how the widget is passed to the
+template, displayed and how submissions from the form are handled in the
+controller. You have also seen simple validators in action that simplify error
+handling for forms substantially.</p>
+<p>This tutorial only covers basic widget usage. If you&#8217;d like to know more,
+explore the <a class="reference internal" href="Overview.html"><em>widgets overview</em></a> and the check out the
+<a class="reference internal" href="Browser.html"><em>widget browser</em></a> in the <a class="reference internal" href="../Toolbox.html"><em>toolbox</em></a>.</p>
+</div>
+<div class="section" id="download-the-example-project">
+<h2><a class="toc-backref" href="#id9">Download the Example Project</a><a class="headerlink" href="#download-the-example-project" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference download internal" href="../_downloads/FormsTutorial-1.0.tgz"><tt class="xref download docutils literal"><span class="pre">FormsTutorial-1.0.tgz</span></tt></a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The code for this example is courtesy of Michele Cella, but the
+individual files in the project have been updated to reflect changes
+in TurboGears versions over time and were adapted by various authors
+with respect to style, design etc.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

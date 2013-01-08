@@ -1,0 +1,115 @@
+.. index:: debugging
+
+Debugging a TurboGears Application
+==================================
+
+.. contents::
+    :depth: 2
+
+
+There are multiple ways to debug a TurboGears application.
+
+Use print statements for debugging
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you just want to watch the value of some objects used in your
+controller, you can simply add print statements which will send
+their output to the console while the server is running.
+
+Provoke exceptions and examine the debug output
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you just want to break and see the values of some object,
+add a statement like ``raise ValueError(repr(some_object))``.
+In development mode, the browser will then show a stacktrace
+with the Python representation of your object in the error message.
+If you set ``tg.fancy_exception = True`` in the global section
+of the project's ``dev.cfg`` config file, the stack trace will
+show additional information and you can examine the value of
+the variables at any level of the stack trace. In this case,
+you can add any statement like ``1/0`` or ``breakpoint``
+(where breakpoint is an undefined name) to raise the exception.
+This simple solution is often completely sufficient for debugging
+the application and understanding possible problems.
+
+Use the standard Python debugger
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The standard solution is using pdb which is an interactive source code
+debugger for Python programs that is part of the standard library.
+You just need to insert
+
+    import pdb; pdb.set_trace()
+
+at the point where you want to have a breakpoint. You can also use
+``--pdb`` for nosetests, and of course use the above in them as well.
+
+Use IPython
+~~~~~~~~~~~
+
+Some other simple methods have been suggested on our mailing list.
+One of them was using IPython_ and doing this::
+
+    from IPython.Shell import IPShellEmbed
+    dbg = IPShellEmbed()
+
+    class Root(controllers.Root):
+        @turbogears.expose('app.templates.method')
+        def method(self):
+            dbg() # break point
+
+The ```dbg()`` statement this will put your server into interactive mode
+which can be exited with Ctrl-D.
+
+.. _IPython: http://ipython.scipy.org
+
+Use Winpdb
+~~~~~~~~~~
+
+If you want some serious debugging, Winpdb_ can be used. Using Winpdb,
+you can do all the debugging activities like stepping through the code,
+watching the variables etc. in a TurboGears application.
+The steps to follow are described below.
+
+.. _Winpdb: http://winpdb.org
+
+Wherever you need to start the debugging, e.g. in a controller method,
+put these lines::
+
+    import rpdb2
+    rpdb2.start_embedded_debugger('some_passwd', fAllowUnencrypted=True)
+
+Then start the TurboGears application, open a browser and visit some
+URL that invokes the controller method. From another console prompt,
+start Winpdb by giving the command ``winpdb -t``. In Winpdb, go to
+File -> Attach. You will be asked for a password. Type in some password
+and press OK. Then select the application and press OK to start debugging.
+
+Use the Eclipse (PyDev), Komodo oder Wingware IDE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you're using and IDE to develop your TurboGears application, you
+can try using the debugging facilities integrated in the IDE.
+
+Fabio Zadrozny has written some instructions for `Configuring Pydev to work with Turbogears
+<http://http://pydev.blogspot.com/2006/07/configuring-pydev-to-work-with.html>`_.
+One problem that may occur due to the use of DecoratorTools in TurboGears
+has been discussed in the article `Why can't the pydev debugger work with turbogears?
+<http://pydev.blogspot.com/2007/06/why-cant-pydev-debugger-work-with.html>`_.
+With current versions of Python and DecoratorTools this should not be a problem any more.
+
+Todd Whiteman has written instructions for `Debugging TurboGears with Komodo
+<http://community.activestate.com/forum-topic/debugging-turbogears>`_.
+
+And on the Wingware homepage, you will find instructions on
+`Using Wing IDE with Turbogears <http://wingware.com/doc/howtos/turbogears>`_.
+
+Use Firebug
+~~~~~~~~~~~
+
+The above solutions are for debugging your server side TurboGears application.
+If you want to debug what's going on at the client side, `get FireBug`_,
+which is an invaluable tool for debugging any web applications. It will be
+particularly helpful if you're using AJAX or any JavaScript on your pages.
+
+.. _get FireBug: http://getfirebug.com/

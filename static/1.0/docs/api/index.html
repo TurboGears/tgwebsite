@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;turbogears
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PACKAGE DESCRIPTION ==================== -->
+<h1 class="epydoc">Package turbogears</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears-pysrc.html">source&nbsp;code</a></span></p>
+<p>TurboGears Front-to-Back Web Framework</p>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        1.1.3
+      </p>
+      <p><strong>Author:</strong>
+        Kevin Dangoor
+      </p>
+      <p><strong>Copyright:</strong>
+        Copyright 2005 - 2011 Kevin Dangoor and contributors
+      </p>
+      <p><strong>License:</strong>
+        MIT
+      </p>
+</div><!-- ==================== SUBMODULES ==================== -->
+<a name="section-Submodules"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Submodules</span></td>
+</tr>
+  <tr><td class="summary">
+  <ul class="nomargin">
+    <li> <strong class="uidlink"><a href="turbogears.command-module.html">turbogears.command</a></strong>: <em class="summary">TurboGears command line tools</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.command.base-module.html">turbogears.command.base</a></strong>: <em class="summary">Commands for the TurboGears command line tool.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.command.i18n-module.html">turbogears.command.i18n</a></strong>: <em class="summary">Command-line user interface for i18n administration.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.command.info-module.html">turbogears.command.info</a></strong>: <em class="summary">Commands for listing TurboGears default and extension packages info</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.command.kid2genshi-module.html">turbogears.command.kid2genshi</a></strong>: <em class="summary">Command for converting Kid to Genshi templates.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.command.quickstart-module.html">turbogears.command.quickstart</a></strong>: <em class="summary">Quickstart command to generate a new project.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.command.sacommand-module.html">turbogears.command.sacommand</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.config-module.html">turbogears.config</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.controllers-module.html">turbogears.controllers</a></strong>: <em class="summary">Classes and methods for TurboGears controllers.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.database-module.html">turbogears.database</a></strong>: <em class="summary">Convenient access to an SQLObject or SQLAlchemy managed database.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.decorator-module.html" onclick="show_private();">turbogears.decorator</a></strong>: <em class="summary">Decorator tools</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.errorhandling-module.html" onclick="show_private();">turbogears.errorhandling</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.feed-module.html">turbogears.feed</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.feed.feed-module.html">turbogears.feed.feed</a></strong>: <em class="summary">The 'turbogears.feed' package is deprecated in TurboGears &gt;= 
+        1.1.</em>    </li>
+    </ul>
+    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.filters-module.html" onclick="show_private();">turbogears.filters</a></strong>: <em class="summary">Package collecting various request filters.</em>
+    <ul class="private">
+    <li> <strong class="uidlink"><a href="turbogears.filters.base-module.html">turbogears.filters.base</a></strong>: <em class="summary">Standard TurboGears request filters.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.filters.safemultipart-module.html">turbogears.filters.safemultipart</a></strong>: <em class="summary">Request filter to handle multipart uploads from buggy Flash 
+        clients.</em>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.finddata-module.html">turbogears.finddata</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.i18n-module.html" onclick="show_private();">turbogears.i18n</a></strong>: <em class="summary">TurboGears internationalization/localization module.</em>
+    <ul class="private">
+    <li> <strong class="uidlink"><a href="turbogears.i18n.format-module.html">turbogears.i18n.format</a></strong>: <em class="summary">Localized formatting functions.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.kidutils-module.html">turbogears.i18n.kidutils</a></strong>: <em class="summary">Functions supporting translation of strings in Kid templates</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.pygettext-module.html">turbogears.i18n.pygettext</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.pygettext.catalog-module.html">turbogears.i18n.pygettext.catalog</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.pygettext.msgfmt-module.html">turbogears.i18n.pygettext.msgfmt</a></strong>: <em class="summary">Generate binary message catalog from textual translation description.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.pygettext.pygettext-module.html">turbogears.i18n.pygettext.pygettext</a></strong>: <em class="summary">pygettext -- Python equivalent of xgettext(1)</em>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.sagettext-module.html">turbogears.i18n.sagettext</a></strong>: <em class="summary">SQLAlchemy-based version of gettext</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.sagettext.model-module.html">turbogears.i18n.sagettext.model</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.sogettext-module.html">turbogears.i18n.sogettext</a></strong>: <em class="summary">SQLObject-based version of gettext</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.sogettext.model-module.html">turbogears.i18n.sogettext.model</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.tg_gettext-module.html">turbogears.i18n.tg_gettext</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.i18n.utils-module.html">turbogears.i18n.utils</a></strong>: <em class="summary">General i18n utility functions.</em>    </li>
+    </ul>
+    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity-module.html" onclick="show_private();">turbogears.identity</a></strong>: <em class="summary">The TurboGears identity management package.</em>
+    <ul class="private">
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.base-module.html" onclick="show_private();">turbogears.identity.base</a></strong>: <em class="summary">The TurboGears identity management package.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.conditions-module.html" onclick="show_private();">turbogears.identity.conditions</a></strong>: <em class="summary">Definition of the identity predicates.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.exceptions-module.html" onclick="show_private();">turbogears.identity.exceptions</a></strong>: <em class="summary">Identity management exceptions.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.identity.saprovider-module.html">turbogears.identity.saprovider</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.soprovider-module.html" onclick="show_private();">turbogears.identity.soprovider</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.identity.visitor-module.html" onclick="show_private();">turbogears.identity.visitor</a></strong>: <em class="summary">The visit and identity management *plugins* are defined here.</em>    </li>
+    </ul>
+    </li>
+    <li class="private"> <strong class="uidlink">turbogears.paginate</strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.paginate%27-module.html">turbogears.paginate'</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.qstemplates-module.html">turbogears.qstemplates</a></strong>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.release-module.html" onclick="show_private();">turbogears.release</a></strong>: <em class="summary">Front-to-back rapid web development
+===================================</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.scheduler-module.html">turbogears.scheduler</a></strong>: <em class="summary">Module that provides a cron-like task scheduler.</em>    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.startup-module.html" onclick="show_private();">turbogears.startup</a></strong>: <em class="summary">Things to do when the TurboGears server is started.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.static-module.html">turbogears.static</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.static.css-module.html">turbogears.static.css</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.static.images-module.html">turbogears.static.images</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.static.js-module.html">turbogears.static.js</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.testutil-module.html">turbogears.testutil</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox-module.html">turbogears.toolbox</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.admi18n-module.html">turbogears.toolbox.admi18n</a></strong>: <em class="summary">Graphical user interface for i18n administration</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.base-module.html">turbogears.toolbox.base</a></strong>: <em class="summary">Graphical user interface for managing TurboGears projects</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.catwalk-module.html">turbogears.toolbox.catwalk</a></strong>: <em class="summary">CatWalk - model browser for TurboGears</em>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.catwalk.browse-module.html">turbogears.toolbox.catwalk.browse</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.designer-module.html">turbogears.toolbox.designer</a></strong>: <em class="summary">Graphical user interface for SQLObject's model design</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.toolbox.shell-module.html">turbogears.toolbox.shell</a></strong>    </li>
+    </ul>
+    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.util-module.html" onclick="show_private();">turbogears.util</a></strong>: <em class="summary">The TurboGears utility module.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.validators-module.html">turbogears.validators</a></strong>: <em class="summary">Convenient validators and converters for data coming in from the 
+        web.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.view-module.html">turbogears.view</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.view.base-module.html">turbogears.view.base</a></strong>: <em class="summary">Template processing for TurboGears view layer.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.view.genshisupport-module.html">turbogears.view.genshisupport</a></strong>: <em class="summary">Template support for Genshi template engine.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.view.templates-module.html">turbogears.view.templates</a></strong>    </li>
+    </ul>
+    </li>
+    <li class="private"> <strong class="uidlink"><a href="turbogears.visit-module.html" onclick="show_private();">turbogears.visit</a></strong>: <em class="summary">The TurboGears Visit Framework for tracking visitors from requests.</em>
+    <ul class="private">
+    <li> <strong class="uidlink"><a href="turbogears.visit.api-module.html">turbogears.visit.api</a></strong>: <em class="summary">Base API of the TurboGears Visit Framework.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.visit.savisit-module.html">turbogears.visit.savisit</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.visit.sovisit-module.html">turbogears.visit.sovisit</a></strong>    </li>
+    </ul>
+    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets-module.html">turbogears.widgets</a></strong>
+    <ul>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.base-module.html">turbogears.widgets.base</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.big_widgets-module.html">turbogears.widgets.big_widgets</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.datagrid-module.html">turbogears.widgets.datagrid</a></strong>: <em class="summary">Generic widget to present and manipulate data in a grid (tabular) 
+        form.</em>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.forms-module.html">turbogears.widgets.forms</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.i18n-module.html">turbogears.widgets.i18n</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.links-module.html">turbogears.widgets.links</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.meta-module.html">turbogears.widgets.meta</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.rpc-module.html">turbogears.widgets.rpc</a></strong>    </li>
+    <li> <strong class="uidlink"><a href="turbogears.widgets.templates-module.html">turbogears.widgets.templates</a></strong>    </li>
+    </ul>
+    </li>
+  </ul></td></tr>
+</table>
+
+<br />
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#absolute_url" class="summary-sig-name">absolute_url</a>(<span class="summary-sig-arg">tgpath</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">/</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">params</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      Return absolute URL (including schema and host to this server).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#absolute_url">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="error_handler"></a><span class="summary-sig-name">error_handler</span>(<span class="summary-sig-arg">handler</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">rules</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.errorhandling-pysrc.html">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="exception_handler"></a><span class="summary-sig-name">exception_handler</span>(<span class="summary-sig-arg">handler</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">rules</span>=<span class="summary-sig-default">None</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.errorhandling-pysrc.html">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#expose" class="summary-sig-name">expose</a>(<span class="summary-sig-arg">template</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">allow_json</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">content_type</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">fragment</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">as_format</span>=<span class="summary-sig-default"><code class="variable-quote">'</code><code class="variable-string">default</code><code class="variable-quote">'</code></span>,
+        <span class="summary-sig-arg">accept_format</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">**options</span>)</span><br />
+      Exposes a method to the web.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#expose">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="flash"></a><span class="summary-sig-name">flash</span>(<span class="summary-sig-arg">message</span>)</span><br />
+      Set a message to be displayed in the browser on next page display.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#flash">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#redirect" class="summary-sig-name">redirect</a>(<span class="summary-sig-arg">redirect_path</span>,
+        <span class="summary-sig-arg">redirect_params</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      Redirect (via cherrypy.HTTPRedirect).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#redirect">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="start_server"></a><span class="summary-sig-name">start_server</span>(<span class="summary-sig-arg">root</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.startup-pysrc.html#start_server">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#update_config" class="summary-sig-name">update_config</a>(<span class="summary-sig-arg">configfile</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">modulename</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Update the system configuration from given config file and/or module.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.config-pysrc.html#update_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#url" class="summary-sig-name">url</a>(<span class="summary-sig-arg">tgpath</span>,
+        <span class="summary-sig-arg">tgparams</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">**kw</span>)</span><br />
+      Computes relocatable URLs.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#url">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears-module.html#validate" class="summary-sig-name">validate</a>(<span class="summary-sig-arg">form</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">validators</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">failsafe_schema</span>=<span class="summary-sig-default">none</span>,
+        <span class="summary-sig-arg">failsafe_values</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">state_factory</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Validate input.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.controllers-pysrc.html#validate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears-module.html#mochikit" class="summary-name">mochikit</a> = <code title="TGMochiKit(name='widget', charset=None, defer=False, order=0)">TGMochiKit(name='widget', charset=None, defer=False<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="absolute_url"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">absolute_url</span>(<span class="sig-arg">tgpath</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">/</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">params</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">**kw</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.controllers-pysrc.html#absolute_url">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Return absolute URL (including schema and host to this server).
+
+Tries to account for 'Host' header and reverse proxying
+('X-Forwarded-Host').
+
+The host name is determined this way:
+
+* If the config setting 'tg.url_domain' is set and non-null, use this value.
+* Else, if the 'base_url_filter.use_x_forwarded_host' config setting is
+  True, use the value from the 'Host' or 'X-Forwarded-Host' request header.
+* Else, if config setting 'base_url_filter.on' is True and
+  'base_url_filter.base_url' is non-null, use its value for the host AND
+  scheme part of the URL.
+* As a last fallback, use the value of 'server.socket_host' and
+  'server.socket_port' config settings (defaults to 'localhost:8080').
+
+The URL scheme ('http' or 'http') used is determined in the following way:
+
+* If 'base_url_filter.base_url' is used, use the scheme from this URL.
+* If there is a 'X-Use-SSL' request header, use 'https'.
+* Else, if the config setting 'tg.url_scheme' is set, use its value.
+* Else, use the value of 'cherrypy.request.scheme'.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="expose"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">expose</span>(<span class="sig-arg">template</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">allow_json</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">format</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">content_type</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">fragment</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">as_format</span>=<span class="sig-default"><code class="variable-quote">'</code><code class="variable-string">default</code><code class="variable-quote">'</code></span>,
+        <span class="sig-arg">accept_format</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">**options</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.controllers-pysrc.html#expose">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Exposes a method to the web.
+
+By putting the expose decorator on a method, you tell TurboGears that
+the method should be accessible via URL traversal. Additionally, expose
+handles the output processing (turning a dictionary into finished
+output) and is also responsible for ensuring that the request is
+wrapped in a database transaction.
+
+You can apply multiple expose decorators to a method, if
+you'd like to support multiple output formats. The decorator that's
+listed first in your code without as_format or accept_format is
+the default that is chosen when no format is specifically asked for.
+Any other expose calls that are missing as_format and accept_format
+will have as_format implicitly set to the whatever comes before
+the &quot;:&quot; in the template name (or the whole template name if there
+is no &quot;:&quot;. For example, &lt;code&gt;expose(&quot;json&quot;)&lt;/code&gt;, if it's not
+the default expose, will have as_format set to &quot;json&quot;.
+
+When as_format is set, passing the same value in the tg_format
+parameter in a request will choose the options for that expose
+decorator. Similarly, accept_format will watch for matching
+Accept headers. You can also use both. expose(&quot;json&quot;, as_format=&quot;json&quot;,
+accept_format=&quot;application/json&quot;) will choose JSON output for either
+case: tg_format=json as a parameter or Accept: application/json as a
+request header.
+
+Passing allow_json=True to an expose decorator
+is equivalent to adding the decorator just mentioned.
+
+Each expose decorator has its own set of options, and each one
+can choose a different template or even template engine (you can
+use Kid for HTML output and Cheetah for plain text, for example).
+See the other expose parameters below to learn about the options
+you can pass to the template engine.
+
+Take a look at the
+&lt;a href=&quot;tests/test_expose-source.html&quot;&gt;test_expose.py&lt;/a&gt; suite
+for more examples.
+
+@param template: &quot;templateengine:dotted.reference&quot; reference along the
+        Python path for the template and the template engine. For
+        example, &quot;kid:foo.bar&quot; will have Kid render the bar template in
+        the foo package.
+@keyparam format: format for the template engine to output (if the
+        template engine can render different formats. Kid, for example,
+        can render &quot;html&quot;, &quot;xml&quot; or &quot;xhtml&quot;)
+@keyparam content_type: sets the content-type http header
+@keyparam allow_json: allow the function to be exposed as json
+@keyparam fragment: for template engines (like Kid) that generate
+        DOCTYPE declarations and the like, this is a signal to
+        just generate the immediate template fragment. Use this
+        if you're building up a page from multiple templates or
+        going to put something onto a page with .innerHTML.
+@keyparam as_format: designates which value of tg_format will choose
+        this expose.
+@keyparam accept_format: which value of an Accept: header will
+        choose this expose.
+
+All additional keyword arguments are passed as keyword args to the render
+method of the template engine.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="redirect"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">redirect</span>(<span class="sig-arg">redirect_path</span>,
+        <span class="sig-arg">redirect_params</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">**kw</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.controllers-pysrc.html#redirect">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Redirect (via cherrypy.HTTPRedirect).</p>
+  <p>Raises the exception instead of returning it, this to allow users to 
+  both call it as a function or to raise it as an exception.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="update_config"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">update_config</span>(<span class="sig-arg">configfile</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">modulename</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.config-pysrc.html#update_config">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Update the system configuration from given config file and/or 
+  module.</p>
+  <p>'configfile' is a ConfigObj (INI-style) config file, 'modulename' a 
+  module path in dotted notation. The function looks for files with a 
+  &quot;.cfg&quot; extension if the given module name refers to a package 
+  directory or a file with the base name of the right-most part of the 
+  module path and a &quot;.cfg&quot; extension added.</p>
+  <p>If both 'configfile' and 'modulname' are specified, the module is read
+  first, followed by the config file. This means that the config file's 
+  options override the options in the module file.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="url"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">url</span>(<span class="sig-arg">tgpath</span>,
+        <span class="sig-arg">tgparams</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">**kw</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.controllers-pysrc.html#url">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Computes relocatable URLs.</p>
+  <p>tgpath can be a list or a string. If the path is absolute (starts with
+  a &quot;/&quot;), the server.webpath, SCRIPT_NAME and the approot of the 
+  application are prepended to the path. In order for the approot to be 
+  detected properly, the root object must extend 
+  controllers.RootController.</p>
+  <p>Query parameters for the URL can be passed in as a dictionary in the 
+  second argument and/or as keyword parameters where keyword args overwrite
+  entries in the dictionary.</p>
+  <p>Values which are a list or a tuple are used to create multiple 
+  key-value pairs.</p>
+  <p>tgpath may also already contain a (properly escaped) query string 
+  seperated by a question mark ('?'), in which case additional query params
+  are appended.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="validate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">validate</span>(<span class="sig-arg">form</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">validators</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">failsafe_schema</span>=<span class="sig-default">none</span>,
+        <span class="sig-arg">failsafe_values</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">state_factory</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.controllers-pysrc.html#validate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Validate input.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>form</code></strong> (a form instance) - a form instance that must be passed throught the validation 
+          process... you must give a the same form instance as the one that
+          will be used to post data on the controller you are putting the 
+          validate decorator on.</li>
+        <li><strong class="pname"><code>validators</code></strong> (dictionary or schema instance) - individual validators to use for parameters. If you use a schema 
+          for validation then the schema instance must be the sole 
+          argument. If you use simple validators, then you must pass a 
+          dictionary with each value name to validate as a key of the 
+          dictionary and the validator instance (eg: tg.validators.Int() 
+          for integer) as the value.</li>
+        <li><strong class="pname"><code>failsafe_schema</code></strong> (errorhandling.FailsafeSchema) - a schema for handling failsafe values. The default is 'none', but
+          you can also use 'values', 'map_errors', or 'defaults' to map 
+          erroneous inputs to values, corresponding exceptions or method 
+          defaults.</li>
+        <li><strong class="pname"><code>failsafe_values</code></strong> (a dictionary or a single value) - replacements for erroneous inputs. You can either define 
+          replacements for every parameter, or a single replacement value 
+          for all parameters. This is only used when failsafe_schema is 
+          'values'.</li>
+        <li><strong class="pname"><code>state_factory</code></strong> (callable or None) - If this is None, the initial state for validation is set to None,
+          otherwise this must be a callable that returns the initial state 
+          to be used for validation.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables Details</span></td>
+</tr>
+</table>
+<a name="mochikit"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">mochikit</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+TGMochiKit(name='widget', charset=None, defer=False, order=0)
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th bgcolor="#70b0f0" class="navbar-select"
+          >&nbsp;&nbsp;&nbsp;Home&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:36 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

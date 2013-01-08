@@ -1,0 +1,67 @@
+ThirdParty Components Documentation
+===================================
+
+This is a list of pointers to the documentation pages of the various framework components.
+
+Python
+------
+
+-   `Byte of Python`_ , Swaroop's book help you to learn the Python programming language.
+-   `Dive Into Python`_ , Mark Pilgrim's "Python book for experienced programmers"
+
+.. _Dive Into Python: http://diveintopython.org/
+.. _Byte of Python: http://swaroopch.info/text/Byte_of_Python:Main_Page
+
+
+CherryPy
+--------
+
+-   `The CherryPy Book`_
+
+.. _The CherryPy Book: http://www.cherrypy.org/wiki/CherryPyBook
+
+
+SQLObject
+---------
+
+-   `SQLObject`_ main manual
+-   `SQLBuilder`_ manual.
+-   `Database agnostic SQL queries with SQLObject`_
+
+.. _SQLObject: http://sqlobject.org/SQLObject.html
+.. _SQLBuilder: http://sqlobject.org/SQLBuilder.html
+.. _Database agnostic SQL queries with SQLObject: http://www.groovie.org/articles/2005/11/01/how-to-use-database-agnostic-sql-in-sqlobject
+
+
+Kid
+---
+
+-   `Kid Templating Language`_
+-   `Kid Recipes`_ -- some solutions to common needs
+
+.. _Kid Templating Language: http://kid.lesscode.org/language.html
+.. _Kid Recipes: http://lesscode.org/projects/kid/wiki/KidRecipes
+
+
+Mochikit
+--------
+
+-   `MochiKit JavaScript Library`_
+
+.. _MochiKit JavaScript Library: http://www.mochikit.com/doc/html/MochiKit/index.html
+
+
+Other
+-----
+
+.. toctree::
+   :hidden:
+
+   FormEncode
+
+-   `Python Standard Library`_
+-   :doc:`FormEncode`
+-   `FormEncode Validator`_ documentation
+
+.. _Python Standard Library: http://docs.python.org/lib/lib.html
+.. _FormEncode Validator: http://formencode.org/docs/Validator.html

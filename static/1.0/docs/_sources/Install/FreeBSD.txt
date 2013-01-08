@@ -1,0 +1,93 @@
+.. index:: FreeBSD
+
+Installing TurboGears on FreeBSD
+================================
+
+.. note:: This document currently applies to FreeBSD 6.0-RELEASE, though it will
+    also work with older versions (5.x, 4.x).
+
+.. contents::
+    :depth: 2
+
+
+NB: all installations must be performed as root, i.e.
+
+::
+
+    $ su
+    password:
+    [...]
+
+
+Installing Turbogears using the FreeBSD ports
+---------------------------------------------
+
+Turbogears is now available as a FreeBSD port, which provides a convenient
+alternative to the direct use of the Setuptools.
+
+The port will install all the required dependencies (Python 2.4,
+SQLObject, Cheetah, CherryPy, Kid, json-py, ...), plus the modules
+required for MySQL/PostgreSQL connectivity (MySQLdb, psycopg, ...).
+
+Install from ports::
+
+    $ cd /usr/ports/www/py-turbogears
+    $ make install clean
+
+
+Installing Turbogears using the Setuptools
+------------------------------------------
+
+The standard :doc:`TurboGears *nix install <Nix>` works so we'll just
+explain installation of the prerequisites. First, you must have Python
+installed. Thankfully, FreeBSD 6 ships with Python 2.4.
+
+Install from ports::
+
+    $ cd /usr/ports/lang/python
+    $ make install clean
+
+Or using portupgrade_::
+
+    portinstall python
+
+.. _portupgrade: http://www.onlamp.com/pub/a/bsd/2003/08/28/FreeBSD_Basics.html
+
+Or the binary package install (easier, less time consuming)::
+
+    $ pkg_add -r python
+
+
+Database Connectivity
+---------------------
+
+SQLite
+~~~~~~
+
+This will install `SQLite 3`_ and the PySQLite python module.
+
+.. _sqlite 3: http://www.sqlite.org
+
+From ports::
+
+    $ cd /usr/ports/databases/py-PySQLite2/
+    $ make install clean
+
+Binary package install::
+
+    pkg_add -r py24-pysqlite2
+
+
+MySQL
+~~~~~
+
+This will install the MySQL client libraries and MySQLdb python module.
+
+From ports::
+
+    $ cd /usr/ports/databases/py-MySQLdb/
+    $ make install clean
+
+Package install::
+
+    pkg_add -r py24-MySQLdb

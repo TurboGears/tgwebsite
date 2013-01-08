@@ -1,0 +1,70 @@
+.. index:: server
+
+Starting Up The Server
+======================
+
+.. contents:
+    :depth: 2
+
+
+As soon as you have :ref:`quickstarted <tgadmin_quickstart>` a project, you are
+ready to fire up CherryPy's built-in server and get moving! To run the server
+for development you should:
+
+#. Switch to the top level directory of your newly created project. If, for
+   example, your project is called "``MyTGApp``", open a command line and
+   then do::
+
+       $ cd /path/to/MyTGApp
+
+#. Run the provided *start script* called ``start-<pkg-name>.py`` with Python.
+   E.g., if your application's package name is "``mytgapp``", then run::
+
+        python start-mytgapp.py
+
+You will then see console messages telling you that the server has started up
+and on which port it is listening.
+
+
+Accessing the Application
+-------------------------
+
+By default, the CherryPy server for your quickstarted TurboGears project
+listens on port 8080, so you should see the standard welcome page by pointing
+your browser at http://localhost:8080/.
+
+.. note:: **Mac Bonjour Support**
+
+    On the Mac, you'll be able to see your development site in safari's Bonjour
+    bookmarks.
+
+
+Automatically Restart
+------------------------
+
+The server watches for changes to files in your project and will automatically restart if it sees any.
+
+
+Stop the Server
+---------------
+
+You can stop the server at any time by pressing ``Control-C`` (in the console).
+
+
+Using a Different Server Configuration
+--------------------------------------
+
+The start script accepts one optional argument on the command line, which
+specifies the path to an alternate server configuration file to use. If no file
+is given, it will look for ``dev.cfg`` in the current directory, if a
+``setup.py`` file is also present (development mode). If not, it will then look
+for ``prod.cfg`` in the current directory and, finally, if this is not found
+also, it will look for ``config/default.cfg`` within the application's
+:doc:`egg </Install/DeployWithAnEgg>`.
+
+Please refer to the :doc:`configuration </Configuration>` documentation for a reference
+of the server settings that you can use in the deployment configuration files.
+
+
+:doc:`Previous: Create a new project </TgAdmin>` :
+:doc:`Next: The Big Picture <BigPicture>`

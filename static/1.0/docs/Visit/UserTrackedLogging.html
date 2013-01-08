@@ -1,0 +1,217 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User Tracked Logging &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Permanent Login" href="PermanentLogin.html" />
+    <link rel="prev" title="Extending the Visit Framework" href="Extending.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="PermanentLogin.html" title="Permanent Login"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Extending.html" title="Extending the Visit Framework"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">User Tracked Logging</a><ul>
+<li><a class="reference internal" href="#step-1-create-an-enhanced-logger">Step 1) Create an enhanced logger</a></li>
+<li><a class="reference internal" href="#step2-use-our-logging-implementation">Step2 Use our logging implementation</a></li>
+<li><a class="reference internal" href="#step3-put-a-unique-id-into-mdc">Step3 Put a unique ID into MDC</a></li>
+<li><a class="reference internal" href="#step4-setup-logging-format">Step4 Setup logging format</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Extending.html"
+                        title="previous chapter">Extending the Visit Framework</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="PermanentLogin.html"
+                        title="next chapter">Permanent Login</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="user-tracked-logging">
+<span id="index-0"></span><h1>User Tracked Logging<a class="headerlink" href="#user-tracked-logging" title="Permalink to this headline">¶</a></h1>
+<p>A problem with production environments is that it is often very difficult to track end users through the logs. This leads to problems with tracking down production issues, particually one more complex setups.</p>
+<p>This guide shows how to put the visitID (from the visit feature) into logfiles such that, any end user request can be logged with the visit id (and hence can be greped from said logs).</p>
+<p>This approach uses a system very similer to that employeed by apache log4j.</p>
+<div class="section" id="step-1-create-an-enhanced-logger">
+<h2>Step 1) Create an enhanced logger<a class="headerlink" href="#step-1-create-an-enhanced-logger" title="Permalink to this headline">¶</a></h2>
+<p>We need to create a logger that can be passed the visit id any time we need to log a message, rather than passing this ID all the time, we take a leaf out of log4j&#8217;s book and use a thread local variable.</p>
+<p>Enhanced logger:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">Logger</span><span class="p">,</span> <span class="n">LogRecord</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="k">class</span> <span class="nc">MDCLogger</span><span class="p">(</span><span class="n">Logger</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This logger is a custom logger that will examine TLS</span>
+<span class="sd">    (Thread local storage) everytime a log message is handled</span>
+<span class="sd">    this allows the formatter to have additional arguments provided</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">Logger</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">makeRecord</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MDCRecord</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">MDCRecord</span><span class="p">(</span><span class="n">LogRecord</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A log record that is able to respond to getting MDC</span>
+<span class="sd">        information, and exposing it for logging purposes &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">MDC</span> <span class="o">=</span> <span class="n">LoggingMDC</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">MDC</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">MDC</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+
+        <span class="n">LogRecord</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">LoggingMDC</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Utility method that will get the TLS MDC</span>
+<span class="sd">        (message diagnostic context) &quot;&quot;&quot;</span>
+    <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
+    <span class="n">toReturn</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">toReturn</span> <span class="o">=</span> <span class="n">thread</span><span class="o">.</span><span class="n">LoggingMDC</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">toReturn</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">toReturn</span><span class="p">[</span><span class="s">&#39;request_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">thread</span><span class="o">.</span><span class="n">LoggingMDC</span> <span class="o">=</span> <span class="n">toReturn</span>
+
+    <span class="k">assert</span> <span class="n">toReturn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="n">toReturn</span>
+
+<span class="n">MDC</span> <span class="o">=</span> <span class="n">LoggingMDC</span><span class="p">()</span>
+<span class="n">MDC</span><span class="p">[</span><span class="s">&#39;request_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+</pre></div>
+</div>
+<p>Call this whatever you want, i put it in a file called mdclogging.py</p>
+<p>This logger works by placing a dict onto ThreadLocalStorage called LoggingMDC. If this dict does not exist a new one is created. Any variable can be placed in this (and hence retrieved later). The other classes define our enhanced logger (the one that will replace the default logger implementation) and our enhanced record (that will be used to log any additional variables.</p>
+</div>
+<div class="section" id="step2-use-our-logging-implementation">
+<h2>Step2 Use our logging implementation<a class="headerlink" href="#step2-use-our-logging-implementation" title="Permalink to this headline">¶</a></h2>
+<p>At the top of start-server.py (or however your cherrypy / turbogears instance is started) put the following lines</p>
+<p>start-server.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">mdclogging</span> <span class="kn">import</span> <span class="n">MDCLogger</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">setLoggerClass</span><span class="p">(</span><span class="n">MDCLogger</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It is important that our logging implementation is enabled &#8216;&#8217;before&#8217;&#8217; the rest of the logging system has been setup, otherwise you will get mixed logging implementations within your application</p>
+</div>
+<div class="section" id="step3-put-a-unique-id-into-mdc">
+<h2>Step3 Put a unique ID into MDC<a class="headerlink" href="#step3-put-a-unique-id-into-mdc" title="Permalink to this headline">¶</a></h2>
+<p>You will now need to feed the logger a unique id for each end user, one good example would be the end users IP address (which is semi-unique to an end user). You could use any source that can ID a particual user, however for ease I have picked on the visit id provided by turbogears visit tracking support.</p>
+<p>For visit tracking it turns out there is an undocumented plugin extension point that can be used to call a plugin of your own devising. To use this i wrote the following</p>
+<p>Push variables into MDC:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">mdclogging</span>
+<span class="k">class</span> <span class="nc">MDCLoggingVisitPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Binding between the visit ID and the MDC logger &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">record_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit</span><span class="p">):</span>
+        <span class="n">MDC</span> <span class="o">=</span> <span class="n">mdclogging</span><span class="o">.</span><span class="n">LoggingMDC</span><span class="p">()</span>
+        <span class="n">MDC</span><span class="p">[</span><span class="s">&#39;request_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">visit</span><span class="o">.</span><span class="n">key</span>
+</pre></div>
+</div>
+<p>And in my controllers.py I put</p>
+<p>Hookup plugin to framework:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears.visit.api</span> <span class="kn">as</span> <span class="nn">visitorAPI</span>
+<span class="n">visitorAPI</span><span class="o">.</span><span class="n">enable_visit_plugin</span><span class="p">(</span><span class="n">MDCLoggingPlugin</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step4-setup-logging-format">
+<h2>Step4 Setup logging format<a class="headerlink" href="#step4-setup-logging-format" title="Permalink to this headline">¶</a></h2>
+<p>The final step is to put the new variable into the logging format strings where you want to see it, this is done like so</p>
+<p>Setup logging format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">logging</span><span class="p">]</span>
+<span class="p">[[</span><span class="n">formatters</span><span class="p">]]</span>
+<span class="p">[[[</span><span class="n">full_content</span><span class="p">]]]</span>
+<span class="n">format</span><span class="o">=</span><span class="s">&#39;[*(asctime)s]-[*(levelname)s][*(request_id)s]:: *(message)s&#39;</span>
+</pre></div>
+</div>
+<p>So given lines of code that read ...</p>
+<p>Example logging call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;hi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You should see in your production logs ...</p>
+<p>Example log output:</p>
+<div class="highlight-python"><pre>[2007-01-15 21:20:21,468]-[DEBUG] [works.controllers]-[137020e5197ac0b860319450a1a72d7a7679f53f]: hi
+[2007-01-15 21:21:20,864]-[DEBUG] [works.controllers]-[867f87bf001d79c78466d65cf8e0e59537023503]: hi</pre>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.decorator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;decorator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.decorator-module.html" onclick="show_private();">Module turbogears.decorator</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Decorator tools"""</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">itertools</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">inspect</tt> <tt class="py-keyword">import</tt> <tt class="py-name">getargspec</tt><tt class="py-op">,</tt> <tt class="py-name">formatargspec</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="decorate"></a><div id="decorate-def"><a name="L7"></a><tt class="py-lineno">  7</tt> <a class="py-toggle" href="#" id="decorate-toggle" onclick="return toggle('decorate');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#decorate">decorate</a><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">,</tt> <tt class="py-param">caller</tt><tt class="py-op">,</tt> <tt class="py-param">signature</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="decorate-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="decorate-expanded"><a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorate func with caller.</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">    Inspired by Michele Simionato's decorator library:</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">    http://www.phyast.pitt.edu/~micheles/python/documentation.html</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-name">argnames</tt><tt class="py-op">,</tt> <tt class="py-name">varargs</tt><tt class="py-op">,</tt> <tt class="py-name">kwargs</tt><tt class="py-op">,</tt> <tt id="link-0" class="py-name" targets="Variable turbogears.widgets.big_widgets.AjaxGrid.defaults=turbogears.widgets.big_widgets.AjaxGrid-class.html#defaults"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-0', 'defaults', 'link-0');">defaults</a></tt> <tt class="py-op">=</tt> \ </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">        <tt class="py-name">signature</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt class="py-name">getargspec</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">signature</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-1" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-1', 'defaults', 'link-0');">defaults</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt id="link-2" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-2', 'defaults', 'link-0');">defaults</a></tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-name">parameters</tt> <tt class="py-op">=</tt> <tt class="py-name">formatargspec</tt><tt class="py-op">(</tt><tt class="py-name">argnames</tt><tt class="py-op">,</tt> <tt class="py-name">varargs</tt><tt class="py-op">,</tt> <tt class="py-name">kwargs</tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-3', 'defaults', 'link-0');">defaults</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-name">defval</tt> <tt class="py-op">=</tt> <tt class="py-name">itertools</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">(</tt><tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">argnames</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-4" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-4', 'defaults', 'link-0');">defaults</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">    <tt id="link-5" class="py-name" targets="Variable turbogears.identity.exceptions.IdentityConfigurationException.args=turbogears.identity.exceptions.IdentityConfigurationException-class.html#args"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-5', 'args', 'link-5');">args</a></tt> <tt class="py-op">=</tt> <tt class="py-name">formatargspec</tt><tt class="py-op">(</tt><tt class="py-name">argnames</tt><tt class="py-op">,</tt> <tt class="py-name">varargs</tt><tt class="py-op">,</tt> <tt class="py-name">kwargs</tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-6', 'defaults', 'link-0');">defaults</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-name">formatvalue</tt><tt class="py-op">=</tt><tt class="py-keyword">lambda</tt> <tt id="link-7" class="py-name" targets="Variable turbogears.view.base.cycle.value=turbogears.view.base.cycle-class.html#value"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-7', 'value', 'link-7');">value</a></tt><tt class="py-op">:</tt><tt class="py-string">"=%s"</tt> <tt class="py-op">%</tt> <tt class="py-name">argnames</tt><tt class="py-op">[</tt><tt class="py-name">defval</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method turbogears.filters.safemultipart.MultipartWrapper.next()=turbogears.filters.safemultipart.MultipartWrapper-class.html#next,Method turbogears.view.base.cycle.next()=turbogears.view.base.cycle-class.html#next"><a title="turbogears.filters.safemultipart.MultipartWrapper.next
+turbogears.view.base.cycle.next" class="py-name" href="#" onclick="return doclink('link-8', 'next', 'link-8');">next</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-name">exec_dict</tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-9', 'dict', 'link-9');">dict</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">=</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-name">caller</tt><tt class="py-op">=</tt><tt class="py-name">caller</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">    <tt class="py-keyword">exec</tt> <tt class="py-string">"\ndef %s(%s):\n\treturn caller(func, %s)\n"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt><tt class="py-op">,</tt> <tt class="py-name">parameters</tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-10', 'args', 'link-5');">args</a></tt><tt class="py-op">)</tt> <tt class="py-keyword">in</tt> <tt class="py-name">exec_dict</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">    <tt class="py-name">new_func</tt> <tt class="py-op">=</tt> <tt class="py-name">exec_dict</tt><tt class="py-op">[</tt><tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt><tt class="py-op">]</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">    <tt class="py-name">new_func</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Variable turbogears.i18n.pygettext.pygettext.__doc__=turbogears.i18n.pygettext.pygettext-module.html#__doc__"><a title="turbogears.i18n.pygettext.pygettext.__doc__" class="py-name" href="#" onclick="return doclink('link-11', '__doc__', 'link-11');">__doc__</a></tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="turbogears.i18n.pygettext.pygettext.__doc__" class="py-name" href="#" onclick="return doclink('link-12', '__doc__', 'link-11');">__doc__</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-name">new_func</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">copy</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-name">new_func</tt><tt class="py-op">.</tt><tt class="py-name">__module__</tt> <tt class="py-op">=</tt> <tt class="py-name">func</tt><tt class="py-op">.</tt><tt class="py-name">__module__</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt class="py-name">new_func</tt><tt class="py-op">.</tt><tt class="py-name">__composition__</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-string">'__composition__'</tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-op">[</tt><tt class="py-name">func</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-op">[</tt><tt class="py-name">new_func</tt><tt class="py-op">]</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">new_func</tt> </tt>
+</div><a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="decorator"></a><div id="decorator-def"><a name="L34"></a><tt class="py-lineno"> 34</tt> <a class="py-toggle" href="#" id="decorator-toggle" onclick="return toggle('decorator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#decorator">decorator</a><tt class="py-op">(</tt><tt class="py-param">entangler</tt><tt class="py-op">,</tt> <tt class="py-param">signature</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="decorator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="decorator-expanded"><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorate function with entangler.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">    Use new signature or preserve original signature if signature is None.</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">entangle</tt><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-13" class="py-name" targets="Function turbogears.decorator.decorate()=turbogears.decorator-module.html#decorate"><a title="turbogears.decorator.decorate" class="py-name" href="#" onclick="return doclink('link-13', 'decorate', 'link-13');">decorate</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-name">entangler</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">signature</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">entangle</tt> </tt>
+</div><a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="weak_signature_decorator"></a><div id="weak_signature_decorator-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="weak_signature_decorator-toggle" onclick="return toggle('weak_signature_decorator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#weak_signature_decorator">weak_signature_decorator</a><tt class="py-op">(</tt><tt class="py-param">entangler</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="weak_signature_decorator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="weak_signature_decorator-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorate function with entangler and weak signature.</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-docstring">    Changes signature to accept arbitrary additional arguments.</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">entangle</tt><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name"><a title="turbogears.decorator.decorate" class="py-name" href="#" onclick="return doclink('link-14', 'decorate', 'link-13');">decorate</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-name">entangler</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Function turbogears.decorator.make_weak_signature()=turbogears.decorator-module.html#make_weak_signature"><a title="turbogears.decorator.make_weak_signature" class="py-name" href="#" onclick="return doclink('link-15', 'make_weak_signature', 'link-15');">make_weak_signature</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">entangle</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="simple_decorator"></a><div id="simple_decorator-def"><a name="L56"></a><tt class="py-lineno"> 56</tt> <a class="py-toggle" href="#" id="simple_decorator-toggle" onclick="return toggle('simple_decorator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#simple_decorator">simple_decorator</a><tt class="py-op">(</tt><tt class="py-param">caller</tt><tt class="py-op">,</tt> <tt class="py-param">signature</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="simple_decorator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="simple_decorator-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorate function with caller."""</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">entangle</tt><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="turbogears.decorator.decorate" class="py-name" href="#" onclick="return doclink('link-16', 'decorate', 'link-13');">decorate</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-name">caller</tt><tt class="py-op">,</tt> <tt class="py-name">signature</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">entangle</tt> </tt>
+</div><a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="simple_weak_signature_decorator"></a><div id="simple_weak_signature_decorator-def"><a name="L63"></a><tt class="py-lineno"> 63</tt> <a class="py-toggle" href="#" id="simple_weak_signature_decorator-toggle" onclick="return toggle('simple_weak_signature_decorator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#simple_weak_signature_decorator">simple_weak_signature_decorator</a><tt class="py-op">(</tt><tt class="py-param">caller</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="simple_weak_signature_decorator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="simple_weak_signature_decorator-expanded"><a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorate function with caller and weak signature.</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">    Changes signature to accept arbitrary additional arguments.</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">entangle</tt><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-17" class="py-name"><a title="turbogears.decorator.decorate" class="py-name" href="#" onclick="return doclink('link-17', 'decorate', 'link-13');">decorate</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-name">caller</tt><tt class="py-op">,</tt> <tt id="link-18" class="py-name"><a title="turbogears.decorator.make_weak_signature" class="py-name" href="#" onclick="return doclink('link-18', 'make_weak_signature', 'link-15');">make_weak_signature</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">entangle</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="make_weak_signature"></a><div id="make_weak_signature-def"><a name="L74"></a><tt class="py-lineno"> 74</tt> <a class="py-toggle" href="#" id="make_weak_signature-toggle" onclick="return toggle('make_weak_signature');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#make_weak_signature">make_weak_signature</a><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="make_weak_signature-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="make_weak_signature-expanded"><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-docstring">"""Change signature to accept arbitrary additional arguments."""</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-name">argnames</tt><tt class="py-op">,</tt> <tt class="py-name">varargs</tt><tt class="py-op">,</tt> <tt class="py-name">kwargs</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-19', 'defaults', 'link-0');">defaults</a></tt> <tt class="py-op">=</tt> <tt class="py-name">getargspec</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">kwargs</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">kwargs</tt> <tt class="py-op">=</tt> <tt class="py-string">"_decorator__kwargs"</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">varargs</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">varargs</tt> <tt class="py-op">=</tt> <tt class="py-string">"_decorator__varargs"</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">argnames</tt><tt class="py-op">,</tt> <tt class="py-name">varargs</tt><tt class="py-op">,</tt> <tt class="py-name">kwargs</tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="turbogears.widgets.big_widgets.AjaxGrid.defaults" class="py-name" href="#" onclick="return doclink('link-20', 'defaults', 'link-0');">defaults</a></tt> </tt>
+</div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="compose"></a><div id="compose-def"><a name="L84"></a><tt class="py-lineno"> 84</tt> <a class="py-toggle" href="#" id="compose-toggle" onclick="return toggle('compose');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#compose">compose</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">decorators</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="compose-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="compose-expanded"><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-docstring">"""Compose decorators."""</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">func</tt><tt class="py-op">:</tt> <tt class="py-name">reduce</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt id="link-21" class="py-name" targets="Variable turbogears.testutil.f=turbogears.testutil-module.html#f"><a title="turbogears.testutil.f" class="py-name" href="#" onclick="return doclink('link-21', 'f', 'link-21');">f</a></tt><tt class="py-op">,</tt> <tt class="py-name">g</tt><tt class="py-op">:</tt> <tt class="py-name">g</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="turbogears.testutil.f" class="py-name" href="#" onclick="return doclink('link-22', 'f', 'link-21');">f</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">decorators</tt><tt class="py-op">,</tt> <tt class="py-name">func</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"> </tt>
+<a name="func_composition"></a><div id="func_composition-def"><a name="L89"></a><tt class="py-lineno"> 89</tt> <a class="py-toggle" href="#" id="func_composition-toggle" onclick="return toggle('func_composition');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#func_composition">func_composition</a><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="func_composition-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="func_composition-expanded"><a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">    <tt class="py-docstring">"""Return composition (decorator wise) of function."""</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">,</tt> <tt class="py-string">"__composition__"</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">func</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="func_original"></a><div id="func_original-def"><a name="L94"></a><tt class="py-lineno"> 94</tt> <a class="py-toggle" href="#" id="func_original-toggle" onclick="return toggle('func_original');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#func_original">func_original</a><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="func_original-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="func_original-expanded"><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-docstring">"""Return original (undecorated) function."""</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-23" class="py-name" targets="Function turbogears.decorator.func_composition()=turbogears.decorator-module.html#func_composition"><a title="turbogears.decorator.func_composition" class="py-name" href="#" onclick="return doclink('link-23', 'func_composition', 'link-23');">func_composition</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="func_id"></a><div id="func_id-def"><a name="L99"></a><tt class="py-lineno"> 99</tt> <a class="py-toggle" href="#" id="func_id-toggle" onclick="return toggle('func_id');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#func_id">func_id</a><tt class="py-op">(</tt><tt class="py-param">func</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="func_id-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="func_id-expanded"><a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-docstring">"""Return identity of function.</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">    If decorator was created with decorator() or weak_signature_decorator(),</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">    identity is invariant under decorator application.</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-24" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Domain.id=turbogears.i18n.sagettext.model.TG_Domain-class.html#id,Variable turbogears.i18n.sagettext.model.TG_Message.id=turbogears.i18n.sagettext.model.TG_Message-class.html#id,Variable turbogears.widgets.big_widgets.AjaxGrid.id=turbogears.widgets.big_widgets.AjaxGrid-class.html#id"><a title="turbogears.i18n.sagettext.model.TG_Domain.id
+turbogears.i18n.sagettext.model.TG_Message.id
+turbogears.widgets.big_widgets.AjaxGrid.id" class="py-name" href="#" onclick="return doclink('link-24', 'id', 'link-24');">id</a></tt><tt class="py-op">(</tt><tt id="link-25" class="py-name" targets="Function turbogears.decorator.func_original()=turbogears.decorator-module.html#func_original"><a title="turbogears.decorator.func_original" class="py-name" href="#" onclick="return doclink('link-25', 'func_original', 'link-25');">func_original</a></tt><tt class="py-op">(</tt><tt class="py-name">func</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="func_eq"></a><div id="func_eq-def"><a name="L109"></a><tt class="py-lineno">109</tt> <a class="py-toggle" href="#" id="func_eq-toggle" onclick="return toggle('func_eq');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.decorator-module.html#func_eq">func_eq</a><tt class="py-op">(</tt><tt class="py-param">f</tt><tt class="py-op">,</tt> <tt class="py-param">g</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="func_eq-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="func_eq-expanded"><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-docstring">"""Check if functions are identical."""</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name" targets="Function turbogears.decorator.func_id()=turbogears.decorator-module.html#func_id"><a title="turbogears.decorator.func_id" class="py-name" href="#" onclick="return doclink('link-26', 'func_id', 'link-26');">func_id</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="turbogears.testutil.f" class="py-name" href="#" onclick="return doclink('link-27', 'f', 'link-21');">f</a></tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt id="link-28" class="py-name"><a title="turbogears.decorator.func_id" class="py-name" href="#" onclick="return doclink('link-28', 'func_id', 'link-26');">func_id</a></tt><tt class="py-op">(</tt><tt class="py-name">g</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"decorate"</tt><tt class="py-op">,</tt> <tt class="py-string">"make_weak_signature"</tt><tt class="py-op">,</tt> <tt class="py-string">"compose"</tt><tt class="py-op">,</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-string">"decorator"</tt><tt class="py-op">,</tt> <tt class="py-string">"weak_signature_decorator"</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt class="py-string">"simple_decorator"</tt><tt class="py-op">,</tt> <tt class="py-string">"simple_weak_signature_decorator"</tt><tt class="py-op">,</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-string">"func_id"</tt><tt class="py-op">,</tt> <tt class="py-string">"func_eq"</tt><tt class="py-op">,</tt> <tt class="py-string">"func_original"</tt><tt class="py-op">,</tt> <tt class="py-string">"func_composition"</tt><tt class="py-op">]</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

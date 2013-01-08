@@ -1,0 +1,282 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using the Visit Framework &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Extending the Visit Framework" href="Extending.html" />
+    <link rel="prev" title="Using ToscaWidgets in TurboGears 1.0" href="../ToscaWidgets.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Extending.html" title="Extending the Visit Framework"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../ToscaWidgets.html" title="Using ToscaWidgets in TurboGears 1.0"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using the Visit Framework</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#the-visit-cookie">The Visit Cookie</a></li>
+<li><a class="reference internal" href="#tracking-visits-with-request-parameters">Tracking Visits With Request Parameters</a></li>
+<li><a class="reference internal" href="#housekeeping">Housekeeping</a></li>
+<li><a class="reference internal" href="#extending-the-visit-framework">Extending the Visit Framework</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../ToscaWidgets.html"
+                        title="previous chapter">Using ToscaWidgets in TurboGears 1.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Extending.html"
+                        title="next chapter">Extending the Visit Framework</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="using-the-visit-framework">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Using the Visit Framework</a><a class="headerlink" href="#using-the-visit-framework" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-the-visit-framework" id="id1">Using the Visit Framework</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#configuration" id="id3">Configuration</a></li>
+<li><a class="reference internal" href="#the-visit-cookie" id="id4">The Visit Cookie</a></li>
+<li><a class="reference internal" href="#tracking-visits-with-request-parameters" id="id5">Tracking Visits With Request Parameters</a></li>
+<li><a class="reference internal" href="#housekeeping" id="id6">Housekeeping</a></li>
+<li><a class="reference internal" href="#extending-the-visit-framework" id="id7">Extending the Visit Framework</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The Visit framework:</p>
+<ol class="arabic simple">
+<li>Manages a cookie that uniquely identifies a visitor to your website.</li>
+<li>Provides a plug-in mechanism so that your code can be called when a visitor
+browses your site.</li>
+<li>The visit framework is also the foundation of the <a class="reference internal" href="../Identity/index.html"><em>identity</em></a>
+framework used by TurboGears for authentication and authorization purposes.</li>
+</ol>
+</div>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id3">Configuration</a><a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://docs.turbogears.org/1.0/Configuration#visit">Visit configuration</a> is done in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>. The purpose of the configuration
+options should be pretty clear from the comments in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>, but here are
+some of the more interesting options.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">visit.on</span></tt></dt>
+<dd>Turns the visit framework on if <tt class="docutils literal"><span class="pre">True</span></tt></dd>
+<dt><tt class="docutils literal"><span class="pre">visit.source</span></tt> &#8211; <tt class="docutils literal"><span class="pre">cookie</span></tt></dt>
+<dd>Where to look for the key of an existing visit in the request and in which
+order. Comma-separated list of possible values: <tt class="docutils literal"><span class="pre">'cookie'</span></tt>, <tt class="docutils literal"><span class="pre">'form'</span></tt>.
+By default only use the visit key found in a session cookie.  New in 1.0.6.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.timeout</span></tt></dt>
+<dd><p class="first">The number of minutes a visitor may be idle before the visit is considered to
+be &#8216;expired&#8217;.</p>
+<p class="last">The default is 20 minutes. If you extend this to be a really long time period,
+you are defeating the point of tracking a visit. Remember, you are trying to
+track visits to the site, not track a &#8216;user&#8217; over any number of visits.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.name</span></tt></dt>
+<dd>You can change the name of the cookie that is sent to the visitor. The default
+is <tt class="docutils literal"><span class="pre">'tg-visit'</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.form.name</span></tt> &#8211; <tt class="docutils literal"><span class="pre">tg_visit</span></tt></dt>
+<dd>The name of the request parameter from which the visit key may be retrieved
+when <tt class="docutils literal"><span class="pre">visit.source</span></tt> includes <tt class="docutils literal"><span class="pre">'form'</span></tt>. The name MUST NOT contain dashes
+or dots or it will break the request parameters decoding by the
+<tt class="docutils literal"><span class="pre">NestedVariablesFilter</span></tt>. New in 1.0.6.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.permanent</span></tt></dt>
+<dd>If you want to be able to recover a session even when the browser was closed
+(within the timeout specified above), you can set this to <tt class="docutils literal"><span class="pre">True</span></tt>. But be
+aware that this will make your application less secure.</dd>
+</dl>
+</div>
+<div class="section" id="the-visit-cookie">
+<h2><a class="toc-backref" href="#id4">The Visit Cookie</a><a class="headerlink" href="#the-visit-cookie" title="Permalink to this headline">¶</a></h2>
+<p>The cookie that is sent to the user has the properties specified in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>.
+The actual payload for the cookie is a <a class="reference external" href="http://docs.python.org/lib/module-sha.html">SHA</a> hash of some of the visitor&#8217;s
+attributes (visitors IP address, port, the time, and random data). If this is a
+new visit, the cookie is generated and sent to the client. Note that the timeout
+time is tracked in the database, and is not a function of any &#8216;expires&#8217; property
+of the cookie. Rather, this information is stored in the <tt class="docutils literal"><span class="pre">Visit</span></tt> object
+defined in <tt class="docutils literal"><span class="pre">model.py</span></tt>.</p>
+<p>If a user configures his/her browser to ignore or reject cookies, the Visit
+framework will not work properly for that user. In this situation, every user
+request makes Visit act as if that this is a brand-new visit, and the response
+will include a newly created cookie.</p>
+</div>
+<div class="section" id="tracking-visits-with-request-parameters">
+<h2><a class="toc-backref" href="#id5">Tracking Visits With Request Parameters</a><a class="headerlink" href="#tracking-visits-with-request-parameters" title="Permalink to this headline">¶</a></h2>
+<p>New in 1.0.6.</p>
+<p>Sometimes tracking visits with a session cookie is not possible, either
+because the user has disabled cookies in his browser or a buggy web client does
+not transfer the session cookie with the visit key correctly. As a workaround
+the visit key can also be retrieved from the request parameters (whether URL or
+request body parameters). This is not enabled by default for security reasons
+because session-hijacking vulnerabilities can easily be introduced by improper
+use of session IDs in URLs. To enable retrieval of the visit key from the request
+params, set <tt class="docutils literal"><span class="pre">visit.source</span></tt> to include the value <tt class="docutils literal"><span class="pre">&quot;form&quot;</span></tt> in your application&#8217;s
+configuration. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">visit</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="s">&#39;cookie, form&#39;</span>
+</pre></div>
+</div>
+<p>With this setting, the visit framework will look for the visit key first in the
+session cookie and, if it is not found, in a request parameter with the name set
+by the <tt class="docutils literal"><span class="pre">visit.form.name</span></tt> configuration setting (default <tt class="docutils literal"><span class="pre">&quot;tg_visit&quot;</span></tt>). If the
+visit key is found in the request parameters, the request parameter will be
+stripped from the parameters so your controller methods do not need to handle an
+extra parameter.</p>
+<p>You must make arrangements for the client to transfer the visit key with the request
+parameters by either adding it to the query string of any URLs pointing to your
+application (for GET requests) or by adding the parameter to POST requests, for
+example by adding a hidden form field with the visit key to forms. You can get the
+value of the current visit key in your templates with <tt class="docutils literal"><span class="pre">tg.identity.visit_key</span></tt>.</p>
+<p>Example for including the visit key in a URL for a GET request:</p>
+<div class="highlight-python"><pre>&lt;a href="${tg.url('/foo', {tg.config('visit.form.name', 'tg_visit'): tg.identity.visit_key})}"
+  &gt;Click here&lt;/&gt;</pre>
+</div>
+<p>Example for including the visit key in a POST request through a form:</p>
+<div class="highlight-python"><pre>&lt;form action="${tg.url('/foo')}" method="POST"&gt;
+  &lt;input type="hidden"
+    name="${tg.config('visit.form.name', 'tg_visit')}"
+    value="${tg.identity.visit_key}" /&gt;
+  ...
+&lt;/form&gt;</pre>
+</div>
+</div>
+<div class="section" id="housekeeping">
+<h2><a class="toc-backref" href="#id6">Housekeeping</a><a class="headerlink" href="#housekeeping" title="Permalink to this headline">¶</a></h2>
+<p>Currently the Visit framework does not clean out old visit entries from the
+database, so expired visits will accumulate there and should be cleaned up
+once in a while. How often this is necessary depends on the traffic your
+website gets and whether you want to be able to check who was logged in
+at which time later.</p>
+<p>It is advisable to set up a periodic job to clean up old visit entries
+every day (week, hour, whatever suits you). Here is an example of a function
+that accomplishes this if you are using an SQLAlchemy <a class="reference internal" href=""><em>visit</em></a>/<a class="reference internal" href="../Identity/index.html"><em>identity</em></a> model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># tasks.py</span>
+
+<span class="kn">import</span> <span class="nn">logger</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">yourpkg.model</span> <span class="kn">import</span> <span class="n">Visit</span><span class="p">,</span> <span class="n">VisitIdentity</span><span class="p">,</span> <span class="n">session</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;yourpkg.tasks&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">expunge_expired_visits</span><span class="p">(</span><span class="n">keep_days</span><span class="o">=</span><span class="mi">7</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Expunge all visits and corresponding visitidentity entries from the</span>
+<span class="sd">    database, which are older than &#39;keep_days&#39; (default: 7 days).&quot;&quot;&quot;</span>
+
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">keep_days</span><span class="p">)</span>
+    <span class="n">visits</span> <span class="o">=</span> <span class="n">Visit</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+        <span class="n">Visit</span><span class="o">.</span><span class="n">expiry</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">t2</span><span class="p">))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Expunging all visits older than </span><span class="si">%i</span><span class="s"> days.&#39;</span><span class="p">,</span> <span class="n">keep_days</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Expunging </span><span class="si">%i</span><span class="s"> old visit(s).&#39;</span><span class="p">,</span> <span class="n">visits</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">visit</span> <span class="ow">in</span> <span class="n">visits</span><span class="p">:</span>
+        <span class="n">vi</span> <span class="o">=</span> <span class="n">VisitIdentity</span><span class="o">.</span><span class="n">by_visit_key</span><span class="p">(</span><span class="n">visit</span><span class="o">.</span><span class="n">visit_key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">vi</span><span class="p">:</span>
+            <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">vi</span><span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">visit</span><span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This cleans out all expired visit entries, which have expired more than
+<tt class="docutils literal"><span class="pre">keep_days</span></tt> days ago. It also deletes the VisitIdentity objects
+corresponding to these expired visits. You can use the TurboGears
+<a class="reference internal" href="../Scheduler.html"><em>scheduler</em></a> to run this function periodically or use
+a <a class="reference internal" href="../Install/DeployWithAnEgg.html"><em>console script entry point</em></a>
+to provide a script, which can be run from <em>cron</em>. If you do so, make sure
+that the configuration file is loaded, so that SQLAlchemy knows about your
+connection <a class="reference internal" href="../GettingStarted/UseDatabase.html"><em>dburi</em></a>.
+See <a class="reference internal" href="../ModelOutsideTG.html"><em>Using your model outside of TurboGears</em></a> for more
+information on this topic.</p>
+</div>
+<div class="section" id="extending-the-visit-framework">
+<h2><a class="toc-backref" href="#id7">Extending the Visit Framework</a><a class="headerlink" href="#extending-the-visit-framework" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>The visit framework can be extended with visit plugins or by replacing the
+standard visit manager with a custom one. Please see the page <a class="reference internal" href="Extending.html"><em>Extending
+the Visit Framework</em></a> for more information.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

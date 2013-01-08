@@ -1,0 +1,187 @@
+.. index:: @expose, expose decorator
+
+@expose()
+=========
+
+.. contents::
+  :depth: 2
+
+
+The expose decorator notifies CherryPy that you want a particular method
+to be exposed to the web, describing the output of your controller method,
+and starts/commits the automatic transaction support for databases that
+support transactions.
+
+Basic Usage
+-----------
+
+Adding an empty expose decorator above your method says that you want the
+method to be available on the web, but that you'll handle all of the content
+formatting and header setting::
+
+   @expose()
+
+More common is to provide TurboGears with a reference to a template::
+
+   @expose(template="projectname.templates.baz")
+
+Since the ``template`` keyword argument is the first parameter to the
+expose decorator function, you can also simply write::
+
+   @expose("projectname.templates.baz")
+
+When you do this, you're expected to return a dictionary from your controller
+method. The values in that dictionary are made available to your templates.
+Most templates will expose the key/value pairs as local variables in the scope
+of the template. In other words, returning ``{'a':2}`` causes all the ``${a}``'s
+in your template to be replaced by ``2``.
+
+.. tip:: If the values you want are already in the namespace of your
+         controller method, you can just ``return locals()``.
+
+The template we listed above (``"projectname.templates.baz"``) would use your
+application's default template engine to render the template -- Kid by default.
+If you wish to use a different template engine just for one method, you just
+put the name of the template engine at the front, followed by a colon::
+
+   @expose("cheetah:projectname.templates.plaintext")
+
+Some (well, only one at the moment) template engines might not even require a
+template file reference. JSON output works this way. In those cases, you can
+just list the name of the template engine itself::
+
+   @expose("json")
+
+
+Exposing methods with Python 2.3
+--------------------------------
+
+The decorator syntax shown above is not supported in Python 2.3. Therefore,
+you have to use an alternative syntax which means more typing but gets the
+job done just as well::
+
+    [expose("projectname.templates.baz")]
+    def yourmethod(self):
+        pass
+
+Alternatively, you can use::
+
+    def yourmethod(self):
+        pass
+    yourmethod = expose("projectname.templates.baz")(yourmethod)
+
+For other aspects regarding Python 2.3 support, please look at the
+:doc:`Python 2.3 support page <Install/Python2.3Support>`.
+
+
+Same method, different template
+-------------------------------
+
+Given that your controller methods are just returning a dictionary, you'd think
+that dictionary could be plugged into different template engines to return
+different results. And you'd be correct::
+
+   @expose("projectname.templates.baz")
+   @expose("json", as_format="json", accept_format="text/javascript")
+   def yourmethod(self):
+       return dict(a_value="something")
+
+If you haven't changed your default template language, the dictionary will be
+plugged into the ``projectname/templates/baz.kid`` Kid template for most calls.
+If, on the other hand, ``yourmethod`` is called with  "tg_format=json" or if
+there's an "Accept: text/javascript" header, the JSON formatted data will be
+returned.
+
+Since JSON is such a common and useful format for Ajax operations, there's a
+shortcut for getting the JSON output::
+
+   @expose("projectname.templates.baz", allow_json=True)
+   def yourmethod(self):
+        return dict(a_value="something")
+
+This example is equivalent to the previous example. Adding the
+``allow_json=True`` parameter is equivalent to tacking on a second ``@expose``
+matching the complete JSON expose decorator in the previous example.
+
+You are, of course, not limited to just a default and a JSON output. If you
+would like to use Kid for your HTML output but return Cheetah-formatted text,
+you'd use::
+
+   @expose("cheetah:projectname.templates.plaintext",
+            as_format="plain", accept_format="text/plain"
+            content_type="text/plain")
+
+If your method is called with a URL parameter of ``tg_format=plain``
+(``as_format`` controls this) or with an "Accept: text/plain" header
+(``accept_format`` controls this), the Cheetah template will be used to render
+out a plain text version of your page. If you omit the ``content_type``, the
+document will be served with a ``text/html`` MIME type. Most clients can handle
+misconfigured MIME types on text, but if you've got some templating engine that's
+returning non-text output, such as PDF or PNG, you'll want to set the MIME type
+correctly.
+
+Finally, some templating engines, such as Kid, can render a template to several
+target formats. The ``format`` parameter controls which format the engine
+outputs. For Kid, the options are ``"html"`` (default), ``"xml"``, and
+``"xhtml"``.
+
+For example, to output SVG, you will do something like this::
+
+    @expose(template="project.templates.svg",
+        content_type='image/svg+xml', format='xml')
+
+
+Dynamically switching templates within a function
+-------------------------------------------------
+
+Sometimes, you need to make the decision which template to use dynamically
+within the controller method. Consider the following example::
+
+    @expose("projectname.templates.user_created")
+    def create_user(self, name):
+        try:
+            emailaddress = name +'@foo.invalid'
+            User(user_name=name, display_name=name, email=emailaddress,
+                password='secret')
+            projectname.model.hub.commit()
+        except Exception:
+            # The user exists already - show an error form!
+            pass
+        return {}
+
+Of course you can (and should!) use a :doc:`validate decorator <ValidateDecorator>`
+and an :doc:`error_handler decorator <ErrorHandling>` to check for syntactically
+invalid user names. But until you really commit your changes, you can not be sure
+that the database won't raise an IntegrityError. For example, your user may just
+hit the register button twice.
+
+.. note:: **Side note:** Catching the generic ``Exception`` is not very smart! In
+          order to catch exceptions thrown by the database, you should only catch
+          the appropriate exceptions. See the :doc:`SQLObject <SQLObject/index>`
+          or :doc:`SQLAlchemy <SQLAlchemy/index>` documentation for more information on
+          this topic.
+
+You can override the template specified in ``@expose`` by returning a dictionary with
+the key ``tg_template``, e.g.::
+
+    @expose('projectname.templates.user_created')
+    def create_user(self, name):
+        try:
+            emailaddress = name +'@foo.invalid'
+            User(user_name=name, display_name=name, email=emailaddress,
+                password='secret')
+            projectname.model.hub.commit()
+        except Exception, e:
+            return dict(error=e, tg_template='projectname.templates.user_creation_error')
+        return dict()
+
+TurboGears will remove the ``tg_template`` key before it calls the specified template.
+The same holds true if you use ``testutil.call_with_request()`` in your :doc:`unit tests <Testing>`:
+You won't see the ``tg_template`` key in the output.
+
+.. _unit tests: Testing
+
+Last but not least: Handling exceptions in functions is such a common task that
+TurboGears comes with a specialized decorator to handle it. Have a look at the
+:doc:`exception_handler decorator <ErrorHandling>` which provides the facility
+to separate your exception handling code from the normal program flow.

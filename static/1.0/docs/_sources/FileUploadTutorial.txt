@@ -1,0 +1,321 @@
+.. index:: file upload
+
+File Upload Tutorial
+====================
+
+.. note:: Check the bottom of the page for the example project.
+
+.. contents::
+    :depth: 2
+
+
+This is a follow up to the existing :doc:`20 minute wiki tutorial <Wiki20/Page1>`. At this
+point, it is assumed that you have:
+
+* installed TG
+* completed the previous tutorial
+* are ready to add to that tutorial.
+
+.. _20 minute wiki tutorial: Wiki20/Page1
+
+Here is what this tutorial is all about: file uploads. After completing the
+above tutorial, I thought, 'gee, it'd be cool if I could upload files to
+the wiki'. And the way things go, one thing leads to another, and I wanted
+to download them, too. This introduces some issues, like:
+
+- the user interface for displaying the files (we'll use templates for all
+  the common stuff)
+- the user interface for uploading/downloading the files
+- state issues: we don't want to upload a file to a page that doesn't
+  exist yet.
+
+Rather than take you step-wise through my thought process and build this app
+like a real tutorial, I'll present the major issues along with the major
+chunks of code to address them.
+
+BTW, you don't have to copy and paste from this page, there is a ZIP file
+with the example project attached to this page. Skip down to the bottom of
+this page to find the download link.
+
+Note that in another article we also show how you can :doc:`display a progress bar
+during file uploads <FileUploadProgressBar>`.
+
+
+Update the Database Tables
+--------------------------
+
+We need to update the database to add a new table, the ``uploaded_files``
+table. This is a many-to-many relationship in my example. We'll have to
+drop our old tables and re-create these for the relationships to match.
+Here we go:
+
+#. Stop the server
+#. Drop the existing tables::
+
+    tg-admin sql drop page
+    tg-admin sql drop uploadedfile
+
+#. Edit your ``model.py``::
+
+    from sqlobject import *
+    from turbogears.database import PackageHub
+
+    hub = PackageHub("wiki20")
+    __connection__ = hub
+
+    # class YourDataClass(SQLObject):
+    #     pass
+
+    class Page(SQLObject):
+        pagename = UnicodeCol(alternateID=True, length=30)
+        data = UnicodeCol()
+        attached_files = RelatedJoin('UploadedFile')
+
+    class UploadedFile(SQLObject):
+        filename = UnicodeCol(alternateID=True, length=100)
+        abspath = UnicodeCol()
+        size = IntCol()
+        referenced_in_pages = RelatedJoin('Page')
+
+#. Create the new tables::
+
+    tg-admin sql create
+
+
+Add the ``upload`` Method
+-------------------------
+
+Here is the meat and potatoes. We add the ``upload`` method and a bunch of
+state logic to the controller. The idea is simple: we want to upload files
+and have them relate to a page. If a user uploads a previously uploaded
+file, we skip the upload, but we add the relationship to the db. So,
+multiple pages can reference a single uploaded file. And a single page can
+reference many files. Let's store these files in an app configured location:
+
+1. Add a new config setting for the path of the upload directory to the
+   config file::
+
+    # def.cfg
+    [global]
+
+    # Upload dir
+    wiki.uploads="./uploads"
+
+2. Add code to the controller to check for the existence of the upload
+   directory, create it if necessary::
+
+    # controller.py
+
+    # default upload dir to ./uploads
+    UPLOAD_DIR = cherrypy.config.get("wiki.uploads",
+        os.path.join(os.getcwd(), "uploads"))
+    if not os.path.exists(UPLOAD_DIR):
+        os.makedirs(UPLOAD_DIR)
+
+3. Add the ``upload`` method (remember meat and potatoes)::
+
+    # controller.py
+
+    @turbogears.expose()
+    def upload(self, upload_file, pagename, **keywords):
+        try:
+            p = Page.byPagename(pagename)
+        except SQLObjectNotFound:
+            turbogears.flash("Must save page first")
+            turbogears.redirect("/%s" % pagename)
+        data = upload_file.file.read()
+        target_file_name = os.path.join(os.getcwd(), UPLOAD_DIR,
+          upload_file.filename)
+        try:
+            u =  UploadedFile.byFilename(upload_file.filename)
+            turbogears.flash(
+              "File already uploaded: %s is already at %s" % \
+              (upload_file.filename, target_file_name))
+        except SQLObjectNotFound:
+            # open file in binary mode for writing
+            f = open(target_file_name, 'wb')
+            f.write(data)
+            f.close()
+            turbogears.flash(
+              "File uploaded successfully: %s saved as: %s" \
+              % (upload_file.filename, target_file_name))
+            u = UploadedFile(filename=upload_file.filename,
+              abspath=target_file_name, size=0)
+
+        Page.byPagename(pagename).addUploadedFile(u)
+        turbogears.redirect("/%s" % pagename)
+
+4. Note: the above code looks in the database to determine if the page
+   to which the file is uploaded already exists. If the page doesn't
+   exist in the database yet, then we cannot attach an uploaded file
+   to it::
+
+    try:
+        p = Page.byPagename(pagename)
+    except SQLObjectNotFound:
+        turbogears.flash("Must save page first")
+        turbogears.redirect("/%s" % pagename)
+
+
+Add an Upload Form to the Page Template
+---------------------------------------
+
+Here is the form that calls the upload method in the ``page.kid``
+template::
+
+    <!-- page.kid -->
+
+    <form action="upload" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="pagename" py:attrs="value=pagename"/>
+        <label for="upload_file">Filename:</label>
+        <input type="file" name="upload_file" id="upload_file"/>  <br/>
+        <input type="submit" name="submit_upload" value="Upload"/>
+    </form>
+
+
+Note that we have an ``INPUT`` element named ``"upload"`` of type ``file``.
+The other important aspects are that we use the ``POST`` method to submit
+the form and that we also added the ``enctype="multipart/form-data"``
+attribute to the ``FORM`` element. Without the latter, the file would be
+received by the controller as a normal string and would almost certainly
+become corrupted due to the input encoding conversion and our controller
+code would not work.
+
+
+Add File Listings to the Templates
+----------------------------------
+
+#. Template code::
+
+    <h3>Attached Files:</h3>
+    <ul>
+        <li py:for="filename in uploads">
+            <a href="/download?filename=${filename}" py:content="filename"
+              >Filename  goes here</a>
+        </li>
+    </ul>
+
+#. Add this code to ``page.kid`` and ``edit.kid`` somewhere at the bottom.
+
+#. I've appended to this tutorial my notes for generalizing this with
+   templates (see below).
+
+
+Add the ``download`` Method
+---------------------------
+
+CherryPy provides the function ``cherrypy.lib.cptools.serve_file``, which
+makes serving files super simple::
+
+    # controller.py
+
+    @turbogears.expose()
+    def download(self, filename):
+        uf = UploadedFile.byFilename(filename)
+        return cherrypy.lib.cptools.serve_file(uf.abspath,
+          contentType"application/x-download", dispositon="attachment",
+          uf.filename)
+
+The ``disposition="attachment"`` argument, will cause a ``Content-disposition``
+header to be sent to the browser which makes it pop up a download saving dialog.
+
+If you want the browser to start the application or plug-in configured to handle
+files of the downloaded type, use a ``disposition="inline"`` argument
+and set the ``contentType`` parameter to the mime type of the file you are
+serving. To find out the mime-type of a file you can use the mimetypes_ module
+from the standard library.
+
+Note that it's good practice to specify the filename in the
+``Content-disposition`` header. Otherwise the user will see the last part
+of the URL as filename. If you ever downloaded a file from a web-page and
+the browser suggested ``"download.php"`` or something similar as the
+filename, you'll know what I mean ;). Luckily, the CherryPy ``serve_file``
+function already takes care of this for us.
+
+.. _mimetypes: http://docs.python.org/lib/module-mimetypes.html
+
+
+Add Error Handling to the ``index`` Method
+------------------------------------------
+
+In case the ``publish parts`` call throws an error, we will catch this
+with a ``try/except`` clause and just display the ReST source directly::
+
+    # controller.py
+
+    @turbogears.expose("toddswiki.templates.page")
+    def index(self, pagename="FrontPage"):
+        try:
+            page = Page.byPagename(pagename)
+            uploads = [item.filename for item in page.attached_files]
+        except SQLObjectNotFound:
+            turbogears.redirect("/notfound", pagename=pagename)
+        try:
+            content = publish_parts(
+              page.data,writer_name="html")["html_body"]
+        except:
+            content = page.data
+        root = str(turbogears.url("/"))
+        content = wikiwords.sub(r' <a href="%s\1">\1</a> ' % root, content)
+        return dict(data=content, pagename=page.pagename, uploads=uploads)
+
+
+Refactor the Templates
+----------------------
+
+We'll use template inheritance feature of Kid to simplify the file
+listing in the templates. Make the following changes to get this working::
+
+    <!-- master.kid -->
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <?python import sitetemplate ?>
+    <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:py="http://purl.org/kid/ns#"
+      py:extends="sitetemplate, 'includes.kid'">
+
+::
+
+    <!-- page.kid / edit.kid -->
+
+    <div py:replace="attached_files(${uploads})"/>
+
+::
+
+    <!-- includes.kid -->
+
+    <h3>Attached Files:</h3>
+    <ul py:def="attached_files(uploads)">
+        <li py:for="filename in uploads">
+            <a href="./download?filename=${filename}"
+              py:content="filename">Filename goes here</a>
+        </li>
+    </ul>
+
+
+For more details, see:
+
+- http://kid.lesscode.org/language.html#template-reuse-py-extends
+- http://lesscode.org/projects/kid/wiki/IncludeSectionFromOtherTemplateRecipe
+
+
+Attachments
+-----------
+
+* :download:`wiki.zip <downloads/wiki.zip>` (30.4 kB) -full files for the
+  FileUploadTutorial added by GreenTea <tgreenwoodgeer@yahoo.com> on
+  10/20/05 18:14:28.
+
+
+References
+----------
+
+More information, documentation and tutorials on CherryPy file uploads
+can be found at the following locations:
+
+* `TurboGears and Uploading Pictures <http://www.alleged.org.uk/pdc/2006/03/08.html>`_
+  on Damian Cugley’s blog.
+* The file `cherrypy/tutorial/tut09_files.py
+  <http://cherrypy.org/browser/branches/cherrypy-2.x/cherrypy/tutorial/tut09_files.py>`_
+  in the CherryPy distribution.

@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Starting TurboGears Applications Using Init Scripts &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Database Installation" href="../Database/index.html" />
+    <link rel="prev" title="Making HTTPS Redirects Work With a Reverse Proxy" href="RedirectHttpsRequests.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../Database/index.html" title="Database Installation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="RedirectHttpsRequests.html" title="Making HTTPS Redirects Work With a Reverse Proxy"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Starting TurboGears Applications Using Init Scripts</a><ul>
+<li><a class="reference internal" href="#debian">Debian</a></li>
+<li><a class="reference internal" href="#gentoo">Gentoo</a></li>
+<li><a class="reference internal" href="#redhat-fedora-centos">RedHat / Fedora / CentOS</a></li>
+<li><a class="reference internal" href="#suse-lsb">Suse / LSB</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="RedirectHttpsRequests.html"
+                        title="previous chapter">Making HTTPS Redirects Work With a Reverse Proxy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../Database/index.html"
+                        title="next chapter">Database Installation</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="starting-turbogears-applications-using-init-scripts">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Starting TurboGears Applications Using Init Scripts</a><a class="headerlink" href="#starting-turbogears-applications-using-init-scripts" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#starting-turbogears-applications-using-init-scripts" id="id1">Starting TurboGears Applications Using Init Scripts</a><ul>
+<li><a class="reference internal" href="#debian" id="id2">Debian</a></li>
+<li><a class="reference internal" href="#gentoo" id="id3">Gentoo</a></li>
+<li><a class="reference internal" href="#redhat-fedora-centos" id="id4">RedHat / Fedora / CentOS</a></li>
+<li><a class="reference internal" href="#suse-lsb" id="id5">Suse / LSB</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>When deploying a TurboGears app to a Linux/Unix-based server,
+it may be useful to set up your application to run using an init script.</p>
+<p>Here are some init scripts that may be helpful
+(most come from <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/af07ba5360a28a95/4aed43ecd6cd4e14">this thread</a> on the mailing list).</p>
+<p>Note that these scripts are unoffical, untested, and probably won&#8217;t work
+for you unmodified. They&#8217;re just offered here to help you get moving
+in the right direction.</p>
+<div class="section" id="debian">
+<h2><a class="toc-backref" href="#id2">Debian</a><a class="headerlink" href="#debian" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an example <a class="reference download internal" href="../_downloads/debian-initscript.rc"><tt class="xref download docutils literal"><span class="pre">Debian</span> <span class="pre">script</span></tt></a>.</p>
+</div>
+<div class="section" id="gentoo">
+<h2><a class="toc-backref" href="#id3">Gentoo</a><a class="headerlink" href="#gentoo" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an example <a class="reference download internal" href="../_downloads/gentoo-initscript.rc"><tt class="xref download docutils literal"><span class="pre">Gentoo</span> <span class="pre">script</span></tt></a>.</p>
+</div>
+<div class="section" id="redhat-fedora-centos">
+<h2><a class="toc-backref" href="#id4">RedHat / Fedora / CentOS</a><a class="headerlink" href="#redhat-fedora-centos" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an example <a class="reference download internal" href="../_downloads/redhat-initscript.rc"><tt class="xref download docutils literal"><span class="pre">Red</span> <span class="pre">Hat</span> <span class="pre">script</span></tt></a>.</p>
+</div>
+<div class="section" id="suse-lsb">
+<h2><a class="toc-backref" href="#id5">Suse / LSB</a><a class="headerlink" href="#suse-lsb" title="Permalink to this headline">¶</a></h2>
+<p>Here is an example <a class="reference download internal" href="../_downloads/lsb-initscript.project"><tt class="xref download docutils literal"><span class="pre">LSB</span> <span class="pre">script</span></tt></a> that should work on SuSE Linux. This scripts needs functions in <a class="reference download internal" href="../_downloads/rc.status"><tt class="xref download docutils literal"><span class="pre">rc.status</span></tt></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

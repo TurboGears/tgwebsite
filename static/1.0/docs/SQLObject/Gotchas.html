@@ -1,0 +1,157 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject “gotcha’s” &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Storing and Retrieving Files from a Database" href="StoringAndRetrievingFiles.html" />
+    <link rel="prev" title="SQLObject Caching" href="Caching.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="StoringAndRetrievingFiles.html" title="Storing and Retrieving Files from a Database"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Caching.html" title="SQLObject Caching"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject &#8220;gotcha&#8217;s&#8221;</a><ul>
+<li><a class="reference internal" href="#intercepting-exceptions">Intercepting Exceptions</a></li>
+<li><a class="reference internal" href="#using-picklecol-and-mysql">Using PickleCol and <tt class="docutils literal"><span class="pre">MySQL</span></tt></a></li>
+<li><a class="reference internal" href="#using-a-column-named-dirty">Using a Column named &#8216;dirty&#8217;</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Caching.html"
+                        title="previous chapter">SQLObject Caching</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="StoringAndRetrievingFiles.html"
+                        title="next chapter">Storing and Retrieving Files from a Database</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-gotcha-s">
+<h1><a class="toc-backref" href="#id2">SQLObject &#8220;gotcha&#8217;s&#8221;</a><a class="headerlink" href="#sqlobject-gotcha-s" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlobject-gotcha-s" id="id2">SQLObject &#8220;gotcha&#8217;s&#8221;</a><ul>
+<li><a class="reference internal" href="#intercepting-exceptions" id="id3">Intercepting Exceptions</a></li>
+<li><a class="reference internal" href="#using-picklecol-and-mysql" id="id4">Using PickleCol and <a class="reference internal" href="../Database/MySQL.html"><em>MySQL</em></a></a></li>
+<li><a class="reference internal" href="#using-a-column-named-dirty" id="id5">Using a Column named &#8216;dirty&#8217;</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="intercepting-exceptions">
+<h2><a class="toc-backref" href="#id3">Intercepting Exceptions</a><a class="headerlink" href="#intercepting-exceptions" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="index.html"><em>SqlObject</em></a> does not catch and re-throw the exceptions of the underlying DB-API module. Instead you will get the exceptions of the DB-API module directly in your face, like an IntegrityError if you hit a constraint violation.</p>
+<p>I haven&#8217;t seen a sensible way to intercept those exceptions, yet, something like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">try</span><span class="p">:</span>
+   <span class="o">...</span>
+<span class="k">except</span> <span class="n">hub</span><span class="o">.</span><span class="n">hub</span><span class="o">.</span><span class="n">getConnection</span><span class="p">()</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">IntegrityError</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+   <span class="o">...</span>
+</pre></div>
+</div>
+<p>just seems to be too kludgy ...</p>
+<p>Question: Maybe this is a bug in SQLObject?</p>
+</div>
+<div class="section" id="using-picklecol-and-mysql">
+<h2>Using <a class="reference external" href="http://sqlobject.org/SQLObject.html#column-types">PickleCol</a> and <a class="reference internal" href="../Database/MySQL.html"><em>MySQL</em></a><a class="headerlink" href="#using-picklecol-and-mysql" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">some_field</span> <span class="o">=</span> <span class="n">PickleCol</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Will create a TINYBLOB column in MySQL, which can only hold 256 bytes. Depending on the data you&#8217;re throwing at it, this may be OK, but if you start getting &#8220;Pickle data truncated&#8221; errors, add a length to the <a class="reference external" href="http://sqlobject.org/SQLObject.html#column-types">PickleCol</a>, like so:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">some_field</span> <span class="o">=</span> <span class="n">PickleCol</span><span class="p">(</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">24</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This will give you more room to pickle stuff.</p>
+<p>Check the <a class="reference external" href="http://dev.mysql.com/doc/refman/5.1/en/storage-requirements.html">MySQL docs</a> to see what length values will map to MEDIUMBLOB and LARGEBLOB, if you need to be precise.</p>
+</div>
+<div class="section" id="using-a-column-named-dirty">
+<h2><a class="toc-backref" href="#id5">Using a Column named &#8216;dirty&#8217;</a><a class="headerlink" href="#using-a-column-named-dirty" title="Permalink to this headline">¶</a></h2>
+<p>I&#8217;ve spent the last few hours tackling a confusing problem in SQLObject, and thought I might post the experience to help other TurboGears people.</p>
+<p>I have a table, which has a column named &#8216;dirty&#8217; of type Boolean.</p>
+<p>Something was mysteriously setting this bit to false. I hunted though all my code, and could not find any code which was generating the update statement:</p>
+<div class="highlight-python"><pre>UPDATE xxx SET dirty = ('f') WHERE id = (XXX)</pre>
+</div>
+<p>As it turns out, one cannot use a field named &#8216;dirty&#8217; in SQLObject classes, as it is an internal attribute used by SQLObject. Everytime SQLObject sets this attribute (which was now a property), it triggered a SQL update operation.</p>
+<p>I renamed the field, and the problem went away.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

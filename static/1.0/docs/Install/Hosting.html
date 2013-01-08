@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Hosting TurboGears Applications &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Deploying your TG application with an Egg and Easy Install" href="DeployWithAnEgg.html" />
+    <link rel="prev" title="Deploying TurboGears" href="Deployment.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DeployWithAnEgg.html" title="Deploying your TG application with an Egg and Easy Install"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Deployment.html" title="Deploying TurboGears"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Hosting TurboGears Applications</a><ul>
+<li><a class="reference internal" href="#top-picks">Top Picks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Deployment.html"
+                        title="previous chapter">Deploying TurboGears</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DeployWithAnEgg.html"
+                        title="next chapter">Deploying your TG application with an Egg and Easy Install</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="hosting-turbogears-applications">
+<span id="index-0"></span><h1>Hosting TurboGears Applications<a class="headerlink" href="#hosting-turbogears-applications" title="Permalink to this headline">¶</a></h1>
+<p>TurboGears applications can&#8217;t be hosted with every web hosting company. Luckily, though, there are <em>many</em> good choices to choose from. The hosting companies on this page are selected to ensure:</p>
+<ol class="arabic simple">
+<li>Ability to run TurboGears apps</li>
+<li>Good support</li>
+<li>Good value</li>
+</ol>
+<p>Additionally, some of these companies support the TurboGears project through referral offers (when you sign up, they send some money). All things being equal, hosting companies that provide referral money are a big win for the project.</p>
+<p>If you run into problems with one of these companies, please:</p>
+<ol class="arabic simple">
+<li>Try to resolve the dispute with their customer service department</li>
+<li>Failing that, send a message to the <a class="reference external" href="http://groups.google.com/group/turbogears">main TurboGears mailing list</a> with a subject like &#8220;hosting problem&#8221;.</li>
+</ol>
+<p>Any company that is found to not run TurboGears apps well, not provide good support <em>or</em> not provide a good value will be removed from this list.</p>
+<p>One guideline when it comes to shared hosting: you should make sure that your app is friendly to a shared hosting environment. Make sure your server.environment variable is set to &#8220;production&#8221;. Don&#8217;t hold too many things in RAM, and avoid running expensive database queries. With accounts starting around $7 per month, these companies can&#8217;t afford to have processes bogging down their servers, so tune things a bit on your computer before deploying your app.</p>
+<div class="section" id="top-picks">
+<h2>Top Picks<a class="headerlink" href="#top-picks" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.webfaction.com/?affiliate=turbogears">WebFaction</a> Starting at $7.50 a month, WebFaction offers the easiest TurboGears hosting around. You&#8217;ve got to see it to believe it... a few clicks of the control panel gets you a TurboGears app running and hooked up to a URL on your site! They provide ample storage (2GB) and bandwidth (200GB/month) for most sites on their least expensive TurboGears plan. Plus, you get Trac and Subversion to help with your development. As an added incentive, WebFaction pays <strong>50% of its profits on TurboGears hosting</strong> back in support of TurboGears!</li>
+<li><a class="reference external" href="http://affiliates.westhost.com/z/14/CD686">WestHost</a> WestHost is an inexpensive Virtual Private Server (VPS) hosting company (starting at $7 per month). By providing a VPS, you&#8217;re assured that you&#8217;re able to run TurboGears in the best way possible for your app. It also makes it easy to deploy TurboGears in the simplest way: straight proxying. $7 per month gets you 2GB of disk space and 40GB of bandwidth use per month. With WestHost, you get more control over your (virtual) server, but you also have to do more of the work yourself. WestHost also helps support the TurboGears project when you click the link above.</li>
+<li><a class="reference external" href="http://www.nexcess.net/software/turbogears-web-hosting.php">NEXCESS.NET</a> offers shared TurboGears web hosting starting at just $6.95 per month.  If you&#8217;re looking for a TurboGears enabled virtual server (VPS), dedicated server or server cluster we can easily accomodate.  Free installation and solid support will get your TurboGears app up quick and keep it running smooth.</li>
+<li><a class="reference external" href="http://www.bluehost.com/track/tazzzzz/tgorg">BlueHost</a> If you need more resources for your dollar, BlueHost gives you 15GB of disk space and 400GB of bandwidth for just $7 per month. Their service is not a VPS, but they provide SSH shell access and allow people to run Ruby on Rails, which has a similar footprint to TurboGears. Additionally, there have been reports of people running TurboGears successfully here. This one provides more resources than WebFaction or WestHost, but it&#8217;s not as easy as WebFaction or configurable as WestHost. Choose this one only if you really need the additional resources.</li>
+<li><a class="reference external" href="http://www.dreamhost.com/">Dreamhost</a> is very similar to Bluehost in that you have ssh access and can compile a local version of python, install your own eggs and fun it through FCGI, since the officially support Rails, TurboGears shouldn&#8217;t have any ptoblems.</li>
+<li><a class="reference external" href="http://www.slicehost.com/">Sclicehost</a> offers Xen VPS solutions with full root access and choice of distro.</li>
+</ul>
+<p><strong>Know of another great hosting company?</strong> This list is not trying to be complete, because there are just too many potentially usable hosting companies out there. The goal is to provide enough variety to meet the various needs that TurboGears users have.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

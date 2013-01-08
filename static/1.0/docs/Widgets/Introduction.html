@@ -1,0 +1,629 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction To Widgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Guide to the TurboGears Widgets Documentation" href="index.html" />
+    <link rel="next" title="Widget Form Validation with Schemas" href="FormValidationWithSchemas.html" />
+    <link rel="prev" title="WidgetList" href="List.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FormValidationWithSchemas.html" title="Widget Form Validation with Schemas"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="List.html" title="WidgetList"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Guide to the TurboGears Widgets Documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction To Widgets</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#advantages-of-widgets">Advantages of Widgets</a><ul>
+<li><a class="reference internal" href="#for-the-user">For the User</a></li>
+<li><a class="reference internal" href="#for-the-programmer">For the Programmer</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-tutorial-preparations">The Tutorial Preparations</a><ul>
+<li><a class="reference internal" href="#model">Model</a></li>
+<li><a class="reference internal" href="#template">Template</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#normal-approach">Normal Approach</a></li>
+<li><a class="reference internal" href="#widget-approach">Widget Approach</a><ul>
+<li><a class="reference internal" href="#template-parameters">Template Parameters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#use-a-pre-made-widget">Use a Pre-made Widget</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="List.html"
+                        title="previous chapter">WidgetList</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FormValidationWithSchemas.html"
+                        title="next chapter">Widget Form Validation with Schemas</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="introduction-to-widgets">
+<h1><a class="toc-backref" href="#id1">Introduction To Widgets</a><a class="headerlink" href="#introduction-to-widgets" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction-to-widgets" id="id1">Introduction To Widgets</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#advantages-of-widgets" id="id3">Advantages of Widgets</a></li>
+<li><a class="reference internal" href="#the-tutorial-preparations" id="id4">The Tutorial Preparations</a></li>
+<li><a class="reference internal" href="#normal-approach" id="id5">Normal Approach</a></li>
+<li><a class="reference internal" href="#widget-approach" id="id6">Widget Approach</a></li>
+<li><a class="reference internal" href="#use-a-pre-made-widget" id="id7">Use a Pre-made Widget</a></li>
+<li><a class="reference internal" href="#conclusion" id="id8">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="Overview.html"><em>Widgets</em></a> are one of the most useful features of TurboGears. This tutorial will
+use a &#8220;fooball team&#8221; example to show you how to develop a workable TurboGears
+project (<a class="reference internal" href="#normal-approach">Normal Approach</a>), then the tutorial will show you how to create your
+own lightweight widgets to reuse web elements (<a class="reference internal" href="#widget-approach">Widget Approach</a>), with a bonus
+introduction to the standard DataGrid widget.</p>
+</div>
+<div class="section" id="advantages-of-widgets">
+<h2><a class="toc-backref" href="#id3">Advantages of Widgets</a><a class="headerlink" href="#advantages-of-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Widgets were created to:</p>
+<ul class="simple">
+<li>Ease code reuse.</li>
+<li>Enforce code/template separation.</li>
+</ul>
+<div class="section" id="for-the-user">
+<h3>For the User<a class="headerlink" href="#for-the-user" title="Permalink to this headline">¶</a></h3>
+<p>The user benefits from using widgets by the following aspects:</p>
+<ul class="simple">
+<li>Availability of  so-called rich controls (such as SelectShuttle, TinyMCE
+Editor, interactive AJAXian controls, etc.).</li>
+<li>Having consistent, versatile form validation and input error message
+display.</li>
+<li>Efficient management of external resources (JavaScript, CSS, images, etc.),
+which leads to fast and standard compliant pages.</li>
+</ul>
+</div>
+<div class="section" id="for-the-programmer">
+<h3>For the Programmer<a class="headerlink" href="#for-the-programmer" title="Permalink to this headline">¶</a></h3>
+<p>In object-orient programming, you wrap data and functions in a class to make
+objects have a clear interface and make code reuse easy. Classes can inherit
+from each other so those classes can share common data and behaviour and can be
+customized by adding or overwriting methods and data from the superclass(es).</p>
+<p>Widgets share the same principle: Widgets wrap all parts of a webpage&#8217;s display
+components into an object that encompasses the (X)HTML/XML template, the CSS
+and Javascript, and the server logic to display and update the widget and
+handle interaction. Widgets can also be inherited and extended so they can be
+combined into <a class="reference internal" href="CompoundWidgets.html"><em>compound widgets</em></a> like forms or fancy AJAX-enabled controls.</p>
+<p>By providing the programmer with a consistent, simple interface and greatly
+reduced boiler plate code, widgets make modifications and page restructuring
+much easier.</p>
+<p>Since widgets are reusable, you can efficiently code repeating display elements
+of your page or use them for components that appear on many pages of your site.
+You do this by packaging and including extra widget resources (e.g. internal/
+external JavaScript code, CSS styles and stylesheets, images, etc.).</p>
+<p>Let&#8217;s see a practical application of widgets!</p>
+</div>
+</div>
+<div class="section" id="the-tutorial-preparations">
+<h2><a class="toc-backref" href="#id4">The Tutorial Preparations</a><a class="headerlink" href="#the-tutorial-preparations" title="Permalink to this headline">¶</a></h2>
+<p>We&#8217;re going to create a web application that tracks statistics for the entirely
+fictitious sport of &#8220;Fooball&#8221;.</p>
+<p>Fooball is a very simple game:</p>
+<ul class="simple">
+<li>Players on teams do unspecified things to score as many points as possible
+before the end of the game.</li>
+<li>The team with the most points at the end wins.</li>
+<li>The player with the most points at the end gets lucrative sponsorship deals.
+(but that&#8217;s outside the scope of this tutorial)</li>
+</ul>
+<p>The front page will contain a list of teams and a list of all league players and
+their stats. The list of teams will contain links to individual team pages,
+each listing stats for the players on that team. Simple enough.</p>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<p>Quickstart the application using <tt class="docutils literal"><span class="pre">fooball</span></tt> for both the application and module
+name, and define our data model in <tt class="docutils literal"><span class="pre">model.py</span></tt>:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Copy and paste the code below into the <tt class="docutils literal"><span class="pre">model.py</span></tt> file, right where it
+says <tt class="docutils literal"><span class="pre">&quot;#</span> <span class="pre">your</span> <span class="pre">data</span> <span class="pre">model&quot;</span></tt>. <strong>Leave the existing code above in place.</strong></p>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="n">DateCol</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">MultipleJoin</span>
+
+<span class="k">class</span> <span class="nc">Player</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">birthdate</span> <span class="o">=</span> <span class="n">DateCol</span><span class="p">(</span><span class="n">notNull</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">team</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Team&#39;</span><span class="p">)</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">IntCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Team</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">notNull</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">nickname</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">notNull</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">players</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;Player&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>From the model, you can see that teams are uniquely identified by their nickname
+(although a city can host multiple teams), and all players forever belong to
+one team (Fooball players haven&#8217;t discovered free agency yet, to the delight of
+Fooball team owners).</p>
+<p>We&#8217;ll create the database by changing into the top-levl project directory and
+issuing the command</p>
+<div class="highlight-python"><pre>tg-admin sql create</pre>
+</div>
+<p>and then define some data using</p>
+<div class="highlight-python"><pre>tg-admin shell</pre>
+</div>
+<p>You could use the <a class="reference internal" href="../ModelDesigner.html"><em>ModelDesigner</em></a> and <a class="reference internal" href="../Catwalk.html"><em>CatWalk</em></a> to do this, but for simplicity
+we&#8217;ll use the command line tools.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t1</span> <span class="o">=</span> <span class="n">Team</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s">&#39;Pittsburgh&#39;</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">&#39;Ferrous Metals&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t2</span> <span class="o">=</span> <span class="n">Team</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="s">&#39;Seattle&#39;</span><span class="p">,</span> <span class="n">nickname</span><span class="o">=</span><span class="s">&#39;Seagulls&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Player</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Bob Waffleburger&#39;</span><span class="p">,</span> <span class="n">birthdate</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">1982</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span>
+<span class="go">        team=t1, points=21)</span>
+<span class="go">&lt;Player 1 name=&#39;Bob Waffleburger&#39; birthdate=&#39;datetime.date(198...)&#39; ↵</span>
+<span class="go">    teamID=1 points=21&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Player</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Mike Handleback&#39;</span><span class="p">,</span> <span class="n">birthdate</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">1975</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">25</span><span class="p">),</span>
+<span class="go">        team=t2, points=10)</span>
+<span class="go">&lt;Player 2 name=&#39;Mike Handleback&#39; birthdate=&#39;datetime.date(197...)&#39; ↵</span>
+<span class="go">    teamID=2 points=10&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hub</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Good enough for now. (Any resemblance to real teams, players, or final scores is
+purely coincidental, but I&#8217;m sure you knew that.)</p>
+</div>
+<div class="section" id="template">
+<h3>Template<a class="headerlink" href="#template" title="Permalink to this headline">¶</a></h3>
+<p>Now we&#8217;ll cobble up a simple front page by editing the body of
+<tt class="docutils literal"><span class="pre">/fooball/fooball/templates/welcome.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;h1&gt;International Fooball League Stats&lt;/h1&gt;
+
+&lt;h2&gt;Teams&lt;/h2&gt;
+
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;City&lt;/th&gt;
+        &lt;th&gt;Team Name&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for="team in teams"&gt;
+        &lt;td py:content="team.city"/&gt;
+        &lt;td py:content="team.nickname"/&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2&gt;Players&lt;/h2&gt;
+
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Name&lt;/th&gt;
+        &lt;th&gt;Birthdate&lt;/th&gt;
+        &lt;th&gt;Team&lt;/th&gt;
+        &lt;th&gt;Points&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for="player in players"&gt;
+        &lt;td py:content="player.name"/&gt;
+        &lt;td py:content="player.birthdate"/&gt;
+        &lt;td py:content="player.team"/&gt;
+        &lt;td py:content="player.points"/&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+<p>Since our template uses the teams and players variables, add them to the Root
+controller&#8217;s <tt class="docutils literal"><span class="pre">index</span></tt> method in <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">Team</span><span class="p">,</span> <span class="n">Player</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">teams</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span>
+            <span class="n">players</span><span class="o">=</span><span class="n">Player</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="normal-approach">
+<h2><a class="toc-backref" href="#id5">Normal Approach</a><a class="headerlink" href="#normal-approach" title="Permalink to this headline">¶</a></h2>
+<p>Now, start the app, and take a look at the front page:</p>
+<p>Ugh. Well, the teams look fine, but the players show an ugly SQLObject
+representation for their team name. We could fix this by changing the
+<tt class="docutils literal"><span class="pre">player.team</span></tt> to <tt class="docutils literal"><span class="pre">players.team.city</span></tt>, but then we&#8217;d have to make sure we do
+it everywhere we want to show a <tt class="docutils literal"><span class="pre">Player.team</span></tt>. And make sure we always do it
+the same way. That&#8217;s a recipe for mistakes. When programming, it&#8217;s best to
+follow the maxim, &#8220;Don&#8217;t Repeat Yourself&#8221;.</p>
+<p>Instead, we&#8217;ll tell the <tt class="docutils literal"><span class="pre">Team</span></tt> object how to display itself by adding a
+string-izing method to the class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nickname</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And look: reuse! We can get rid of that ugly &#8220;City/Name&#8221; table by doing the same
+thing there in the <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> template:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Teams&lt;/h2&gt;
+
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Team&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for="team in teams"&gt;
+        &lt;td py:content="team"/&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+<p>Much better. Now let&#8217;s make pages for each team. A new controller method will
+do the trick:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.team&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">team</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">team_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">team</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">team_id</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>With a new template called <tt class="docutils literal"><span class="pre">team.kid</span></tt>, whose body looks like this:</p>
+<div class="highlight-python"><pre>&lt;h1 py:content="team"/&gt;
+
+&lt;h2&gt;Players&lt;/h2&gt;
+
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Name&lt;/th&gt;
+        &lt;th&gt;Birthdate&lt;/th&gt;
+        &lt;th&gt;Points&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for="player in team.players"&gt;
+        &lt;td py:content="player.name"/&gt;
+        &lt;td py:content="player.points"/&gt;
+        &lt;td py:content="player.birthdate"/&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+<p>And a way to get to the team page, courtesy of a quick change to the
+<tt class="docutils literal"><span class="pre">welcome.kid</span></tt> template:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Teams&lt;/h2&gt;
+&lt;table border="1"&gt;
+    &lt;tr&gt;
+        &lt;th&gt;Team&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for="team in teams"&gt;
+        &lt;td&gt;&lt;a href="/team/${team.id}"&gt;$team&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+<p>Ok, let&#8217;s look at the team page for Pittsburgh.</p>
+<p>Whoops. Haha. I don&#8217;t think &#8220;Big Bob&#8221; was born on 21, and he certainly didn&#8217;t
+earn 1983-03-02=1978 points. When I typed the second table, I switched the order
+of two columns.</p>
+<p>This again illustrates the &#8220;Don&#8217;t Repeat Yourself&#8221; point. Every time you write
+the same code again, you run the risk of introducing bugs. And if you want to
+change the way the table looks (say, by showing &#8216;age&#8217; instead of &#8216;birthday&#8217;, you
+have to repeat the change each time.</p>
+</div>
+<div class="section" id="widget-approach">
+<h2><a class="toc-backref" href="#id6">Widget Approach</a><a class="headerlink" href="#widget-approach" title="Permalink to this headline">¶</a></h2>
+<p>Rather than retype (or copy and paste) that table every time we want to show a
+grid of players, let&#8217;s create a reusable widget. We&#8217;ll create the simplest
+possible widget that we can use in both the front page and the team page. We&#8217;ll
+add it to <tt class="docutils literal"><span class="pre">controllers.py</span></tt> for now:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">widgets</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">Team</span><span class="p">,</span> <span class="n">Player</span>
+
+<span class="k">class</span> <span class="nc">SimpleRosterWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">    &lt;table xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span>
+<span class="s">      class=&quot;simpleroster&quot;</span>
+<span class="s">      border=&quot;1&quot;&gt;</span>
+<span class="s">      &lt;tr&gt;</span>
+<span class="s">        &lt;th&gt;Name&lt;/th&gt;</span>
+<span class="s">        &lt;th&gt;Birthdate&lt;/th&gt;</span>
+<span class="s">        &lt;th&gt;Team&lt;/th&gt;</span>
+<span class="s">        &lt;th&gt;Points&lt;/th&gt;</span>
+<span class="s">      &lt;/tr&gt;</span>
+<span class="s">      &lt;tr py:for=&quot;player in value&quot;&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.name&quot;/&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.birthdate&quot;/&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.team&quot;/&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.points&quot;/&gt;</span>
+<span class="s">      &lt;/tr&gt;</span>
+<span class="s">    &lt;/table&gt;</span>
+<span class="s">    &#39;&#39;&#39;</span>
+</pre></div>
+</div>
+<p>And that&#8217;s it. Not a drop of code to be found. You&#8217;ll note that the template
+references <tt class="docutils literal"><span class="pre">value</span></tt>, which is the standard TurboGears name used to apply data
+to the widget. I also added a CSS class to the widget; I like to do that because
+it&#8217;s easier to apply per-widget CSS styles down the road.</p>
+<p>Let&#8217;s provide the widget in the controllers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">players_widget</span> <span class="o">=</span> <span class="n">SimpleRosterWidget</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">teams</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span>
+            <span class="n">players</span><span class="o">=</span><span class="n">Player</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span>
+            <span class="n">players_widget</span><span class="o">=</span><span class="n">players_widget</span>
+        <span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.team&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">team</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">team_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">team</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">team_id</span><span class="p">)),</span>
+            <span class="n">players_widget</span><span class="o">=</span><span class="n">players_widget</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>And change the welcome template to use the widget:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Players&lt;/h2&gt;
+
+${players_widget.display(players)}</pre>
+</div>
+<div class="section" id="template-parameters">
+<h3>Template Parameters<a class="headerlink" href="#template-parameters" title="Permalink to this headline">¶</a></h3>
+<p>This looks good so far. Let&#8217;s do the same to the team template:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Players&lt;/h2&gt;
+
+${players_widget.display(team.players)}</pre>
+</div>
+<p>Hmm. Well, it works, but it seems a bit silly to specify the team column for the
+team roster, since it will always be the same. We could create separate widgets
+for each page, but that defeats the reusability of widgets. So let&#8217;s add a
+parameter to the SimpleRosterWidget class to disable the team column:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SimpleRosterWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;with_team&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_team</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleRosterWidget</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">with_team</span><span class="o">=</span><span class="n">with_team</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
+<span class="s">    &lt;table xmlns:py=&quot;http://purl.org/kid/ns#&quot;</span>
+<span class="s">      class=&quot;simpleplayer&quot;</span>
+<span class="s">      border=&quot;1&quot;&gt;</span>
+<span class="s">      &lt;tr&gt;</span>
+<span class="s">        &lt;th&gt;Name&lt;/th&gt;</span>
+<span class="s">        &lt;th&gt;Birthdate&lt;/th&gt;</span>
+<span class="s">        &lt;th py:if=&quot;with_team&quot;&gt;Team&lt;/th&gt;</span>
+<span class="s">        &lt;th&gt;Points&lt;/th&gt;</span>
+<span class="s">      &lt;/tr&gt;</span>
+<span class="s">      &lt;tr py:for=&quot;player in value&quot;&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.name&quot;/&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.birthdate&quot;/&gt;</span>
+<span class="s">        &lt;td py:if=&quot;with_team&quot; py:content=&quot;player.team&quot;/&gt;</span>
+<span class="s">        &lt;td py:content=&quot;player.points&quot;/&gt;</span>
+<span class="s">      &lt;/tr&gt;</span>
+<span class="s">    &lt;/table&gt;</span>
+<span class="s">    &#39;&#39;&#39;</span>
+</pre></div>
+</div>
+<p>There&#8217;s a bit going on here:</p>
+<ul class="simple">
+<li>We added a class attribute called <tt class="docutils literal"><span class="pre">params</span></tt>. When TurboGears renders the
+template, it looks for this attribute. Any attribute names in this list that
+exist on the template instance will be added to the variables provided to the
+template. So at render time, if the template has a with_team attribute, the
+template will be able to access it.</li>
+<li>We added an <tt class="docutils literal"><span class="pre">__init__``v</span> <span class="pre">method</span> <span class="pre">that</span> <span class="pre">calls</span> <span class="pre">the</span> <span class="pre">parent</span> <span class="pre">class</span> <span class="pre">(``Widget</span></tt>, in
+this case), and stores the <tt class="docutils literal"><span class="pre">with_team</span></tt> argument (if any). Since we don&#8217;t
+want to worry about what the base class is, we use Python&#8217;s <tt class="docutils literal"><span class="pre">super</span></tt>
+function, and since we don&#8217;t want to worry about what arguments might be
+there, we use <tt class="docutils literal"><span class="pre">*args</span></tt> and <tt class="docutils literal"><span class="pre">**kw</span></tt> to pass along any extra positional or
+keyword arguments to the base class.</li>
+<li>Since we have added <tt class="docutils literal"><span class="pre">with_team</span></tt> to the params, we can use its value to
+determine whether or not to display the team name:</li>
+</ul>
+<p>Then inside the <tt class="docutils literal"><span class="pre">team.kid</span></tt> template:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Players&lt;/h2&gt;
+
+${players_widget.display(team.players, with_team=False)}</pre>
+</div>
+<p>Great. Now we&#8217;re done.</p>
+<p>But, as Mr. Jobs is so fond of saying, there&#8217;s &#8220;one more thing...&#8221;</p>
+</div>
+</div>
+<div class="section" id="use-a-pre-made-widget">
+<h2><a class="toc-backref" href="#id7">Use a Pre-made Widget</a><a class="headerlink" href="#use-a-pre-made-widget" title="Permalink to this headline">¶</a></h2>
+<p>Now that you&#8217;ve seen how to create your own table-based, customizable widget,
+I&#8217;m going to tell you not to do that. Creating your own widgets is a fast and
+easy way to create reusable and customizable user interfaces, but if you&#8217;re just
+doing a simple table layout like our roster grid, the TurboGears widgets
+library already gives you a great, pre-made widget: <tt class="docutils literal"><span class="pre">DataGrid</span></tt>.</p>
+<p>To use DataGrid, just change the <tt class="docutils literal"><span class="pre">index</span></tt> and <tt class="docutils literal"><span class="pre">team</span></tt> controller methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">player_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Birth Date&#39;</span><span class="p">,</span> <span class="s">&#39;birthdate&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Team&#39;</span><span class="p">,</span> <span class="s">&#39;team&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Points&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">teams</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span>
+            <span class="n">players</span><span class="o">=</span><span class="n">Player</span><span class="o">.</span><span class="n">select</span><span class="p">(),</span>
+            <span class="n">players_widget</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">player_fields</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;fooball.templates.team&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">team</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">team_id</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">player_fields</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;Name&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Birth Date&#39;</span><span class="p">,</span> <span class="s">&#39;birthdate&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;Points&#39;</span><span class="p">,</span> <span class="s">&#39;points&#39;</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">team</span><span class="o">=</span><span class="n">Team</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">team_id</span><span class="p">)),</span>
+            <span class="n">players_widget</span><span class="o">=</span><span class="n">widgets</span><span class="o">.</span><span class="n">DataGrid</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">player_fields</span><span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>Now you can delete your <tt class="docutils literal"><span class="pre">SimpleRosterWidget</span></tt>, and voila! Instant table widget:</p>
+<p>Note that we didn&#8217;t need to change the Kid template at all. Like our
+<tt class="docutils literal"><span class="pre">SimpleRosterWidget</span></tt>, <tt class="docutils literal"><span class="pre">DataGrid</span></tt> is derived from <tt class="docutils literal"><span class="pre">widgets.Widget</span></tt>. That
+means  that it gets called the same way (via the display call). It uses the
+<tt class="docutils literal"><span class="pre">fields</span></tt> parameter to decide what to display. <tt class="docutils literal"><span class="pre">fields</span></tt> is a list of tuples;
+each tuple contains the header string and either a string or a callable object
+(like a function, for example).</p>
+<p>If you provide a string, the <tt class="docutils literal"><span class="pre">DataGrid</span></tt> uses it as an attribute name on data
+object. If you provide a callable object, <tt class="docutils literal"><span class="pre">DataGrid</span></tt> calls it, passing the
+data item as the only parameter. The callable can return either a string (which
+is escaped and displayed by Kid) or an <tt class="docutils literal"><span class="pre">Element</span></tt> (from the <a class="reference external" href="http://effbot.org/zone/element-index.htm">ElementTree</a>
+library), which is rendered and then displayed.</p>
+<p>That&#8217;s a mouthful. Let&#8217;s figure it out by converting our hand-coded teams table
+on the front page to a <tt class="docutils literal"><span class="pre">DataGrid</span></tt>. The nicely-styled players table is making
+it look unfashionably plain, anyway.</p>
+<p>Add this to the imports of controllers.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">kid</span> <span class="kn">import</span> <span class="n">Element</span>
+</pre></div>
+</div>
+<p>This imports the <tt class="docutils literal"><span class="pre">Element</span></tt> class from the kid module instead of from
+ElementTree. This way we don&#8217;t have to care about the different ways to import
+different versions of the ElementTree module.</p>
+<p>Now, just before the <tt class="docutils literal"><span class="pre">Root</span></tt> class definition, add a function to create a link
+(<tt class="docutils literal"><span class="pre">a</span></tt>) Element from a Team object:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">makeTeamLink</span><span class="p">(</span><span class="n">team</span><span class="p">):</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="n">href</span><span class="o">=</span><span class="s">&#39;/team/</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">team</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="n">link</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">team</span>
+    <span class="k">return</span> <span class="n">link</span>
+</pre></div>
+</div>
+<p>Add the teams widget to the <tt class="docutils literal"><span class="pre">index</span></tt> controller method. Note that I&#8217;m using
+the <tt class="docutils literal"><span class="pre">makeTeamLink</span></tt> function itself as the field value for the team name, and
+not a call to the function:</p>
+<div class="highlight-python"><pre>class Root(controllers.RootController):
+    @expose(template="fooball.templates.welcome")
+    def index(self):
+        team_fields = [('Name', makeTeamLink)]
+        player_fields = [
+            ('Name', 'name'),
+            ('Birth Date', 'birthdate'),
+            ('Team', 'team'),
+            ('Points', 'points')
+        ]
+       return dict(
+            teams=Team.select(),
+            teams_widget=widgets.DataGrid(fields=team_fields),
+            players=Player.select(),
+            players_widget=widgets.DataGrid(fields=player_fields)
+        )</pre>
+</div>
+<p>Now just make one quick change to the <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> template:</p>
+<div class="highlight-python"><pre>&lt;h1&gt;International Fooball League Stats&lt;/h1&gt;
+
+&lt;h2&gt;Teams&lt;/h2&gt;
+
+${teams_widget.display(teams)}
+
+&lt;h2&gt;Players&lt;/h2&gt;
+
+${players_widget.display(players)}</pre>
+</div>
+<p>That&#8217;s pretty. And we&#8217;ve taken just about all the HTML out of our controller,
+which is even better.</p>
+<p>Incidentally, if the visual style of <tt class="docutils literal"><span class="pre">DataGrid</span></tt> looks familiar, it is: it
+uses the same CSS-based styling as CatWalk. If you like that style, you get it
+for free just by using the <tt class="docutils literal"><span class="pre">DataGrid</span></tt>. If not, you can always change it in
+your web app&#8217;s own CSS.</p>
+<p>For example, I like links to look like links, and the default CSS fragment for
+<tt class="docutils literal"><span class="pre">DataGrid</span></tt> removes the underline decoration. To fix this, just add a line to
+your application&#8217;s stylesheet (you&#8217;ll find it in the file <tt class="docutils literal"><span class="pre">styles.css</span></tt> in the
+<tt class="docutils literal"><span class="pre">static/css</span></tt> subfolder of your project&#8217;s package diretory):</p>
+<div class="highlight-python"><pre>.grid td a {text-decoration:underline}</pre>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id8">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Widgets are a powerful addition to the TurboGears tool set. They can be complex
+to write and use (especially when you get into the <tt class="docutils literal"><span class="pre">form</span></tt> and <tt class="docutils literal"><span class="pre">fastdata</span></tt>)
+libraries, but they don&#8217;t have to be. Wrapping custom display elements in
+simple widgets is quick and easy, and can help you develop faster and with
+fewer errors and display inconsistencies.</p>
+<p>If you want to learn more about widgets, head over to the <a class="reference internal" href="index.html"><em>Widgets Documentation
+Overview</em></a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

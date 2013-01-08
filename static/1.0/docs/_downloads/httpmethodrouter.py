@@ -1,0 +1,141 @@
+﻿# -*- coding: UTF-8 -*-
+
+import cherrypy
+from turbogears.decorator import decorator
+
+__all__ = ['http_method_router']
+
+def http_method_router(default=None, alt_mappings=None):
+    """Routes requests based on the http request type (GET, POST, PUT, DELETE).
+
+    By default, the http_method_router will attempt to forward the request
+    to the corresponding ``<function_name>_<http_method>`` function.  
+    For example, if a function named "edit" is decorated with the
+    ``http_method_router``, then all GET requests will be routed to the
+    ``edit_GET`` function, all POST requests to the ``edit_POST`` function, etc.
+
+    If a function cannot be matched to the request, then the router will
+    first check for a value in the default parameter.  If this is a valid
+    value, then the corresponding function will be called.  If no default value
+    is specified, then an attempt will be made to route the request to the
+    ``<function_name>_GET`` function.  If that function does not exist, then a
+    ``cherrypy.NotFound`` exception will be raised.
+
+    If you do not want to use the default ``<function_name>_<http_method>``
+    behavior, then alternate mappings can be specified by passing in a
+    dict of ``<http_method>`` to ``function_name`` values in the
+    ``alt_mappings`` parameter.
+
+    See the examples below for more information.
+
+
+    Parameters
+    ----------
+    
+    ``default:``
+        The full name of the default function to call
+        if a match cannot be found.  If left empty,
+        the ``<func_name>_GET`` function will be called.
+    ``alt_mappings:``
+        A dictionary of alternate http method->function
+        name mappings.  The keys for the dictionary
+        should be the relevant http method strings
+        (GET, POST, PUT, DELETE).
+    
+    
+    Example 1: Default Behavior
+    ---------------------------
+
+    The example below works as follows:
+    
+    1. The target method, ``edit``, is decorated with the ``http_method_router``
+       decorator.
+       
+    2. When ``edit`` is called, it will route all GET requests to ``edit_GET``,
+       and all POST requests to ``edit_POST``.
+       
+    3. If an unmapped method is used (PUT or DELETE in this case), then
+       ``edit_GET`` will be called by default. To change the default behavior,
+       add the ``default`` parameter to the decorator::
+       
+           @http_method_router(default='some_other_method_name')
+
+    Sample Code 1
+    ~~~~~~~~~~~~~
+    ::
+    
+        @turbogears.expose()
+        @http_method_router()
+        def edit(self, *args, **kwargs):
+            pass
+
+        def edit_GET(self, *args, **kwargs):
+            pass
+
+        def edit_POST(self, *args, **kwargs):
+            pass
+    
+    
+    Example 2: Alternate mappings
+    -----------------------------
+    
+    The example below works as follows:
+    
+    1. The ``alt_mappings`` parameter is specified with the mappings for
+       the GET and POST requests.
+       
+    2. All ``edit GET`` requests are routed to the ``show`` function, and
+       all ``edit POST`` requests are routed to the ``update`` function.
+       
+    3. In this case, since no other mappings are declared, and no
+       default method was specified, all PUT and DELETE requests
+       will cause a ``cherrypy.NotFound`` exception to be raised.
+
+    Sample Code 2
+    ~~~~~~~~~~~~~
+    ::
+    
+        @turbogears.expose()
+        @http_method_router(alt_mappings=dict(GET='show', POST='update'))
+        def edit(self, *args, **kwargs):
+            pass
+
+        def show(self, *args, **kwargs):
+            pass
+
+        def update(self, *args, **kwargs):
+            pass
+            
+    """
+
+    def entangle(fn):
+        def method_router(func, self, *args, **kwargs):
+            if callable(func):
+                name = func.__name__
+                method = cherrypy.request.method
+                target = name + "_" + method
+                alternate = None
+
+                if isinstance(alt_mappings, dict) and \
+                  alt_mappings.has_key(method):
+                    alternate = alt_mappings[method]
+                    if(hasattr(self, alternate) and
+                       callable(self.__getattribute__(alternate))):
+                        return self.__getattribute__(alternate)(*args, **kwargs)
+
+                if hasattr(self, target) and \
+                  callable(self.__getattribute__(target)):
+                    return self.__getattribute__(target)(*args, **kwargs)
+                elif(default and
+                     hasattr(self, default) and
+                     callable(self.__getattribute__(default))):
+                    return self.__getattribute__(default)(*args, **kwargs)
+                elif hasattr(self, name + "_GET"):
+                    return self.__getattribute__(name+"_GET")(*args, **kwargs)
+                else:
+                    raise cherrypy.NotFound()
+
+            else:
+                raise cherrypy.NotFound()
+        return decorator(method_router)(fn)
+    return entangle

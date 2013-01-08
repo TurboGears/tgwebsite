@@ -1,0 +1,50 @@
+.. index:: microapps
+
+`Microapps <http://microapps.org/MicroApps>`_, are miniature web-based applications exposed through a REST interface. The idea is that you build your application by wiring together REST calls to servers that implement things like tagging, authentication, full-text search, whatever you need, and putting your application-specific code on top.
+
+There are a couple of advantages here. One of this biggest ones is that you don't necessarily have to write, maintain, or even host the server that provides your functionality. Partitioning out functionality like tagging and user login makes it easier to keep the cruft and code mixing to a minimum. Microapps are portable and reusable across projects, and due to being accessed through HTTP they are even portable across frameworks and even languages as well. Scaling is easier and potentially cheaper, as you can identify and scale only the bottlenecks. You can even provide optional features whose availability is independent of your own programs.
+
+What does this have to do with TurboGears?
+==========================================
+
+One of `TurboGears <http://www.turbogears.org>`_ more useful features is that applications built with it are pretty easy to distribute and install. By default you are a few variable assignments and a single console command away from putting the whole mess up on PyPi for people to download and use. The installation end of things is about as simple, with niceties like automatic dependency resolution, optional installations, console and even gui script creation, basically more features for the 'download-and-install' process than you thought were even possible.
+
+This makes it easier in a lot of cases to use an existing library than to build your own. Microapps function in about the same way, except they make the installation, configuration, hosting, and maintenance processes entirely optional. The only drawback is that you have to muck around with all this integration work parsing urls, encapsulating data, sending it in whatever format you are looking for. Yuck, who wants to go through all of that just to let someone else do all the implementation and hosting? Ok, well, most people, but it is still a pain.
+
+But wait a second, we already have an easy-to-use installation system in TurboGears through ``easy_install``. We already have a request-dispatching system built in to ``CherryPy``, and if you are writing anything with TurboGears you already know how that works. Why not make a CherryPy controller that acts as a proxy for your microapp? If you do it right your microapp can be hosted locally or across the world without your program being any the wiser.
+
+An example is worth a thousand pages worth of blather
+=====================================================
+
+To show how this whole idea works, lets look at a sample app. We'll work with a tiny little application that does nothing but serve up random quotes from a database. Since following along is fun, go ahead and download the ``tgquotes`` project from PyPi. (see, I told you distributing TurboGears apps was easy) It comes with two controller classes ``QuoteController`` and ``QuoteProxyController``. Both classes have the exact same signature, (an index method and a default method that returns the number of quotes given as its first argument) one just happens to do remote lookups on a specified server and return the data it finds there. Here is how you would serve up random quotes if you are hosting the quote server locally:
+
+1. Import the ``Quote`` table from ``tgquotes.model`` into your model definition and create the table
+2. Put a ``tgquotes.controllers.QuoteController`` somewhere in your controller
+3. Populate the database and go, note that the QuoteController only returns JSON, so you probably want to wrap it for templating
+
+Your controller will look something like this::
+
+    import tgquotes
+    class Root(controllers.RootController):
+        quote = tgquotes.controllers.QuoteController()
+
+I know, standard fare here. Who wants to host their own quotes-server-and-database anyways? Besides, the TG community really got behind this quote server thing and has a much better database set up on theirs. Well, no problem there, lets just switch to use their server. Here's how:
+
+1. Get rid of the model, you won't need it any more.
+2. Put ``tgquotes.controllers.QuoteProxyController`` somewhere in your controller, initialize it with the address of the new quote server.
+3. Nothing else, that's it, you're done. Take your extra time to go sip on a martini like the cool guy you are.
+
+Here's your controller now::
+
+    import tgquotes
+    class Root(controllers.RootController):
+        quote = tgquotes.controllers.QuoteProxyController('http://www.example.com/quotes')
+
+Not too shabby, eh? Now whenever you access 'quote' on your root controller (either internally or externally) you will get the exact same data and interface, except the data is pulled from ``www.example.com/quotes`` instead of the controllers that are local to your site. And when example.com's quote database becomes wildly popular they get to deal with the scaling issues, you just keep grabbing the data.
+
+Now for the bad news
+====================
+
+Of course, this approach isn't entirely without downsides. Since you are gathering data remotely there is always a chance that the server will go down. The requests in ``tgquotes`` are being made in-thread, so a slow server impacts you as well. If you plan on doing something actually important (like user logins) you will probably want to get a secure connection. It also turns proxied controller method calls into a direct impact on your server's bandwidth bill.
+
+That said, in the right situations this can really be a win. Want to build a cross-site login system? Simple, make the login its own application on its own server and have each system look there for user authentication details. Need to take one of those sites out of the cross-site login and work locally? Don't rewrite it from scratch, host a local copy and enjoy having all of your method signatures work in exactly the same way.

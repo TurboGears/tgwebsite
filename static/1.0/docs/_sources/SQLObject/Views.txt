@@ -1,0 +1,103 @@
+Views in SQLObject
+===================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+This is not a real example, my use-case for a view had left-joins on 6 tables, not just one, but it's a good template to work from. Note that you always have to have an 'id' column come back, and it has to be a valid primary key for the view, otherwise SQLObjet magic blows up.
+
+This will only work on databases that support views, obviously. You should be able to put this straight into model.py, modify to actually work with your SQL database, and then do tg-admin sql create. After that, you can treat it like a normal SQLObject table. ::
+
+    class MyView(SQLObject):
+        name_one = StringCol()
+        name_two = StringCol()
+        somebool = BoolCol()
+
+        @classmethod
+        def createTable(cls, ifNotExists=False, createJoinTables=True,
+                createIndexes=True, applyConstraints=True,
+                connection=None):
+        conn = connection or cls._connection
+        if ifNotExists and conn.tableExists(cls.sqlmeta.table):
+            return
+
+        sql, constraints = cls.createTableSQL()
+
+        # Treat the view like a constraint, only create it
+        # after all the other tables have been created.
+        return [sql]
+
+        @classmethod
+        def createTableSQL(cls, createJoinTables=True, createIndexes=True,
+                   connection=None):
+        return """CREATE VIEW %s as (
+        SELECT table_one.id as id,
+               table_one.some_name as name_one,
+               table_two.some_name as name_two,
+               SOMEFUNC(table_one.foo + table_two.bar) as somebool
+        FROM
+            table_one
+            LEFT JOIN table_two ON (table_one.foo_id = table_one.id)
+        ) """ % (cls.sqlmeta.table,), []
+
+This example also doesn't cover the case where you don't have an ID or you'd have to fake one. The best solution I've found is concatenating IDs from tables involved and then using this result as the id for the view. ::
+
+    class MyView(SQLObject):
+        class sqlmeta:
+        idType = 'str'
+        idName = 'concatenated_ids'
+
+        name_one = StringCol()
+        name_two = StringCol()
+        somebool = BoolCol()
+
+For PostgreSQL, creating this should be something like::
+
+    CREATE VIEW myView AS
+           SELECT table1.id::text || '.'::text || table2.id::text || '.'::text || table3.id::text as concatenated_ids,
+              table1.col1, table2.col2, table3.col3
+           FROM table1, table2, table3
+           WHERE table1.something  = table2.otherthing AND table1.anotherthing = table3.yetanotherthing;
+
+Since all tables have an id column that is unique, we grant that the resulting concatenation will also be unique and be the best choice for a complex view.
+
+  *Jorge Godoy*
+
+We had some trouble with the above method, but we are trying to do something a little different.
+
+We already have database schema defined and wanted to use the views we already had defined. The view was created by::
+
+    CREATE VIEW collection_metrics AS
+        SELECT
+        collection_id             AS id,
+        SUM(duration)             AS duration,
+        SUM(size)                 AS size,
+        COUNT(collection_id)      AS files,
+        COUNT(DISTINCT item_id)   AS items
+        FROM
+        files
+        GROUP BY
+        collection_id
+        ORDER BY
+        collection_id;
+
+At first I tried this SQLObject::
+
+ class collectionMetrics(SQLObject):
+    class sqlmeta:
+        fromDatabase=True
+
+Which would fail because SQLObject couldn't find a PRIMARY KEY from the database. The solution is fairly simple, just manually define the columns, and tell SQLObject which table to use.::
+
+    class collectionMetrics(SQLObject):
+        duration = FloatCol()
+        size = FloatCol()
+        files = IntCol()
+        items = IntCol()
+        class sqlmeta:
+        table = 'collection_metrics'
+
+Hope that helps!
+
+Paul Warren. 2006-03-14
+

@@ -1,0 +1,210 @@
+.. index:: wiki tutorial
+
+The 20 Minutes Wiki
+===================
+
+This tutorial is also available as a `screencast`_. The video moves quite
+quickly to demo TurboGears and hold your interest, but a number of new users
+have reported having difficulty following certain parts. This tutorial
+initially was a direct translation of the video, but has been rewritten
+to be a gentler introduction.
+
+.. note:: This tutorial refers to TurboGears 1.0 which is outdated and
+   no longer the recommended version to start with. If you are new to
+   TurboGears, we recommend starting with the latest version of the
+   TurboGears 2 branch based on Pylons. If you still want to use the older
+   TurboGears 1 branch based on CherryPy, we recommend using its latest
+   version TurboGears 1.5. The `TurboGears`_ homepage has links to the
+   documentation and tutorials for these versions.
+
+We recommend creating the code for this tutorial on your own, as you
+follow each step of the tutorial. But you can also download the
+:download:`final code <downloads/wiki20-1.0.1.zip>` for this tutorial
+if you want to spare some typing or you're getting stuck somewhere.
+
+.. _screencast: http://www.turbogears.org/videos/20MinuteWiki2nd.mov
+.. _TurboGears: http://www.turbogears.org
+
+
+Table of Contents
+-----------------
+
+.. toctree::
+   :hidden:
+
+   Page2
+   Page3
+   Page4
+   Page5
+   Page6
+
+* Page 1: Setup and Startup
+* :doc:`Page 2: Database Setup and Page Display <Page2>`
+* :doc:`Page 3: Page Editing and Saving <Page3>`
+* :doc:`Page 4: URL Handling, WikiWords, Missing Pages <Page4>`
+* :doc:`Page 5: Adding a page list <Page5>`
+* :doc:`Page 6: AJAXification and Conclusion <Page6>`
+
+
+Setting Up
+----------
+
+To go through this tutorial, you'll want:
+
+0. TurboGears 1.0 or higher. ;-]
+1. `docutils`_ 0.4 or later, which is used for the wiki's formatting. docutils is
+   not a required part of TurboGears but is needed for this tutorial. Install
+   it with::
+
+      easy_install docutils
+
+2. A web browser
+3. Your favorite editor
+4. Two command line windows (you only *need* one, but two is nicer.)
+5. A database. If you don't have one, your best bet is sqlite 3.2+ with
+   `pysqlite`_ 2.0+. Again, install it with::
+
+      easy_install pysqlite
+
+.. _pysqlite: http://cheeseshop.python.org/pypi/pysqlite
+
+6. *optional* If you're not aware of it, you may also find the `ipython shell`_
+   to be helpful. It supports attribute tab completion for many objects (which
+   can help you find the method you're searching for) and can display contextual
+   help if you append a question mark onto the end of an object or method. You
+   can do the same in the standard shell with the ``dir()`` and ``help()``
+   functions, but ipython is more convenient. ipython has a number of other
+   convenient features (like dropping into the debugger on error), check the
+   ipython docs or online help.
+
+This tutorial doesn't cover Python at all. Check the `Python homepage`_
+page for more coverage of Python.
+
+.. _python homepage: http://python.org/
+.. _ipython shell: http://ipython.scipy.org/
+.. _docutils: http://cheeseshop.python.org/pypi/docutils
+
+
+The Quickstart
+--------------
+
+TurboGears has a command line tool named ``tg-admin``, which provides a suite of
+tools for working with TurboGears projects. A few will be touched upon in this
+tutorial, check the :doc:`tg-admin reference </TgAdmin>` for a full listing.
+The first tool you'll need is ``quickstart``, which initializes a TurboGears project.
+Go to one of your command line windows and run the following command::
+
+    tg-admin quickstart
+
+You'll be prompted for the name of the project (this is the pretty name that
+human beings would appreciate), and the name of the package (this is the
+less-pretty name that Python will like). For the identity prompt, answer 'no',
+since we'll keep this wiki fairly simple, but when you need users/passwords
+in a future project, you'll want to look up the :doc:`identity management
+</Identity/index>` tutorial. Here's what our choices for this tutorial look like::
+
+    Enter project name: Wiki 20
+    Enter package name [wiki20]: wiki20
+    Do you need Identity (usernames/passwords) in this project? [no] no
+    ...output...
+
+This creates a few files in a directory tree just below your current
+directory. Let's go in there and you can take a look around::
+
+    cd Wiki-20
+
+
+Now Serving: Number 1
+---------------------
+
+You may have spotted a file called ``start-wiki20.py``. This script starts the
+built-in web server. Let's run it! Go to your second command line window and run::
+
+    python start-wiki20.py
+
+Point your browser at http://localhost:8080/, and you'll see a nice little
+welcome page with the current time. (If you're on a Mac and have Bonjour
+bookmarks turned on in Safari, you'll see your new server show up there!)
+
+
+That was easy!
+--------------
+
+Easy indeed. You have a working project! If you take a look at the code that
+``quickstart`` created, you'll see that there isn't much involved in getting up
+and running. In particular, you'll want to check out the two files directly
+involved in displaying this welcome page:
+
+* ``wiki20/controllers.py`` has the code that's generating the welcome page.
+  CherryPy (TurboGears' controller/app server) works using object publishing.
+  You write methods and ``@expose()`` them to the web.
+
+  TurboGears adds template processing to the default CherryPy decorator, you
+  just specify your template, return a dictionary, and TG takes care of the
+  rest. This has a number of advantages over returning some sort of string
+  object, which we'll get to later in this tutorial.
+
+* ``wiki20/templates/welcome.kid`` is the template you view on the welcome
+  screen. Did you notice that it's standard XHTML with some simple namespaced
+  attributes? Very designer-friendly. You can even open it directly in your
+  browser!
+
+  If you really love another templating engine, there are `plugins
+  available`_ for most popular Python templating engines. See the :doc:`using
+  alternate templating engines </AlternativeTemplating>` article for details.
+
+.. _plugins available: http://www.turbogears.org/cogbin/
+
+
+Let's make a wiki!
+------------------
+
+If you're not familiar with a wiki, you might want to check out
+`the Wikipedia entry <http://en.wikipedia.org/wiki/Wiki>`_. The whole idea is
+that it's an easily-editable collaborative web content system that makes it
+trivial to link to pages and create new pages.
+
+TurboGears follows the `Model-View-Controller paradigm`_, as do most modern web
+frameworks. Kid templates are your view, your CherryPy classes are your
+controllers and basically any object *can* be your model. In practice, since
+we're in a database-driven world, your model will be based on a relational
+database. SQLObject makes working with databases easy.
+
+.. _Model-View-Controller paradigm: http://en.wikipedia.org/wiki/Model-view-controller
+
+TurboGears quickstart gave us a ``wiki20/model.py`` module with enough in it to
+start creating model classes. Since a wiki is basically a linked collection of
+pages, we'll define a ``Page`` class as the name of our model. Here's what it
+looks like, you'll want to append it at the end of your ``wiki20/model.py``::
+
+    class Page(SQLObject):
+        pagename = UnicodeCol(alternateID=True, length=30)
+        data = UnicodeCol()
+
+.. warning:: **Firebird database users**,
+    ``page`` is a reserved word in Firebird's SQL. To work around this, you'll
+    need to explicitly define the name of your ``Page`` class' table::
+
+        #Firebird users only:
+        class Page(SQLObject):
+            class sqlmeta:
+                table = "tg_page"
+            pagename = UnicodeCol(alternateID=True, length=30)
+            data = UnicodeCol()
+
+Most TurboGears developers and users prefer to work with objects (and not SQL)
+as much as possible. SQLObject *does* support creating objects based on the
+database definition, but if you work the other way and create the database
+definition based on the objects, your database information lives in one place and
+your table-declarations are database independent.
+
+For the ``pagename``, we specified ``alternateID=True``, which will guarantee
+that the column is unique and allow us to select a ``Page`` from our model using
+its ``pagename`` rather than having to do so by its' (automatically created)
+``id`` `(surrogate) primary key`_. Some databases require the length to be
+specified on indexed columns, so we'll just use the arbitrary length of 30 here
+to prevent potential problems.
+
+.. _(surrogate) primary key: http://en.wikipedia.org/wiki/Primary_key
+
+:doc:`Continue on to page 2 <Page2>`

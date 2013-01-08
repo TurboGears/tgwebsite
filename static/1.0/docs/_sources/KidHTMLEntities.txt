@@ -1,0 +1,17 @@
+.. index:: HTML entities
+
+HTML Entities in Kid templates
+==============================
+
+You can disable output encoding in Kid for some HTML tags::
+
+    from kid import serialization
+    serialization.HTMLSerializer.noescape_elements.add('div')
+
+Then in your template you dont need to use XML() anymore::
+
+    <div  py:content="yourvariable"/>
+
+If you want to insert your entity in a tag in the template source, you must enclose it with ``CDATA``::
+
+    <div><![CDATA[&nbsp;]]></div>

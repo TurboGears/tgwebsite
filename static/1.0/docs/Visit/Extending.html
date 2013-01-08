@@ -1,0 +1,536 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Extending the Visit Framework &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="User Tracked Logging" href="UserTrackedLogging.html" />
+    <link rel="prev" title="Extending the Visit Framework" href="" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="UserTrackedLogging.html" title="User Tracked Logging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="#" title="Extending the Visit Framework"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending the Visit Framework</a><ul>
+<li><a class="reference internal" href="#visit-plugins">Visit Plugins</a><ul>
+<li><a class="reference internal" href="#the-visit-object">The Visit Object</a></li>
+<li><a class="reference internal" href="#example-1-tracking-browser-type">Example 1: Tracking Browser Type</a></li>
+<li><a class="reference internal" href="#example-2-recording-the-ip-address-of-visitors">Example 2: Recording the IP Address of Visitors</a><ul>
+<li><a class="reference internal" href="#step-one-create-your-model">Step One - Create Your Model</a></li>
+<li><a class="reference internal" href="#step-two-add-plugin-logic">Step Two - Add Plugin Logic</a></li>
+<li><a class="reference internal" href="#step-three-register-the-extension">Step Three: Register the Extension</a></li>
+<li><a class="reference internal" href="#step-four-update-config-file">Step Four: Update Config File</a></li>
+<li><a class="reference internal" href="#step-five-update-egg-info">Step Five: Update Egg Info</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#example-3-tracking-sales-effectiveness">Example 3: Tracking Sales Effectiveness</a></li>
+<li><a class="reference internal" href="#further-references">Further References</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom-visit-managers">Custom Visit Managers</a><ul>
+<li><a class="reference internal" href="#setting-the-visit-manager">Setting the Visit Manager</a></li>
+<li><a class="reference internal" href="#implementing-a-visit-manager">Implementing a Visit Manager</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href=""
+                        title="previous chapter">Extending the Visit Framework</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="UserTrackedLogging.html"
+                        title="next chapter">User Tracked Logging</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="extending-the-visit-framework">
+<h1><a class="toc-backref" href="#id1">Extending the Visit Framework</a><a class="headerlink" href="#extending-the-visit-framework" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#extending-the-visit-framework" id="id1">Extending the Visit Framework</a><ul>
+<li><a class="reference internal" href="#visit-plugins" id="id2">Visit Plugins</a></li>
+<li><a class="reference internal" href="#custom-visit-managers" id="id3">Custom Visit Managers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="visit-plugins">
+<h2><a class="toc-backref" href="#id2">Visit Plugins</a><a class="headerlink" href="#visit-plugins" title="Permalink to this headline">¶</a></h2>
+<p>The visit framework is extensible via a plugin mechanism. Plugins objects can
+provide methods, which are called on every request. The plug-in mechanism can
+be useful for answering questions like &#8216;How long does a user browse my site?&#8217;,
+&#8216;What browsers do my users use?&#8217;, or &#8216;How effective is this page in generating
+a specific response?&#8217;. These questions might be  difficult to answer using
+regular TurboGears controllers, but are greatly simplified using Visit.</p>
+<p>The <tt class="docutils literal"><span class="pre">tubogears.visit</span></tt> module has an <tt class="docutils literal"><span class="pre">enable_visit_plugin</span></tt> method that you
+can call to register an object with Visit. Your object only needs to implement
+one method, <tt class="docutils literal"><span class="pre">record_request</span></tt>.</p>
+<p>So, a <em>very</em> simple visit plugin could be implemented in as little as something
+like:</p>
+<p><tt class="docutils literal"><span class="pre">simplevisit.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;myapp.simplevisit&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">SimpleVisitPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">record_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Visit key: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">add_simple_visit_plugin</span><span class="p">():</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Registering the SimpleVisitPlugin&quot;</span><span class="p">)</span>
+    <span class="n">turbogears</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">enable_visit_plugin</span><span class="p">(</span><span class="n">SimpleVisitPlugin</span><span class="p">())</span>
+
+<span class="n">turbogears</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">call_on_startup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_simple_visit_plugin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you import this <tt class="docutils literal"><span class="pre">simplevisit.py</span></tt> module into your main <tt class="docutils literal"><span class="pre">controller.py</span></tt>,
+you should see information about the visit key show up in your log output.</p>
+<div class="section" id="the-visit-object">
+<h3>The Visit Object<a class="headerlink" href="#the-visit-object" title="Permalink to this headline">¶</a></h3>
+<p>In the example above, <tt class="docutils literal"><span class="pre">record_request</span></tt> takes an argument <em>visit</em>. This visit
+object is not the same Visit as is in the default model.py, but rather a very
+simple object defined in <tt class="docutils literal"><span class="pre">turbogears.visit.api</span></tt>. It has only two properties:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">key</span></tt></dt>
+<dd>This is the same SHA hash that is contained in the cookie, and also
+corresponds to the <tt class="docutils literal"><span class="pre">visit_key</span></tt> property found in <tt class="docutils literal"><span class="pre">model.Visit</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">is_new</span></tt></dt>
+<dd>This contains a boolean that is <tt class="docutils literal"><span class="pre">True</span></tt> if this is the first time the visitor
+has initiated a request to the site, and <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</dd>
+</dl>
+<p>This object is also assigned to <tt class="docutils literal"><span class="pre">cherrypy.request.tg_visit</span></tt>, and so it can be
+accessed inside of any regular controller.</p>
+</div>
+<div class="section" id="example-1-tracking-browser-type">
+<h3>Example 1: Tracking Browser Type<a class="headerlink" href="#example-1-tracking-browser-type" title="Permalink to this headline">¶</a></h3>
+<p>Now that we have a start on what all the pieces are, we can flesh out a slightly
+more involved example. Say we have a requirement that we want to know what
+browsers our visitors are using. Ok, we could parse the log files right now for
+that information and get a pretty reasonable estimate. But, since we are talking
+about our Visit hammer, this problem is looking an awful lot like a nail.</p>
+<p>First let&#8217;s extend our model.Visit class just a bit by adding a browser column:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Visit</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&quot;visit&quot;</span>
+
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">alternateMethodName</span><span class="o">=</span><span class="s">&quot;by_visit_key&quot;</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">expiry</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">()</span>
+    <span class="n">browser</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span> <span class="c"># new</span>
+    <span class="c"># rest of Visit continues ...</span>
+</pre></div>
+</div>
+<p>Update your database with the new <tt class="docutils literal"><span class="pre">browser</span></tt> column. Next, add the following
+file to our project.</p>
+<p><tt class="docutils literal"><span class="pre">browservisit.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;myapp.browservisit&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">Visit</span>
+
+<span class="k">class</span> <span class="nc">BrowserVisitPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">record_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">visit</span><span class="o">.</span><span class="n">is_new</span><span class="p">:</span>
+            <span class="c"># fetch the the user-agent string the browser gave to cherrypy</span>
+            <span class="n">ua</span> <span class="o">=</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;User-Agent&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+            <span class="c"># The UserAgent class reduces the user-agent into a very coarse</span>
+            <span class="c"># list of types, Firefox, Safari, IE.</span>
+            <span class="c"># If you need more fine-grained information you will need to</span>
+            <span class="c"># write your own class to do it, or just comment the next line</span>
+            <span class="c"># out and store the raw user-agent string</span>
+            <span class="n">ua</span> <span class="o">=</span> <span class="n">turbogears</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">UserAgent</span><span class="p">(</span><span class="n">ua</span><span class="p">)</span>
+
+            <span class="c"># Find the appropriate model.Visit object</span>
+            <span class="n">mvisit</span> <span class="o">=</span> <span class="n">Visit</span><span class="o">.</span><span class="n">by_visit_key</span><span class="p">(</span><span class="n">visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="c"># store the browser in the database</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Setting model.Visit.browser=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">ua</span><span class="o">.</span><span class="n">browser</span><span class="p">)</span>
+            <span class="n">mvisit</span><span class="o">.</span><span class="n">browser</span> <span class="o">=</span> <span class="n">ua</span><span class="o">.</span><span class="n">browser</span>
+
+<span class="k">def</span> <span class="nf">add_browser_visit_plugin</span><span class="p">():</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Registering the BrowserVisitPlugin&quot;</span><span class="p">)</span>
+    <span class="n">turbogears</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">enable_visit_plugin</span><span class="p">(</span><span class="n">BrowserVisitPlugin</span><span class="p">())</span>
+
+<span class="n">turbogears</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">call_on_startup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_browser_visit_plugin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Import the <tt class="docutils literal"><span class="pre">browservisit.py</span></tt> module into <tt class="docutils literal"><span class="pre">controllers.py</span></tt>, and browser
+information should now be stored in each <tt class="docutils literal"><span class="pre">model.Visit</span></tt> object.</p>
+<p>Note above that we are using the <tt class="docutils literal"><span class="pre">is_new</span></tt> property to so that we only set the
+user agent information on the visitor&#8217;s first request. This check prevents a lot
+of redundant processing on the Visit object (fetching it and saving it back to
+the database), and should be incorporated any time you have an item that won&#8217;t
+change over the life of the visit.</p>
+</div>
+<div class="section" id="example-2-recording-the-ip-address-of-visitors">
+<h3>Example 2: Recording the IP Address of Visitors<a class="headerlink" href="#example-2-recording-the-ip-address-of-visitors" title="Permalink to this headline">¶</a></h3>
+<p>Another usage example would be adding the ability to track IP addresses for
+each new visit. Assuming you already have enabled visit tracking, here are
+the steps to create a visit plugin that does just that.</p>
+<div class="section" id="step-one-create-your-model">
+<h4>Step One - Create Your Model<a class="headerlink" href="#step-one-create-your-model" title="Permalink to this headline">¶</a></h4>
+<p>Add the following in your app&#8217;s <tt class="docutils literal"><span class="pre">model.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitIP</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+
+      <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+          <span class="c"># SQL object default naming is visitor_i_p, not pretty</span>
+          <span class="n">table</span> <span class="o">=</span> <span class="s">&#39;visit_ip&#39;</span>
+      <span class="n">visit</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;TG_Visit&#39;</span><span class="p">)</span>
+      <span class="n">ip_address</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create the table in your database with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span> <span class="pre">--class=VisitIP</span></tt>.</p>
+</div>
+<div class="section" id="step-two-add-plugin-logic">
+<h4>Step Two - Add Plugin Logic<a class="headerlink" href="#step-two-add-plugin-logic" title="Permalink to this headline">¶</a></h4>
+<p>Make a new module in your project named <tt class="docutils literal"><span class="pre">visit_plugin.py</span></tt>. Its contents are
+as follows:</p>
+<div class="highlight-python"><pre>import logging
+from turbogears import config, util, visit
+from model import VisitIP
+
+log = logging.getLogger('turbogears.visit')
+
+def ip_tracking_is_on():
+    """"Return True if IP tracking is properly enabled, False otherwise."""
+    return config.get('visit.on', False) and
+        config.get('visit.ip_tracking.on', False)
+
+# Interface for the TurboGears extension
+def start_extension():
+    if not ip_tracking_is_on():
+        return
+    log("Visit IP tracker starting.")
+
+    # Register the plugin with the Visit Tracking framework
+    visit.enable_visit_plugin(IPVisitPlugin())
+
+def shutdown_extension():
+    if not ip_tracking_is_on():
+        return
+    log("Visit IP tracker shutting down.")
+
+class IPVisitPlugin(object):
+
+    def __init__(self):
+        log("IPVisitPlugin extension loaded.")
+        visit_class_path = config.get("visit.saprovider.model",
+            "turbogears.visit.savisit.TG_Visit")
+        self.visit_class = util.load_class(visit_class_path)
+
+    def record_request(self, visit):
+        # This method gets called on every single visit
+
+        # we only want to record the IP if this is a new visitor
+        if visit.is_new:
+            # retrieve the actual Visit object
+            v = self.visit_class.lookup_visit(visit.key)
+
+            # add a new visit ip object to the database
+            VisitIP(visit=v, ip_address=cherrypy.request.remoteAddr)
+
+            # if you are using a SQLAlchemy model you might want to add
+            # session.flush()
+
+    def new_visit(self, visit_id):
+        # This method gets called the first time the visit is started.
+        # I think IP tracking makes sense in here.</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">start_extension</span></tt> and <tt class="docutils literal"><span class="pre">shutdown_extension</span></tt> functions are called by
+turbogears when starting up and shutting down. The key in this process is the
+<tt class="docutils literal"><span class="pre">visit.enable_visit_plugin</span></tt> call, which registers your plugin with the visit
+framework.</p>
+</div>
+<div class="section" id="step-three-register-the-extension">
+<h4>Step Three: Register the Extension<a class="headerlink" href="#step-three-register-the-extension" title="Permalink to this headline">¶</a></h4>
+<p>In your project&#8217;s setup.py, add an <tt class="docutils literal"><span class="pre">entry_points</span></tt> parameter to the <tt class="docutils literal"><span class="pre">setup()</span></tt>
+function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">setup</span><span class="p">(</span>
+    <span class="c"># [...] lots of stuff snipped</span>
+    <span class="n">test_suite</span> <span class="o">=</span> <span class="s">&#39;nose.collector&#39;</span><span class="p">,</span>
+    <span class="c"># begin new</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">        [turbogears.extensions]</span>
+<span class="s">        my_visit_extension = ip_plugin.visit_plugin</span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="c"># end new</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>My project&#8217;s package name is <tt class="docutils literal"><span class="pre">ip_plugin</span></tt>, you will need to adapt this to your
+project so that the entry point references the right module in your project.</p>
+</div>
+<div class="section" id="step-four-update-config-file">
+<h4>Step Four: Update Config File<a class="headerlink" href="#step-four-update-config-file" title="Permalink to this headline">¶</a></h4>
+<p>Add a configuration setting so that the tracking can be turned on and off.
+Somewhere in your app&#8217;s deployment configuration file add the line</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">visit</span><span class="o">.</span><span class="n">ip_tracking</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-five-update-egg-info">
+<h4>Step Five: Update Egg Info<a class="headerlink" href="#step-five-update-egg-info" title="Permalink to this headline">¶</a></h4>
+<p>This step just re-generates the egg information for your project so that the
+extension actually gets called at runtime. From the command line, at the root
+level of your project run</p>
+<div class="highlight-python"><pre>python setup.py egg_info</pre>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h4>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h4>
+<p>That&#8217;s it. Fire up your project and you should be tracking ip activity just
+like the NSA.</p>
+<p>It is also be possible to register the plugin simply by adding a call of
+<tt class="docutils literal"><span class="pre">visit.enable_visit_plugin()</span></tt> to the <tt class="docutils literal"><span class="pre">turbogears.startup.call_on_startup</span></tt>
+list somewhere in your app&#8217;s controller code as in example 1 above, but the
+solution in this example allows to keep your visit plugin in a completely
+separate package and enable it in your application&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> without
+touching the code of your application (provided its Visit model is compatible).</p>
+</div>
+</div>
+<div class="section" id="example-3-tracking-sales-effectiveness">
+<h3>Example 3: Tracking Sales Effectiveness<a class="headerlink" href="#example-3-tracking-sales-effectiveness" title="Permalink to this headline">¶</a></h3>
+<p>Suppose that we have a website where we are selling a service (e.g. something
+like <a class="reference external" href="http://www.vonage.com/">Vonage</a> or <a class="reference external" href="http://www.netflix.com/">Netflix</a>). We have a bunch of pages giving information about our
+service, and a sign-up process where people buy the service. What we want to know
+is &#8220;How many people visiting our site actually buy our service?&#8221;  In other
+words, how effective is our website in converting visitors to clients?</p>
+<p>Fortunately, this is something that is relatively easy to to accomplish using
+Visit.  First, let&#8217;s create a special model class for this specific project.</p>
+<p><tt class="docutils literal"><span class="pre">model.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">VisitSaleMonitor</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+
+    <span class="n">visit_key</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">alternateMethodName</span><span class="o">=</span><span class="s">&quot;by_visit_key&quot;</span><span class="p">)</span>
+    <span class="n">pitch_time</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">sale_time</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Nothing too spectacular is going on there; we are just creating a place-holder to
+store when the visitor hit the areas of the site we are interested in. Go ahead
+and add the new table to your database:</p>
+<div class="highlight-python"><pre>tg-admin sql create --class=VisitSaleMonitor</pre>
+</div>
+<p>Now, we are going to build our Visit plug-in. There really isn&#8217;t too much to
+this, just some simple logic to log what our visitors do.  Assume that our
+&#8216;pitch&#8217; begins with the main page (i.e. <tt class="docutils literal"><span class="pre">/index</span></tt> or <tt class="docutils literal"><span class="pre">/</span></tt>) and the sales
+process ends with the <tt class="docutils literal"><span class="pre">/sale_complete</span></tt> controller.</p>
+<p><tt class="docutils literal"><span class="pre">salemonitor.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">import</span> <span class="nn">turbogears</span>
+<span class="kn">from</span> <span class="nn">cherrypy</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">identity</span>
+<span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="n">SQLObjectNotFound</span>
+
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">VisitSaleMonitor</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;myapp.salemonitor&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">SaleVisitPlugin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">record_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">object_path</span>
+        <span class="c"># ignore requests for things in /static</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;/static/&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="c"># If we wanted to ignore registered users from our analysis,</span>
+        <span class="c"># we might do something like the following:</span>
+
+        <span class="c"># if not identity.current.anonymous:</span>
+        <span class="c">#     try:</span>
+        <span class="c">#         # find the User&#39;s record and delete it</span>
+        <span class="c">#         idvisit = VisitSaleMonitor.by_visit_key(visit.key)</span>
+        <span class="c">#     except SQLObjectNotFound:</span>
+        <span class="c">#         pass</span>
+        <span class="c">#     else:</span>
+        <span class="c">#         idvisit.destroySelf()</span>
+        <span class="c">#     return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># see if the salemonitor obj has already been created</span>
+            <span class="n">salevisit</span> <span class="o">=</span> <span class="n">VisitSaleMonitor</span><span class="o">.</span><span class="n">by_visit_key</span><span class="p">(</span><span class="n">visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="c"># not found, so this must be the first visit</span>
+            <span class="n">salevisit</span> <span class="o">=</span> <span class="n">VisitSaleMonitor</span><span class="p">(</span><span class="n">visit_key</span><span class="o">=</span><span class="n">visit</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;/index&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">salevisit</span><span class="o">.</span><span class="n">pitch_time</span><span class="p">:</span>
+            <span class="n">salevisit</span><span class="o">.</span><span class="n">pitch_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">path</span><span class="o">==</span><span class="s">&#39;/sale_complete&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">salevisit</span><span class="o">.</span><span class="n">sale_time</span><span class="p">:</span>
+            <span class="n">salevisit</span><span class="o">.</span><span class="n">sale_time</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">add_sale_visit_plugin</span><span class="p">():</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Starting SaleVisitPlugin&#39;</span><span class="p">)</span>
+    <span class="n">turbogears</span><span class="o">.</span><span class="n">visit</span><span class="o">.</span><span class="n">enable_visit_plugin</span><span class="p">(</span><span class="n">SaleVisitPlugin</span><span class="p">())</span>
+
+<span class="n">turbogears</span><span class="o">.</span><span class="n">startup</span><span class="o">.</span><span class="n">call_on_startup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">add_sale_visit_plugin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that&#8217;s it. Import <tt class="docutils literal"><span class="pre">salemonitor</span></tt> into your <tt class="docutils literal"><span class="pre">controllers.py</span></tt>, and you
+should be logging exactly when and what a visitor is doing. You now have
+information in your database that can be extracted via SQLObject queries or
+normal SQL.</p>
+<p>It isn&#8217;t hard to see how one might extend this simple example to do more complex
+click tracking and analysis. For instance, it could easily be extended to track
+how many visitors start entering their billing information, and then back out.</p>
+</div>
+<div class="section" id="further-references">
+<h3>Further References<a class="headerlink" href="#further-references" title="Permalink to this headline">¶</a></h3>
+<p>For general information on how to use the visit framework see
+<a class="reference internal" href="index.html"><em>Using the Visit Framework</em></a>.</p>
+<p>If you want to log more information about logged-in users, like e.g. the
+user name or permissions, have a look at the <a class="reference internal" href="../Identity/index.html"><em>Identity documentation</em></a>.</p>
+</div>
+</div>
+<div class="section" id="custom-visit-managers">
+<h2><a class="toc-backref" href="#id3">Custom Visit Managers</a><a class="headerlink" href="#custom-visit-managers" title="Permalink to this headline">¶</a></h2>
+<p>If you want to store visit object in a different storage backend, customize how
+visit objeccts are created and updated or perform any house-keeping tasks while
+the visit framework is running, you need to implement your own visit manager.</p>
+<div class="section" id="setting-the-visit-manager">
+<h3>Setting the Visit Manager<a class="headerlink" href="#setting-the-visit-manager" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears comes with two standard visit managers, one with a SQLObject backend
+and another for SQLAlchemy. Which one is used is determined by the configuration
+setting <tt class="docutils literal"><span class="pre">visit.manager</span></tt>, whose value is normally <tt class="docutils literal"><span class="pre">sqlobject</span></tt> or
+<tt class="docutils literal"><span class="pre">sqlalchemy</span></tt>. When you want to use a custom visit manager, you have to
+register it as a plugin for the <tt class="docutils literal"><span class="pre">turbogears.visit.manager</span></tt> <a class="reference internal" href="../EntryPointList.html"><em>entry-point</em></a> via
+the <tt class="docutils literal"><span class="pre">setup.py</span></tt> file of the package which includes the visit manager class.</p>
+<p>For example, if your custom visit manager class is <tt class="docutils literal"><span class="pre">MyVisitManager</span></tt> in the
+module <tt class="docutils literal"><span class="pre">mypackage.myvisit</span></tt>, you would add the following to the <tt class="docutils literal"><span class="pre">setup</span></tt>
+call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">setup</span><span class="p">(</span>
+    <span class="c"># [...]</span>
+    <span class="n">entry_points</span><span class="o">=</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">        [turbogears.visit.manager]</span>
+<span class="s">        my_visit_mamager = mypkg.myvisit:MyVisitManager</span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="c"># end new</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then use <tt class="docutils literal"><span class="pre">my_visit_manager</span></tt> as the value for the <tt class="docutils literal"><span class="pre">visit.manager</span></tt>
+configuration setting.</p>
+<p>Since TurboGears 1.1 it is also possible to specify the visit manager class
+directly with <tt class="docutils literal"><span class="pre">visit.manager</span></tt> using a fully-qualified dotted-path notation,
+for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">visit</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="s">&#39;mypkg.myvisit.MyVisitManager&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementing-a-visit-manager">
+<h3>Implementing a Visit Manager<a class="headerlink" href="#implementing-a-visit-manager" title="Permalink to this headline">¶</a></h3>
+<p>The visit manager is responsible for keping track of visits, creating new ones,
+updating existing ones and handle the communication with the storage backend.
+Custom visit managers should be sub.classed from one of the standard visit
+managers (<tt class="docutils literal"><span class="pre">turbogears.visit.sovisit.SqlObjectVisitManager</span></tt> or
+<tt class="docutils literal"><span class="pre">turbogears.visit.savisit.SqlAlchemyVisitManager</span></tt>) or the abstract base class
+in <tt class="docutils literal"><span class="pre">turbogears.api.BaseVisitManager</span></tt>. The must provide the following methods:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">create_model(self)</span></tt></dt>
+<dd>Should create the visit data model in the storage backend. Should handle
+being called several times gracefully.</dd>
+<dt><tt class="docutils literal"><span class="pre">new_visit_with_key(self,</span> <span class="pre">visit_key)</span></tt></dt>
+<dd>Should return a new Visit object with the given key.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit_for_key(self,</span> <span class="pre">visit_key)</span></tt></dt>
+<dd><p class="first">Should return an existing Visit object for this key.</p>
+<p class="last">Should return None if the visit doesn&#8217;t exist or has expired.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">update_queued_visits(self,</span> <span class="pre">queue)</span></tt></dt>
+<dd>Should update all visits in <tt class="docutils literal"><span class="pre">queue</span></tt> with the new expiration time.
+<tt class="docutils literal"><span class="pre">queue</span></tt> is a dictionary mapping visit keys to the expiration time, a
+<tt class="docutils literal"><span class="pre">datetime.datetime</span></tt> object.</dd>
+</dl>
+<p>Since the visit manager runs i its own thread, care should be taken that
+updates to the storage backend are always made as atomic transactions.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

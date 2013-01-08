@@ -1,0 +1,85 @@
+.. index:: ToscaWidgets
+
+Using ToscaWidgets in TurboGears 1.0
+====================================
+
+.. contents::
+    :depth: 3
+
+
+ToscaWidgets are officialy supported starting with TurboGears 1.1
+and are the default widgets package starting with TurboGers 2.0.
+If you want to start using ToscaWidgets now with TurboGears 1.0,
+you can do so by using Genshi as your template engine.
+
+Installation
+------------
+
+ToscaWidgets
+~~~~~~~~~~~~
+
+First install/update ToscaWidgets::
+
+ easy_install -U toscawidgets
+ easy_install -U tw.forms
+ easy_install -U tw.dynforms
+ etc. as needed
+
+Make sure ToscaWidgets is turned ON by adding/changing this line
+in the dev.cfg/prod.cfg or app.cfg::
+
+ toscawidgets.on = True
+
+Genshi
+~~~~~~
+
+Make sure you have the latest version of Genshi::
+
+ easy_install -U genshi
+
+If you wish, set Genshi as the default view by adding/changing this line
+in the dev.cfg/prod.cfg or app.cfg::
+
+ tg.defaultview = 'genshi'
+
+alternatively, you can specify Genshi one at a time, such as::
+
+ @expose("genshi:projectname.templates.plaintext")
+
+Creating Widgets
+----------------
+
+Be sure to::
+
+ import tw, tw.forms, tw.dynforms (etc.)
+
+Instantiate a widget container such as::
+
+ class MyFields(tw.api.WidgetsList):
+    mytestinput = tw.forms.TextField('myid', label_text='Test Input Field')
+
+ tosca_form = tw.forms.TableForm(
+    fields=MyFields()
+ )
+
+and then pass the widgetform via the controller as a dict [#]_::
+
+    @expose(template='cityscan1.templates.toscatest')
+    def toscademo(self):
+        return dict(form=tosca_form)
+
+Your widgets can then be rendered through your template
+(``toscatest.html`` in this case) by adding::
+
+ ${form.display()}
+
+although, unlike TG Widgets, Tosca can render with simply::
+
+ ${form()}
+
+.. [#]  In contrast, TurboGears 2.0 uses Pylons and prefers passing widgets to
+        the template via the template context, not by passing them in the dictionary
+        returned by the controller. So don't be misled by this when trying to use
+        `TurboGears 2.0 docs`_ to understand ToscaWidgets for TurboGears 1.0.
+
+.. _TurboGears 2.0 docs: http://www.turbogears.org/2.0/docs/main/ToscaWidgets/forms.html

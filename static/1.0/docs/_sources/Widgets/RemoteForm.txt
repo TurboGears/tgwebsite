@@ -1,0 +1,106 @@
+.. index:: RemoteForm
+
+RemoteForm Widget Tutorial
+==========================
+
+.. contents::
+     :depth: 2
+
+
+Overview
+--------
+
+``RemoteForm`` and its companion widget, ``LinkRemoteFunction``, provide an
+"ajaxian" method of presenting a form. RemoteForm's purpose is to provide
+the HTML form functionality without forcing a page refresh.
+
+
+Basic RemoteForm Usage
+----------------------
+
+In this example, we're going to demo a form using ``TextField``, ``CheckBox``,
+and a ``RadioButtonList``. To start, in the controller, define a class that
+contains the fields you want to display::
+
+    from turbogears.widgets import TextField, CheckBox, RadioButtonList, RemoteForm
+    from turbogears.widgets.base import WidgetsList
+
+    class SearchFormFields(WidgetsList):
+        name = TextField()
+        age = TextField()
+        check = CheckBox()
+        radio = RadioButtonList(options=[
+                (1, "Python"), (2, "Java"), (3, "Pascal"), (4, "Ruby")],
+            default=4)
+
+Then, expose a controller function to create the remote form upon request::
+
+    class Root(controllers.RootController):
+
+        @expose('.templates.welcome')
+        def index(self):
+            item_searchform = RemoteForm(
+                name="ItemSearch",
+                fields=SearchFormFields(),
+                submit_text="Search")
+            return dict(item_searchform=item_searchform)
+
+The last controller function is a callback, which is used by the widget to
+retrieve the data inside it's asynchronous request.::
+
+        @expose()
+        def do_search(self, **kw):
+            """Echo the parameters back as HTML."""
+            return "<p>Recieved data:<br>%r</br></p>" % kw
+
+Finally, in the template, call the widget's ``display`` function. You can pass
+parameters to display() to customize the effects. The example below displays
+"Searching..." during the XMLHttpRequest, and "Done!" when it completes.
+
+In your welcome.kid, replace the contents of the BODY section with the
+following::
+
+    <span py:replace="item_searchform.display(
+        action='do_search',
+        target_dom='items',
+        update='items',
+        before='getElement(\'loading\').innerHTML=\'Searching...\';',
+        on_complete='getElement(\'loading\').innerHTML=\'Done!\';',
+        confirm='Are you sure you want to submit this request?')"/>
+    <p id="loading"/>
+    <div id="items"/>
+
+And that's it. Browsers hitting our demo page will be served up some nice
+RemoteForm goodness.
+
+.. note:: Most of the above was gleaned from the widget example in
+    the toolbox. See the demo there for a live example.
+
+
+Updating an AjaxGrid when a RemoteForm is submitted
+---------------------------------------------------
+
+It is possible to have a RemoteForm widget notify an AjaxGrid to update its data
+when the RemoteForm is submitted.  This can easily be done using the following ::
+
+    <div id="form">
+        <span py:replace="form.display(
+            action='/savedata',
+            on_complete='javascript:%s_AjaxGrid.refresh({});' % grid.id)"/>
+    </div>
+    <div id="grid">
+        <span py:content="grid.display()"/>
+     </div>
+
+The ``on_complete`` parameter calls the JavaScript that updates the AjaxGrid's
+data.  Using this method will trigger two requests to the server. One POST
+request to send the form's data and a GET request to retrieve new data for the
+grid.
+
+
+Download the example code
+-------------------------
+
+The example code on this page is attached and can be downloaded here:
+
+:download:`rf-demo.tar.gz <downloads/rf-demo.tar.gz>`

@@ -1,0 +1,81 @@
+.. index:: web services
+
+WebServices with TGWebServices
+==============================
+
+
+A server example
+----------------
+
+WebServices with TurboGears is very straight-forward to implement.
+First you need to install `TGWebServices`_ which is easily done using easy_install::
+
+    easy_install TGWebServices
+
+.. _TGWebServices: http://code.google.com/p/tgws/
+
+Next, you need to write a WebService controller. A very simple example::
+
+    from tgwebservices.controllers import WebServicesRoot, wsexpose, wsvalidate
+
+    class MyWSController(WebServicesRoot):
+       @wsexpose(int)
+       @wsvalidate(int, int)
+       def multi(self, a, b):
+          return a*b
+
+The ``wsexpose`` decorator says that this method will return one value
+of type ``int``. The ``wsvalidate`` decorator says that this method takes
+two values of type ``int`` as parameters. Other types are possible of course.
+
+Note, that you do not return a dict, you return the value directly!
+
+Next, you may want to make this service available as a path in your root controller::
+
+    class Root(controllers.RootController):
+       ...
+       myservices = MyWSController('http://192.168.1.1:8080/myservices/')
+       ...
+
+Alternatively, if this the WebService itself is the root of your app, you can do::
+
+    cherrypy.root = MyWSController('http://192.168.1.1:8080/')
+
+The first parameter to the ``WebServicesRoot`` class is the URL under which
+the WebService will be reachable. It is used to create the WSDL document for this service.
+
+Note: The trailing slash is **important**!
+
+You should now be able to start your application. If all works well,
+you now have two important URL's available. I will use the example,
+where the service is available under the ``myservices`` path (first case):
+
+ 1. ``http://192.168.1.1:8080/myservices/soap/api.wsdl``
+    This points to the WSDL-Document for your services.
+
+ 2. ``http://192.168.1.1:8080/myservices/soap``
+    This is the URL you will submit SOAP requests to.
+
+This should be all you need to get you started to write some basic WebServices.
+
+For more information, read the `TGWebServices documentation`_.
+
+.. _TGWebServices documentation: http://packages.python.org/TGWebServices/
+
+A client example
+----------------
+
+I will use - don't hit me! - a few PHP lines to demonstrate a client
+for the above service. Why PHP? PHP is widely spread, and is therefore
+a perfect candidate to show an example.
+::
+
+    <?php
+    ini_set("soap.wsdl_cache_enabled", 0);
+    $client = new SoapClient('http://192.168.1.1:8080/myservices/soap/api.wsdl');
+    print_r($client->multi(3, 4));
+    ?>
+
+The first line is needed because PHP caches the WSDL document.
+If you don't add this line, PHP won't see any changes you make in your
+service and will refuse to call a method if you change its signature.

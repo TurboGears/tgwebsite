@@ -1,0 +1,468 @@
+.. index:: data model
+
+Data Model Guide
+================
+
+.. contents::
+   :depth: 2
+
+
+TurboGears (SQLObject) makes accessing your database seem very much like using
+any other Python objects.  Check :doc:`Data model overview <UseDatabase>` for
+a general overview on how to use a database with TurboGears. See below under
+"Using the model" for basic database operations in TurboGears.
+
+
+.. _define_sa_model:
+
+Defining the Model
+------------------
+
+The model should be pretty self explanatory, this Python code will create *three* tables in your
+database: one for books, one for authors, and a join table for the many-to-many relationship
+between them::
+
+      class Book(SQLObject):
+          isbn = StringCol(length=13, alternateID=True)
+          title = StringCol(length=100)
+          description = StringCol()
+          authors = RelatedJoin('Author')
+
+      class Author(SQLObject):
+          last_name = StringCol(length=40)
+          first_name = StringCol(length=40)
+          books = RelatedJoin('Book')
+
+Your model classes inherit from the ``SQLObject`` class and then you define class attributes
+by specifying the column types and supply some parameters for them.
+
+.. note:: If you have more model code than will comfortably fit in one module, you can always
+    break it up into multiple modules and ``import`` into the ``model`` module.
+
+
+Background
+~~~~~~~~~~
+
+After you have created the model, you can insert a new row into your database by just
+instantiating an object from the appropriate class in your model. SQL queries are being run
+behind the scenes as you aceess and change your data object.
+
+SQLObject does well against a wide variety of databases. Many aspects of how the database is
+used, such as column names, table names and join table names can be customized as needed to fit
+existing databases.
+
+Your model objects should not be dumb data containers. They are full Python objects and can
+have methods of their own to perform more complex calculations and operations.
+
+
+Column (Field) Types
+~~~~~~~~~~~~~~~~~~~~
+
+There are many subclasses of the ``Col`` class. These are used to indicate different types of columns, when SQLObject creates your tables.
+
+BLOBCol:
+    A column for binary data. Presently works only with MySQL, PostgreSQL and SQLite backends.
+
+BoolCol:
+    Will create a ``BOOLEAN`` column in Postgres, or ``INT`` in other databases. It will also
+    convert values to "t"/"f" or 0/1 according to the database backend.
+
+CurrencyCol:
+    Equivalent to ``DecimalCol(size=10, precision=2)``. WARNING: as ``DecimalCol`` MAY NOT return
+    precise numbers, this column may share the same behaviour. Please read the ``DecimalCol``
+    warning.
+
+DateTimeCol:
+    A date and time (usually returned as a ``datetime`` or ``mxDateTime`` object).
+
+DateCol:
+    A date (usually returned as a ``datetime`` or ``mxDateTime`` object).
+
+TimeCol:
+    A date (usually returned as a ``datetime`` or ``mxDateTime`` object).
+
+DecimalCol:
+    Base-10, precise number.
+
+EnumCol:
+    One of several string values -- give the possible strings as a list, with the ``enumValues``
+    keyword argument.
+
+FloatCol:
+    Floats.
+
+ForeignKey:
+    A key to another table/class. Use like ``user = ForeignKey('User')``.
+
+IntCol:
+    Integers.
+
+PickleCol:
+    An extension of BLOBCol; this column can store/retrieve any Python object;
+
+StringCol:
+    A string (character) column. Extra keywords:
+
+    ``length``:
+        If given, the type will be something like ``VARCHAR(length)``.
+
+    ``varchar``:
+        A boolean; if you have a length differentiates between ``CHAR`` and ``VARCHAR``, default
+        is ``True`` (use ``VARCHAR``).
+
+UnicodeCol:
+    A unicode column. similar to ``StringCol`` but use unicode instead.
+
+You could check `column types <http://www.sqlobject.org/SQLObject.html#id34>`_ for detail.
+
+
+Column Options
+~~~~~~~~~~~~~~
+
+Column objects share some common attributes with which you can influence their behaviour and
+how they map to database columns.
+
+dbName:
+    This is the name of the column in the database. If you don't give a name, your Pythonic
+    name will be converted from mixedCase to underscore_separated.
+
+default:
+    The default value for this column. Used when creating a new row. If you give a callable object
+    or function, the function will be called, and the return value will be used.
+
+    For example, you can specify ``datetime.now`` to make the default value be the current time.
+    Or you can use ``sqlbuilder.func.NOW()`` to have the database use the ``NOW()`` function
+    internally.
+
+    If you don't give a default there will be an exception if this column isn't specified in when
+    the data object is instantiated:
+
+unique:
+    If true, when SQLObject creates the table it will declare this column to be ``UNIQUE``.
+
+notNone:
+    If true, ``None``/``NULL`` is not allowed for this column. Useful if you are using SQLObject
+    to create your tables.
+
+sqlType:
+    The SQL type for this column (like ``INT``, ``BOOLEAN``, etc).
+    You can use classes (defined below) for this, but if those don't work it's sometimes easiest
+    just to use ``sqlType``. Only necessary if SQLObject is creating your tables.
+
+You can check `Specifying Columns`_ for details.
+
+.. _Specifying Columns: http://www.sqlobject.org/SQLObject.html#id33
+
+
+Relationships
+~~~~~~~~~~~~~
+
+The relational databases allow you relating tables with each other. Most common relationships are
+One-to-One, One-to-Many, and Many-to-Many.
+
+
+One-to-Many Relationships
+`````````````````````````
+
+SQLObject uses ``MultipleJoin`` and ``ForeignKey`` column-pairs to define a One-to-Many
+relationship.
+
+For example, Persons can have multiple books, so we can extend the ``Book`` class from the
+initial example::
+
+      class Book(SQLObject):
+          ....
+          owner = ForeignKey('Person')
+
+      class Person(SQLObject):
+          books = MultipleJoin('Book')
+
+Note the column definition ``person = ForeignKey("Person")``. This adds a reference to the Person
+object to the Book object. Related classes are referred to by name (with a string).
+
+.. note:: As a result of defining this relation,
+    in the database there will be an additional column ``person_id``, type ``INT`` in the ``books`` table,
+    which points to the ``id`` column of the ``person`` table.
+
+Check `One-to-Many Relationships <http://www.sqlobject.org/SQLObject.html#id20>`_ for details.
+
+Several keyword arguments are allowed to the ``MultipleJoin`` constructor:
+
+joinColumn:
+    The column name of the key that points to this table.
+
+orderBy:
+    Like the orderBy argument to select(), you can specify the order that the joined objects
+    should be returned in. _defaultOrder will be used if not specified; None forces unordered
+    results.
+
+joinMethodName:
+    When adding joins dynamically (using the class method addJoin), you can give the name of the
+    accessor for the join. It can also be created automatically, and is normally implied (i.e.,
+    ``addresses = MultipleJoin(...)`` implies ``joinMethodName="addresses"``).
+
+Check `MultipleJoin and SQLMultipleJoin: One-to-Many  <http://www.sqlobject.org/SQLObject.html#id36>`_ for details.
+
+
+One-to-One Relationships
+````````````````````````
+
+SQLObject use 'SingleJoin'  and 'ForeignKey' column-pair to define a One-to-One relationship.
+
+SingleJoin has all the keyword arguments of MultipleJoin, but returns just one object, not a list.
+
+
+Many-to-Many Relationships
+``````````````````````````
+
+SQLObject use 'RelatedJoin' to define a Many-to-Many relationship.
+
+For example, books can be edited by many authors, and authors could wrotte multiple books, so the quick example showed us::
+
+      class Book(SQLObject):
+          ....
+          authors = RelatedJoin('Author')
+
+      class Author(SQLObject):
+          ....
+          books = RelatedJoin('Book')
+
+
+RelatedJoin has all the keyword arguments of MultipleJoin, plus:
+
+otherColumn:
+    Similar to joinColumn, but referring to the joined class. Same warning about column name.
+
+intermediateTable:
+    The name of the intermediate table which references both classes.
+
+addRemoveName:
+    In the user/role example, the methods addRole(role) and removeRole(role) are created.
+
+createRelatedTable:
+    default: True. If False, then the related table won't be automatically created;
+
+Check `RelatedJoin and SQLRelatedJoin: Many-to-Many  <http://www.sqlobject.org/SQLObject.html#id37>`_ for detail.
+
+
+Specifying the Table Name
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There's a special class 'sqlmeta' could be defined to specify the table name that would be created in database::
+
+    class Book(SQLObject):
+        class sqlmeta:
+            table = "tg_book"
+
+The 'tg_book' table will be created while you create the databse with 'tg-admin sql create' command. check `Class sqlmeta <http://sqlobject.org/SQLObject.html#class-sqlmeta>`_ for detail.
+
+
+Using the Model
+---------------
+
+
+Adding New Data
+~~~~~~~~~~~~~~~
+
+Assuming you have a Book :ref:`model defined <define_sa_model>`, here's an example.
+
+TurboGears provide the ``tg-admin shell`` command session for interactive database manipulation with debug logging turned on by default::
+
+  >>> Book(isbn="1234567890", title="A Fistful of Yen",
+           description="An evocative look at Japanese currency "
+                       "surrounded by hands.")
+    1/QueryIns:  INSERT INTO book (isbn, description, title)
+                 VALUES ('1234567890',
+                         'An evocative look at Japanese currency surrounded by
+                          hands.', 'A Fistful of Yen')
+    1/QueryIns-  >   1
+    1/COMMIT  :  auto
+    1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1
+    1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1;
+    1/QueryOne-  >   (u'1234567890', u'A Fistful of Yen',
+                      'An evocative look at Japanese currency surrounded by
+                       hands.')
+    1/COMMIT  :  auto
+   <Book 1 isbn='1234567890' title='A Fistful of Yen'
+    description="'An evocative loo...'">
+
+SQLObject works best in its default setup where each table has an integer primary key though there are ways to have keys handled differently.
+
+
+Getting a Database Record
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can get at any SQLObject's primary key through the ``id`` attribute.
+SQLObject makes it really easy to retrieve by ID::
+
+  >>> Book.get(1)
+       <Book 1 isbn='1234567890' title='A Fistful of Yen'
+          description="'An evocative loo...'">
+
+
+Getting a Record by alternateID
+```````````````````````````````
+
+When you specify that a column is an ``alternateID``, as we did for the
+``isbn`` field, SQLObject automatically creates a classmethod so that you can use to
+search on those values:
+
+::
+
+  >>> Book.byIsbn("1234567890")
+      1/QueryOne:  SELECT id, isbn, title, description FROM book
+                    WHERE isbn = '1234567890'
+      1/QueryR  :  SELECT id, isbn, title, description FROM book
+                    WHERE isbn = '1234567890'
+      1/QueryOne-  >   (1, u'1234567890', u'A Fistful of Yen',
+                        'An evocative look at Japanese currency surrounded by
+                         hands.')
+      1/COMMIT  :  auto
+        <Book 1 isbn='1234567890' title='A Fistful of Yen'
+         description="'An evocative loo...'">
+
+
+Selecting Records
+~~~~~~~~~~~~~~~~~
+
+Of course, there are plenty of times when we need to do searches beyond just
+simple ID lookups. SQLObject provides a ``select()`` classmethod that lets you
+specify many queries in more Python-like terms.
+
+Your class has a special ``q`` attribute that gives you access to a placeholder for a real attribute to use in queries.
+
+For example, to query on the isbn column, you would use ``Book.q.isbn``.  Here's a sample query::
+
+  >>> list(Book.select(AND(LIKE(Book.q.title, "%Fistful%"),
+                           Book.q.isbn=="1234567890")))
+      1/Select  :  SELECT book.id, book.isbn, book.title, book.description
+                    FROM book
+                    WHERE ((book.title LIKE '%Fistful%') AND
+                          (book.isbn = '1234567890'))
+      1/QueryR  :  SELECT book.id, book.isbn, book.title, book.description
+                    FROM book
+                    WHERE ((book.title LIKE '%Fistful%') AND
+                          (book.isbn = '1234567890'))
+      1/COMMIT  :  auto
+        [<Book 1 isbn='1234567890' title='A Fistful of Yen'
+          description="'An evocative loo...'">]
+
+In the example above, you'll note the call to ``list()`` around the
+``Book.select()`` call. The select classmethod returns a ``SelectResults`` object.
+check `Selecting Multiple Objects <http://sqlobject.org/SQLObject.html#id22>`_ for detail.
+
+
+SelectBy Method
+```````````````
+
+An alternative to .select is .selectBy. It works like:
+
+    >>> peeps = Book.selectBy(title = "%Fistful%", isbn = "1234567890")
+
+
+The neat thing about SelectResults is that until you start pulling data
+out of it, it's just a placeholder for the results.
+
+
+Count the number of selected records
+````````````````````````````````````
+
+Rather than converting the results to a list, we could have added ``.count()`` to the end of the select call in order to just retrieve the number of matching rows.
+
+
+Updating a Record
+~~~~~~~~~~~~~~~~~
+
+Updates are very easy: just change the class attribute!
+
+Every time you change an attribute, SQLObject will run an ``UPDATE SQL`` statement. Sometimes, though, you may need to change several columns at once and don't want to run individual
+updates for each.
+
+Your instances have a ``set()`` method that lets you set them all at once. Here are examples of both styles::
+
+  >>> book.title = "A Fistful of Foobar"
+      1/Query   :  UPDATE book SET title = 'A Fistful of Foobar' WHERE id = 1
+      1/QueryR  :  UPDATE book SET title = 'A Fistful of Foobar' WHERE id = 1
+      1/COMMIT  :  auto
+      >>> book.set(title="A Fistful of Yen 2: Electric Boogaloo", isbn="37")
+      1/Query   :  UPDATE book SET isbn = '37',
+                    title = 'A Fistful of Yen 2: Electric Boogaloo' WHERE id = 1
+      1/QueryR  :  UPDATE book SET isbn = '37',
+                    title = 'A Fistful of Yen 2: Electric Boogaloo' WHERE id = 1
+      1/COMMIT  :  auto
+
+
+Deleting a Record
+~~~~~~~~~~~~~~~~~
+
+Deleting a row is also pretty simple. If you are using the object directly you would make a call to ``objname.destroySelf()``
+
+Note that by default ``destroySelf`` only removes the object in question. It does not follow references and remove them.
+
+To add this behavior you will have to override the destroySelf method of your class and add in the behavior you want. Here is a sample class that does this::
+
+    class SomeCol(SQLObject):
+       ...
+       def destroySelf(self):
+          for x in self.related_join:
+              x.destroySelf()
+          SQLObject.destroySelf()
+
+Where ``related_join`` is the name of the join you would like to follow.
+
+
+Using Transactions
+~~~~~~~~~~~~~~~~~~
+
+TurboGears makes it easy to use transactions, via the "connection hub".
+
+The connection hub automatically connects to the database as needed, and also gives
+you methods to begin, commit, rollback or end transactions. Here's an example
+of transactions at work::
+
+  >>> book.title
+      'A Fistful of Yen 2: Electric Boogaloo'
+      >>> hub.begin()
+      >>> book.title = "A Fistful of Yen 3: The Sequel That Shouldn't Be"
+      1/Query   :  UPDATE book SET
+                    title = 'A Fistful of Yen 3: The Sequel That Shouldn''t Be'
+                    WHERE id = 1
+      1/QueryR  :  UPDATE book SET
+                    title = 'A Fistful of Yen 3: The Sequel That Shouldn''t Be'
+                    WHERE id = 1
+      >>> hub.rollback()
+      1/ROLLBACK:
+      >>> hub.end()
+      >>> book.title
+      "A Fistful of Yen 3: The Sequel That Shouldn't Be"
+      >>> book.sync()
+      1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1
+      1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1
+      1/QueryOne-  >   (u'37', u'A Fistful of Yen 2: Electric Boogaloo',
+      'An evocative look at Japanese currency surrounded by hands.')
+      1/COMMIT  :  auto
+      >>> book.title
+      'A Fistful of Yen 2: Electric Boogaloo'
+
+Notice that, unlike in the previous examples, there was no ``COMMIT : auto`` for
+these queries. That's because we turned on transactions, so autocommit was
+automatically turned off. You can also specify that you don't want autocommit
+by adding an ``autoCommit=0`` parameter to your connection URI.
+
+It is also worth noting that the book object that we had in memory did not
+revert to its database state automatically on rollback. By calling ``sync()``,
+the values are reloaded from the database.
+
+Once you've had enough of "A Fistful of Yen 2", you can delete it from the
+database by using the ``destroySelf()`` method.
+
+
+References
+----------
+
+There is quite a bit more information about defining your data model with
+SQLObject in the `SQLObject documentation`_, `SQLObject builder`_, and `SQLObject module index`_.
+
+.. _SQLObject documentation: http://sqlobject.org/SQLObject.html
+.. _SQLObject builder: http://www.sqlobject.org/SQLBuilder.html
+.. _SQLObject module index: http://www.sqlobject.org/module-index.html

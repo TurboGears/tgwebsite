@@ -1,0 +1,173 @@
+I Wanted An Argument!
+=====================
+
+.. contents::
+    :depth: 2
+
+
+One of the features that makes TurboGears so much fun to use is 'parameter
+mapping': the parameters coming in from a web request are automatically turned
+into parameters for your method.
+
+This makes handling web requests about as natural as can be.
+
+Let's change our ``controller.py`` like this::
+
+    from turbogears import controllers, expose
+
+    class Root(controllers.RootController):
+
+        @expose()
+        def index(self, name="Arthur"):
+            return "I am %s, King of the Britons" % name
+
+You probably won't be surprised to learn that accessing ``/`` will return::
+
+  I am Arthur, King of the Britons
+
+Default arguments work exactly as you'd expect them to.
+
+Now you're ready for direct parameter mapping.
+
+Access the URLs:
+
+  * http://localhost:8080/?name=Lancelot
+  * http://localhost:8080/index/Lancelot
+
+A request to ``/?name=Lancelot`` (ugly) or ``/index/Lancelot`` (pretty) will
+return::
+
+  I am Lancelot, King of the Britons
+
+
+Multiple Parameters
+-------------------
+
+Let's extend the above example to two parameters::
+
+    from turbogears import controllers, expose
+
+    class Root(controllers.RootController):
+
+        @expose()
+        def index(self, name="Arthur", place="Britons"):
+            return "I am %s, King of the %s" % (name, place)
+
+We just changed the return value to take two parameters (a 'name, place' tuple).
+You probably won't be surprised to learn that accessing ``/`` will return::
+
+  I am Arthur, King of the Britons
+
+So which URLs can I use to replace the default value?
+
+You'll get the answer by trying to access the following URLs:
+
+  * http://localhost:8080/?name=Jack&place=World
+  * http://localhost:8080/index/Jack/World
+
+Accessing ``/?name=Jack&place=World`` (ugly) or ``/index/Jack/World`` (pretty)
+will return a titanic result::
+
+  I am Jack, King of the World
+
+Boom! Those request parameters do more work than you expected :-)
+
+
+Handling Mistyped URLs or Extra Parameters
+------------------------------------------
+
+Just as in a Python method itself, calling ``/?foobar=baz`` (which will be
+converted to an unknown parameter ``foobar``) will raise an exception because
+it will try to call the ``index`` method like this: ``root.index(foobar="baz")``
+
+On the web, getting a "500" server exception error is ugly for mistyped URLs or
+extra parameters.
+
+For that reason, there is a configuration option: ``tg.strict_parameters``,
+which is on by default in development and off in production. When it's turned
+off, extra parameters are simply ignored.
+
+If you want to be able to handle any parameter that comes in from the web, you
+can always just do what you'd do in Python::
+
+    from turbogears import controllers, expose
+
+    class Root(controllers.RootController):
+
+        @expose()
+        def index(self, name="Arthur", **kw):
+            return "I am %s, King of the Britons" % name
+
+Just as in standard Python, ``kw`` will be set to a dictionary holding the rest
+of the request arguments.
+
+You can access them as with a normal dictionary object, such as calling::
+
+    kw['foobar']
+
+The return value will be "baz".
+
+
+Convert and Validate Arguments
+------------------------------
+
+You may not yet have noticed that the URL mapper only returns 'string' type
+parameters. For example, accessing ``http://localhost:8080/2/3`` will pass the
+Python strings "``2``" and "``3``", not the numbers ``2`` and ``3``, to your
+function. Attempting to perform arithmetic on these values will result in an
+exception.
+
+Instead, you have to check that each parameter is a valid numeric string, and
+then convert it to an integer. Because you are clever, you must already suspect
+that TurboGears is prepared for this challenge.
+
+How to convert URL strings to other Python types gracefully? The answer is to use the ``@validate`` decorator.
+
+
+@validate
+---------
+
+Let's look at this example::
+
+    from turbogears import controllers, expose
+    from turbogears import validate
+    from turbogears.validators import Int
+    class Root(controllers.RootController):
+
+        ....
+
+        @expose()
+        @validate(validators={'x': Int(), 'y': Int()})
+        def addnum(self, x, y):
+            """Return the result of x+y."""
+            return str(x+y)
+
+To check and convert the string parameter, you pass a dictionary to the
+``validators`` argument of the ``@validate`` decorator. You can also use the
+builtin ``dict()`` function to define the dictionary with an easier syntax.
+
+Thus, the above ``@validate`` decorator can be also written as::
+
+    @validate(validators=dict(x=Int(), y=Int()))
+    def addnum(self, x, y):
+          return str(x+y)
+
+In this case we use the 'string to integer' validator ``validators.Int()``
+to help us validate the parameters. The ``turbogears.validators`` module is a
+wrapper of the `FormEncode`_ module, which is able to validate and convert strings to proper types.
+
+There is also a page with a more detailed explanation of the
+:doc:`@validate decorator </ValidateDecorator>` available.
+
+.. _FormEncode: http://formencode.org/
+
+
+References
+----------
+
+See the `FormEncode validation documentation`_ for more details.
+
+.. _FormEncode validation documentation: http://formencode.org/Validator.html
+
+:doc:`Previous: Exposing Methods to URL <Controller>` :
+:doc:`Next: Defining Your Model <DefineDatabase>`

@@ -1,0 +1,148 @@
+.. index:: static files
+
+Serving Static Files
+====================
+
+.. contents::
+    :depth: 2
+
+
+This document provides information about serving static files with TurboGears.
+Static files can either be served directly by the application server (CherryPy),
+or through a traditional web server such as Apache.
+
+When using CherryPy to serve static files there are two main methods:
+
+* The **static filter** configures the server to serve static files for a given
+  URL (or URl prefix) from a local directory or file.
+
+* The **serve_file function** allows static files to be served from your
+  controller methods, controlling the content type dynamically.
+
+
+Using the Static Filter
+-----------------------
+
+When you quickstart a TurboGears project, there are several static filters
+already set up for you in your application's configuration in
+``<yourpackage>/config/app.cfg``:
+
+* All URLs below "``/static``" are served from files below the directory
+  ``<yourproject>/<yourpackage>/static/``.
+
+* The URL "``/favicon.ico``" is served from the file
+  ``<yourproject>/<yourpackage>/static/images/favicon.ico``.
+
+In a quickstarted project, the static directory also contains the three
+sub-directories ``css``, ``images``, and ``javascript``. If, for example,
+you put a CSS stylesheet file named ``mystyles.css`` in the ``css`` directory,
+it can be accessed by the URL "``/static/css/mystyles.css``".
+
+Let's look at the static filter configuration in detail::
+
+    [/static]
+    static_filter.on = True
+    static_filter.dir = "%(package_dir)s/static"
+
+    [/favicon.ico]
+    static_filter.on = True
+    static_filter.file = "%(package_dir)s/static/images/favicon.ico"
+
+The string in square brackets ``[]`` denotes the preferred web url. For example,
+the first entry ``[/static]`` allows us to access static files at
+``http://localhost:8080/static``.
+
+::
+
+    static_filter.on = True
+
+The second line "``static_filter.on = True``" is necessary for all static filter
+sections.
+
+::
+
+    static_filter.dir = "%(package_dir)s/static"
+
+You can use "``static_filter.file``" or "``static_filter.dir``" to locate the
+directory or file. You can also use a regular expression with
+"``static_filter.match``".
+
+The ``static_filter`` requires all paths to be absolute. You can use
+``%(top_level_dir)s`` to denote the top level directory of this project
+or ``%(package_dir)s`` to denote the directory containing the config
+package for this project (these directories are usually the same unless your
+project package is part of a greater package).
+
+For example, to publish a file that is in the the top level directory of your
+project use something like::
+
+    [/sitemap.xml]
+    static_filter.on = True
+    static_filter.file = "%(package_dir)s/sitemap.xml"
+
+You can also specify what content-type to set depending on the extension of each
+file being served (e.g. rss file as ``[/rss]``, atom files as ``[/atom]``).
+
+::
+
+    [/rss]
+    static_filter.on = True
+    static_filter.content_types = {'rss': 'application/rss+xml'}
+    static_filter.dir = '/full/path/to/feed'
+
+    [/atom]
+    static_filter.on = True
+    static_filter.content_types = {'atom': 'application/atom+xml'}
+    static_filter.dir = '/full/path/to/feed'
+
+
+Using the ``serve_file()`` Function
+-----------------------------------
+
+You might want to have a particular way to serve static content that cannot be
+achieved via the static filter. In such cases, use CherryPy's `serve_file`_
+function in your exposed method instead.
+
+::
+
+    from cherrypy.lib.cptools import serve_file
+    return serve_file("/path/to/file")
+
+You can also optionally specify the mime type of the file to return in the
+``Content-type`` header of the response with the ``content_type`` argument::
+
+    from cherrypy.lib.cptools import serve_file
+    return serve_file("/path/to/documents/document.pdf",
+        content_type="application/pdf")
+
+Please note that ``serve_file`` takes the **filename** of the file to be served,
+not the URL of the file. If you want to serve files from the ``"static"``
+directory of your application, you can use the ``turbogears.config`` module to
+find out the filesystem path::
+
+    from os.path import join, normpath
+    from turbogears import config
+    from cherrypy.lib.cptools import serve_file
+
+    static_dir = config.get('static_filter.dir', path="/static")
+    filename = join(normpath(static_dir), 'images', 'users', 'joe.jpg')
+
+    return serve_file(filename, content_type="image/jpeg")
+
+For more information, refer to the CherryPy documentation about `Serving static
+content`_.
+
+.. _serve_file:
+    http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03s03.html#id3484566
+.. _serving static content: http://cherrypy.org/wiki/StaticContent
+
+
+Apache (and Other Web Servers) Setup
+------------------------------------
+
+For more information about serving static files with a web server instead of the
+CherryPy application server, please refer to these docs:
+
+ * :doc:`BehindApache <Install/BehindApache>`
+ * :doc:`LightTPD <Install/LightTPD>`
+ * :doc:`NginxIntegration <Install/BehindNginx>`

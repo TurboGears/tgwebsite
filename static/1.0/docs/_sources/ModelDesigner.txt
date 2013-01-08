@@ -1,0 +1,33 @@
+.. index:: ModelDesigner
+
+ModelDesigner
+=============
+
+ModelDesigner is a code generation tool for SQLObject models. It
+allows you to describe your models through the web in a context-aware
+environment rather than forcing you to code your models by hand. ModelDesigner
+also provides a convenient diagram view so that you can get a high level
+overview of your model as you design it.
+
+When you're happy with your model, ModelDesigner will generate the SQLObject
+code for the model and optionally generate your database tables.
+
+Note: If you start toolbox from the same directory as last time, your last
+session is displayed as "Existing Designer Session". It gets saved in that
+directory as ``model_designer.tmp``. If you want to add it as a sample,
+save it as ``YourModel.js`` in the session directory of the designer.
+
+Here are a few screenshots of ModelDesigner in action:
+
+.. image:: images/model_designer_field.png
+
+Defining a SQLObject column.
+
+.. image:: images/model_designer_code_generat.png
+
+Generated code view
+
+.. image:: images/model_designer_diagram.png
+
+Diagram view
+

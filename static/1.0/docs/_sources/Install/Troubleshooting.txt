@@ -1,0 +1,338 @@
+.. index:: troubleshooting
+
+Installation Troubleshooting
+============================
+
+This page serves as a collection for solutions to installation problems
+people have run into. If none of these work, write to the mailing list
+where more people can help you. When you have found the solution,
+please `file a ticket`_ to add it to this page.
+
+.. _file a ticket: https://sourceforge.net/p/turbogears1/tickets/new/
+
+
+Contents
+--------
+
+* `easy_install can't find one of the packages!`_
+* `Error: No local packages or download links found for TurboGears`_
+* `Conflict Warning`_
+* `Error: Couldn't find a setup script in TurboGears`_
+* `I'm seeing a "File exists" error`_
+* `error: invalid Python installation`_
+* `gcc failed`_
+* `You are required to install SQLObject`_
+* `SQLObject is missing, toolbox designer won't work`_
+* `TypeError: iterable argument required`_
+* `ZipImportError: not a Zip file`_
+* `OverflowError: long int too large to convert to int`_
+* `yum: Nothing to do`_
+* `Python script was built with Visual Studio 2003`_
+
+
+easy_install can't find one of the packages!
+--------------------------------------------
+
+Diagnosis
+    In order to ensure that the components all work together properly,
+    TurboGears is set up to require specific versions of the component projects
+    and will sometimes rely on unreleased versions. Because of this,
+    ``easy_install`` is not always able to find the right package in PyPI. If
+    this is the case, we will upload the specific package to the `download page`_
+    on ``turbogears.org``, where it will be picked up by the :doc:`standard
+    installation procedure <index>` via ``tgsetup.py``.
+Solution
+    Please be sure to follow the download instructions for your platform and
+    use ``tgsetup.py``.
+
+    If you must insist on using ``easy_install`` directly, try adding the
+    appropriate download URL via the ``-i`` option, like this::
+
+        easy_install -i http://www.turbogears.org/1.0/downloads/current/index TurboGears
+
+    If this does not work for you, use ``-f`` instead of ``-i``:
+
+        easy_install -f http://www.turbogears.org/1.0/downloads/current/index TurboGears
+
+    Please note that this is not supported and several things may go wrong,
+    which you need to fix manually.
+
+.. _download page: http://www.turbogears.org/1.0/downloads/current/index
+
+
+Error: No local packages or download links found for TurboGears
+---------------------------------------------------------------
+
+Diagnosis
+    This error most commonly reflects that a firewall is preventing
+    the download of the package or you need to go through a proxy to
+    access the web.
+Solution
+    Here is the suggestion from Phillip Eby:
+
+    You'll need to either find a way to bypass the firewall (e.g. using
+    http://ntlmaps.sf.net/ ), or else manually download all required ``.egg``
+    files from the `download page`_ to a temporary directory, and then run::
+
+        easy_install -f <dldir> TurboGears
+
+    where ``<dldir>`` is the directory you downloaded the .egg files to.
+
+   If you need to use a proxy to access the web, you can tell ``easy_install``
+   to use the proxy by setting the ``http_proxy`` environment variable to point
+   to your proxy server.
+
+
+Conflict Warning
+----------------
+
+Diagnosis
+    TurboGears relies on a new Python packaging format called Python Eggs
+    (you may also see references to the ``setuptools`` package, which
+    provides the functionality for handling Eggs). If you have an older,
+    non-egg installation of a package used by TurboGears, ``easy_install``
+    will display a conflict warning.
+Solution
+    In order to get TurboGears running, you need to have the eggs properly
+    installed. There are two options for doing this:
+
+    * a non-root installation and
+    * deletion of the existing package.
+
+    A non-root installation preserves all of your existing Python setup,
+    but is more complex. If you have concerns that your system might not
+    like different versions of the libraries, this is the safe route to take.
+    See the page :doc:`How to Install TurboGears Without root Privileges <NonRoot>` for more information.
+
+    Please see the :doc:`TurboGears Uninstallation <Uninstall>` page for
+    information on how to install packages.
+
+
+Error: Couldn't find a setup script in TurboGears
+-------------------------------------------------
+
+Diagnosis
+    Phillip Eby's (author of setuptools/``easy_install``) explanation:
+
+    When you get "Couldn't find a setup script in TurboGears", it means
+    that you are running in a directory that has a subdirectory called
+    "``TurboGears``". Don't do that, because ``easy_install`` sees that
+    you asked for TurboGears, and it sees there's a TurboGears directory,
+    so it tries to install that. Unless the directory is a TurboGears
+    *source* checkout, it's not going to work.
+Solution
+    Change to a different directory, or get rid of the TurboGears
+    subdirectory!
+
+    Note, by the way, that Windows and OS X have case-insensitive
+    filesystems, so the directory could be called 'turbogears' and it
+    would have the same problem.
+
+    If you're running in a TurboGears checkout with a setup.py present,
+    do this instead::
+
+        sudo easy_install --script-dir=/usr/local/bin .
+
+    Notice that there's a "``.``" instead of "``TurboGears``" - we're
+    telling it to install this directory, not a subdirectory.
+
+
+I'm seeing a "File Exists" error
+--------------------------------
+
+Diagnosis
+    On Windows machines, there appears to be a problem when setuptools
+    thinks it needs to overwrite cElementTree.
+Solution
+    The easiest solution to this is to install with the ``--always-unzip``
+    option to ``tgsetup.py`` resp. ``easy_install``. You can also fix the
+    immediate error by deleting the
+    ``Documents and Settings\Your User\ApplicationSettings\Python Eggs``
+    directory.
+
+
+error: invalid Python installation
+----------------------------------
+
+Problem
+    I get the following error message in the middle of the installation
+    process::
+
+        error: invalid Python installation: unable to open
+        /usr/lib/python2.4/config/Makefile (No such file or directory)
+Diagnosis
+   On some Linux systems, notably Debian-based systems, you'll need to have
+   the Python development package (called ``python2.4-dev`` or
+   ``python-devel`` or similar) installed in order to be able to compile C
+   extensions.
+Solution
+   Install the Pyton development package using your system's package management.
+   See the detailed :doc:`installation instructions <index>` for your system for the
+   necessary steps.
+
+
+gcc failed
+----------
+
+Problem
+    The installation fails with an error message containing "gcc failed".
+Diagnosis
+    The installation procedure tried to install a required package that contains
+    a C-extension and could not find a pre-compiled binary egg for your operating
+    system and/or architecture. It then tried to compile the extension on your
+    system and failed, because no compiler could be found.
+Solution
+    Install a C compiler and a proper build environment. See the detailed
+    :doc:`installation instructions <index>` for your system for the necessary steps.
+
+
+You are required to install SQLObject
+-------------------------------------
+
+Problem
+    I have created a new project with ``tg-admin quickstart``. When I try to
+    start it, I get the error message::
+
+        You are required to install SQLObject but appear not to have done so.
+        Please run your projects setup.py or run `easy_install SQLObject`.
+Diagnosis
+    You have created a project that has identity support and therefor needs a
+    database module, which you must install yourself.
+Solution
+    Install the ``SQLObject`` package by following the commands given in the
+    error message.
+
+    If you did not enable identity and are still getting this error, please
+    refer to `bug #1620`_.
+
+.. _bug #1620: http://trac.turbogears.org/ticket/1620
+
+
+SQLObject is missing, toolbox designer won't work
+-------------------------------------------------
+
+Problem
+    After installing TurboGears you run ``tg-admin info`` or ``tg-admin quickstart`` and you
+    get this warning::
+
+        SQLObject is missing, toolbox designer won't work
+Diagnosis
+    Recent versions of TurboGears do not install an ORM (SQLObject/SQLAlchemy) automatically
+    anymore. The Toolbox Designer will not work without SQLObject installed. If you don't need
+    it, you can ignore this warning.
+Solution
+    You either have to create a project, which needs SQLObject/SQLAlchemy (for example by enabling
+    identity) and then install it via ``python setup.py install`` or ``python setup.py develop`` or
+    install SQLObject manually via easy_install::
+
+         easy_install -U "SQLObject>=0.8,<=0.10.0"
+
+
+TypeError: iterable argument required
+-------------------------------------
+
+Problem
+    ::
+
+        File "/usr/local/lib/python2.4/urllib2.py", line 580, in proxy_open
+            if '@' in host:
+        TypeError: iterable argument required
+Diagnosis
+    You probably have a syntax error in your proxy URL specification.
+Solution
+    Ray Smith (http://RaymeondSmith.com) writes:
+
+    Set the ``http_proxy`` environment variable with:
+
+    Windows::
+
+        $ set HTTP_PROXY=http://user:password@proxy:port
+
+    Unix/Mac OS X::
+
+        $ export http_proxy="http://user:password@proxy:port
+
+    Then try the installation again.
+
+
+ZipImportError: not a Zip file
+------------------------------
+
+Problem
+    I'm using Windows XP SP2, Python 2.4.4 getting the following error
+    during installation::
+
+        C:\>tgsetup.py
+        [...]
+        zipimport.ZipImportError: not a Zip file: '[...]\TurboGears-1.0.1-py2.4.egg'
+Diagnosis
+    The TruboGears egg file got corrupted during the download. This may be
+    caused by misbehaving personal firewalls or virus scanners.
+Solution
+    Turn off the personal firewall, e.g. "Norten Internet Security" or similar,
+    and try to install again
+
+
+OverflowError: long int too large to convert to int
+---------------------------------------------------
+
+Problem
+   After installation, when I try to create a new project with
+   ``tg-admin quickstart``, I get::
+
+        OverflowError: long int too large to convert to int
+Diagnosis
+    You probably have an outdated or incompatible version of the ``RuleDispatch``
+    package installed.
+Solution
+    Upgrade ``RuleDispatch`` with::
+
+        $ easy_install -U RuleDispatch
+
+
+yum: Nothing to do
+------------------
+
+Problem
+    I get the following ouput when trying to install TurboGears::
+
+
+        Loading "fastestmirror" plugin
+        Loading "installonlyn" plugin
+        Loading "skip-broken" plugin
+        Loading "downloadonly" plugin
+        Loading "fedorakmod" plugin
+        Setting up Install Process
+        Setting up repositories
+        updates        100% |=========================| 1.2 kB    00:00
+        core           100% |=========================| 1.1 kB    00:00
+        extras         100% |=========================| 1.1 kB    00:00
+        Loading mirror speeds from cached hostfile
+        Reading repository metadata in from local files
+        primary.xml.gz 100% |=========================| 1.8 MB    00:20
+        extras    : ################################################## 5679/5679
+        Parsing package install arguments
+        Nothing to do
+
+    Why do I get the last message?
+Diagnisis
+    You seem to be using ``yum`` to install a TurboGears RPM package. These
+    packages are not supported by the TurboGears project itself.
+Solution
+    Follow the standard :doc:`installation instructions <index>` or ask the provider
+    of the packages you are trying to install for support.
+
+
+Python script was built with Visual Studio 2003
+-----------------------------------------------
+
+Problem
+    ::
+
+        Setup script exited with error: Python script was built with
+        Visual Studio 2003
+Diagnosis
+    None
+Solution
+    Unknown. If you encounter this problem, please post a detailed
+    report to the mailing list.

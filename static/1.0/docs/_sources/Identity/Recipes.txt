@@ -1,0 +1,451 @@
+.. index:: identity management recipes
+
+Identity Recipes
+================
+
+.. contents::
+   :depth: 2
+
+
+This page is a repository of useful identity tips and tricks, and any small
+notes that don't seem to have much of a home anywhere else.
+
+
+.. index:: identity failure URL
+
+Setting an Identity Failure URL
+-------------------------------
+
+.. toctree::
+   :hidden:
+
+   FailureURL
+
+Please see the page :doc:`IdentityFailureUrl <FailureURL>` for documentation on this topic.
+
+
+Writing Your Own Predicates
+---------------------------
+
+Look at the source of the ``identity.conditions`` module to see how identity
+predicates are implemented. New predicates should derive from the ``Predicate``
+and  ``IdentityPredicateHelper`` classes from that module and implement a
+``eval_with_object`` method and define an ``error_message`` class attribute.
+
+Here's a (slightly contrived) example that checks if the given identity is a
+member of the ``"premium users"`` group::
+
+    from turbogears.identity.conditions import Predicate, \
+        IdentityPredicateHelper
+
+    class is_premium_user(Predicate, IdentityPredicateHelper):
+        error_message = "Not member a member of the '%(group)s' group"
+
+        def __init__(self):
+            self.group = "premium users"
+
+        def eval_with_object(self, identity, errors=None):
+            if self.group in identity.groups:
+                return True
+            else:
+                self.append_error_message(errors)
+                return False
+
+In this example, the ``eval_with_object`` method will receive the
+``turbogears.identity.current`` object as the ``identity`` argument and possibly
+a list of error messages from identity predicates that have been checked before
+this one. The method returns ``True`` when the check passes, if not it will
+append it's own error message to the ``errors`` list and return ``False``.
+
+The ``append_error_messages`` method inherited from ``identity.Predicate`` class
+takes the ``error_messages`` attribute, performs string interpolation on it,
+using the instance's namespace as the substitutions dictionary and appends the
+resulting string to the given ``errors`` list as a side-effect.
+
+
+.. index:: custom password encryption, password encryption
+
+Providing a Custom Passwort Encryption Function
+-----------------------------------------------
+
+The identity framework has two password hashing functions built in: MD5 and
+SHA1. But you can also provide your own custom password encryption function by
+setting the configuration setting ``identity.<provider>.encryption_algorithm``
+to ``"custom"`` (where ``<provider`` is one of ``soprovider`` or ``saprovider``
+if you use the standard TurboGears identity providers) and the setting
+``identity.custom_encryption`` to the name of callable, which takes the
+unencrypted password (as a UTF-8-encoded string) and returns the password hash
+as a Unicode string. The name of the callable must be the full path to the
+callable, including the module name etc., in dotted path notation.
+
+Here is a brief code example of how to use a custom encryption function, which
+uses the SHA256 hashing algorithm from the standard library module hashlib_
+(only available in Python >= 2.5) in a project with the package name ``mytest``,
+which uses the standard ``SqlAlchemyIdentityProvider``::
+
+    import hashlib
+    import turbogears as tg
+
+    def sha256_hash(password):
+        """Return SHA256 hash for given password as unicode."""
+        return unicode(hashlib.sha256(password).hexdigest())
+
+    tg.config.update({
+        'identity.custom_encryption': 'mytest.controllers.sha256_hash',
+        'identity.saprovider.encryption_algorithm': "custom"})
+
+Put this code in your ``controllers.py`` or ``command.py`` file (or any of
+your application's modules that is imported on startup). You can test your
+custom password encryption with the interactive shell::
+
+    $ tg-admin sql create
+    $ tg-admin shell
+    >>> from mytest import controllers
+    >>> u = User(user_name=u'test', display_name=u'Test User',
+        email_address=u'test@foo.com', password=u'Ken sent me')
+    >>> u.password
+    u'67d4d507a17e7f1db4e7e11db2b7a695292a17e53cbe4c8870d367fc30d03789'
+
+.. _hashlib: http://docs.python.org/lib/module-hashlib.html
+
+
+Writing your own decorator function
+-----------------------------------
+
+This is not for the faint at heart, but it does give you absolute flexibility.
+
+Take a look at the decorators in ``turbogears/identity/conditions.py``. They'll
+give you an idea of what you'll need to do; it is simplest if your decorator
+subclasses ``turbogears.decorator``. That will give you a solid basis for
+development and maintain compatibility with other default decorators.
+
+
+Customizing the Identity Model
+------------------------------
+
+You can customize your own classes for users, groups, and/or permissions,
+adding attributes to the user class, say an image of the user and a phone
+number. You can even provide a complete replacement, but remember that the
+identity system references the automatically-generated classes and their
+elements by name, so you will need to provide a compatible interface.
+
+Look at the source of the ``identity.soprovider`` and ``identity.saprovider``
+modules to see how the current identity providers use the identity model.
+Basically, as long as you only add attributes to the auto-generated identity
+model, you'll be fine. If you change the names of existing attributes, you
+are on your own. To stay compatible with the rest of the identity framework,
+you have to stay compatible with the :doc:`documented interface <Usage>`.
+
+
+.. index:: custom identity provider, identity provider
+
+Implementing a Custom Identity Provider
+---------------------------------------
+
+If you want total control over the authentication process, i.e how identity
+decides if a user is known and allowed to login, you have to implement a
+*custom identity provider*. You also need write your own provider, if you
+want to communicate with different database backend or an external
+authentication mechanism. See the contributed recipes in the sections below for
+examples on the latter.
+
+You can sub-class one of the providers included with TurbGears, i.e.
+`SqlObjectIdentityProvider`` or ``SqlAlchemyIdentityProvider`` or write your
+own provider class from scratch. Check the mentioned standard providers for the
+methods which you have to implement.
+
+If you sub-class one of the standard providers, you probably will only need to
+overwrite the ``validate_identity`` method to check if a user is valid and
+is allowed to log-in. On success, i.e. the user is authenticated, this method
+should return a valid identity object conforming to the `identity interface`_,
+or return ``None`` on failure.
+
+We provide an example TurboGears project coming with a custom identity
+provider which implements additional security checks on login. Furthermore
+this project demonstrates the following features:
+
+* How to sub-class a standard identity provider (see ``secsaprovider.py``).
+* How to register the custom provider as an identity plug-in (see ``setup.py``)
+* How to extend the standard identity data model in a backwards-compatible way
+  (see ``model.py`` and ``secsaprovider.py``)
+* How to set custom identity error messages (see
+  ``SecSAIdentityProvider.authentication_error``) and use them in the login
+  page template (see ``controller.py`` and ``login.html``)
+
+Please download the project from the following link and see the included
+``README.txt`` file for more information and pointers to documentation:
+
+:download:`CustomIdentity-1.0.1.zip <downloads/CustomIdentity-1.0.1.zip>`
+
+.. _identity interface:
+    http://docs.turbogears.org/1.0/UsingIdentity#identity-current-interface
+
+
+Log in a ``User`` Object Manually
+---------------------------------
+
+Sometimes you will need to log a user in directly instead of having them go
+through the regular login system. For instance if you are allowing
+administrators to assume the role of another user. This can be done with the
+following code::
+
+    identity.set_current_identity(identity)
+
+Where ``identity`` is an instance of an object that conforms to the identity
+API and is associated with a ``User`` and a ``Visit`` instance. Such an
+identity instance is created by creating a ``VisitIdentity`` object (which
+links a user to a visit) and then using this to get an identity instance
+from the current identity provider.
+
+The following function performs all the necessary steps, and works for either
+the SQLObject or the SQLAlchemy identity provider::
+
+    from turbogears import identity, visit
+    from mypkg.model import VisitIdentityKey
+
+    def login_user(user):
+        """Associate given user with current visit & identity."""
+        visit_key = visit.current().key
+        try:
+            link = VisitIdentity.by_visit_key(visit_key)
+            # If you use SQLAlchemy, you can remove the try/except clause
+            # around the above line so you don't have to import SQLObject
+            # to check for the SQLObjectNotFound exception.
+        except SQLObjectNotFound:
+            link = None
+
+        if not link:
+            link = VisitIdentity(visit_key=visit_key, user_id=user.user_id)
+        else:
+            link.user_id = user.user_id
+
+        user_identity = identity.current_provider.load_identity(visit_key)
+        identity.set_current_identity(user_identity)
+
+.. note:: A common use case for this recipe is logging in after successfully
+  registering a new user. If you're doing this make sure you have saved the new
+  user record to the database using session.flush() or similar. Not doing so
+  will cause errors later on in the process.
+
+
+Contributed Tips & Tricks
+-------------------------
+
+
+Get a Reference to the Current Identity Information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to log who's making updates in the DB you can get this information
+from the User object::
+
+    identity.current.user
+
+
+Do Something Special After Login
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In some cases, you may want to perform a specific action when a user logs in.
+One way to do this is to modify the standard login kid template as follows::
+
+  <form action="/verify_login" method="POST">
+    <input type="hidden" name="previous_url" value="${previous_url}"/>
+    <!-- form continues on ... -->
+
+Then, in your ``controllers.py``, add the following controller method::
+
+    @expose()
+    def verify_login(self, previous_url='/login', **kw):
+        user_logged_in = False
+        if (not identity.current.anonymous
+            and identity.was_login_attempted()
+            and not identity.get_identity_errors()):
+                user_logged_in = True
+                # do your login stuff here. for instance you could do:
+                flash('Welcome to TurboGears!')
+        if previous_url == '/login' and user_logged_in:
+            redirect('/')
+        redirect(previous_url, **kw)
+
+Essentially, you are routing all login attempts through your new
+``verify_login`` controller before sending the request off to the final
+destination.
+
+
+Changing the Database in Which Your Visit/Identity Tables Get Created
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Contributed by **RenierMorales** on *2007-07-20 17:26:14*.
+
+If you don't want to or can't have TG create the Visit tables in the same DBMS
+where the rest of your application's data resides, you can configure it so that
+they are created in a different DBMS.
+
+Here is what I added to my project, per file:
+
+``dev.cfg`` / ``prod.cfg``::
+
+    turbogears.visit.dburi = "sqlite:/home/renier/projects/www/dvo/visit.db"
+
+``model.py``::
+
+    __visit_connection__ = PackageHub('turbogears.visit')
+    class Visit(SQLObject):
+        _connection = __visit_connection__
+        ...
+
+    class VisitIdentity(SQLObject):
+        _connection = __visit_connection__
+        ...
+
+Now my Visit data is stored in an SQLite database separate from my application
+data. Change ``turbogears.visit.dburi`` in your configuration to specify any
+other type of database connection.
+
+
+Authenticating Against an External Password Source
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In some cases, you may want to authenticate against an external password
+source, while still using the standard identity models for storing all other
+user information.
+
+For example, authenticating against an existing Windows/Samba domain controller
+allows your users to use the same password for your TurboGears project as they
+do to log in to Windows (the same concept applies to LDAP, etc.).
+
+For an example of how to do this, see :download:`sosmbprovider.py <downloads/sosmbprovider.py>`, which subclasses the
+SQLObject provider but validates user names and passwords against a Windows
+domain. It's not a pure SMB provider (only the user names and passwords are
+checked against the domain controller), so you still have to add users and
+groups (etc.) to the Identity tables.
+
+If you are using SQLObject and want to validate usernames and passwords against
+an LDAP directory, see :download:`soldapprovider.py <downloads/soldapprovider.py>`.
+
+If you want to validate against an LDAP directory but are using Elixir or
+SQLAlchemy as your model, see, see :download:`saldapprovider.py <downloads/saldapprovider.py>`.
+
+For an example of how to validate user names and passwords against a UNIX
+password file or NIS Yellow Pages, see :download:`sopwdprovider.py <downloads/sopwdprovider.py>`.
+
+In TurboGears 1.0 a ``validate_password()`` method was added to the
+``SqlObjectIdentityProvider`` object in ``soprovider.py``, making it much
+simpler to subclass and create your own provider.
+
+The following sections contain recipes for authenticating against different
+types of authentication services.
+
+
+.. index:: LDAP
+
+Authenticate Against an LDAP Server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Contributed by **anonymous** on *2007-12-13 09:43:29*.
+
+A short description how to authenticate against my LDAP server:
+
+The following example uses the :download:`soldapprovider.py <downloads/soldapprovider.py>`
+file attached to this page, since the model used is SQLObject. For SQLAlchemy or Elixir,
+the instructions are similar. Only that you'll have to use ``'saldapprovider'`` as the
+``identity.provider`` and similar changes.
+
+* Create an account to authenticate both in Turbogears and LDAP server.
+
+* Add the following entry in ``dev.cfg`` or ``app.cfg``::
+
+    identity.provider = 'soldapprovider'
+
+* Edit the ``entry_points.txt`` in your TurboGears installation directory, i.e.
+  ``<site-package>/TurboGears-X.Y-py2.5.egg/EGG-INFO/entry_points.txt``:
+
+    * Search the block: ``[turbogears.identity.provider]``
+    * Add the following entry::
+
+        soldapprovider = turbogears.identity.soldapprovider:SoLdapIdentityProvider
+
+* Add the linked file :download:`soldapprovider.py <downloads/soldapprovider.py>`
+  in the above description to your TurboGears installation, i.e.
+  ``<site-packages>/TurboGears-X.Y-py2.5.egg/turbogears/identity/soldapprovider.py``.
+
+* Edit the line ``filter = " ... " % user_name`` according to your LDAP server,
+  e.g.::
+
+    filter = "(uid=%s)" % user_name
+
+
+Authenticate Against an LDAP Server (Updated)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*These instructions are hopefully clearer than the ones above, and they don't
+require you to muck about inside the TurboGears installation directories at
+all.*
+
+Download the file :download:`soldapprovider.py <downloads/soldapprovider.py>`,
+and place it in the package of your project.  Edit the file and make the
+following changes. I don't think I have upload privileges to modify it directly,
+but these changes make the ``soldapprovider.py`` fully configuration driven
+and re-usable:
+
+Change the import statement at the top of the file::
+
+    from soprovider import *
+
+to this::
+
+    from turbogears.identity.soprovider import *
+
+Change these lines::
+
+    self.basedn  = get("identity.soldapprovider.basedn", "dc=localhost")
+    self.autocreate = get("identity.soldapprovider.autocreate", False)
+
+to this (adds another configuration option)::
+
+    self.basedn  = get("identity.soldapprovider.basedn", "dc=localhost")
+    self.filter_id  = get("identity.soldapprovider.filter_id", "uid")
+    self.autocreate = get("identity.soldapprovider.autocreate", False)
+
+Also, change this line::
+
+    filter = "(sAMAccountName=%s)" % user_name
+
+to this::
+
+    filter = "(%s=%s)" % (self.filter_id, user_name)
+
+Edit the file ``setup.py`` in your project directory. Look for the section that
+starts with ``entry_points = """`` in the ``setup(...)`` call and add the
+following lines to add your identity provider to the list of providers that
+TurboGears has available (replace "yourpkg" withe the package name of your
+application)::
+
+   'turbogears.identity.provider': [
+            'soldapprovider = ofreports.soldapprovider:SoLdapIdentityProvider'
+   ]
+
+Then run ``"python setup.py egg_info"`` in our project directory to update the
+``*.egg-info`` directory.
+
+Edit your ``dev.cfg`` and add some configuration options for your environment::
+
+    identity.provider = 'soldapprovider'
+    identity.soldapprovider.host = 'localhost'
+    identity.soldapprovider.port = 389
+    identity.soldapprovider.basedn = 'ou=people,dc=yourdomain,dc=com'
+    identity.soldapprovider.filter_id = 'uid'
+
+
+Make sure that the user login that you want to use exists in LDAP, and try to
+login.
+
+
+.. index:: HTTP basic authentication
+
+HTTP Basic Authentication
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+HTTP Basic Authentication is already supported out of the box. Look into the
+``identity.visitor`` module in the ``IdentityVisitPlugin.identity_from_http_auth``
+method for the implementation. This should be easy to enhance with support
+for Digest authentication.

@@ -1,0 +1,237 @@
+.. index:: optimization
+
+Optimization
+============
+
+.. contents::
+    :depth: 2
+
+
+Introduction
+------------
+
+Optimization is the process of identifying and eliminating bottlenecks in your
+TurboGears application and the infrastructure around it to increase performance.
+You should start optimizing only when your application works, not earlier, and
+when performance problems arise, not without need. A well-known statement is that
+"we should forget about small efficiencies, say about 97% of the time:
+premature optimization is the root of all evil".
+
+Process of optimization:
+
+#. Discovery - Determine if there are any problems.
+#. Isolation - Find out where the problem exists in the system.
+#. Analysis - Finding the solution that fits the problem.
+#. Implementation - The fun part.
+#. Testing - Trying to simulate issue.
+#. Rinse and repeat - Optimization is an iterative process.
+
+**Discovery:** Generally, Pythonistas say, Python is "fast enough". However as a
+developers we tend to get carried away. Web applications need to be fast! Users
+will generally let you know if there is a problem or it will arise in testing.
+
+**Isolation:** Finding the actual location of the performance issue can
+sometimes be very difficult. You are dealing with so many variables, networks,
+disk speeds, algorithms, oh my!
+
+**Analysis:** There are many possible solutions depending on the problem. We
+will mostly talk about caching because it is an easy solution that can be a
+applied at many levels of a web applications.
+
+**Implementation:** This could be anything, from changing a configuration
+setting, to writing new algorithms and data types to implement your solution.
+
+**Testing:** There are many an optimizations that have been done that never
+actually fix the problem. From experience it is important  to replicate your
+user experience though testing and to be able to measure optimization.
+
+**Rinse and repeat:** Optimization is a constant process of refactoring problem
+areas.
+
+
+Profiling
+---------
+
+To find specific bottle neck locations in TurboGears application you can use the
+Python profiler. You need to change the last part of the ``start()`` function
+in the ``<yourpackage>/commands.py`` module to the following::
+
+    from yourpackage.controllers import Root
+    import profile
+    profile.run("turbogears.start_server(Root())", 'myapp.prof')
+    # turbogears.start_server(Root())
+
+Start your application to replicate your user traffic. Then stop the application
+and open a Python shell::
+
+    >>> import pstats
+    >>> p = pstats.Stats('myapp.prof')
+    >>> # Cumulative time sort top 25
+    >>> p.sort_stats('cumulative').print_stats(25)
+    >>> # Also may find time top 25 useful
+    >>> p.sort_stats('time').print_stats(25)
+
+Once you have an idea where the bottlenecks are, based on your profiler, you can
+now write specific performance tests to find out the latency of the bottlenecks.
+This is a critical part of the process because if you do not know the latency
+you will not be able to find out if your solution works.
+
+Alternatively, you can use CherryPy's built-in profiler which generates profiling
+data per request which may be helpful, too. For further information, please read
+`CherryPy changelog for 2.1`_ (works with 2.3, too). Please note that you have to
+adapt the config snippet to match ConfigObject's expectations::
+
+    [global]
+    profiling.on = True
+    profiling.path = "/path/to/profile/dir"
+
+.. _CherryPy changelog for 2.1:
+    http://www.cherrypy.org/wiki/WhatsNewIn21
+
+
+Query Optimization
+------------------
+
+Every database has its own optimization recommendations, however, here are
+general considerations:
+
+**SQLObject:** You can turn SQLObject's debug mode on buy adding an additional
+parameter to the
+connection string. Example::
+
+    sqlobject.dburi="mysql://host/database?debug=1"
+
+**SQLAlchemy:**
+
+* `Eager Loading`_ is a great way to reduce the number of queries when loading an object from the database.
+
+**EXPLAIN**: Execute an EXPLAIN query to see the *execution plan* for your query,
+then redefine the indices in your database or refactor your queries to optimize.
+
+* `PostgreSQL 8 Documentation - EXPLAIN`_
+
+* `MySQL 5.0 Reference Manual - EXPLAIN`_
+
+
+.. _Eager Loading:
+    http://www.sqlalchemy.org/docs/04/mappers.html#advdatamapping_relation_selfreferential_eagerloading
+.. _PostgreSQL 8 Documentation - EXPLAIN:
+    http://www.postgresql.org/docs/8.1/interactive/sql-explain.html
+.. _MySQL 5.0 Reference Manual - EXPLAIN:
+    http://dev.mysql.com/doc/refman/5.0/en/explain.html
+
+
+Template Engine
+---------------
+
+Here is the link to an article with benchmarks for Kid, Cheetah, Genshi
+and Jinja:
+
+  `In addition to the test of MVC-frameworks
+  <http://www.alrond.com/en/2007/feb/04/in-addition-to-the-test-of-mvc-frameworks/>`_
+
+
+AJAX
+----
+
+AJAX itself is a great way to improve the performance of your application,
+since it can avoid reloading complete pages and instead only reload the
+relevant parts that have changed, or only the necessary data to rebuild
+these parts. However, unoptimized Ajax can also cause performance problems
+and make your application appear as slow to the users.
+
+You will find many articles, books and tools covering this issue.
+The following article will give you some clues:
+
+  `How to Profile and Optimize Ajax Applications
+  <http://www.websiteoptimization.com/secrets/ajax/>`_
+
+
+Compression
+-----------
+
+TurboGears though CherryPy has the ability to compress its output. This can
+greatly increase the user experience and decrease bandwidth usage. There is more
+documentation here:
+
+    :doc:`Gzip Compressing Content <GzipCompressing>`
+
+However, we do not recommend this. If one of the goals is to increase
+performance of the web application from the users perspective. By compressing
+all the text (mainly html) from you application then the user will not need to
+wait as long for pages to load. However, in a high traffic site the compression
+should be offloaded to a webproxy. Web proxies are faster at compressing and
+will be serving static content anyway to reduce the load on TurboGears.
+
+
+Caching
+-------
+
+A cache is a way to cut down data retrieval time. Generally caches are in
+memory, which saves the computer from having to retrieve them from the primary
+datastore, which usually resides on a hard disk and is much slower. The
+datastore could be a database, on the file system or accessed over the network.
+Caching may have drawbacks. First, you are trading off memory usage against I/O
+usage. Lots of caching will need lots of memory. Also, suppose you have a wiki
+site and cache the wiki pages, if you don't do caching right, a page could get
+updated and users do not see the update.
+
+Turbogears Caching Layers:
+
+1. External proxies, such as lighttpd or Apache
+2. Cache filter in CherryPy
+3. Template cache system in the template engine, such as Cheetah's
+4. Business objects using a cache, say, from the controller
+5. Datastore SQL cache, such as SQLObject or some query level caching system or
+   other.
+
+**External Proxy:** Most heavy traffic sites use an external proxy already
+because they are much faster and more efficient with computer resources when
+serving static content than TurboGears. They can also cache web content
+generated by a TurboGears web application. This is the easiest to setup and
+probably provides the most performance boost. However, it is hard to inform the
+external proxy dynamically about when the application's data has changed.
+
+**CherryPy filter:** This works very much like an External Proxy from the
+perspective of a TurboGears developer. Check the `CherryPy cache filter`_
+documentation for more details on how it works.
+
+.. _CherryPy cache filter: http://www.cherrypy.org/wiki/Caching
+
+**Template Cache:** TurboKid and TurboCheetah both cache
+compiled templates automatically.
+
+**Business object:**
+
+* LRUCache
+* Memcached
+* Roll your own cache.
+
+**Datastore Cache:** To find out more about the SQLObject cache system, check
+out the `SQLObject docs`_.
+
+.. _SQLObject docs: http://www.sqlobject.org/SQLObject.html
+
+Other Caching Resources:
+
+* `CherryPy cache filter`_
+* `Caching decorator Python Cookbook recipe
+  <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/442513>`_
+* `LRU caching decorator Python Cookbook recipe
+  <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/498245>`_
+* `Thread-safe cache Python Cookbook recipe
+  <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/302997>`_
+* There are the slides from a `pycon presentation`_ about scaling high
+  load web sites (with a CherryPy demo).
+
+.. _pycon presentation: http://www.polimetrix.com/pycon/slides/
+
+
+Tools
+-----
+
+There some great tools available that will help you optimize your website.
+Read the following article to get introduced to two priminent tools of this kind:
+
+  `How to Speed Up Your Site With YSlow and Page Speed
+  <http://www.webmonkey.com/2010/09/how-to-speed-up-your-site-with-yslow-and-page-speed/>`_

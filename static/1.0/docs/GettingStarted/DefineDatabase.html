@@ -1,0 +1,527 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Model Guide &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Alternative Components" href="../AlternativeComponents.html" />
+    <link rel="next" title="Using Alternate Templating Engines" href="../AlternativeTemplating.html" />
+    <link rel="prev" title="Getting Started with Elixir" href="UseElixir.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../AlternativeTemplating.html" title="Using Alternate Templating Engines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="UseElixir.html" title="Getting Started with Elixir"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="../AlternativeComponents.html" accesskey="U">Alternative Components</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Model Guide</a><ul>
+<li><a class="reference internal" href="#defining-the-model">Defining the Model</a><ul>
+<li><a class="reference internal" href="#background">Background</a></li>
+<li><a class="reference internal" href="#column-field-types">Column (Field) Types</a></li>
+<li><a class="reference internal" href="#column-options">Column Options</a></li>
+<li><a class="reference internal" href="#relationships">Relationships</a><ul>
+<li><a class="reference internal" href="#one-to-many-relationships">One-to-Many Relationships</a></li>
+<li><a class="reference internal" href="#one-to-one-relationships">One-to-One Relationships</a></li>
+<li><a class="reference internal" href="#many-to-many-relationships">Many-to-Many Relationships</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#specifying-the-table-name">Specifying the Table Name</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-model">Using the Model</a><ul>
+<li><a class="reference internal" href="#adding-new-data">Adding New Data</a></li>
+<li><a class="reference internal" href="#getting-a-database-record">Getting a Database Record</a><ul>
+<li><a class="reference internal" href="#getting-a-record-by-alternateid">Getting a Record by alternateID</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#selecting-records">Selecting Records</a><ul>
+<li><a class="reference internal" href="#selectby-method">SelectBy Method</a></li>
+<li><a class="reference internal" href="#count-the-number-of-selected-records">Count the number of selected records</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-a-record">Updating a Record</a></li>
+<li><a class="reference internal" href="#deleting-a-record">Deleting a Record</a></li>
+<li><a class="reference internal" href="#using-transactions">Using Transactions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="UseElixir.html"
+                        title="previous chapter">Getting Started with Elixir</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../AlternativeTemplating.html"
+                        title="next chapter">Using Alternate Templating Engines</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="data-model-guide">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">Data Model Guide</a><a class="headerlink" href="#data-model-guide" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#data-model-guide" id="id2">Data Model Guide</a><ul>
+<li><a class="reference internal" href="#defining-the-model" id="id3">Defining the Model</a></li>
+<li><a class="reference internal" href="#using-the-model" id="id4">Using the Model</a></li>
+<li><a class="reference internal" href="#references" id="id5">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>TurboGears (SQLObject) makes accessing your database seem very much like using
+any other Python objects.  Check <a class="reference internal" href="UseDatabase.html"><em>Data model overview</em></a> for
+a general overview on how to use a database with TurboGears. See below under
+&#8220;Using the model&#8221; for basic database operations in TurboGears.</p>
+<div class="section" id="defining-the-model">
+<span id="define-sa-model"></span><h2><a class="toc-backref" href="#id3">Defining the Model</a><a class="headerlink" href="#defining-the-model" title="Permalink to this headline">¶</a></h2>
+<p>The model should be pretty self explanatory, this Python code will create <em>three</em> tables in your
+database: one for books, one for authors, and a join table for the many-to-many relationship
+between them:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">isbn</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">RelatedJoin</span><span class="p">(</span><span class="s">&#39;Author&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Author</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">last_name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">first_name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">RelatedJoin</span><span class="p">(</span><span class="s">&#39;Book&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Your model classes inherit from the <tt class="docutils literal"><span class="pre">SQLObject</span></tt> class and then you define class attributes
+by specifying the column types and supply some parameters for them.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you have more model code than will comfortably fit in one module, you can always
+break it up into multiple modules and <tt class="docutils literal"><span class="pre">import</span></tt> into the <tt class="docutils literal"><span class="pre">model</span></tt> module.</p>
+</div>
+<div class="section" id="background">
+<h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
+<p>After you have created the model, you can insert a new row into your database by just
+instantiating an object from the appropriate class in your model. SQL queries are being run
+behind the scenes as you aceess and change your data object.</p>
+<p>SQLObject does well against a wide variety of databases. Many aspects of how the database is
+used, such as column names, table names and join table names can be customized as needed to fit
+existing databases.</p>
+<p>Your model objects should not be dumb data containers. They are full Python objects and can
+have methods of their own to perform more complex calculations and operations.</p>
+</div>
+<div class="section" id="column-field-types">
+<h3>Column (Field) Types<a class="headerlink" href="#column-field-types" title="Permalink to this headline">¶</a></h3>
+<p>There are many subclasses of the <tt class="docutils literal"><span class="pre">Col</span></tt> class. These are used to indicate different types of columns, when SQLObject creates your tables.</p>
+<dl class="docutils">
+<dt>BLOBCol:</dt>
+<dd>A column for binary data. Presently works only with MySQL, PostgreSQL and SQLite backends.</dd>
+<dt>BoolCol:</dt>
+<dd>Will create a <tt class="docutils literal"><span class="pre">BOOLEAN</span></tt> column in Postgres, or <tt class="docutils literal"><span class="pre">INT</span></tt> in other databases. It will also
+convert values to &#8220;t&#8221;/&#8221;f&#8221; or 0/1 according to the database backend.</dd>
+<dt>CurrencyCol:</dt>
+<dd>Equivalent to <tt class="docutils literal"><span class="pre">DecimalCol(size=10,</span> <span class="pre">precision=2)</span></tt>. WARNING: as <tt class="docutils literal"><span class="pre">DecimalCol</span></tt> MAY NOT return
+precise numbers, this column may share the same behaviour. Please read the <tt class="docutils literal"><span class="pre">DecimalCol</span></tt>
+warning.</dd>
+<dt>DateTimeCol:</dt>
+<dd>A date and time (usually returned as a <tt class="docutils literal"><span class="pre">datetime</span></tt> or <tt class="docutils literal"><span class="pre">mxDateTime</span></tt> object).</dd>
+<dt>DateCol:</dt>
+<dd>A date (usually returned as a <tt class="docutils literal"><span class="pre">datetime</span></tt> or <tt class="docutils literal"><span class="pre">mxDateTime</span></tt> object).</dd>
+<dt>TimeCol:</dt>
+<dd>A date (usually returned as a <tt class="docutils literal"><span class="pre">datetime</span></tt> or <tt class="docutils literal"><span class="pre">mxDateTime</span></tt> object).</dd>
+<dt>DecimalCol:</dt>
+<dd>Base-10, precise number.</dd>
+<dt>EnumCol:</dt>
+<dd>One of several string values &#8211; give the possible strings as a list, with the <tt class="docutils literal"><span class="pre">enumValues</span></tt>
+keyword argument.</dd>
+<dt>FloatCol:</dt>
+<dd>Floats.</dd>
+<dt>ForeignKey:</dt>
+<dd>A key to another table/class. Use like <tt class="docutils literal"><span class="pre">user</span> <span class="pre">=</span> <span class="pre">ForeignKey('User')</span></tt>.</dd>
+<dt>IntCol:</dt>
+<dd>Integers.</dd>
+<dt>PickleCol:</dt>
+<dd>An extension of BLOBCol; this column can store/retrieve any Python object;</dd>
+<dt>StringCol:</dt>
+<dd><p class="first">A string (character) column. Extra keywords:</p>
+<dl class="last docutils">
+<dt><tt class="docutils literal"><span class="pre">length</span></tt>:</dt>
+<dd>If given, the type will be something like <tt class="docutils literal"><span class="pre">VARCHAR(length)</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">varchar</span></tt>:</dt>
+<dd>A boolean; if you have a length differentiates between <tt class="docutils literal"><span class="pre">CHAR</span></tt> and <tt class="docutils literal"><span class="pre">VARCHAR</span></tt>, default
+is <tt class="docutils literal"><span class="pre">True</span></tt> (use <tt class="docutils literal"><span class="pre">VARCHAR</span></tt>).</dd>
+</dl>
+</dd>
+<dt>UnicodeCol:</dt>
+<dd>A unicode column. similar to <tt class="docutils literal"><span class="pre">StringCol</span></tt> but use unicode instead.</dd>
+</dl>
+<p>You could check <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#id34">column types</a> for detail.</p>
+</div>
+<div class="section" id="column-options">
+<h3>Column Options<a class="headerlink" href="#column-options" title="Permalink to this headline">¶</a></h3>
+<p>Column objects share some common attributes with which you can influence their behaviour and
+how they map to database columns.</p>
+<dl class="docutils">
+<dt>dbName:</dt>
+<dd>This is the name of the column in the database. If you don&#8217;t give a name, your Pythonic
+name will be converted from mixedCase to underscore_separated.</dd>
+<dt>default:</dt>
+<dd><p class="first">The default value for this column. Used when creating a new row. If you give a callable object
+or function, the function will be called, and the return value will be used.</p>
+<p>For example, you can specify <tt class="docutils literal"><span class="pre">datetime.now</span></tt> to make the default value be the current time.
+Or you can use <tt class="docutils literal"><span class="pre">sqlbuilder.func.NOW()</span></tt> to have the database use the <tt class="docutils literal"><span class="pre">NOW()</span></tt> function
+internally.</p>
+<p class="last">If you don&#8217;t give a default there will be an exception if this column isn&#8217;t specified in when
+the data object is instantiated:</p>
+</dd>
+<dt>unique:</dt>
+<dd>If true, when SQLObject creates the table it will declare this column to be <tt class="docutils literal"><span class="pre">UNIQUE</span></tt>.</dd>
+<dt>notNone:</dt>
+<dd>If true, <tt class="docutils literal"><span class="pre">None</span></tt>/<tt class="docutils literal"><span class="pre">NULL</span></tt> is not allowed for this column. Useful if you are using SQLObject
+to create your tables.</dd>
+<dt>sqlType:</dt>
+<dd>The SQL type for this column (like <tt class="docutils literal"><span class="pre">INT</span></tt>, <tt class="docutils literal"><span class="pre">BOOLEAN</span></tt>, etc).
+You can use classes (defined below) for this, but if those don&#8217;t work it&#8217;s sometimes easiest
+just to use <tt class="docutils literal"><span class="pre">sqlType</span></tt>. Only necessary if SQLObject is creating your tables.</dd>
+</dl>
+<p>You can check <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#id33">Specifying Columns</a> for details.</p>
+</div>
+<div class="section" id="relationships">
+<h3>Relationships<a class="headerlink" href="#relationships" title="Permalink to this headline">¶</a></h3>
+<p>The relational databases allow you relating tables with each other. Most common relationships are
+One-to-One, One-to-Many, and Many-to-Many.</p>
+<div class="section" id="one-to-many-relationships">
+<h4>One-to-Many Relationships<a class="headerlink" href="#one-to-many-relationships" title="Permalink to this headline">¶</a></h4>
+<p>SQLObject uses <tt class="docutils literal"><span class="pre">MultipleJoin</span></tt> and <tt class="docutils literal"><span class="pre">ForeignKey</span></tt> column-pairs to define a One-to-Many
+relationship.</p>
+<p>For example, Persons can have multiple books, so we can extend the <tt class="docutils literal"><span class="pre">Book</span></tt> class from the
+initial example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Person&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;Book&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note the column definition <tt class="docutils literal"><span class="pre">person</span> <span class="pre">=</span> <span class="pre">ForeignKey(&quot;Person&quot;)</span></tt>. This adds a reference to the Person
+object to the Book object. Related classes are referred to by name (with a string).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As a result of defining this relation,
+in the database there will be an additional column <tt class="docutils literal"><span class="pre">person_id</span></tt>, type <tt class="docutils literal"><span class="pre">INT</span></tt> in the <tt class="docutils literal"><span class="pre">books</span></tt> table,
+which points to the <tt class="docutils literal"><span class="pre">id</span></tt> column of the <tt class="docutils literal"><span class="pre">person</span></tt> table.</p>
+</div>
+<p>Check <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#id20">One-to-Many Relationships</a> for details.</p>
+<p>Several keyword arguments are allowed to the <tt class="docutils literal"><span class="pre">MultipleJoin</span></tt> constructor:</p>
+<dl class="docutils">
+<dt>joinColumn:</dt>
+<dd>The column name of the key that points to this table.</dd>
+<dt>orderBy:</dt>
+<dd>Like the orderBy argument to select(), you can specify the order that the joined objects
+should be returned in. _defaultOrder will be used if not specified; None forces unordered
+results.</dd>
+<dt>joinMethodName:</dt>
+<dd>When adding joins dynamically (using the class method addJoin), you can give the name of the
+accessor for the join. It can also be created automatically, and is normally implied (i.e.,
+<tt class="docutils literal"><span class="pre">addresses</span> <span class="pre">=</span> <span class="pre">MultipleJoin(...)</span></tt> implies <tt class="docutils literal"><span class="pre">joinMethodName=&quot;addresses&quot;</span></tt>).</dd>
+</dl>
+<p>Check <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#id36">MultipleJoin and SQLMultipleJoin: One-to-Many</a> for details.</p>
+</div>
+<div class="section" id="one-to-one-relationships">
+<h4>One-to-One Relationships<a class="headerlink" href="#one-to-one-relationships" title="Permalink to this headline">¶</a></h4>
+<p>SQLObject use &#8216;SingleJoin&#8217;  and &#8216;ForeignKey&#8217; column-pair to define a One-to-One relationship.</p>
+<p>SingleJoin has all the keyword arguments of MultipleJoin, but returns just one object, not a list.</p>
+</div>
+<div class="section" id="many-to-many-relationships">
+<h4>Many-to-Many Relationships<a class="headerlink" href="#many-to-many-relationships" title="Permalink to this headline">¶</a></h4>
+<p>SQLObject use &#8216;RelatedJoin&#8217; to define a Many-to-Many relationship.</p>
+<p>For example, books can be edited by many authors, and authors could wrotte multiple books, so the quick example showed us:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">authors</span> <span class="o">=</span> <span class="n">RelatedJoin</span><span class="p">(</span><span class="s">&#39;Author&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Author</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="o">....</span>
+    <span class="n">books</span> <span class="o">=</span> <span class="n">RelatedJoin</span><span class="p">(</span><span class="s">&#39;Book&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>RelatedJoin has all the keyword arguments of MultipleJoin, plus:</p>
+<dl class="docutils">
+<dt>otherColumn:</dt>
+<dd>Similar to joinColumn, but referring to the joined class. Same warning about column name.</dd>
+<dt>intermediateTable:</dt>
+<dd>The name of the intermediate table which references both classes.</dd>
+<dt>addRemoveName:</dt>
+<dd>In the user/role example, the methods addRole(role) and removeRole(role) are created.</dd>
+<dt>createRelatedTable:</dt>
+<dd>default: True. If False, then the related table won&#8217;t be automatically created;</dd>
+</dl>
+<p>Check <a class="reference external" href="http://www.sqlobject.org/SQLObject.html#id37">RelatedJoin and SQLRelatedJoin: Many-to-Many</a> for detail.</p>
+</div>
+</div>
+<div class="section" id="specifying-the-table-name">
+<h3>Specifying the Table Name<a class="headerlink" href="#specifying-the-table-name" title="Permalink to this headline">¶</a></h3>
+<p>There&#8217;s a special class &#8216;sqlmeta&#8217; could be defined to specify the table name that would be created in database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Book</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="s">&quot;tg_book&quot;</span>
+</pre></div>
+</div>
+<p>The &#8216;tg_book&#8217; table will be created while you create the databse with &#8216;tg-admin sql create&#8217; command. check <a class="reference external" href="http://sqlobject.org/SQLObject.html#class-sqlmeta">Class sqlmeta</a> for detail.</p>
+</div>
+</div>
+<div class="section" id="using-the-model">
+<h2><a class="toc-backref" href="#id4">Using the Model</a><a class="headerlink" href="#using-the-model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adding-new-data">
+<h3>Adding New Data<a class="headerlink" href="#adding-new-data" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you have a Book <a class="reference internal" href="#define-sa-model"><em>model defined</em></a>, here&#8217;s an example.</p>
+<p>TurboGears provide the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> command session for interactive database manipulation with debug logging turned on by default:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="p">(</span><span class="n">isbn</span><span class="o">=</span><span class="s">&quot;1234567890&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s">&quot;A Fistful of Yen&quot;</span><span class="p">,</span>
+<span class="go">         description=&quot;An evocative look at Japanese currency &quot;</span>
+<span class="go">                     &quot;surrounded by hands.&quot;)</span>
+<span class="go">  1/QueryIns:  INSERT INTO book (isbn, description, title)</span>
+<span class="go">               VALUES (&#39;1234567890&#39;,</span>
+<span class="go">                       &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                        hands.&#39;, &#39;A Fistful of Yen&#39;)</span>
+<span class="go">  1/QueryIns-  &gt;   1</span>
+<span class="go">  1/COMMIT  :  auto</span>
+<span class="go">  1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1</span>
+<span class="go">  1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1;</span>
+<span class="go">  1/QueryOne-  &gt;   (u&#39;1234567890&#39;, u&#39;A Fistful of Yen&#39;,</span>
+<span class="go">                    &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                     hands.&#39;)</span>
+<span class="go">  1/COMMIT  :  auto</span>
+<span class="go"> &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">  description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+<p>SQLObject works best in its default setup where each table has an integer primary key though there are ways to have keys handled differently.</p>
+</div>
+<div class="section" id="getting-a-database-record">
+<h3>Getting a Database Record<a class="headerlink" href="#getting-a-database-record" title="Permalink to this headline">¶</a></h3>
+<p>You can get at any SQLObject&#8217;s primary key through the <tt class="docutils literal"><span class="pre">id</span></tt> attribute.
+SQLObject makes it really easy to retrieve by ID:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">     &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">        description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+<div class="section" id="getting-a-record-by-alternateid">
+<h4>Getting a Record by alternateID<a class="headerlink" href="#getting-a-record-by-alternateid" title="Permalink to this headline">¶</a></h4>
+<p>When you specify that a column is an <tt class="docutils literal"><span class="pre">alternateID</span></tt>, as we did for the
+<tt class="docutils literal"><span class="pre">isbn</span></tt> field, SQLObject automatically creates a classmethod so that you can use to
+search on those values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">Book</span><span class="o">.</span><span class="n">byIsbn</span><span class="p">(</span><span class="s">&quot;1234567890&quot;</span><span class="p">)</span>
+<span class="go">    1/QueryOne:  SELECT id, isbn, title, description FROM book</span>
+<span class="go">                  WHERE isbn = &#39;1234567890&#39;</span>
+<span class="go">    1/QueryR  :  SELECT id, isbn, title, description FROM book</span>
+<span class="go">                  WHERE isbn = &#39;1234567890&#39;</span>
+<span class="go">    1/QueryOne-  &gt;   (1, u&#39;1234567890&#39;, u&#39;A Fistful of Yen&#39;,</span>
+<span class="go">                      &#39;An evocative look at Japanese currency surrounded by</span>
+<span class="go">                       hands.&#39;)</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">      &lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">       description=&quot;&#39;An evocative loo...&#39;&quot;&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="selecting-records">
+<h3>Selecting Records<a class="headerlink" href="#selecting-records" title="Permalink to this headline">¶</a></h3>
+<p>Of course, there are plenty of times when we need to do searches beyond just
+simple ID lookups. SQLObject provides a <tt class="docutils literal"><span class="pre">select()</span></tt> classmethod that lets you
+specify many queries in more Python-like terms.</p>
+<p>Your class has a special <tt class="docutils literal"><span class="pre">q</span></tt> attribute that gives you access to a placeholder for a real attribute to use in queries.</p>
+<p>For example, to query on the isbn column, you would use <tt class="docutils literal"><span class="pre">Book.q.isbn</span></tt>.  Here&#8217;s a sample query:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">AND</span><span class="p">(</span><span class="n">LIKE</span><span class="p">(</span><span class="n">Book</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%F</span><span class="s">istful%&quot;</span><span class="p">),</span>
+<span class="go">                         Book.q.isbn==&quot;1234567890&quot;)))</span>
+<span class="go">    1/Select  :  SELECT book.id, book.isbn, book.title, book.description</span>
+<span class="go">                  FROM book</span>
+<span class="go">                  WHERE ((book.title LIKE &#39;%Fistful%&#39;) AND</span>
+<span class="go">                        (book.isbn = &#39;1234567890&#39;))</span>
+<span class="go">    1/QueryR  :  SELECT book.id, book.isbn, book.title, book.description</span>
+<span class="go">                  FROM book</span>
+<span class="go">                  WHERE ((book.title LIKE &#39;%Fistful%&#39;) AND</span>
+<span class="go">                        (book.isbn = &#39;1234567890&#39;))</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">      [&lt;Book 1 isbn=&#39;1234567890&#39; title=&#39;A Fistful of Yen&#39;</span>
+<span class="go">        description=&quot;&#39;An evocative loo...&#39;&quot;&gt;]</span>
+</pre></div>
+</div>
+<p>In the example above, you&#8217;ll note the call to <tt class="docutils literal"><span class="pre">list()</span></tt> around the
+<tt class="docutils literal"><span class="pre">Book.select()</span></tt> call. The select classmethod returns a <tt class="docutils literal"><span class="pre">SelectResults</span></tt> object.
+check <a class="reference external" href="http://sqlobject.org/SQLObject.html#id22">Selecting Multiple Objects</a> for detail.</p>
+<div class="section" id="selectby-method">
+<h4>SelectBy Method<a class="headerlink" href="#selectby-method" title="Permalink to this headline">¶</a></h4>
+<p>An alternative to .select is .selectBy. It works like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">peeps</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">selectBy</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%F</span><span class="s">istful%&quot;</span><span class="p">,</span> <span class="n">isbn</span> <span class="o">=</span> <span class="s">&quot;1234567890&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The neat thing about SelectResults is that until you start pulling data
+out of it, it&#8217;s just a placeholder for the results.</p>
+</div>
+<div class="section" id="count-the-number-of-selected-records">
+<h4>Count the number of selected records<a class="headerlink" href="#count-the-number-of-selected-records" title="Permalink to this headline">¶</a></h4>
+<p>Rather than converting the results to a list, we could have added <tt class="docutils literal"><span class="pre">.count()</span></tt> to the end of the select call in order to just retrieve the number of matching rows.</p>
+</div>
+</div>
+<div class="section" id="updating-a-record">
+<h3>Updating a Record<a class="headerlink" href="#updating-a-record" title="Permalink to this headline">¶</a></h3>
+<p>Updates are very easy: just change the class attribute!</p>
+<p>Every time you change an attribute, SQLObject will run an <tt class="docutils literal"><span class="pre">UPDATE</span> <span class="pre">SQL</span></tt> statement. Sometimes, though, you may need to change several columns at once and don&#8217;t want to run individual
+updates for each.</p>
+<p>Your instances have a <tt class="docutils literal"><span class="pre">set()</span></tt> method that lets you set them all at once. Here are examples of both styles:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">book</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s">&quot;A Fistful of Foobar&quot;</span>
+<span class="go">    1/Query   :  UPDATE book SET title = &#39;A Fistful of Foobar&#39; WHERE id = 1</span>
+<span class="go">    1/QueryR  :  UPDATE book SET title = &#39;A Fistful of Foobar&#39; WHERE id = 1</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">    &gt;&gt;&gt; book.set(title=&quot;A Fistful of Yen 2: Electric Boogaloo&quot;, isbn=&quot;37&quot;)</span>
+<span class="go">    1/Query   :  UPDATE book SET isbn = &#39;37&#39;,</span>
+<span class="go">                  title = &#39;A Fistful of Yen 2: Electric Boogaloo&#39; WHERE id = 1</span>
+<span class="go">    1/QueryR  :  UPDATE book SET isbn = &#39;37&#39;,</span>
+<span class="go">                  title = &#39;A Fistful of Yen 2: Electric Boogaloo&#39; WHERE id = 1</span>
+<span class="go">    1/COMMIT  :  auto</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-record">
+<h3>Deleting a Record<a class="headerlink" href="#deleting-a-record" title="Permalink to this headline">¶</a></h3>
+<p>Deleting a row is also pretty simple. If you are using the object directly you would make a call to <tt class="docutils literal"><span class="pre">objname.destroySelf()</span></tt></p>
+<p>Note that by default <tt class="docutils literal"><span class="pre">destroySelf</span></tt> only removes the object in question. It does not follow references and remove them.</p>
+<p>To add this behavior you will have to override the destroySelf method of your class and add in the behavior you want. Here is a sample class that does this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SomeCol</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+   <span class="o">...</span>
+   <span class="k">def</span> <span class="nf">destroySelf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">related_join</span><span class="p">:</span>
+          <span class="n">x</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+      <span class="n">SQLObject</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Where <tt class="docutils literal"><span class="pre">related_join</span></tt> is the name of the join you would like to follow.</p>
+</div>
+<div class="section" id="using-transactions">
+<h3>Using Transactions<a class="headerlink" href="#using-transactions" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears makes it easy to use transactions, via the &#8220;connection hub&#8221;.</p>
+<p>The connection hub automatically connects to the database as needed, and also gives
+you methods to begin, commit, rollback or end transactions. Here&#8217;s an example
+of transactions at work:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">book</span><span class="o">.</span><span class="n">title</span>
+<span class="go">    &#39;A Fistful of Yen 2: Electric Boogaloo&#39;</span>
+<span class="go">    &gt;&gt;&gt; hub.begin()</span>
+<span class="go">    &gt;&gt;&gt; book.title = &quot;A Fistful of Yen 3: The Sequel That Shouldn&#39;t Be&quot;</span>
+<span class="go">    1/Query   :  UPDATE book SET</span>
+<span class="go">                  title = &#39;A Fistful of Yen 3: The Sequel That Shouldn&#39;&#39;t Be&#39;</span>
+<span class="go">                  WHERE id = 1</span>
+<span class="go">    1/QueryR  :  UPDATE book SET</span>
+<span class="go">                  title = &#39;A Fistful of Yen 3: The Sequel That Shouldn&#39;&#39;t Be&#39;</span>
+<span class="go">                  WHERE id = 1</span>
+<span class="go">    &gt;&gt;&gt; hub.rollback()</span>
+<span class="go">    1/ROLLBACK:</span>
+<span class="go">    &gt;&gt;&gt; hub.end()</span>
+<span class="go">    &gt;&gt;&gt; book.title</span>
+<span class="go">    &quot;A Fistful of Yen 3: The Sequel That Shouldn&#39;t Be&quot;</span>
+<span class="go">    &gt;&gt;&gt; book.sync()</span>
+<span class="go">    1/QueryOne:  SELECT isbn, title, description FROM book WHERE id = 1</span>
+<span class="go">    1/QueryR  :  SELECT isbn, title, description FROM book WHERE id = 1</span>
+<span class="go">    1/QueryOne-  &gt;   (u&#39;37&#39;, u&#39;A Fistful of Yen 2: Electric Boogaloo&#39;,</span>
+<span class="go">    &#39;An evocative look at Japanese currency surrounded by hands.&#39;)</span>
+<span class="go">    1/COMMIT  :  auto</span>
+<span class="go">    &gt;&gt;&gt; book.title</span>
+<span class="go">    &#39;A Fistful of Yen 2: Electric Boogaloo&#39;</span>
+</pre></div>
+</div>
+<p>Notice that, unlike in the previous examples, there was no <tt class="docutils literal"><span class="pre">COMMIT</span> <span class="pre">:</span> <span class="pre">auto</span></tt> for
+these queries. That&#8217;s because we turned on transactions, so autocommit was
+automatically turned off. You can also specify that you don&#8217;t want autocommit
+by adding an <tt class="docutils literal"><span class="pre">autoCommit=0</span></tt> parameter to your connection URI.</p>
+<p>It is also worth noting that the book object that we had in memory did not
+revert to its database state automatically on rollback. By calling <tt class="docutils literal"><span class="pre">sync()</span></tt>,
+the values are reloaded from the database.</p>
+<p>Once you&#8217;ve had enough of &#8220;A Fistful of Yen 2&#8221;, you can delete it from the
+database by using the <tt class="docutils literal"><span class="pre">destroySelf()</span></tt> method.</p>
+</div>
+</div>
+<div class="section" id="references">
+<h2><a class="toc-backref" href="#id5">References</a><a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>There is quite a bit more information about defining your data model with
+SQLObject in the <a class="reference external" href="http://sqlobject.org/SQLObject.html">SQLObject documentation</a>, <a class="reference external" href="http://www.sqlobject.org/SQLBuilder.html">SQLObject builder</a>, and <a class="reference external" href="http://www.sqlobject.org/module-index.html">SQLObject module index</a>.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

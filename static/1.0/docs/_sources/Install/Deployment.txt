@@ -1,0 +1,116 @@
+.. index:: deployment
+
+Deploying TurboGears
+====================
+
+.. contents::
+  :depth: 1
+
+
+Where to Deploy
+---------------
+
+.. toctree::
+   :hidden:
+
+   Hosting
+
+Python isn't as widely available on commodity hosting as other environments
+(read PHP) are. If you don't have your own server, take a look at our list of
+:doc:`hosting companies <Hosting>` for top picks.
+
+.. _hosting companies: Hosting
+
+
+Installation
+------------
+
+.. toctree::
+   :hidden:
+
+   DeployWithAnEgg
+   NonRoot
+
+Before you configure your server, you need to install your application on the
+target server. To make this easy for yourself and others, you should use
+Python eggs:
+
+* :doc:`Deploying your Application with an Egg and Easy Install <DeployWithAnEgg>`
+
+Normally, you don't have root access on rented hosting space. Here are some
+ways to install TurboGears into your home directory:
+
+* :doc:`Installing TurboGears Without root Privileges <NonRoot>`
+
+
+Configuration
+-------------
+
+.. toctree::
+   :hidden:
+
+   BehindApache
+   BehindNginx
+   ModPython
+   LightTPD
+   BehindIIS
+   WindowsService
+   IntegratedWindowsAuthentication
+   NumberOfThreads
+   RedirectHttpsRequests
+
+There are many ways to run a TurboGears application. Before deployment, make
+sure you go over the :doc:`Runtime Configuration </Configuration>` to setup your application for
+maximum performance.
+
+Next, you should decide how to deploy your application. Here are a few sample
+configurations. If it all possible, we recommend using either a setup with
+mod_wsgi or a reverse proxy, since these are most easy to set up, widely-used
+and proven configurations:
+
+* :doc:`Deploying TurboGears Using Apache as a Reverse Proxy <BehindApache>`
+* :doc:`Deploying TurboGears Using Nginx as a Reverse Proxy <BehindNginx>`
+* :doc:`Deploying TurboGears Using Apache and mod_python <ModPython>`
+* :doc:`Deploying TurboGears Using LightTPD <LightTPD>`
+* :doc:`Deploying TurboGears Using IIS <BehindIIS>`
+* :doc:`Running TurboGears as a Windows Service <WindowsService>`
+* :doc:`Integrated Windows Authentication <IntegratedWindowsAuthentication>`
+* `Install Turbogears Using Apache and mod_wsgi
+  <http://lucasmanual.com/mywiki/TurboGears#InstallTurbogearswithApache>`_
+* `Distributing TurboGears as a Standalone Windows Application: tg2exe
+  <http://www.python.org/pypi/tg2exe>`_
+
+Please also consider :doc:`how many threads are appropriate <NumberOfThreads>`
+to be used in your deployment.
+
+If you run the TurboGears/CherryPy server behind a proxy, you also might want
+to read the following:
+
+- :doc:`Making HTTPS Redirects Work With a Reverse Proxy <RedirectHttpsRequests>`
+
+- `TurboGears Deployment with supervisord and workingenv
+  <http://thraxil.org/users/anders/posts/2006/09/13/TurboGears-Deployment-with-supervisord-and-workingenv-py/>`_
+
+
+Autostarting
+------------
+
+.. toctree::
+   :hidden:
+
+   InitScripts
+
+If want to use TurboGears standalone (or behind a proxy like Apache's mod_proxy),
+you need to make sure that the TurboGears server is started automatically.
+On Unix like system you can treat your app like every other system daemon by adding
+a custom `init`_ script which starts the server automatically when your system boots.
+Some :doc:`examples for init scripts <InitScripts>` have been contributed to this documentation.
+
+We also recommend using the Supervisor_ system for starting your TurboGears
+application since it has some additional advantages and features.
+
+.. _init: http://en.wikipedia.org/wiki/Init
+
+.. _examples for init scripts: InitScripts
+
+.. _Supervisor: http://supervisord.org

@@ -1,0 +1,2540 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears Changelog &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="TurboGears Books" href="TGBooks.html" />
+    <link rel="prev" title="API documentation" href="API.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="TGBooks.html" title="TurboGears Books"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="API.html" title="API documentation"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">TurboGears Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#july-14-2011">1.1.10 (July 14, 2011):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#changes">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fixes">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contributors-in-alphabetic-order">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#october-16-2009">1.0.9 (October 16, 2009):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#december-17-2008">1.0.8 (December 17, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#september-15-2008">1.0.7 (September 15, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id8">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#august-26-2008">1.0.6 (August 26, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#improvements">Improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#july-1-2008">1.0.5 (July 1, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fixes-and-improvements">Fixes and Improvements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id14">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#march-7-2008">1.0.4.4 (March 7, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id15">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id16">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id17">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id18">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#january-31-2008">1.0.4.3 (January 31, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id19">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#project-updates">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id20">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#january-21-2008">1.0.4.2 (January 21, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id21">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#january-20-2008">1.0.4.1 (January 20, 2008):</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#changelog-1-0-4">1.0.4 (January 20, 2008):</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#b6-january-16-2008">1.0.4b6 (January 16, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id23">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b5-january-14-2008">1.0.4b5 (January 14, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id24">Changes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b4-january-13-2008">1.0.4b4 (January 13, 2008):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id25">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id26">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id27">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b3-december-2-2007">1.0.4b3: (December 2, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deprecations">Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id28">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id29">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id30">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id31">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id32">Contributors (in alphabetic order)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b2-october-27-2007">1.0.4b2 (October 27, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id33">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id34">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id35">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id36">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contributors">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b1-september-13-2007">1.0.4b1 (September 13, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id37">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id38">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id39">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id40">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id41">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#july-20-2007">1.0.3.2 (July 20, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id42">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id43">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#july-19-2007">1.0.3 (July 19, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id44">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id45">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id46">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id47">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id48">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#may-2-2007">1.0.2 (May 2, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id49">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id50">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id51">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id52">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id53">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#january-22-2007">1.0.1 (January 22, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id54">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id55">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id56">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#january-03-2007">1.0 (January 03, 2007):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id57">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id58">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id59">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id60">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b2-november-30-2006">1.0b2 (November 30, 2006):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id61">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id62">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id63">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id64">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id65">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#b1-september-7-2006">1.0b1 (September 7, 2006):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id66">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id67">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id68">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id69">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a9-august-17-2006">0.9a9 (August 17, 2006):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id70">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id71">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id72">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a8-july-21-2006">0.9a8 (July 21, 2006):</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id73">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id74">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a7-july-19-2006">0.9a7 (July 19, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#backwards-incompatibilities">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id75">Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id76">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id77">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id78">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id79">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a6-may-9-2006">0.9a6 (May 9, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id80">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id81">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id82">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id83">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id84">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id85">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a5-april-26-2006">0.9a5 (April 26, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id86">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id87">Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id88">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id89">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id90">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id91">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id92">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a4-april-5-2006">0.9a4 (April 5, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id93">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id94">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a3-april-4-2006">0.9a3 (April 4, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id95">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id96">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id97">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id98">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id99">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a2-march-27-2006">0.9a2 (March 27, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id100">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id101">Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id102">Changes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id103">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id104">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id105">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a1-february-23-2006">0.9a1 (February 23, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id106">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id107">Deprecations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id108">Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id109">Fixes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id110">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id111">Contributors</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#february-6-2006">0.8.9 (February 6, 2006)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#january-10-2006">0.8.8 (January 10, 2006)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#january-4-2006">0.8.7 (January 4, 2006)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id112">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a6-december-26-2005">0.8a6 (December 26, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id113">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a5-december-2-2005">0.8a5 (December 2, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id114">Project Updates</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a4-october-25-2005">0.8a4 (October 25, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id115">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id116">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a3-october-16-2005">0.8a3 (October 16, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id117">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a2-oct-14-2005">0.8a2 (Oct 14, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id118">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#a1-oct-12-2005">0.8a1 (Oct 12, 2005)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id119">Backwards Incompatibilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#new-features">New Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id120">Project Updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notable-improvements-in-the-projects">Notable Improvements in the Projects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id121">Fixes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sep-17-2005">0.5.1 (Sep 17, 2005)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id122">0.5.0 (Sep 17, 2005)</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-changelog">
+<h1>TurboGears Changelog<a class="headerlink" href="#turbogears-changelog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="july-14-2011">
+<span id="changelog-1-0-10"></span><h2>1.1.10 (July 14, 2011):<a class="headerlink" href="#july-14-2011" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changes">
+<h3>Changes<a class="headerlink" href="#changes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Adaption of links to the new website.</li>
+</ul>
+</div>
+<div class="section" id="fixes">
+<h3>Fixes<a class="headerlink" href="#fixes" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The paginate decorator did not work properly with newer SQLAlchemy versions
+when using column prefixes.</li>
+<li>Avoid duplicate processing of parameters at external redirects (#2451).</li>
+<li>Setup tries to require suitable package versions for Python 2.3 and 2.4
+since often latest versions require newer Python versions.</li>
+</ul>
+</div>
+<div class="section" id="contributors-in-alphabetic-order">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#contributors-in-alphabetic-order" title="Permalink to this headline">¶</a></h3>
+<p>Dan Callaghan, Christoph Zwerschke</p>
+</div>
+</div>
+<div class="section" id="october-16-2009">
+<span id="changelog-1-0-9"></span><h2>1.0.9 (October 16, 2009):<a class="headerlink" href="#october-16-2009" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>Changes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">turbogears.validators</span></tt> supports the new <tt class="docutils literal"><span class="pre">formencode.national</span></tt> module.</li>
+<li>Lists as return values of controllers are handled like generators again.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span> <span class="pre">collect</span></tt> supports a new option <tt class="docutils literal"><span class="pre">-e|--js-encoding</span></tt> to
+set the file encoding of the JavaScript source files (r6645).</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>Fixes<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed some problems with non-ascci user names and URLs (#1130 and #2118).</li>
+<li>Static files were not found when project package was part of a larger
+namespace package (#12).</li>
+<li>Better error message if validator for option list couldn&#8217;t be guessed (#978).</li>
+<li>Fixed Modeldesigner exception (#1109).</li>
+<li>Multi-level inheritance did not work in model designer (#1092).</li>
+<li>The PackageHub for SQLObject now only establishes a connection/transaction
+when really necessary (fixed tickets #763, #817 and #2160).</li>
+<li>The tgsetup script failed when <tt class="docutils literal"><span class="pre">find_link</span></tt> was set in <tt class="docutils literal"><span class="pre">.pydistutils.cfg</span></tt>
+as a single string (#2098).</li>
+<li>A form widget that is displayed without action parameter now produces an
+empty action attribute instead of leaving it out which is invalid (#2292).</li>
+<li>Wrapping the <tt class="docutils literal"><span class="pre">CatWalk</span></tt> controller with <tt class="docutils literal"><span class="pre">identity.SecureObject</span></tt> did not
+protect catwalk&#8217;s sub-controller <tt class="docutils literal"><span class="pre">Browser</span></tt> (#2207).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">help</span></tt> produced an error (#2361, thanks to Izhar Firdaus).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span> <span class="pre">collect</span></tt> DecodingError when collecting strings from
+JavaScript files with non-ascii characters (#2183).</li>
+<li>Removed some obsolete code to handle deleting of related joins from CatWalk
+(#2162, thanks , Daniel Fetchinson).</li>
+<li>When a visitor requested a page shortly before the <tt class="docutils literal"><span class="pre">visit.timeout</span></tt> and
+then again shortly afterwards, he could sometimes be logged of at the
+second request because the visit manager had not yet updated the database.
+This has now been fixed by first looking up visits cached in memory (#2346).</li>
+<li>The Genshi Buffet interface is now correctly initialized with the
+<tt class="docutils literal"><span class="pre">default_encoding</span></tt> setting, not <tt class="docutils literal"><span class="pre">encoding</span></tt> (see end of #1963).</li>
+<li>It was not possible to enter Null values for optional fields using Catwalk.
+Some fixes were made to solve this, particularly for numeric fields (#760).</li>
+<li>Better error message in Catwalk if foreign key cannot be found (#1412).</li>
+<li>Primary key strings did not work properly with Catwalk when updating (#1029).</li>
+<li>Pagination did not work with SQLAlchemy &gt;= 0.6.</li>
+<li>We now only pass string values as hidden fields in the login form, skipping
+possible file fields which cannot be passed anyway (#1761).</li>
+<li>Fixed scheduler shutdown problem with method.sequential (#1702).</li>
+</ul>
+</div>
+<div class="section" id="features">
+<h3>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Added links to the home pages of the individual packages on the toolbox
+info page (#1155).</li>
+<li>TurboGears now makes internal use of the <tt class="docutils literal"><span class="pre">is_active</span></tt> property provided
+by SQLAlchemy 0.4.9 and newer.</li>
+<li>Compiled Kid templates are now added when building eggs (#1463).</li>
+<li>Added default MANIFEST.in to quickstart template to ensure clean builds.</li>
+<li>Allowed nested validation schemas to be defined by nesting schema class
+definitions and allowed schema classes, not only instances, to be attached
+to form widgets (#2393).</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Peter Russell, Christoph Zwerschke, Christopher Arndt</p>
+</div>
+</div>
+<div class="section" id="december-17-2008">
+<span id="changelog-1-0-8"></span><h2>1.0.8 (December 17, 2008):<a class="headerlink" href="#december-17-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id4">
+<h3>Changes<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Charset parameters are now only added to content type headers when the
+respective mime type supports this (e.g. all &#8220;text&#8221; types, but not &#8220;pdf&#8221;).</li>
+<li>Use &#8220;text/html&#8221; again instead of &#8220;application/xhtml+xml&#8221; for XHTML format,
+as was done in version 1.0.7. Though it is more standards-compliant, IE
+unfortunately does not cope with this content type, and we want to avoid
+the problems of content negotiation (see ticket #1998).</li>
+<li>Updated and fixed the &#8216;tgsetup.py&#8217; script (#2053).</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>Fixes<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Passing a list of arguments to the redirect method did not work anymore since
+version 1.0.5 and is now working again (#2006).</li>
+<li>Solved a small problem in the login controller of quickstarted projects since
+version 1.0.5 that occurred when directly accessing a non-authorized resource.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">toolbox</span></tt> ignored the <tt class="docutils literal"><span class="pre">--config</span></tt> option and adopted problematic
+config settings from the current project.</li>
+<li>Fixed an issue with i18n string collection when using the lang option (#2012).</li>
+<li>Made <tt class="docutils literal"><span class="pre">not_anonymous</span></tt> internally consistent with others predicates (#2029).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span></tt> did not work with SQLAlchemy versions before 0.4.3 (#2057).</li>
+<li>Hidden fields are now always put in an invisible &#8216;div&#8217; section since they
+must be contained in a block-level element to be valid (X)HTML (#2052).</li>
+<li>The id of widgets like datagrid could not be changed at render time (#2023).</li>
+<li>Improved some error messages and warnings.</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>Features<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Made content type delivered for a template format configurable with the
+<tt class="docutils literal"><span class="pre">tg.format_mime_types</span></tt> setting (see problem with XHTML content above).</li>
+<li>TurboGears 1.0.8 now additionally includes MochiKit version 1.4.2, though
+version 1.3.1 is still used by default. You can use the newer version by
+setting <tt class="docutils literal"><span class="pre">tg.mochikit_version</span></tt> or <tt class="docutils literal"><span class="pre">tg_mochikit.version</span></tt>  to &#8216;1.4&#8217; (#2018).</li>
+<li>Forms have got a new <tt class="docutils literal"><span class="pre">use_name</span></tt> parameter that allows setting the id
+attribute instead of the name attribute of the form, since the latter is
+deprecated in HTML and invalid in XHTML (#2052).</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Christopher Arndt, Christopher Gabriel, Eloi Notario, Peter Russel,
+George Sakkis, Christophe de Vienne, Matt Wilson, Christoph Zwerschke</p>
+</div>
+</div>
+<div class="section" id="september-15-2008">
+<span id="changelog-1-0-7"></span><h2>1.0.7 (September 15, 2008):<a class="headerlink" href="#september-15-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id8">
+<h3>Changes<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The standard controller method handling identity.failure_url (&#8220;/login&#8221;) now
+returns the proper HTTP status code &#8220;401 Unauthorized&#8221; (instead of
+&#8220;403 Forbidden&#8221;) (#1787).</li>
+<li>The required version of SQLObject was bumped up to 0.10.1 (#1765).</li>
+<li>&#8216;tgsetup.py&#8217; installation script does not set script-dir to &#8220;/usr/local/bin&#8221;
+anymore on Unix-like systems (#1317).</li>
+</ul>
+</div>
+<div class="section" id="id9">
+<h3>Fixes<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The Label widget now renders &#8216;attrs&#8217; which had been missing from its template
+(Andy Grover) (#1964).</li>
+<li>The &#8216;testutil.call_with_request&#8217; did not work with controller methods which
+raise redirect (Felix Schwarz) (#1203).</li>
+<li>&#8220;tg-admin i18n&#8221; and the adm18n toolbox tool now correctly strip whitespace
+around strings collected from Kid templates so that they get translated
+properly (#1695).</li>
+<li>&#8216;identity.get_failure_url&#8217; was not backported from 1.1 branch but used in
+the identity providers (r5338).</li>
+<li>XHTML templates were delivered with a content type of &#8220;text/html&#8221; while it
+should be &#8220;application/xhtml+xml&#8221; (r5323, related to #1963).</li>
+<li>CalendarPicker was positioned wrong when scrolled in IE7 (Nick Murdoch)
+(#1875).</li>
+<li>Make paginate work with tg.strict_parameters=False (#1889).</li>
+<li>&#8216;i18n.parse_decimal&#8217; broke when locale is unknown (#1104).</li>
+<li>&#8216;feed.FeedController.index&#8217; now passes keyword args when redirecting to the
+feed handler methods (#1732).</li>
+<li>&#8216;config.config_defaults()&#8217; should now set &#8216;package_dir&#8217; correctly on all
+platforms (r5328).</li>
+</ul>
+</div>
+<div class="section" id="id10">
+<h3>Features<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<p>None</p>
+</div>
+<div class="section" id="id11">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<p>Christopher Arndt, Christoph Zwerschke</p>
+</div>
+</div>
+<div class="section" id="august-26-2008">
+<span id="changelog-1-0-6"></span><h2>1.0.6 (August 26, 2008):<a class="headerlink" href="#august-26-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="improvements">
+<h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Visit key can now be retrieved also from the request params (#1927).</li>
+<li>Added <tt class="docutils literal"><span class="pre">max_limit</span></tt> and <tt class="docutils literal"><span class="pre">max_sort</span></tt> parameters to the paginate decorator
+and deprecated <tt class="docutils literal"><span class="pre">allow_limit_override</span></tt> (#1908). Since the last version,
+TurboGears sorts in memory, if sorting with SQL is not possible. Since
+this may be costly, you can now set limits.</li>
+<li>TurboGears now respects the <tt class="docutils literal"><span class="pre">SCRIPT_NAME</span></tt> CGI environment variable.
+This allows better integration with <tt class="docutils literal"><span class="pre">mod_wsgi</span></tt> and other WSGI middleware
+and more flexibility than using <tt class="docutils literal"><span class="pre">sever.webpath</span></tt> (#1919).</li>
+<li>TurboGears now also sets <tt class="docutils literal"><span class="pre">request.path_info</span></tt> using a CherryPy filter.
+This is the same as <tt class="docutils literal"><span class="pre">request.path</span></tt> with both <tt class="docutils literal"><span class="pre">SCRIPT_NAME</span></tt> and
+<tt class="docutils literal"><span class="pre">server.webpath</span></tt> stripped off.</li>
+<li>Added a <tt class="docutils literal"><span class="pre">unicode_response</span></tt> attribute to the <tt class="docutils literal"><span class="pre">testutil.BrowsingSession</span></tt>
+object if an encoding is specified in the Content-Type header. Tests can use
+this much more safely.</li>
+<li>If <tt class="docutils literal"><span class="pre">WidgetsList</span></tt> objects are passed in the controller dict, then the CSS
+and JavaScript for all the widgets in the list will be included (#5190).</li>
+<li>The forward/backward/goto links in the paginate data grid can now be styled,
+and the default style shows them as buttons (way easier to click).</li>
+</ul>
+</div>
+<div class="section" id="id12">
+<h3>Fixes<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed several problems with <tt class="docutils literal"><span class="pre">server.webath</span></tt> (#1606, #1939, #1957).</li>
+<li>Improved the login mechanism so that you can use secure logins by setting
+<tt class="docutils literal"><span class="pre">identity.failure_url</span></tt> and <tt class="docutils literal"><span class="pre">identity.force_external_redirect</span></tt>.</li>
+<li>url() now handles URLs with existing query strings correctly (#1862).</li>
+<li>Using something like kid.HTMLSerializer as template format works again.</li>
+<li>Fixed a problem with setuptools 0.6c9 (#1796).</li>
+<li>&#8220;tg-admin sql status&#8221; with SQLAlchemy wrongly complained about columns
+not being declared as Unicode.</li>
+<li>Catwalk got foreign key wrong for classes with camel case names.</li>
+<li>Fixed several problems with toolbox admi18n (#1399, #1941, #1943).</li>
+</ul>
+</div>
+<div class="section" id="id13">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Christopher Arndt, Ken Kuhlman, Tore Lundqvist, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="july-1-2008">
+<span id="changelog-1-0-5"></span><h2>1.0.5 (July 1, 2008):<a class="headerlink" href="#july-1-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="fixes-and-improvements">
+<h3>Fixes and Improvements<a class="headerlink" href="#fixes-and-improvements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>You can now pass a couple of interesting configuration parameters to
+TurboJson (e.g. <tt class="docutils literal"><span class="pre">json.ensure_ascii=True</span></tt>, and the default is now False).</li>
+<li>A new epydoc-based API docs generation script was added.</li>
+<li>The widget <tt class="docutils literal"><span class="pre">default</span></tt> value can now be a function, similar to <tt class="docutils literal"><span class="pre">options</span></tt>.</li>
+<li>The default content type for JSON was changed from <tt class="docutils literal"><span class="pre">text/javascript</span></tt>
+to <tt class="docutils literal"><span class="pre">application/json</span></tt> (#1842).</li>
+<li>The accept header is now reduced to a single value before it is compared
+with <tt class="docutils literal"><span class="pre">accept_format</span></tt> (#1842).</li>
+<li>The content type of the response is now determined from the template format
+parameter, if not otherwise specified (#1842, #1480).</li>
+<li>Setting <tt class="docutils literal"><span class="pre">tg_format=json</span></tt> is now allowed even when the format is already
+JSON by default (#1459).</li>
+<li>Small improvements in <tt class="docutils literal"><span class="pre">DataGrid</span></tt>, empty headers are now allowed.</li>
+<li>Small improvements in the <tt class="docutils literal"><span class="pre">DataGrid</span></tt> and <tt class="docutils literal"><span class="pre">PaginateDataGrid</span></tt> templates.</li>
+<li>Improved <tt class="docutils literal"><span class="pre">paginate</span></tt> and made it work with the latest SQLAlchemy versions.
+Sorting now works with SQLAlchemy queries and pure Python objects, and
+nested attributes are supported.</li>
+<li>Table of contents and <tt class="docutils literal"><span class="pre">PaginateDataGrid</span></tt> added to the widget browser.</li>
+<li><tt class="docutils literal"><span class="pre">AutoCompleteField</span></tt> now also works with the MochiKit 1.4 dev version.</li>
+<li>Added alternate text parameter to ImageButton for better form accessibility.</li>
+<li>Fixed params attribute of <cite>JSI18NWidget</cite>.</li>
+<li>Some association tables did not have primary keys when using SQLAlchemy.</li>
+<li>Flash messages with commas did not work on some browsers (#1164).</li>
+<li>The error handler did not return JSON when it had been requested from the
+original controller using <tt class="docutils literal"><span class="pre">tg_format</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> now works with &#8220;heredocs&#8221; and other cases when the
+standard input encoding is not defined.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">toolbox</span></tt> did not work when <tt class="docutils literal"><span class="pre">server.socket_host</span></tt> was not
+set on some platforms (#1713).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span> <span class="pre">collect</span></tt> did not work with nested packages (#1779).</li>
+<li>A bug (#1396) made the recursion guard not work correctly and prevented
+validation to be performed more than once per request.</li>
+<li>Setting <tt class="docutils literal"><span class="pre">tg.defaultview='genshi'</span></tt> and <tt class="docutils literal"><span class="pre">tg.mochikit_suppress=True</span></tt>
+raised an exception (#1719).</li>
+<li><tt class="docutils literal"><span class="pre">format_decimal</span></tt> in i18n.format now works with <tt class="docutils literal"><span class="pre">num_places=0</span></tt> (#1647).</li>
+<li>The <tt class="docutils literal"><span class="pre">FeedController</span></tt> Atom 1.0 template didn&#8217;t include proper author (#1730).</li>
+<li>The quickstarted default app.cfg file now sets the package name (#1631).</li>
+<li>Under rare circumstances, testutil could use a wrong module name (#1821).</li>
+<li>Installing ElementTree is not required any more for Python &lt; 2.5.</li>
+<li>Some more small fixes and improvements of the code base and unit tests.</li>
+</ul>
+</div>
+<div class="section" id="id14">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Christopher Arndt, kikidonk, Diez B. Roggisch, Felix Schwarz,
+Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="march-7-2008">
+<h2>1.0.4.4 (March 7, 2008):<a class="headerlink" href="#march-7-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id15">
+<h3>Changes<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cherrypy.request.sa_transaction</span></tt> is now always the SQLAlchemy transaction.
+In the case of SQLAlchemy &gt;= 0.4, this had been set to the SQLAlchemy session
+before. You should&#8217;t use this to explicitly commit or rollback transactions,
+use <tt class="docutils literal"><span class="pre">database.session.commit()</span></tt> or <tt class="docutils literal"><span class="pre">database.session.rollback()</span></tt> instead.</li>
+<li>Identities now have a <tt class="docutils literal"><span class="pre">login</span></tt> method creating the link to the visit;
+this is not done in the provider method <tt class="docutils literal"><span class="pre">validate_identity</span></tt> any more.</li>
+<li>TurboGears does not use a permanent visit cookie any more by default, i.e.
+the cookie will now be discarded when the browser is closed (#1729). If you
+want a permanent cookie to be used, set <tt class="docutils literal"><span class="pre">visit.cookie.permanent</span></tt> to True.
+The <tt class="docutils literal"><span class="pre">visit.timeout</span></tt> setting controls how long the cookie is valid.</li>
+</ul>
+</div>
+<div class="section" id="id16">
+<h3>Features<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Identies now have additional <tt class="docutils literal"><span class="pre">user_id</span></tt> and <tt class="docutils literal"><span class="pre">group_ids</span></tt> attributes.</li>
+<li>Added an AutoCompleteTextField that can more easily replace an ordinary
+TextField in a form (the AutoCompleteField is a CompoundWidget).</li>
+</ul>
+</div>
+<div class="section" id="id17">
+<h3>Fixes<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Toolbox did not run on projects using Genshi (#1494).</li>
+<li>Toolbox loading will no more crash on a missing SQLObject import (#1620).</li>
+<li>The PasteScript bug mentioned in the 1.0.4.1 changelog below has been fixed
+in PasteScript 1.6.2, so TurboGears requires the new version now (#1624).</li>
+<li>The new config parameter <tt class="docutils literal"><span class="pre">tg.ignore_parameters</span></tt> allows ignoring other
+paramers besides <tt class="docutils literal"><span class="pre">tg_random</span></tt> when <tt class="docutils literal"><span class="pre">tg.stric_parameters</span></tt> ist set (#1653).</li>
+<li>FieldStorageUploadConverter didn&#8217;t support <tt class="docutils literal"><span class="pre">not_empty=False</span></tt> (#1705).</li>
+<li>Fixed <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> encoding problems (#1714).</li>
+<li>Template params now always keep their given order (#1718).</li>
+<li>Compatibility with SQLAlchemy 0.4.3 (#1721).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> now runs with Python 2.3 if you install subprocess.</li>
+<li>Better handling of external redirects.</li>
+</ul>
+</div>
+<div class="section" id="id18">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Matej Barič, Jorge Godoy, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="january-31-2008">
+<h2>1.0.4.3 (January 31, 2008):<a class="headerlink" href="#january-31-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id19">
+<h3>Fixes<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Added a new config option (app.cfg) which controls the kind of redirection
+the framework will raise in case of identity errors. By default TG used an
+internal CherryPy redirect in such cases. But the problem was that if you
+tried to use a failure url such as <a class="reference external" href="https://somewhere">https://somewhere</a> then CP raised a 404
+error and that was all. Using this new system, you can activate _external_
+redirects for identity errors by using the identity.force_external_redirect
+in app.cfg. This will permit redirecting your clients to any HTTPS url that
+is managed by an external apache or nginx rewrite rule.</li>
+<li>Fixed the behavior of tg.mochikit_suppress which wasn&#8217;t actually working.</li>
+<li>Small improvements of the AutoCompleteField (Javascript clean-up;
+nicer box for auto completions and no garbage when it is empty;
+cursor jumps to end of text on update; with <tt class="docutils literal"><span class="pre">search_param</span> <span class="pre">=</span> <span class="pre">'*'</span></tt>
+you can now pass all form fields to the controller; the spinner can
+now be suppressed with <tt class="docutils literal"><span class="pre">show_spinner</span> <span class="pre">=</span> <span class="pre">False</span></tt>; the hidden field
+is now optional in the Javascript code so that it can be reused if you
+want to build a simpler TextField based widget; added parameter docs)</li>
+</ul>
+</div>
+<div class="section" id="project-updates">
+<h3>Project Updates<a class="headerlink" href="#project-updates" title="Permalink to this headline">¶</a></h3>
+<p>SQLObject version has been bumped so TG accepts 0.10.0 final.</p>
+</div>
+<div class="section" id="id20">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Diez B. Roggisch, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="january-21-2008">
+<h2>1.0.4.2 (January 21, 2008):<a class="headerlink" href="#january-21-2008" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Lower down the dependency on PasteScript again to &lt;1.6.</li>
+<li>CalendarDatePicker fixed with sane default values.</li>
+</ul>
+<div class="section" id="id21">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="january-20-2008">
+<h2>1.0.4.1 (January 20, 2008):<a class="headerlink" href="#january-20-2008" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Lower down the dependency on PasteScript because 1.6.1 and 1.6.1.1
+break tg-admin quickstart command. We will release an updated version
+when the fix is implemented (<a class="reference external" href="http://trac.pythonpaste.org/pythonpaste/ticket/219">http://trac.pythonpaste.org/pythonpaste/ticket/219</a>).</li>
+</ul>
+</div>
+<div class="section" id="changelog-1-0-4">
+<span id="id22"></span><h2>1.0.4 (January 20, 2008):<a class="headerlink" href="#changelog-1-0-4" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixed parameters encoding. A previous patch encoded all characters in the
+cherrypy parameters to make them utf-8. This comportment has been reverted
+and unit tests written to ensure cherrypy parameters we receive inside a TG
+application will alway be unicode.</li>
+</ul>
+</div>
+<div class="section" id="b6-january-16-2008">
+<h2>1.0.4b6 (January 16, 2008):<a class="headerlink" href="#b6-january-16-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id23">
+<h3>Changes<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed remote address inspection in the CherryPy headers because it changed
+in version 2.3.0.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="b5-january-14-2008">
+<h2>1.0.4b5 (January 14, 2008):<a class="headerlink" href="#b5-january-14-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h3>Changes<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Now require CherryPy 2.3.0 as the minimum version to avoid a
+security bug in CherryPy (CVE-2008-0252), see more info here
+<a class="reference external" href="http://nvd.nist.gov/nvd.cfm?cvename=CVE-2008-0252">http://nvd.nist.gov/nvd.cfm?cvename=CVE-2008-0252</a>.
+and here : <a class="reference external" href="http://www.cherrypy.org/ticket/744">http://www.cherrypy.org/ticket/744</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="b4-january-13-2008">
+<h2>1.0.4b4 (January 13, 2008):<a class="headerlink" href="#b4-january-13-2008" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id25">
+<h3>Changes<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Pagination can be disabled by using <tt class="docutils literal"><span class="pre">allow_limit_override</span></tt> and
+<tt class="docutils literal"><span class="pre">tg_paginate_limit=0</span></tt>, allowing all results been returned on one single
+page (#1629).</li>
+</ul>
+</div>
+<div class="section" id="id26">
+<h3>Fixes<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed the visit cookie which was never resent to client until
+it expired(#1652).</li>
+<li>Fixed teardown for SQLObject tables (#1674).</li>
+<li>Fixed VisitFilter when Identity is on and there are list parameters (#1622).</li>
+<li>Paginate does a better handling of zeroed limit, avoiding ZeroDivisionError
+exception (#1629).</li>
+<li>Added missing logger configuration to quickstarted projects (#1630).</li>
+<li>Fixed pagination of empty data when a SQL with &#8220;group by&#8221; is issued (#1641).</li>
+</ul>
+</div>
+<div class="section" id="id27">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Toshio Kuratomi, Jan ONDREJ (SAL),  Martin Schwamberger (mschw),
+Matt Wilson, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="b3-december-2-2007">
+<h2>1.0.4b3: (December 2, 2007):<a class="headerlink" href="#b3-december-2-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deprecations">
+<h3>Deprecations<a class="headerlink" href="#deprecations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Paginate <tt class="docutils literal"><span class="pre">default_order</span></tt> has been greatly improved. Use of the
+<tt class="docutils literal"><span class="pre">default_reversed</span></tt> parameter has been deprecated. It will still be used
+if it is informed, but a DeprecationWarning will be displayed.</li>
+</ul>
+</div>
+<div class="section" id="id28">
+<h3>Changes<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Introduction of tg.mochikit_suppress to prevent the inclusion of
+the shipped MochiKit 1.3.1. That allows to include custom mochikit versions.</li>
+<li>PaginateDataGrid template now makes use of paginate attributes to render
+the links for first/previous/next/last page (#1617).</li>
+<li><tt class="docutils literal"><span class="pre">paginate.href_last</span></tt> returns a special URL that allows paginate decorator
+to compute the correct last page number at server-side (#1617).</li>
+<li>The <tt class="docutils literal"><span class="pre">start-&lt;project&gt;.py</span></tt> script in a quickstarted project is now only a
+wrapper for the <tt class="docutils literal"><span class="pre">start()</span></tt> function in a new <tt class="docutils literal"><span class="pre">commands</span></tt> module in the
+project&#8217;s package. The <tt class="docutils literal"><span class="pre">setup.py</span></tt> in new project also creates a console
+script entry point for this, so easy_install can create a start script
+when the project&#8217;s egg is installed. It also allows to package a default
+configuration file in the egg. For details see ticket (#1386).</li>
+<li>Installation of TurboGears now does not require installation of an ORM.
+Instead, a project that relies on SQLObject or SQLAlchemy will have a
+<tt class="docutils literal"><span class="pre">setup.py</span></tt> file written with the proper requirements (#1501, #1620).</li>
+<li>Removed the hard SQLAlchemy/SQLObject dependecies and modified quickstart
+to render the required ORM as requirement into a projects setup.py.</li>
+</ul>
+</div>
+<div class="section" id="id29">
+<h3>Features<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Introduction of tg.mochikit_suppress to (see &#8220;Changes&#8221;).</li>
+<li>Workaround in paginate for databases without <tt class="docutils literal"><span class="pre">OFFSET</span></tt> (#1601).</li>
+<li>The database module exports a mapper which is either session.mapper
+for SQLAlchemy &gt;= 0.4, or something similar to assign_mapper
+for SQLAlchemy &lt; 0.4, but compatible with SQLAlchemy 0.4 and Elixir.</li>
+<li>The <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> command has now an option <tt class="docutils literal"><span class="pre">-r</span></tt>
+<tt class="docutils literal"><span class="pre">(--svn-repository)</span></tt> allowing automatic creation of the project in the
+specified SVN repository.</li>
+<li>Introduction of <tt class="docutils literal"><span class="pre">paginate.redirect_on_out_of_range</span></tt> and
+<tt class="docutils literal"><span class="pre">paginate.redirect_on_last_page</span></tt>, which determine if paginate decorator
+should raise a redirect when current page is out of bound and the
+last page is requested, respectively.</li>
+<li>Paginate <tt class="docutils literal"><span class="pre">default_order</span></tt> can now be a string or a list of strings.
+The list of strings is used to specify the ordering of multiple columns.
+Every string starting with a dash (<tt class="docutils literal"><span class="pre">-</span></tt>) indicates that the column will
+have its default ordering reversed (#1618).</li>
+<li>turbogears.url() allows to to create an url with multiple values for the
+same key (#1456).</li>
+</ul>
+</div>
+<div class="section" id="id30">
+<h3>Fixes<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed broken quickstart change (#1595).</li>
+<li>KID-template string collection for i18n fixed so that it ignores XML
+processing instructions and comments as well as script and style sections.</li>
+<li>Fixed SQLAlchemy and Elixir issues (#1458, #1599 and #1604).</li>
+<li>Fixed issues with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">update</span></tt> on a project in SVN (#1608).</li>
+<li>Fix pagination of SQLAlchemy Query ordering by backrefs and synonyms&#8217;
+attributes. It also supports SQLAlchemy 0.4.1, which removed the
+<tt class="docutils literal"><span class="pre">properties</span></tt> accessor on Mapper (#1582).</li>
+<li>Ensure paginate links bring the same result when using ordering columns
+with a custom datagrid template (#1605).</li>
+<li>Fix pagination of out of bound pages (#1617).</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">i18n</span></tt> now supports Unicode strings in Kid templates (#1397).</li>
+<li>Fixed testutil to properly use the soClasses attribute in the model
+in order to pick up only the classes defined in this list and not
+the rest. Thanks to Gregor Horvath for this suggestion. (#1586).</li>
+<li>Fixed the command line interface to i18n collection. Command line now
+processes also the templates (#1436).</li>
+<li>Identity bug when using non-ASCII characters in the URL (#1598, #1407,
+#1022).</li>
+</ul>
+</div>
+<div class="section" id="id31">
+<h3>Project Updates<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>TurboCheetah 1.0</li>
+<li>TurboJson 1.1.2</li>
+<li>TurboKid 1.0.4</li>
+</ul>
+</div>
+<div class="section" id="id32">
+<h3>Contributors (in alphabetic order)<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Christopher Arndt, Roger Demetrescu, Juan Germano, Joel Pearson,
+Diez B. Roggisch, Christoph Zwerschke.</p>
+</div>
+</div>
+<div class="section" id="b2-october-27-2007">
+<h2>1.0.4b2 (October 27, 2007):<a class="headerlink" href="#b2-october-27-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id33">
+<h3>Changes<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>New quickstart templates for the SQLAlchemy support.</li>
+<li>Better transaction support.</li>
+<li>Paginate decorator enhanced SQLAlchemy support.</li>
+</ul>
+</div>
+<div class="section" id="id34">
+<h3>Features<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SQLAlchemy 0.4 is now supported, and SQLAlchemy 0.3.10 is required as a
+minimum (#1483).</li>
+<li>QuickStart no longer creates sqlobject-history directories for SQLAlchemy
+projects.</li>
+<li>&#8220;tg-admin sql&#8221; is now more powerful for SQLAlchemy (#1418).</li>
+<li>Paginate allows ordering by attributes from related objects (SQLAlchemy
+Query objects only) (#1582).</li>
+<li>JavaScript i18n-features added.</li>
+</ul>
+</div>
+<div class="section" id="id35">
+<h3>Fixes<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Rollback SQLAlchemy transaction if a controller method fails, and it has an
+exception_handler (#1185).</li>
+<li><tt class="docutils literal"><span class="pre">sa_rwt</span></tt> (SQLAlchemy run with transaction) refactored to fix some corner
+cases.</li>
+<li>Fixed internal pagination ordering, avoiding a potential error when
+paginating Query objects (SQLAlchemy) and ordering by 4 or more
+columns (#1508).</li>
+<li>Fixed pagination of Query objects (SQLAlchemy). The first patch assumed
+that Query objects have a _query attribute which holds the query object,
+which is only true for SelectResults objects (#1434).</li>
+<li>Paginate now works with SQLAlchemy 0.4 (#1591).</li>
+<li>KID-template string collection for i18n enhanced so it matches the
+expectations of the i18n-filter.</li>
+</ul>
+</div>
+<div class="section" id="id36">
+<h3>Project Updates<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Minimum requirement for SQLAlchemy support is now 0.3.10.</li>
+<li>The SQLAlchemy page on our wiki contains some upgrade information:
+<a class="reference external" href="http://docs.turbogears.org/1.0/SQLAlchemy#id19">http://docs.turbogears.org/1.0/SQLAlchemy#id19</a></li>
+</ul>
+</div>
+<div class="section" id="contributors">
+<h3>Contributors<a class="headerlink" href="#contributors" title="Permalink to this headline">¶</a></h3>
+<p>Florent Aide, Roger Demetrescu, Jonathan Hitchcock, j, Paul Johnston,
+Remi Jolin, Diez B. Roggisch, Christoph Zwerschke</p>
+</div>
+</div>
+<div class="section" id="b1-september-13-2007">
+<h2>1.0.4b1 (September 13, 2007):<a class="headerlink" href="#b1-september-13-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id37">
+<h3>Changes<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The cookies should have the same timeout as the session does, this way it
+is possible to keep users logged in for longer than the time the browser
+is running (#1406).</li>
+<li>SQLAlchemy 0.4 support added. The identity part and the SQLAlchemy quickstart
+model were changed to do this. For the moment only the standard SQLAlchemy
+model has been changed, the <tt class="docutils literal"><span class="pre">tbig</span></tt> is still not fully compatible with
+SQLAlchemy 0.4.</li>
+</ul>
+</div>
+<div class="section" id="id38">
+<h3>Features<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>i18n support for Javascript (for real this time).</li>
+<li>Allow pagination of multiple variables, simply by using the &#64;paginate
+decorator multiple times on a particular controller.
+It maintains backwards compatibility with previous code, but introduces
+a new template variable: tg.paginates (#1410).</li>
+<li>Added <tt class="docutils literal"><span class="pre">-o</span></tt> <tt class="docutils literal"><span class="pre">(--sqlobject)</span></tt> option to generate SQLObject template,
+by Fred Lin.</li>
+</ul>
+</div>
+<div class="section" id="id39">
+<h3>Fixes<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SQLAlchemy exception handling and transaction support has been
+improved and polished.</li>
+<li>Added proper logging for exceptions that occured during the identity
+providers. Thoses errors were lost silently before and made it hard to
+understand from where the problem came.</li>
+<li>Improved support for the SQLAlchemy command line interface.</li>
+</ul>
+</div>
+<div class="section" id="id40">
+<h3>Project Updates<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A lot of unit tests have been fixed to support versions of nose
+superior to 0.9.2. Paul also took great care to add more unit tests
+to the SQLAlchemy handling in TG.</li>
+<li>Now require TurboKid 1.0.3 for Kid support. This will pull out the
+latest TurboKid that includes fixes for choosing the kid output format.</li>
+</ul>
+</div>
+<div class="section" id="id41">
+<h3>Contributors<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h3>
+<p>Diez B. Roggisch, j, Christoph Zwerschke, Chris Arndt, Paul Johnston, Florent Aide</p>
+</div>
+</div>
+<div class="section" id="july-20-2007">
+<h2>1.0.3.2 (July 20, 2007):<a class="headerlink" href="#july-20-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id42">
+<h3>Fixes<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Genshi, while internally calling it &#8220;variable_lookup&#8221;, has a Buffet Engine
+plugin that expects &#8220;lookup_errors&#8221;. TG 1.0 and 1.1 look for and pass through
+only &#8220;variable_lookup&#8221;, while TG 1.1 has &#8220;lookup_errors&#8221; in configuration.
+This helps in error handling with Genshi templates.
+Patch by Neil Blakey-Milner (#1444).</li>
+<li>Output format must not be set for other templating engines than Kid,
+and needs not be set for Kid either. Removed unnecessary imports.
+Christoph Zwerschke.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">toolbox</span></tt> did not run outside a project directory.
+Christoph Zwerschke.</li>
+</ul>
+</div>
+<div class="section" id="id43">
+<h3>Contributors<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h3>
+<p>Neil Blakey-Milner, Christoph Zwerschke</p>
+</div>
+</div>
+<div class="section" id="july-19-2007">
+<span id="changelog-1-0-3"></span><h2>1.0.3 (July 19, 2007):<a class="headerlink" href="#july-19-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id44">
+<h3>Changes<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Added support for multiple databases using SQLAlchemy (#1380 by Ian Charnas).</li>
+</ul>
+</div>
+<div class="section" id="id45">
+<h3>Features<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Elixir quickstart by FredLin</li>
+<li>Adding encryption on the fly for SQLAlchemy identity on in the template as
+per mailing list discussion (#1415).</li>
+<li>Added slovenian translation thanks to mte (#1190).</li>
+<li>Japanese Calendar thanks to tmatsuo (#1395).</li>
+<li>Handle locales in egg creation thanks to Christoph Zwerschke</li>
+</ul>
+</div>
+<div class="section" id="id46">
+<h3>Fixes<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Now handles SQLAlchemy Query in addition of SelectResults which will be
+deprecated in the near future (#1434).</li>
+<li>Fix visit entries created more than once in the database (#1325).</li>
+<li>Fixed toolbox config loading during startup.</li>
+<li>Safari Unicode fix (patch from Simon Wittber, #1284).</li>
+<li>Fix for i18n for testsuites not run in the same directory as the project</li>
+<li>&#64;paginate barfed if you tried to sort on a column whose data
+is generated from SQL. Thanks to Alastair (#1319).</li>
+<li>&#64;paginate didn&#8217;t support SQLAlchemy list properties.
+Thanks to Alastair (#1318).</li>
+<li>Fixed paginate href. Thanks to Alastair (#1321).</li>
+<li>Enable custom: plugins outside TG source tree thx to aalbrecht (#1178).</li>
+</ul>
+</div>
+<div class="section" id="id47">
+<h3>Project Updates<a class="headerlink" href="#id47" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Recommended version of Python is now 2.5.</li>
+</ul>
+</div>
+<div class="section" id="id48">
+<h3>Contributors<a class="headerlink" href="#id48" title="Permalink to this headline">¶</a></h3>
+<p>Simon Wittber, Christopher Arndt, Christoph Zwerschke, Paul Johnston, FredLin,
+jtate, Ian Charnas, Alastair Houghton, Ian Charnas, Alberto Valverde González,
+Florent Aide.</p>
+</div>
+</div>
+<div class="section" id="may-2-2007">
+<span id="changelog-1-0-2"></span><h2>1.0.2 (May 2, 2007):<a class="headerlink" href="#may-2-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id49">
+<h3>Changes<a class="headerlink" href="#id49" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>New <tt class="docutils literal"><span class="pre">visit.cookie.secure</span></tt> config option to send cookie only over a secure
+connection (#1375 by James E. Blair).</li>
+<li><tt class="docutils literal"><span class="pre">cherrypy.request</span></tt> is now available at the variables sent to every template
+(#1362 by Christoph Zwerschke).</li>
+<li>SQLAlchemy transaction object is now stored at <tt class="docutils literal"><span class="pre">cherrypy.request.sa_transaction</span></tt> so
+it can be accessed from the controllers. Patch at #1359 by Janzert.</li>
+<li>SecureResource now raises an AttributeError when no require attribute is
+present in the controller class or in the config file. Closes #1336.
+(Note: This might break some &#8220;broken&#8221; apps, fortunately a detailed exception
+is raised advising how to fix it).</li>
+<li>Slight quickstart CSS modification for tables.</li>
+<li>Add default CSS to highlight the validation error.</li>
+<li>Made &#8220;flash&#8221; block dynamic in quickstart.</li>
+<li>Session setting is moved to config/app.cfg</li>
+<li>command/toolbox info could list the toolbox plugins.</li>
+<li>Enhancement SQLAlchemy default model, use &#8216;assign&#8217; to avoid repeatedly writing,
+thanks Christoph Zwerschke.</li>
+<li>Able to specify a default doctype in genshi, thanks Alastair Houghton.</li>
+</ul>
+</div>
+<div class="section" id="id50">
+<h3>Features<a class="headerlink" href="#id50" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Validators now support localized error messages. Thanks to Gregor Horvath and
+updated patch #1136 by Christian Vogler.</li>
+<li>Python 2.5 compatible, Thanks to Florent Aide and Fred Lin (#1288).</li>
+<li>AutoCompleteField now accepts a take_focus parameter to focus on load.
+Thanks to Grover (#1332).</li>
+</ul>
+</div>
+<div class="section" id="id51">
+<h3>Fixes<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed support for SQLAlchemy in paginate (#1360 by Jo Soares).</li>
+<li>Schemas are no longer deepcopied to prevent crashing on un-deep-copiable
+validators (#1333).</li>
+<li>Fixed bug in tg-admin that caused it not to operate properly on projects
+deployed as eggs. Patch from #1361 by Christoph Zwerschke.</li>
+<li>SQLAlchemy auto-commiting fixed in some rare circumstances where sa_rwt was
+not being called. Patch from #1267 by Paul Johnston.</li>
+<li>CatWalk now handles customized addRemoveName in SQLObject (#911 by Joost).</li>
+<li>Using base64.decodestring in visitor.py for 2.3 compatibility
+(#1279 by Paul Fisher).</li>
+<li>Config file in quickstarted app now has config option to load identity classes.
+Thanks to Felix Schwarz (#1255).</li>
+<li>Identity now supports encrypted passwords with unicode characters.
+Thanks to Felix Schwarz and Patrick Lewis (#1281).</li>
+<li>Minor changes to template so they work properly when <tt class="docutils literal"><span class="pre">server.webpath</span></tt> is
+not <tt class="docutils literal"><span class="pre">'\'</span></tt> thanks to &#8220;nludban&#8221; (#1213).</li>
+<li>Fix quickstart project tests, thanks to Christoph Zwerschke (#1289),
+Jeff Kowalczyk (#1219).</li>
+<li>Fix TurboGears 1.0.1 not installable with Python 2.3, thanks to &#8220;corvus&#8221; (#1264).</li>
+<li>Automatic creation of identity model tables for SQLAlchemy, thanks to
+Christoph Zwerschke (#1290).</li>
+<li>Fix DateTimeConverter, thanks to iberonesia (#1262).</li>
+<li>ModelDesigner now writes up-to-date model header.</li>
+<li>Decouple turbogears.identity.encrypt_password() from SQLObject.</li>
+<li>Remove <tt class="docutils literal"><span class="pre">class_mapper</span></tt> dependency from #1292, thanks to Christoph Zwerschke.</li>
+</ul>
+</div>
+<div class="section" id="id52">
+<h3>Project Updates<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>ez_setup.py version to 0.6c5</li>
+<li>Not require cElementTree, pysqlite in Python 2.5 install</li>
+<li>FormEncode version to i18n aware 0.7.1</li>
+<li>RuleDispatch to 0.5a0.dev-r2303 for Python 2.5 support.</li>
+<li>Added requirement of DecoratorTools due to upgrade of PyProtocols which
+deprecates functions used in decorator.py.</li>
+</ul>
+</div>
+<div class="section" id="id53">
+<h3>Contributors<a class="headerlink" href="#id53" title="Permalink to this headline">¶</a></h3>
+<p>Alberto Valverde, Fred Lin, Jorge Vargas, Joseph Tate, Elvelind Grandin,
+Florent Aide, nludban, Jeff Kowalczyk, corvus, Christoph Zwerschke, iberonesia,
+Alastair Houghton, Felix Schwartz, Patrcik Lewis, Grover, Paul Fisher,
+Joost Moesker, Paul Johnston, Christian Vogler, Janzert, Chris Miles,
+Christopher Arndt, Jo Soares, James E. Blair.</p>
+</div>
+</div>
+<div class="section" id="january-22-2007">
+<span id="changelog-1-0-1"></span><h2>1.0.1 (January 22, 2007):<a class="headerlink" href="#january-22-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id54">
+<h3>Changes<a class="headerlink" href="#id54" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">paginate</span></tt> decorator now supports SQLAlchemy, improves sorting and fixes
+problems with CompoundWidget. Thanks to <a class="reference external" href="mailto:randall&#37;&#52;&#48;tnr&#46;cc">randall<span>&#64;</span>tnr<span>&#46;</span>cc</a> and sbr77 (#1115).</li>
+<li>Catwalk now supports SQLMultipleJoin/SQLRelatedJoins.
+Thanks to Chris Arndt (#910).</li>
+<li>More docstring for widgets package.</li>
+</ul>
+</div>
+<div class="section" id="id55">
+<h3>Fixes<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Identity logout  now works properly when using <tt class="docutils literal"><span class="pre">set_identity_user</span></tt> (#1245).
+Thanks to Felix Schwarz</li>
+<li>Set right default encoding &#8216;utf-8&#8217; instead of &#8216;utf8&#8217; which broke
+XmlHttpRequest in IE. Thanks Simon King (#1248).</li>
+<li>Workaround for MySQLdb imcompatibilty with MySQL 4.1. Thanks to Felix Schwarz
+(#1245).</li>
+<li>Minor code style improvement in quickstart template (#1231).</li>
+<li>Redirection to default feed in <tt class="docutils literal"><span class="pre">FeedController.index()</span></tt> fixed.
+Thanks to Florent Aide (#1237).</li>
+<li>Fixes for FR locale in JavaScript for CalendarPicker. Thanks to Florent Aide.</li>
+<li>Various test case fixes. Thanks to Christoph Zwerschke, Felix Schwarz
+(#1236, #1237).</li>
+<li>Adapt tests to changes in Kid 0.9.4. Thanks to Jeff Hinrichs and
+Christoph Zwerschke (#1234).</li>
+<li>Reverted patch for #1168 which caused a RuntimeError (#1225).</li>
+</ul>
+</div>
+<div class="section" id="id56">
+<h3>Contributors<a class="headerlink" href="#id56" title="Permalink to this headline">¶</a></h3>
+<p>Alberto Valverde, Jeff Hinrichs, Christoph Zwerschke, Felix Schwarz,
+<a class="reference external" href="mailto:randall&#37;&#52;&#48;tnr&#46;cc">randall<span>&#64;</span>tnr<span>&#46;</span>cc</a>, sbr77, Florent Aide, Christopher Andt, Simon King, Fred Lin</p>
+</div>
+</div>
+<div class="section" id="january-03-2007">
+<span id="changelog-1-0"></span><h2>1.0 (January 03, 2007):<a class="headerlink" href="#january-03-2007" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id57">
+<h3>Changes<a class="headerlink" href="#id57" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>When used with the <tt class="docutils literal"><span class="pre">--future</span></tt>  option, TurboGears can now function without
+having SQLObject installed.</li>
+<li>&#8220;nose&#8221; is now an optional setup component.</li>
+<li>Now possible to pass any option (besides dburi and echo) to SQLAlchemy
+engine. Thanks to elftherios and Lee McFadden (#1215).</li>
+<li>Now possible to place test specific configuration in &#8220;test.cfg&#8221;. Thanks to
+Tim Freund (#1177, #1214).</li>
+<li>Support testing the code that uses identity. Thanks to Max Ischenko and
+Felix Schwarz (#1166, #1220).</li>
+<li>Auto reloading speedup. Thanks to John M. Camara (#1168).</li>
+</ul>
+</div>
+<div class="section" id="id58">
+<h3>Features<a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Now possible to add variables to the root template namespace via
+turbogears.view.root_variable_providers. Thanks Arnar Birgisson (#1097).</li>
+<li><tt class="docutils literal"><span class="pre">turbogears.database.run_with_transaction</span></tt> is now a
+<tt class="docutils literal"><span class="pre">MultiorderGenericFunction</span></tt> to allow easier customization (#1201).</li>
+<li>tg-admin now accepts <tt class="docutils literal"><span class="pre">--egg</span></tt> and <tt class="docutils literal"><span class="pre">--config</span></tt> as global options which works
+on all commands.</li>
+</ul>
+</div>
+<div class="section" id="id59">
+<h3>Fixes<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fix implicit transactions for SQLAlchemy. Thanks to Lee McFadden (#1209).</li>
+<li>Various CSS fixes for DataGrid. Thanks Florent Aide (#1222).</li>
+<li><tt class="docutils literal"><span class="pre">FeedController</span></tt> is now a Controller so <tt class="docutils literal"><span class="pre">tg.url</span></tt> works properly and fixed
+missing import in feed.py .Thanks Florent Aide (#1223, #1224).</li>
+<li>Looser Enum implementation taht works better with ToscaWidgets.</li>
+<li>Kid configuration settings were ignored under certain circumstances.
+Thanks Joost, Ksenia and Dan for the pathes (#468).</li>
+<li><tt class="docutils literal"><span class="pre">validators.Number</span></tt> handles non-string input gracefully (#955).</li>
+<li><tt class="docutils literal"><span class="pre">nestedVariablesFilter</span></tt> made more robust (#1068).</li>
+<li>Throwing an <tt class="docutils literal"><span class="pre">identity.IdentityException</span></tt> inside a controller method is now
+caught by <tt class="docutils literal"><span class="pre">identity.SecureResource</span></tt> (#1131).</li>
+<li>Various test case fixes. Thanks to Felix Schwarz, Joost Moesker,
+Jeff Kowalczyk (#1204, #1206, #1216, #1217).</li>
+<li><tt class="docutils literal"><span class="pre">logout()</span></tt> method in SQLObjectIdentity was setting read-only property.
+Does not suppress exception anymore (#1211, #1212).</li>
+</ul>
+</div>
+<div class="section" id="id60">
+<h3>Contributors<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h3>
+<p>Alberto Valverde, Joost Moesker, John M. Camara, Dan Jacob, Arnar Birgisson,
+Ksenia Marasanova, Felix Schwarz, Tim Freund, Max Ischenko, Fred Lin,
+Florent Aide, Jeff Kowalczyk, elftherios, Lee McFadden, Kevin Dangoor</p>
+</div>
+</div>
+<div class="section" id="b2-november-30-2006">
+<h2>1.0b2 (November 30, 2006):<a class="headerlink" href="#b2-november-30-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id61">
+<h3>Changes<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The CalendarDatePicker widget allows a validator now.</li>
+</ul>
+</div>
+<div class="section" id="id62">
+<h3>Features<a class="headerlink" href="#id62" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Introduced tgsetup.py which provides simpler installation and better
+error messages. tgsetup.py also provides a <tt class="docutils literal"><span class="pre">--future</span></tt> switch to
+get SQLAlchemy and Genshi for you.</li>
+</ul>
+</div>
+<div class="section" id="id63">
+<h3>Fixes<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SQLAlchemy quickstart projects with identity were missing an import</li>
+<li>SQLObject visit classes can be defined in your model.py</li>
+<li>Fixed a memory usage problem with large file uploads</li>
+<li>Corrected a Python 2.3 compatibility problem</li>
+<li>Identity + SQLAlchemy + PostgreSQL had a problem with timezones that
+has been corrected.</li>
+<li>JSLink now uses <tt class="docutils literal"><span class="pre">&lt;script&gt;&lt;/script&gt;</span></tt> instead of <tt class="docutils literal"><span class="pre">&lt;script/&gt;</span></tt> to avoid
+problems when used with template languages that don&#8217;t serialize XHTML-&gt;HTML.</li>
+<li>A number of fixes and minor enhancements to the quickstart templates</li>
+<li><tt class="docutils literal"><span class="pre">turbogears.url</span></tt> has a nicer default when you&#8217;re not running within a
+request (ie when you&#8217;re in a test)</li>
+</ul>
+</div>
+<div class="section" id="id64">
+<h3>Project Updates<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setuptools 0.6c3</li>
+</ul>
+</div>
+<div class="section" id="id65">
+<h3>Contributors<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h3>
+<p>Fred Lin, Jorge Vargas, Jorge Godoy, Alberto Valverde, Elvelind Grandin,
+Lee McFadden, Max Ischenko, Joseph Tate, Matthew Bevan, Roger Demetrescu,
+plus some small fixes from several others and a huge amount of
+documentation work from Karl Guertin and Adam Jones (in addition to the
+other contributors already mentioned).</p>
+</div>
+</div>
+<div class="section" id="b1-september-7-2006">
+<h2>1.0b1 (September 7, 2006):<a class="headerlink" href="#b1-september-7-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id66">
+<h3>Changes<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The CalendarDatePicker will no longer prefer the user&#8217;s browser&#8217;s language
+if a language has been explicitly specified (#1056).</li>
+</ul>
+</div>
+<div class="section" id="id67">
+<h3>Features<a class="headerlink" href="#id67" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Calls to gettext inside kid templates are now detected by i18n.</li>
+<li>Can now pass <tt class="docutils literal"><span class="pre">tg_format</span></tt> in the output dict to override the one set by
+expose.</li>
+<li>Can now set the config option <tt class="docutils literal"><span class="pre">sqlalchemy.echo</span></tt> to toggle SQLAlchemy&#8217;s
+query logging.</li>
+<li>Can now use <tt class="docutils literal"><span class="pre">field_for</span></tt> inside <tt class="docutils literal"><span class="pre">FormFieldContainer</span></tt> templates to get child
+fields by name.</li>
+</ul>
+</div>
+<div class="section" id="id68">
+<h3>Fixes<a class="headerlink" href="#id68" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>You can now conveniently use non-ActiveMapper SQLAlchemy classes with
+identity (#1041).</li>
+<li>Identity testing is now easier because the <tt class="docutils literal"><span class="pre">DummyRequest</span></tt> now
+includes a remote_host.</li>
+<li>Default identity provider will be created if the request doesn&#8217;t
+have one (#876).</li>
+<li>Swedish translation file for the calendar has been fixed (#1055).</li>
+<li><tt class="docutils literal"><span class="pre">testutil.DBTest</span></tt> will only drop tables that exist (#1094).</li>
+<li>Added <tt class="docutils literal"><span class="pre">validate_password</span></tt> to the SQLAlchemy identity provider
+to match the SQLObject one (#1098).</li>
+<li>Corrected spelling at italian CalendarDatePickers&#8217; i18n files.</li>
+<li>Fixed a bug with BLOBCols in Model Designer.</li>
+<li>Exceptions raised when SQLAlchemy flushes are now dispatched with TG&#8217;s
+errorhandling.</li>
+<li>Can now use <tt class="docutils literal"><span class="pre">format</span></tt> (plus other internal named parameters) as a controller&#8217;s
+method argument name.</li>
+<li>The toolbox will now launch the browser to point to the same port number
+as the server is listening at.</li>
+</ul>
+</div>
+<div class="section" id="id69">
+<h3>Project Updates<a class="headerlink" href="#id69" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SyntaxHighlighter 1.4.0</li>
+<li>setuptools 0.6c2</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a9-august-17-2006">
+<h2>0.9a9 (August 17, 2006):<a class="headerlink" href="#a9-august-17-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id70">
+<h3>Features<a class="headerlink" href="#id70" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>tg-admin toolbox now accepts a <tt class="docutils literal"><span class="pre">--conf</span></tt> argument.</li>
+<li>Catwalk now provide some feedback on ajaxcalls</li>
+<li>The quickstarted welcome page are updated and looks much better</li>
+</ul>
+</div>
+<div class="section" id="id71">
+<h3>Fixes<a class="headerlink" href="#id71" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Adding users with Catwalk should now work</li>
+<li>Admi18n now works with non-ascii translation and html entities</li>
+</ul>
+</div>
+<div class="section" id="id72">
+<h3>Project Updates<a class="headerlink" href="#id72" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>SQLObject 0.7.1dev-r1860</li>
+<li>PasteScript 0.9.7</li>
+<li>ConfigObj 4.3.2</li>
+<li>Nose  0.9</li>
+<li>TurboJson 0.9.9</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a8-july-21-2006">
+<h2>0.9a8 (July 21, 2006):<a class="headerlink" href="#a8-july-21-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id73">
+<h3>Fixes<a class="headerlink" href="#id73" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Some problems with the calendar widget that were introduced in 0.9a7
+have been addressed</li>
+<li>Some people have reported getting an SQLObject 0.8 dev package, which
+is not at all tested with TurboGears. The setup file for TurboGears
+will now restrict to &lt; 0.8.</li>
+</ul>
+</div>
+<div class="section" id="id74">
+<h3>Project Updates<a class="headerlink" href="#id74" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Kid 0.9.3 (addresses problems that people had with comments in base
+templates)</li>
+<li>setuptools 0.6c1</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a7-july-19-2006">
+<h2>0.9a7 (July 19, 2006)<a class="headerlink" href="#a7-july-19-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="backwards-incompatibilities">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#backwards-incompatibilities" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Former LocalizableJSLink is now CalendarLangFile. New LocalizableJSLink is
+simpler but backwards-incompatible.</li>
+<li>Catwalk no longer accepts an allowHost argument.
+To restrict access to it use Identity.SecureObject instead.</li>
+</ul>
+</div>
+<div class="section" id="id75">
+<h3>Deprecations<a class="headerlink" href="#id75" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Use of &#8220;entrys&#8221; is now deprecated in the FeedController. You should use
+&#8220;entries&#8221; instead.</li>
+</ul>
+</div>
+<div class="section" id="id76">
+<h3>Features<a class="headerlink" href="#id76" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Syntax highlighter is used in the widget browser to make the code
+snippets look nice (#843)</li>
+<li>Logging configuration produces better errors and also has access to the
+RotatingFileHandler and TimedRotatingFileHandler (#866, also fixes #820)</li>
+<li>The <tt class="docutils literal"><span class="pre">validate</span></tt> decorator now accepts a <cite>state_factory</cite> parameter which
+should be a callable that returns the initial state for validation (the
+same <tt class="docutils literal"><span class="pre">state</span></tt> parameter FormEncode validators use). The final state after
+validation can be accessed at <tt class="docutils literal"><span class="pre">cherrypy.request.validation_state</span></tt> inside
+controller methods.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span></tt> commands can state if they need to be run in a project dir.</li>
+<li>Toolbox now uses entrypoints so site-specific tools can be added.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">shell</span></tt> now asks if it should commit changes to the database on exit.</li>
+<li>Widgets can be listed at the <tt class="docutils literal"><span class="pre">tg.include_widgets</span></tt> config. list to send them
+to every template (a la <tt class="docutils literal"><span class="pre">tg.mochikit_all</span></tt>).</li>
+<li><tt class="docutils literal"><span class="pre">DBTest</span></tt> now drops tables after each test so they don&#8217;t interfere with others.</li>
+<li>Toolbox is now secured using Identity</li>
+<li>SQLAlchemy support not only works again with the latest SQLAlchemy,
+but quickstart works properly and &#8220;tg-admin sql create&#8221; now works
+for SQLAlchemy databases for the first time.</li>
+</ul>
+</div>
+<div class="section" id="id77">
+<h3>Fixes<a class="headerlink" href="#id77" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">sample-prod.cfg</span></tt> file had an incorrect logging configuration.</li>
+<li>Simplified visit queue handling which solves some mysterious bugs.</li>
+<li>Quickstart: <tt class="docutils literal"><span class="pre">model.py</span></tt> now includes SQLObject&#8217;s requirements when identity
+is off.</li>
+<li><tt class="docutils literal"><span class="pre">DateTimeConverter</span></tt> now handles dates &lt; 1900.</li>
+<li>Catwalk now handles gracefully UnicodeCols.</li>
+<li>Quickstart: <tt class="docutils literal"><span class="pre">start-project.py</span></tt> now detects correct Python binary&#8217;s path in
+the system.</li>
+<li>Kid&#8217;s base templates are now (re)loaded properly.</li>
+<li>Config file selection is now smarter.</li>
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">update</span></tt> now finds correct identity provider.</li>
+<li>Catwalk now handles InheritableSQLObjects with mixins gracefully.</li>
+<li>Output encoding wasn&#8217;t set based on the config value under some
+circumstances (#972)</li>
+</ul>
+</div>
+<div class="section" id="id78">
+<h3>Changes<a class="headerlink" href="#id78" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>If <tt class="docutils literal"><span class="pre">tg.empty_flash</span></tt> is True in the app&#8217;s configuration, then
+<tt class="docutils literal"><span class="pre">tg_flash</span> <span class="pre">=</span> <span class="pre">None</span></tt> will be sent to the template when it&#8217;s not set.
+Otherwise it will not be sent at all.</li>
+<li>Quickstart: Now supports Python 2.3 with PEAK&#8217;s [] decorator syntax.</li>
+<li><tt class="docutils literal"><span class="pre">DateTimeConverter</span></tt> validator now raises Invalid(&#8216;empty&#8217;) exceptions properly
+and uses the usual <tt class="docutils literal"><span class="pre">not_empty</span></tt> parameter. <tt class="docutils literal"><span class="pre">allow_empty</span></tt> is deprecated.</li>
+</ul>
+</div>
+<div class="section" id="id79">
+<h3>Contributors<a class="headerlink" href="#id79" title="Permalink to this headline">¶</a></h3>
+<p>(My apologies if your name belongs here and is not!)</p>
+<p>Roger Demetrescu, Elvelind Grandin, Rune Hansen, Sean De La Torre,
+Alberto Valverde, Max Ischenko, Joseph Tate, Elvelind Grandin,
+Charles Duffy, Matt Good, Ksenia Marasanova.</p>
+</div>
+</div>
+<div class="section" id="a6-may-9-2006">
+<h2>0.9a6 (May 9, 2006)<a class="headerlink" href="#a6-may-9-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id80">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#id80" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">i18n.runTemplateFilter</span></tt> in the config file has been renamed
+<tt class="docutils literal"><span class="pre">i18n.run_template_filter</span></tt> (#796)</li>
+<li>For people using FastData (experimental): <tt class="docutils literal"><span class="pre">get_add_url</span></tt>,
+<tt class="docutils literal"><span class="pre">get_edit_url</span></tt> and <tt class="docutils literal"><span class="pre">get_delete_url</span></tt> all are passed the row instead
+of the ID now, allowing you to use something other than the ID
+if desired.</li>
+<li>In widgets, if you were using a dictionary as a params be aware that now
+the dictionary is not updated at construction or display/render time but
+simply replaced with the new one.
+If you were using it to provide default attributes for your widget, take a
+look at how the TableForm does that.</li>
+</ul>
+</div>
+<div class="section" id="id81">
+<h3>Features<a class="headerlink" href="#id81" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>A new function, <tt class="docutils literal"><span class="pre">turbogears.util.find_precision</span></tt>, to tell you
+how many decimal places of precision are required (to help
+with <tt class="docutils literal"><span class="pre">i18n.format.format_decimal</span></tt> which needs to know the
+precision).</li>
+<li>tg-admin info shows which eggs require TurboGears.</li>
+<li>In widgets, SelectionField now supports grouped options,
+SingleSelectField and MultipleSelectField widgets take advantage of this
+to provide an optgroup tag (see below).</li>
+<li>The Widget Browser now displays the source of the example and the
+template provided by default in the widget (to allow for easier
+complete customization) (#840, #841)</li>
+<li>Tabber and Syntax Highlighter widgets are now included.</li>
+</ul>
+<p>The format of a grouped options list mentioned above is like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">options</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">None</span><span class="p">,</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">)]),</span> <span class="p">(</span><span class="s">&quot;Others&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">)])]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id82">
+<h3>Changes<a class="headerlink" href="#id82" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>sqlite database URIs can now be specified as <tt class="docutils literal"><span class="pre">sqlite:///c:/foo/bar</span></tt> on
+Windows, which is more natural for users. (The <tt class="docutils literal"><span class="pre">sqlite:///c|/foo/bar</span></tt>
+syntax still works.)</li>
+<li>ValueError is raised if an InputWidget contains &#8221;.&#8221; or &#8220;-&#8221;, which are
+reserved for use by the widgets</li>
+<li>Package name is used instead of <tt class="docutils literal"><span class="pre">your_project</span></tt> in the quickstart
+logging config.</li>
+</ul>
+</div>
+<div class="section" id="id83">
+<h3>Fixes<a class="headerlink" href="#id83" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Quickstart: an exception comes up if a user logs in but is not in
+a group that is required for access. The line with
+<tt class="docutils literal"><span class="pre">if</span> <span class="pre">not</span> <span class="pre">identity.current.anonymous</span> <span class="pre">and</span> <span class="pre">identity.was_login_attempted()</span></tt>
+in controllers.py or root.py needs an additional
+<tt class="docutils literal"><span class="pre">and</span> <span class="pre">not</span> <span class="pre">identity.get_identity_errors()</span></tt> condition (#834).</li>
+<li>Quickstart projects that used identity would generate a table called &#8220;user&#8221;,
+which is invalid for some databases. The new quickstart model.py generates
+tables called <tt class="docutils literal"><span class="pre">tg_user</span></tt> (#805).</li>
+<li>Quickstart: there were problems with the model template for SQLAlchemy
+(#801).</li>
+<li>SQLAlchemy&#8217;s identity provider was not selected by default when you
+quickstart a new project (#806).</li>
+<li>Core widgets all include WidgetDescriptions now and appear in the
+Widget Browser in the Toolbox (#727).</li>
+<li>Access logging to a file wasn&#8217;t working correctly (#816).</li>
+<li>Bug fix for convert/<tt class="docutils literal"><span class="pre">from_python</span></tt> for compound and repeating widgets</li>
+<li>User name is now encoded to the DB encoding before a query is run
+in the SQLObject identity provider.</li>
+<li>JSLink widgets can now specify a location</li>
+<li>LocalizableJSLink (and the calendar widget) now work in IE (#846).</li>
+<li>Added scheduler to <tt class="docutils literal"><span class="pre">turbogears.__init__.__all__</span></tt> so that references
+to it work properly.</li>
+<li>tg-admin info and Toolbox info commands now work properly and show
+the same information.</li>
+<li>Fixed a serious bug in Python 2.3 compatibility (#853).</li>
+</ul>
+</div>
+<div class="section" id="id84">
+<h3>Project Updates<a class="headerlink" href="#id84" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>MochiKit updated to 1.3.1 (#804)</li>
+</ul>
+</div>
+<div class="section" id="id85">
+<h3>Contributors<a class="headerlink" href="#id85" title="Permalink to this headline">¶</a></h3>
+<p>Max Ischenko, Claudio Martinez, Matt Good, Rune Hansen, Michele Cella,
+Jorge Godoy, Alberto Valverde González, Simon Belak, Jeroen Dekkers,
+Mark Ramm-Christensen, Ronald Jaramillo,
+Richard Standbrook, Roger Demetrescu, Patrick Lewis, Hal Wine,
+Jorge Vargas, Bob Kuehne.</p>
+</div>
+</div>
+<div class="section" id="a5-april-26-2006">
+<h2>0.9a5 (April 26, 2006)<a class="headerlink" href="#a5-april-26-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id86">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#id86" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>An identity login form must have a submit button having the name
+specified in the config file (identity.form.submit).  If you have a
+commented identity.form.submit value and used the default login.kid
+file, you will need to add <tt class="docutils literal"><span class="pre">name=&quot;login&quot;</span></tt> to the login.kid submit
+button.</li>
+<li>In widgets, the base Widget class no longer supports a validator.
+If you need a validator you should use the InputWidget class</li>
+<li>In widgets, the display and the adjust_value methods have a slightly
+different signature (if you happen to use the &#8220;convert&#8221; parameter,
+you just need to use it as a keyword parameter and not a
+positional one).</li>
+<li><tt class="docutils literal"><span class="pre">decorator()</span></tt> should be applied to the function accepting the function
+being decorated (&#8220;entangle&#8221; by convention), not the caller.</li>
+<li>Removed keyword argument &#8220;argsink&#8221; from decorator(),
+weak_signature_decorator() should be used instead.</li>
+</ul>
+</div>
+<div class="section" id="id87">
+<h3>Deprecations<a class="headerlink" href="#id87" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>In widgets, <tt class="docutils literal"><span class="pre">template_vars</span></tt> in widgets are now called <tt class="docutils literal"><span class="pre">params</span></tt> and
+<tt class="docutils literal"><span class="pre">options_for</span></tt> has been renamed <tt class="docutils literal"><span class="pre">params_for</span></tt>.</li>
+<li>In widgets, the update_data method has been renamed update_params</li>
+<li>Identity has moved to PEP8 style naming. Changed userId, groupId, and
+permissionId to be user_name, group_name, and permission_name.</li>
+<li><tt class="docutils literal"><span class="pre">visit_id</span></tt> has been deprecated in favor of <tt class="docutils literal"><span class="pre">visit_key</span></tt>.</li>
+<li>SQL scripts to migrate PostgreSQL and MySQL identity databases are
+available (#737).</li>
+</ul>
+</div>
+<div class="section" id="id88">
+<h3>Features<a class="headerlink" href="#id88" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Dramatically improved and unified logging configuration. Config files
+can now use the options in Python&#8217;s logging module for log formats
+and output.</li>
+<li>TurboGears now includes an enhanced version of Irmen de Jong&#8217;s
+Kronos scheduler, allowing you to schedule tasks that run in
+separate threads or processes periodically.</li>
+<li>For Python 2.3 users, there is a convenient new decorator syntax that
+comes from Phillip Eby&#8217;s PEAK (see below).</li>
+<li>Added a new turbogears.start_server function which will help ease
+the transition to 1.1 <em>and</em> adds the ability to use Ian Bicking&#8217;s
+EvalException. You must turn on tg.fancy_exception to use it
+at this point.</li>
+<li>In widgets, if the widget you are using provides a default validator,
+for example a SelectionWidget, you can tweak its parameters
+by just passing a dictionary of those parameters as validator
+(for example, <tt class="docutils literal"><span class="pre">validator=dict(not_empty=True)</span></tt>).</li>
+<li>In widgets, every attribute listed inside params now supports callables
+automatically (the attribute will be called for computation at request
+time)</li>
+<li>Some improvements to the ImageButton widget</li>
+<li>More customization hooks for CheckBoxList, RadioButtonList, TableForm
+and ListForm</li>
+<li>Decimals are properly jsonified (#472).</li>
+<li><tt class="docutils literal"><span class="pre">datetime.date</span></tt> instances are properly jsonified (#759).</li>
+<li>Commas are supported in number validation (#720).</li>
+<li>It&#8217;s now possible to determine what permissions are required for
+a given controller method (#603).</li>
+</ul>
+<p>This is the equivalent of <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt> in the new syntax mentioned above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">expose</span><span class="p">()]</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id89">
+<h3>Changes<a class="headerlink" href="#id89" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Identity model classes are now placed directly into the model.py of
+a quickstarted project. This new setup is much easier to change,
+since requirements for the identity model vary dramatically. Another
+advantage is that quickstart projects that don&#8217;t need identity
+start off with cleaner code, and projects that do need identity
+need almost no additional configuration or setup.</li>
+<li>Quickstart projects include a &#8220;json.py&#8221; file as a home for JSON
+view code.</li>
+<li>i18n &#8220;scan&#8221; command has been changed to &#8220;collect&#8221; to match the
+admi18n Toolbox tool</li>
+<li>If you quickstart a project while in an svn checkout, files are no
+longer automatically &#8220;svn add&#8221;ed. This corrects some problems that
+people ran into with that behavior.</li>
+<li>The &#8220;prod.cfg&#8221; file in quickstart projects is now called
+&#8220;sample-prod.cfg&#8221; to reflect that it is just used as a sample that
+you copy to your real production servers (#762).</li>
+<li>The various classes used to make dictionaries look like normal
+objects have been replaced by turbogears.util.Bunch (#779).</li>
+</ul>
+</div>
+<div class="section" id="id90">
+<h3>Fixes<a class="headerlink" href="#id90" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Model Designer can now handle joins to the same table (#769).</li>
+<li>Unicode values sent to the turbogears.url function are utf8 encoded.</li>
+<li>NotEmpty validator works with CheckBoxList now (#696).</li>
+<li>Grid widget&#8217;s css has been improved to not interact with other
+widgets (#729, thanks to <a class="reference external" href="mailto:mark&#37;&#52;&#48;cyberware">mark<span>&#64;</span>cyberware</a>).</li>
+<li>the &#8220;self&#8221; parameter is no longer accidentally removed by validation</li>
+<li>tg_format is properly stripped out for JSON requests (#740).</li>
+<li>calendar widget language fixes (many language files needed patching)</li>
+<li>DataController&#8217;s float columns are properly converted (#707).</li>
+<li>str values in Kid templates are now assumed to be utf8 rather than
+ASCII (changeable via kid.encoding) (#743).</li>
+<li>The flash message set on the current request takes precedence over the
+one in the cookie (#747).</li>
+<li>py:match was being used in the default templates in a way that would
+drop the text from the first node (#785).</li>
+<li>AutoCompleteField widget&#8217;s only_suggest now works correctly when
+there is only one item listed (#750).</li>
+<li>Lots of HTML cleanup.</li>
+</ul>
+</div>
+<div class="section" id="id91">
+<h3>Project Updates<a class="headerlink" href="#id91" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>TurboGears now uses ConfigObj 4.3.0 for configuration</li>
+<li>MochiKit upgraded to 1.3</li>
+<li>simplejson upgraded to 1.3</li>
+<li>CherryPy upgraded to 2.2.1</li>
+<li>Kid upgraded to 0.9.1</li>
+<li>FormEncode upgraded to 0.5.1</li>
+<li>PasteScript upgraded to 0.5.1</li>
+</ul>
+</div>
+<div class="section" id="id92">
+<h3>Contributors<a class="headerlink" href="#id92" title="Permalink to this headline">¶</a></h3>
+<p>Alberto Valverde González, Jeff Watkins, Max Ischenko, Michele Cella,
+Simon Belak, Jorge Godoy, Patrick Lewis, Jorge Vargas, Joost Moesker,
+Joseph Tate, Philip Walls, Bob Ippolito, Steve Bergman, Andrey Lebedev,
+Brian Beck, Roger Demetrescu.</p>
+</div>
+</div>
+<div class="section" id="a4-april-5-2006">
+<h2>0.9a4 (April 5, 2006)<a class="headerlink" href="#a4-april-5-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id93">
+<h3>Features<a class="headerlink" href="#id93" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>TableForm and ListForm both have new CSS classes &#8220;tableform&#8221; and
+&#8220;listform&#8221; and also have odd/even classes for the rows.</li>
+</ul>
+</div>
+<div class="section" id="id94">
+<h3>Fixes<a class="headerlink" href="#id94" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The 0.9a3 quickstart template was missing important __init__.py
+files in the distributed egg.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a3-april-4-2006">
+<h2>0.9a3 (April 4, 2006)<a class="headerlink" href="#a3-april-4-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id95">
+<h3>Changes<a class="headerlink" href="#id95" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>FastData is no longer included with the TurboGears core package. You can
+install it with TurboGears by easy_install-ing &#8220;TurboGears[exp]&#8221; instead
+of &#8220;TurboGears&#8221;.</li>
+</ul>
+</div>
+<div class="section" id="id96">
+<h3>Features<a class="headerlink" href="#id96" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>You can find out if login was attempted during this request by calling
+<tt class="docutils literal"><span class="pre">identity.was_login_attempted</span></tt>.</li>
+<li>Added tg.strict_parameters option that will cause an exception to be
+raised if extra parameters are passed to a controller method (#694).</li>
+</ul>
+</div>
+<div class="section" id="id97">
+<h3>Fixes<a class="headerlink" href="#id97" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Base template (eg &#8220;master.kid&#8221;) now reload automatically when changed
+(#55).</li>
+<li>identity.Any was missing an <tt class="docutils literal"><span class="pre">error_message</span></tt> attribute (#667).</li>
+<li>Identity provides a more explicit error about wrong username/password
+(#616).</li>
+<li>CatWalk no longer has a problem changing more than one foreign key
+label in &#8220;manage columns&#8221; (#690).</li>
+<li>plain_gettext is now exported from the i18n package.</li>
+<li>DataGrid.column fields are supported by FastDataGrid (#706).</li>
+<li>The <tt class="docutils literal"><span class="pre">tg_errors</span></tt> variable sent to a controller now has the correct value
+even if the controller method doesn&#8217;t have keyword arguments (#698).</li>
+<li>DBURIs with <tt class="docutils literal"><span class="pre">notrans_</span></tt> now work properly with tg-admin sql create (#702).</li>
+<li>Dutch and German calendar translations have been fixed #700.</li>
+</ul>
+</div>
+<div class="section" id="id98">
+<h3>Project Updates<a class="headerlink" href="#id98" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setuptools 0.6a11</li>
+<li>CherryPy 2.2.0</li>
+<li>SQLObject to 0.7.1dev-r1675</li>
+</ul>
+</div>
+<div class="section" id="id99">
+<h3>Contributors<a class="headerlink" href="#id99" title="Permalink to this headline">¶</a></h3>
+<p>This update brought to you by Michele Cella, Jeff Watkins, Simon Davy,
+Baruch Even, Simon Belak, Claudio Martinez, Max Ischenko, Jason Chu,
+Roger Demetrescu, Joost Moesker, plus Phillip Eby for setuptools
+and Remi Delon and the others working on CherryPy.</p>
+</div>
+</div>
+<div class="section" id="a2-march-27-2006">
+<h2>0.9a2 (March 27, 2006)<a class="headerlink" href="#a2-march-27-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id100">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#id100" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Due to Python 2.3 issues and some additional discussion, the config
+files have gone back to an INI-style format. This means that some
+minor changes are needed if you were using the 0.9 &#8221;.py&#8221; config files,
+but no changes are required for people using 0.8 &#8221;.cfg&#8221; config files.
+See the upgrading guide for details.</li>
+<li>If you used CompoundWidgets in 0.9a1, &#8220;widgets&#8221; has changed to
+&#8220;member_widgets&#8221;.</li>
+<li>If you are using a Form or a FieldSet widget you must explicitly pass
+the &#8220;fields&#8221; parameter, the first positional parameter expected
+since 0.9a2 is &#8220;name&#8221;.</li>
+<li>If you are using a Form or a FieldSet widget with a custom template
+you must update your template accordingly to the new templates
+TG is using.</li>
+</ul>
+</div>
+<div class="section" id="id101">
+<h3>Deprecations<a class="headerlink" href="#id101" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>WidgetsDeclaration (introduced in 0.9a1) has been renamed WidgetsList
+for clarity.</li>
+<li>turbogears.config now has get() and update() functions that should
+be used in place of their cherrypy.config counterparts. This change
+was made knowing that there will be more powerful, TurboGears-specific
+configuration in TurboGears 1.1.</li>
+<li>The field_for method of a Form (introduced in 0.9a1) has been
+deprecated and it&#8217;s use is highly discouraged and error prone,
+use display_field_for or render_field_for instead.</li>
+<li>In the turbogears.view module variableProviders has been renamed
+variable_providers.</li>
+<li>turbogears.fastdata.formmaker&#8217;s sqlwidgets function (introduced in
+0.9a1) has been renamed fields_for.</li>
+</ul>
+<p><em>New Features</em></p>
+<ul class="simple">
+<li>Controller methods can now have multiple expose() decorators, allowing
+you to define different output formats (even with different template
+engines) that can be chosen via tg_format or the Accept header.</li>
+<li>New AjaxGrid widget provides a grid in JavaScript that is populated via
+an Ajax call.</li>
+<li>Three new base widgets to manage forms have been introduced:
+CompoundFormField, RepeatingFormField and FormFieldsContainer.</li>
+<li>Experimental support for SQLAlchemy. For more complicated databases
+or certain database requirements, SQLAlchemy handles the database more
+gracefully. The main database layer for TurboGears remains SQLObject
+and SQLObject is more fully supported within TurboGears. However,
+for those who need it, SQLAlchemy support is there.</li>
+<li>display_field_for and render_field_for are automatically added to the
+template scope of any FormFieldsContainer widget and can be used to
+easily display/render a field with the corrects value and options.</li>
+<li>The basis for creating repeating sets of widgets has been created
+(see RepeatingFormField and RepeatingFieldSet for an example)</li>
+<li>Catwalk can filter the data you see</li>
+<li>When using widgets, you can now have more than one form on a page
+while retaining validation sanity.</li>
+<li>With widgets, required fields automatically get a CSS class</li>
+<li>CompoundWidgets/Forms now use FormEncode schemas, which provide
+a number of additional validation options.</li>
+<li>AutoCompleteFields can now pass an ID back to the server when
+submitted (instead of just passing the matching search string).</li>
+<li>Quickstart includes a &#8220;release.py&#8221; file where you can put your
+project information (including version number). This is the
+safe mechanism for allowing your project itself to access the
+version number while your setup script also has access to the
+same information (Don&#8217;t Repeat Yourself)</li>
+<li>Quickstart has a new &#8220;tgbig&#8221; template designed for larger projects.
+This adds a controllers package to the basic TurboGears template.</li>
+<li>CSSLink and CSSSource widgets now support &#8220;media&#8221;</li>
+<li>The AutoCompleteField now has an &#8220;only_suggest&#8221; flag which makes
+it so that the first item on the list is not automatically submitted
+when you press return. This is useful for search boxes (as opposed
+to data entry fields).</li>
+<li>The turbogears.startup now contains call_on_startup and call_on_shutdown
+lists. You can append callables to these to have them executed at
+the right time.</li>
+<li>If you are using the i18n support, the _ function (alias of the
+gettext function) is now properly mapped to lazy_gettext if
+needed, this means you can use &#8220;_&#8221; for everything.</li>
+<li>Added LocalizableJSLink widget that allows scripts to be chosen based
+on the user&#8217;s locale.</li>
+</ul>
+</div>
+<div class="section" id="id102">
+<h3>Changes<a class="headerlink" href="#id102" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>log_debug_info_filter is now turned off by default (this is the
+CherryPy filter that lists the request time). This filter causes
+problems with things like JSON output. You can still turn it
+back on via the config file.</li>
+<li>Unless you specifically configure the decodingFilter yourself,
+TurboGears will automatically turn on CherryPy&#8217;s decodingFilter
+(expecting utf-8 input).</li>
+<li><tt class="docutils literal"><span class="pre">cherrypy.lowercase_api</span></tt> is set to True in new quickstarted projects.
+This should result in a performance boost, and requires that you use
+PEP 8 style names when calling CherryPy APIs/config values.</li>
+<li>Table forms now use TH tags for the field labels, making it easier to
+apply appropriate styling to the tables.</li>
+<li>AutoConnectHub used to support a &#8220;processConnection&#8221; (something it
+inherited from SQLObject). This is not really a supported model of
+operation, so it has been removed. If you do want to work that way,
+use SQLObject&#8217;s own ConnectionHub class.</li>
+<li>The <tt class="docutils literal"><span class="pre">test_model</span></tt> test has been commented out from the quickstart template,
+because some projects don&#8217;t have databases.</li>
+</ul>
+</div>
+<div class="section" id="id103">
+<h3>Fixes<a class="headerlink" href="#id103" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The TextArea widget now posts properly within a RemoteForm.</li>
+<li>Catwalk styling cleanup</li>
+<li>Catwalk no longer has problems with empty tables with foreign keys</li>
+<li>ForEach validator added to turbogears.validators namespace</li>
+<li>Catwalk will show related joins in the edit view</li>
+<li>SQLObject identity provider passwords are automatically encrypted
+(this was in 0.9a1). This didn&#8217;t work properly when identity wasn&#8217;t
+fully running (as in the tg-admin shell). This has been fixed.</li>
+<li>The AutoCompleteField turns off the browser&#8217;s own autocompletion.</li>
+<li>A nicer error message is provided if you return something other
+than a string or a dict from your controller method.</li>
+<li>admi18n does a better job of grouping files in the correct folder
+when collecting strings and skips over folders like &#8221;.svn&#8221;.</li>
+<li>The turbogears.url() function was flipping around path elements
+in the application root. Applications roots are not commonly used
+right now, but this was noticeable if you used the FeedController.</li>
+<li>Various fixes for CatWalk&#8217;s database access (#568, #249, #213, #618).</li>
+<li>ModelDesigner and admi18n can find your model.py file even if you
+change your package name at quickstart time.</li>
+</ul>
+</div>
+<div class="section" id="id104">
+<h3>Project Updates<a class="headerlink" href="#id104" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Kid 0.9 / TurboKid 0.9.2</li>
+<li>CherryPy 2.2.0rc1</li>
+<li>PasteScript 0.5</li>
+<li>TurboGears&#8217; JSON output now comes from the TurboJson plugin</li>
+</ul>
+</div>
+<div class="section" id="id105">
+<h3>Contributors<a class="headerlink" href="#id105" title="Permalink to this headline">¶</a></h3>
+<p>This release comes to you thanks to the work of Michele Cella,
+Elvelind Grandin, Ronald Jaramillo, Simon Belak, Jeff Watkins,
+Alberto Valverde González, Jason Chu, Owen Mead-Robins,
+Dan Weeks, Dennis Brakhane, Heikichi Umahara, Patrick Lewis,
+Joost Moesker, Roger Demetrescu, Liza Daly.</p>
+</div>
+</div>
+<div class="section" id="a1-february-23-2006">
+<h2>0.9a1 (February 23, 2006)<a class="headerlink" href="#a1-february-23-2006" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id106">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#id106" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>turbogears.expose no longer provides JSON by default. You need to
+turn on JSON via the config file or by the allow_json parameter
+to expose.</li>
+<li>The server.webpath configuration variable will not only properly set
+outgoing URLs, but will also &#8220;fix&#8221; incoming URLs if TurboGears is
+running as some path underneath another webserver. If you were
+previously running a CherryPy filter to handle this, you no longer
+need to.</li>
+<li>Directories of static files need an absolute path. The new configuration
+file format makes it easy to provide an absolute path without
+truly being tied to that path.</li>
+<li>Previously, if you were using a FormEncode Schema for validation for
+an exposed method, validation would fail if a value was missing but
+the method had a default value for that parameter. Now, if that value
+is missing, the method will get called with the default just as it
+is normally called in Python.</li>
+</ul>
+</div>
+<div class="section" id="id107">
+<h3>Deprecations<a class="headerlink" href="#id107" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>In templates the &#8220;std&#8221; object that holds common values and functions
+has been changed to &#8220;tg&#8221;.</li>
+<li><tt class="docutils literal"><span class="pre">turbogears.controllers.Root</span></tt> has now become
+<tt class="docutils literal"><span class="pre">turbogears.controllers.RootController</span></tt> for clarity&#8217;s sake. <tt class="docutils literal"><span class="pre">Root</span></tt>
+continues to work, but its use is deprecated.</li>
+<li>Error handling has been greatly improved. Use of the validation_error
+method has been deprecated. It will still be called if it
+exists, but a DeprecationWarning will be displayed.</li>
+<li>turbogears.tests.util has been moved to turbogears.testutil</li>
+<li>CherryPy has switched to PEP8-style names for things. The old names
+still work. However, they are deprecated.</li>
+<li><tt class="docutils literal"><span class="pre">expose(html=...)</span></tt> is now deprecated in favor for <tt class="docutils literal"><span class="pre">expose(template=...)</span></tt>.</li>
+<li>The old config file format is deprecated in favor of the new Python
+module format.</li>
+</ul>
+</div>
+<div class="section" id="id108">
+<h3>Features<a class="headerlink" href="#id108" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The TurboGears Toolbox wraps a number of useful tools in one web
+interface. The toolbox can be extended with additional tools. Run
+the Toolbox with tg-admin toolbox.</li>
+<li>CatWalk model/database browser is now part of the TurboGears Toolbox.
+Thanks to Ronald Jaramillo.</li>
+<li>There&#8217;s a new &#8220;widgets&#8221; package that lets you easily create forms
+with sophisticated and dynamic behavior, all built from reusable
+components.</li>
+<li>Identity management and access control now provided via
+turbogears.identity module. Includes basic classes for User, Group,
+and Permission objects via turbogears.identity.model. Thanks to
+Jeff Watkins.</li>
+<li>There is a new internationalization package that allows you to use
+to conveniently localize your application via gettext. Thanks to
+Dan Jacob.</li>
+<li>Internationalization can be managed via the Toolbox (thanks to
+Ronald Jaramillo) or the command line (thanks to Max Ischenko).</li>
+<li>Each request is implicitly wrapped in a Transaction. This solves
+caching issues and reduces boilerplate code. It also helps codify
+a best practice so that bad data does not end up in your database.</li>
+<li>Error handling for a method can be specified with an error_handler
+decorator thanks to Simon Belak.</li>
+<li>TurboGears now has a feed object that can generate rss2.0, atom0.3
+and atom1.0 feeds</li>
+<li>Template encodings other than utf-8 can be selected with the new
+kid.encoding variable</li>
+<li>tg-admin now uses PasteScript and can now supports user specific templates</li>
+<li>tg-admin now have a update command</li>
+<li>TurboGears is now compatible with Python 2.3, thanks to Paul Clifford.</li>
+<li>TurboGears supports plugins for template engines, tg-admin commands</li>
+<li>A plugin for Cheetah templates has been released separately</li>
+<li>TurboGears now uses nose for testing</li>
+<li>Templates can now be specified relative to the current package by
+preceding the template name with &#8221;.&#8221;. For example, if you have a
+controller in &#8220;yourpackage&#8221; with templates in a package under that
+package, you can use &#8220;yourpackage.templates.templatename&#8221; <em>or</em>
+&#8221;.templates.templatename&#8221;. Thanks to David Bernard.</li>
+<li>New commands can be added to tg-admin via the turbogears.command
+entry point. Thanks to Elvelind Grandin.</li>
+<li>Controllers that subclass controllers.Controller (including the
+standard RootController) can automatically use positional
+parameters for the methods. This means that &#8220;/entry/MONTH/DAY/YEAR&#8221;
+can be interpreted easily by a method entry(self, month, day, year).</li>
+<li>MochiKit can now be included in your final HTML output by putting
+turbogears.mochikit in your output dictionary (it doesn&#8217;t matter
+what the key assigned is). The advantage to doing this is that it
+helps to ensure that MochiKit is included only once, even if you&#8217;re
+using widgets that require it.</li>
+<li>MochiKit can be enabled everywhere by setting tg.mochikit_all to
+True in your config file.</li>
+<li>Added new &#8220;cycle&#8221; object to std in template usage. This makes it
+easy to cycle through a number of values (and it also lets you
+retrieve the current value). This is useful for things like
+even and odd row classes, etc. Thanks to Karl Guertin.</li>
+<li>You can send a random value in to the controller (tg_random) that
+will be automatically thrown out to get around issues with
+Internet Explorer caching data too aggressively.</li>
+<li>The expose decorator has been split into input and output functions.
+expose continues to handle output, and the new validate decorator
+handles input (validation and form handling). This new setup makes it
+easier to mix in your own decorators if you need to.</li>
+<li>Added turbogears.redirect which wraps the cherrypy.HTTPRedirect
+exception to automatically call turbogears.url to help ensure
+properly formatted URLs. You can either call turbogears.redirect
+or &#8220;raise turbogears.redirect&#8221; if that makes the intent clearer
+to you (as happens with the existing usage of cherrypy.HTTPRedirect)</li>
+<li>There is a new configuration file format that are slightly specialized
+Python modules. This allows you to run Python code to determine your
+configuration.</li>
+<li>You can now specify that you&#8217;re generating a fragment of a page
+(rather than an entire page) at expose time by passing
+fragment=True in to expose. This is useful if you want Kid to
+generate part of a page for an XMLHttpRequest, for example.</li>
+<li>There&#8217;s a new validator, JSONValidator, that reads/writes JSON,
+which is convenient for parameters that are coming in via JSON.</li>
+<li>New test stuff (expand).</li>
+<li>There is now a tg-admin info command that shows all the version info for
+the TuboGears components.</li>
+<li>TurboGears now supports SQLAlchemy &#8211; the unit-of-work is committed after
+a successful controller request. You can use the PackageEngine to load a
+dburi based on your package or the default <tt class="docutils literal"><span class="pre">sqlalchemy.dburi</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="id109">
+<h3>Fixes<a class="headerlink" href="#id109" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setup.py tests for Python 2.4 (thanks to Elvelind Grandin for the
+idea and Bob Ippolito for the simplest implementation possible)</li>
+<li>Base templates reload automatically (thanks to David Stanek).
+(Note: This ticket has been reopened.
+Support for this is experimental until the issues are ironed out.)</li>
+<li>Kid no longer puts blank space in textareas.</li>
+<li>turbogears.flash handles unicode values properly</li>
+</ul>
+</div>
+<div class="section" id="id110">
+<h3>Project Updates<a class="headerlink" href="#id110" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>replaced json-py with Bob Ippolito&#8217;s simple_json</li>
+<li>the RuleDispatch package is new to TurboGears</li>
+<li>TurboGears has moved to CherryPy 2.2, which is not yet stable. We will
+use the most stable snapshots possible in TurboGears 0.9 releases.</li>
+<li>MochiKit upgraded to 1.2</li>
+<li>setuptools upgraded to 0.6a10</li>
+</ul>
+</div>
+<div class="section" id="id111">
+<h3>Contributors<a class="headerlink" href="#id111" title="Permalink to this headline">¶</a></h3>
+<p>The following people made this release possible:</p>
+<p>Elvelind Grandin, Ronald Jaramillo, Jeff Watkins, Dan Jacob, David Stanek,
+Jared Kuolt, Paul Clifford, Lee McFadden, Michele Cella, Karl Guertin,
+Max Ischenko, Mark Godfrey, Simon Belak, Jorge Godoy, Patrick Lewis,
+Joey Smith, David Bernard, Simon Davy, Gary Godfrey, Jason Chu,
+Liza Daly, Ryan Forsythe, Jeremy Jones, Egor Cheshkov, Claudio Martinez,
+Leandro Lucarella, Bob Ippolito, Alberto Valverde González,
+Brian Bockelman, Stephen Thorne, Robin Bryce, Ksenia Marasanova,
+Ori Avtalion, Martina Oefelein, Ian Bicking, Rick Richardson,
+Luis Bruno, Joost Moesker, BJörn Lindqvist.</p>
+<p>A special thanks to Cliff Wells of Develix for sponsoring a bug bounty!</p>
+</div>
+</div>
+<div class="section" id="february-6-2006">
+<h2>0.8.9 (February 6, 2006)<a class="headerlink" href="#february-6-2006" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Fixes a warning message that appears with each quickstart.</li>
+</ul>
+</div>
+<div class="section" id="january-10-2006">
+<h2>0.8.8 (January 10, 2006)<a class="headerlink" href="#january-10-2006" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>A security flaw was discovered in CherryPy&#8217;s static filter. This
+TurboGears update changes the CherryPy requirement to 2.1.1.</li>
+</ul>
+</div>
+<div class="section" id="january-4-2006">
+<h2>0.8.7 (January 4, 2006)<a class="headerlink" href="#january-4-2006" title="Permalink to this headline">¶</a></h2>
+<p>This update primarily solves installation issues and is not required
+otherwise.</p>
+<ul class="simple">
+<li>Quickstart corrected to properly produce egg-info directories
+(previously, directories could be created with &#8220;-&#8221; when it should
+have a &#8220;_&#8221;). Note that setuptools 0.6a9 will warn you if you have
+a - in your egg-info directory name. Just rename the directory,
+and you&#8217;ll be fine.</li>
+<li>Installation issues that people may have had earlier are resolved
+in this setuptools update.</li>
+<li>version number set to 0.8.7 to reflect that this is considered the
+&#8220;stable&#8221; version of TurboGears vs. the current 0.9 code in svn.</li>
+</ul>
+<div class="section" id="id112">
+<h3>Project Updates<a class="headerlink" href="#id112" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setuptools 0.6a9</li>
+<li>SQLObject 0.7.1dev_r1457 (updated to handle the setuptools change,
+but also includes other bugfixes)</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a6-december-26-2005">
+<h2>0.8a6 (December 26, 2005)<a class="headerlink" href="#a6-december-26-2005" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Chained validators will now cause an Invalid exception to be raised
+as appropriate.</li>
+<li>When validation would fail, previously an unexpected exception may
+be raised when an Invalid exception is expected</li>
+<li>Quickstart didn&#8217;t look out for .pyo files in the same way that it did
+.pyc files.</li>
+</ul>
+<div class="section" id="id113">
+<h3>Project Updates<a class="headerlink" href="#id113" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>json-py updated to 3.4</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a5-december-2-2005">
+<h2>0.8a5 (December 2, 2005)<a class="headerlink" href="#a5-december-2-2005" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>setup has been changed to ensure that people properly
+get the CherryPy 2.1 release version.</li>
+</ul>
+<div class="section" id="id114">
+<h3>Project Updates<a class="headerlink" href="#id114" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Kid updated to 0.8.0</li>
+<li>MochiKit updated to 1.1</li>
+<li>FormEncode updated to 0.4</li>
+<li>setuptools updated to 0.6a8</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a4-october-25-2005">
+<h2>0.8a4 (October 25, 2005)<a class="headerlink" href="#a4-october-25-2005" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id115">
+<h3>Project Updates<a class="headerlink" href="#id115" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setuptools 0.6a6</li>
+<li>CherryPy 2.1 final</li>
+<li>MochiKit 1.0</li>
+</ul>
+</div>
+<div class="section" id="id116">
+<h3>Fixes<a class="headerlink" href="#id116" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>On some servers, TurboGears can take a minute to start answering
+connections due to the way the OS handles incoming connections to
+ports that have nothing listening on them.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a3-october-16-2005">
+<h2>0.8a3 (October 16, 2005)<a class="headerlink" href="#a3-october-16-2005" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id117">
+<h3>Fixes<a class="headerlink" href="#id117" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setup.py was not using setup_requires in a productive way. This has
+been changed, so tg-admin quickstart will no longer need to
+go to the internet to function.</li>
+<li><tt class="docutils literal"><span class="pre">turbogears.database.set_db_uri</span></tt> was not properly putting the setting
+in the global config section. By Robert Leftwich.</li>
+<li>Some people have had trouble with the url function not being able to
+find cherrypy.request.approot. This may be due to older classes that
+do not extend controllers.Root. This was not listed as a
+requirement for the URL function. The documentation for the
+url function has been updated, and the code has been updated
+to always set the approot to the top of the site at least.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a2-oct-14-2005">
+<h2>0.8a2 (Oct 14, 2005)<a class="headerlink" href="#a2-oct-14-2005" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id118">
+<h3>Fixes<a class="headerlink" href="#id118" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> was missing the appropriate egg-info for the sql
+commands to work properly</li>
+</ul>
+</div>
+</div>
+<div class="section" id="a1-oct-12-2005">
+<h2>0.8a1 (Oct 12, 2005)<a class="headerlink" href="#a1-oct-12-2005" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id119">
+<h3>Backwards Incompatibilities<a class="headerlink" href="#id119" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>All of the <tt class="docutils literal"><span class="pre">turbogears*</span></tt> variables have been changed to <tt class="docutils literal"><span class="pre">tg_*</span></tt>.
+These are <tt class="docutils literal"><span class="pre">tg_template</span></tt>, <tt class="docutils literal"><span class="pre">tg_format</span></tt>, <tt class="docutils literal"><span class="pre">tg_flash</span></tt> and <tt class="docutils literal"><span class="pre">tg_js</span></tt>.
+(Note that <tt class="docutils literal"><span class="pre">turbogearsfmt</span></tt> has become <tt class="docutils literal"><span class="pre">tg_format</span></tt> and <tt class="docutils literal"><span class="pre">turbogearshtml</span></tt>
+has become <tt class="docutils literal"><span class="pre">tg_template</span></tt>.)</li>
+<li>The <tt class="docutils literal"><span class="pre">StringBoolean</span></tt> validator (which has moved into FormEncode proper)
+now returns strings for <tt class="docutils literal"><span class="pre">from_python</span></tt>. For example, <tt class="docutils literal"><span class="pre">from_python(True)</span></tt>
+now returns <tt class="docutils literal"><span class="pre">'true'</span></tt>. It used to return <tt class="docutils literal"><span class="pre">True</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">turbogears-admin.py</span></tt> is now called <tt class="docutils literal"><span class="pre">tg-admin</span></tt> and is automatically
+generated by setuptools.</li>
+<li>The <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span></tt> commands now require a properly setup .egg-info
+directory to automatically find the model classes. If the egg info
+is not properly set up, the command can fix it automatically.</li>
+<li>The view.render method&#8217;s <tt class="docutils literal"><span class="pre">html</span></tt> parameter has been renamed <tt class="docutils literal"><span class="pre">template</span></tt>
+to reflect that the templates might be for XML presentations. Most
+people don&#8217;t call view.render directly.</li>
+</ul>
+</div>
+<div class="section" id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>There is a new PackageHub that is designed to allow different parts
+of a site to use different databases. Use of the PackageHub works
+just like the AutoConnectHub.</li>
+<li>Added a new function: turbogears.database.set_db_uri. This is a
+more pleasant wrapper around the cherrypy config variables that
+can be used in command line tools and the like.</li>
+<li>IPython is used in tg-admin shell, if it&#8217;s available. By David Guaraglia.</li>
+<li>You can specify a default format via the new format parameter
+to expose. For example, expose(format=&#8221;json&#8221;) will cause the
+method to output JSON by default, even if HTML is available.
+By Elvelind Grandin.</li>
+<li>You can specify the Content-Type via expose. Example:
+expose(content_type=&#8221;text/javascript&#8221;). By Elvelind Grandin.</li>
+<li>expose now has a &#8220;template&#8221; parameter that can be used in place
+of &#8220;html&#8221;. This is more pleasant for non-HTML applications.</li>
+<li>On Macs, if you&#8217;re running in development mode the server will
+be advertised via Bonjour. If you enable Bonjour bookmarks
+(via the Bookmarks Preferences tab in Safari), you&#8217;ll see your
+development server show up automatically. By Bob Ippolito.</li>
+<li>There is now a url function that can be used to generate URLs
+conveniently and, more importantly, with an appropriate view
+of where the root of the web application is.</li>
+<li>Validators can now be specified with a dict (the 0.5 way) or with a
+FormEncode Schema, which provides more options. By Fabian Neumann.</li>
+<li>Quickstart now provides a basic static files skeleton. By
+Elvelind Grandin.</li>
+<li>Added config setting to determine Kid&#8217;s output format (HTML/XHTML).
+By Fabian Neumann.</li>
+<li>In quickstart, project-start.py now takes a config file on the
+command line. By Elvelind Grandin.</li>
+<li><tt class="docutils literal"><span class="pre">project-start.py</span></tt> is also made executable automatically. By
+Fabian Neumann.</li>
+<li>Added turbogears.tests.util.call function to allow you to call a
+controller method and get the dictionary back without processing
+to HTML or JSON. This allows you to test controller logic independent
+of presentation.</li>
+</ul>
+</div>
+<div class="section" id="id120">
+<h3>Project Updates<a class="headerlink" href="#id120" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>setuptools updated to 0.6a5</li>
+<li>SQLObject updated to 0.7 final</li>
+<li>FormEncode updated to 0.2.3dev-r1108</li>
+<li>CherryPy updated to 2.1-rc2</li>
+<li>MochiKit updated to 0.9</li>
+<li>Kid updated to 0.7adev-r186</li>
+</ul>
+</div>
+<div class="section" id="notable-improvements-in-the-projects">
+<h3>Notable Improvements in the Projects<a class="headerlink" href="#notable-improvements-in-the-projects" title="Permalink to this headline">¶</a></h3>
+<p>Kid can now generate plain text output using the PlainSerializer.</p>
+</div>
+<div class="section" id="id121">
+<h3>Fixes<a class="headerlink" href="#id121" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>All of the sqlobject-admin commands now work through the use of
+egg metadata.</li>
+<li>If a template was specified in the returned dictionary from an
+exposed method, but not in the parameters to expose itself,
+that template was not applied. By Ronald Jaramillo.</li>
+<li>The content-type meta tag in the quickstart files is now automatically
+stripped out, because Kid&#8217;s HTML serializer puts one in.</li>
+<li>Improved comments in the quickstart config files.</li>
+<li>There is a temporary hack to handle threadsafety issues with sqlite.
+This has been changed to <em>only</em> affect sqlite.</li>
+<li>JSON output should work for Opera now (Opera appeared to have a
+problem with the text/javascript content-type and utf-8 encoding.)
+By &#8220;Lethalman&#8221;.</li>
+<li>All files needed for a project to install and run from an egg should
+be installed properly based on the quickstart setup script.</li>
+<li>The flash cookie was not always deleted. Setting the path on the
+cookie corrected this. By Nick.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="sep-17-2005">
+<h2>0.5.1 (Sep 17, 2005)<a class="headerlink" href="#sep-17-2005" title="Permalink to this headline">¶</a></h2>
+<p>Relaxed version requirements and changed version numbering for
+included ElementTree packages to ease installation troubles.</p>
+</div>
+<div class="section" id="id122">
+<h2>0.5.0 (Sep 17, 2005)<a class="headerlink" href="#id122" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Initial public release.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

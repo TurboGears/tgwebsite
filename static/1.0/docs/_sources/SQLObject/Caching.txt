@@ -1,0 +1,57 @@
+SQLObject Caching
+==================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+*This document is based on TurboGears 0.8a4.*
+
+This document will dig into the guts of SQLObject caching to help understand what is going on in there. This level of understanding will help you to be sure that you're using caching in a way that makes sense for your application. This is based on SQLObject 0.7.
+
+Getting a Connection
+--------------------
+
+The TurboGears AutoConnectHub and PackageHub classes automatically call SQLObject's connectionForURI as needed to get a database connection. connectionForURI caches SQLObject DBConnection objects, so that only one DBConnection is maintained for a given URI. (Note: As of this writing, TurboGears works around this cache for sqlite. There is a problem with SQLObject's connection pooling for sqlite because sqlite requires that a given connection only be used on the thread on which it was created and SQLObject does not maintain this.)
+
+The DBConnection object maintains the pool of underlying database connections and also maintains the object instance cache. DBConnection takes a "cache" parameter that is passed in to the CacheSet object that is created (more about CacheSet coming up). The cache parameter defaults to True. Setting this to false (?cache=0 in your connection URI) will cause items to be only "partially cached" (more below).
+
+CacheSets
+---------
+
+The CacheSet for a DBConnection maintains a separate instance cache (CacheFactory) for each class.
+
+The CacheFactory actually maintains two caches: a primary cache and an "expired" cache. The primary cache has strong references to the objects. By default, every 100 times that an item is looked up in the cache, half of the items are moved to the expired cache. The expired cache maintains only weak references. As soon as the items go out of scope elsewhere in your program, they are no longer in the cache.
+
+What does ``cache=False`` do?
+-----------------------------
+
+When you set cache=False, you may think that you're completely turning off caching. This is not the case. When cache=False, items are still put into the "expired" cache. This means that as long as the object is in scope somewhere in your program, it will appear in the cache.
+
+In a multithreaded application (such as a typical TurboGears installation) on a busy site, it's possible that a commonly requested resource will stick around indefinitely in the expired cache even with cache=False.
+
+So how do I turn caching off completely?
+----------------------------------------
+
+If you set up your class like this::
+
+ class MyClass(SQLObject):
+    class sqlmeta:
+        cacheValues = False
+
+that will cause SQLObject to set the class' get classmethod up to always access the database rather than using the DBConnection's cache.
+
+There does not appear to be a way to do this globally.
+
+How do Transactions interact with the cache?
+--------------------------------------------
+
+Transactions have their own CacheSet. The cache in a Transaction does not interact with the cache in the main DBConnection. This means that you may end up with stale data if you do something like this:
+
+- pull an object from the database
+- switch to a transaction
+- pull the same object from the database
+- update it
+- commit the transaction
+- access that object again outside of the Transaction
+
+More insidious, though, is that the cache that you had outside of the Transaction will outlast single requests. So, it's possible that the stale data could show up for a few more requests before finally being dropped from the cache.

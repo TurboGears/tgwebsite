@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLite Database &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Database Installation" href="index.html" />
+    <link rel="next" title="Using a MySQL database" href="MySQL.html" />
+    <link rel="prev" title="Database Installation" href="index.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="MySQL.html" title="Using a MySQL database"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Database Installation"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Database Installation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLite Database</a><ul>
+<li><a class="reference internal" href="#database-info">Database info</a></li>
+<li><a class="reference internal" href="#sqlite-installation">SQLite installation</a><ul>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#mac">Mac</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#known-issues">Known Issues</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Database Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="MySQL.html"
+                        title="next chapter">Using a MySQL database</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlite-database">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">SQLite Database</a><a class="headerlink" href="#sqlite-database" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlite-database" id="id2">SQLite Database</a><ul>
+<li><a class="reference internal" href="#database-info" id="id3">Database info</a></li>
+<li><a class="reference internal" href="#sqlite-installation" id="id4">SQLite installation</a></li>
+<li><a class="reference internal" href="#known-issues" id="id5">Known Issues</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="database-info">
+<h2><a class="toc-backref" href="#id3">Database info</a><a class="headerlink" href="#database-info" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://sqlite.org/">SQLite</a> is a small C library that implements a self-contained, embeddable, zero-configuration SQL database engine.</p>
+</div>
+<div class="section" id="sqlite-installation">
+<h2><a class="toc-backref" href="#id4">SQLite installation</a><a class="headerlink" href="#sqlite-installation" title="Permalink to this headline">¶</a></h2>
+<p>For Python versions &lt; 2.5, you will need the third-party <a class="reference external" href="http://initd.org/tracker/pysqlite">pysqlite</a> module. In Python &gt;= 2.5,
+pysqlite is already integrated in the standard library as <a class="reference external" href="http://docs.python.org/lib/module-sqlite3.html">sqlite3</a>, but it may be an older
+version than the current pysqlite. Make sure you have a recent version installed.</p>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>Pre-requisites:</p>
+<ul class="simple">
+<li>You will need the <a class="reference external" href="http://sqlite.org/">sqlite</a> C library version 3 installed. For example, on Debian/Ubuntu,
+install the <tt class="docutils literal"><span class="pre">libsqlite3</span></tt> and <tt class="docutils literal"><span class="pre">libsqlite3-dev</span></tt> package.</li>
+</ul>
+<p>Installation options:</p>
+<ol class="arabic">
+<li><p class="first">Use your package manager</p>
+</li>
+<li><p class="first">Use <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>easy_install pysqlite</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>Installation options:</p>
+<ol class="arabic">
+<li><p class="first">Use a <a class="reference external" href="http://initd.org/tracker/pysqlite/wiki/pysqlite#Downloads">windows binary installer</a> from the <a class="reference external" href="http://initd.org/tracker/pysqlite">pysqlite</a> homepage.</p>
+</li>
+<li><p class="first">Use <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>easy_install pysqlite</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="mac">
+<h3>Mac<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports:</p>
+<div class="highlight-python"><pre>$ sudo port install sqlite2</pre>
+</div>
+</div>
+</div>
+<div class="section" id="known-issues">
+<h2><a class="toc-backref" href="#id5">Known Issues</a><a class="headerlink" href="#known-issues" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">For multiuser applications with heavy load you should use use <a class="reference internal" href="MySQL.html"><em>MySQL</em></a> or <a class="reference internal" href="PostgreSQL.html"><em>PostgreSQL</em></a> instead,
+otherwise you&#8217;ll probably often get the error &#8220;database locked&#8221;, because concurrent
+threads are trying to access the database for writing at the same time.</p>
+</li>
+<li><p class="first">If you are getting this error:</p>
+<div class="highlight-python"><pre>exceptions.AttributeError: "'pysqlite2.dbapi2.Connection' object has no attribute 'autocommit'"</pre>
+</div>
+<p>Please See <a class="reference external" href="http://trac.turbogears.org/ticket/763">#763</a> and this <a class="reference external" href="http://groups.google.com/group/turbogears/browse_frm/thread/aab1217f3294c4e5/ae5da1830d10a2e4?q=turbogears+763&amp;rnum=1#ae5da1830d10a2e4&gt;">googlegroup discussion</a></p>
+</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

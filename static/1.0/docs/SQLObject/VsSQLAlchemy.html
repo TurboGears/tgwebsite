@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject vs SQLAlchemy &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Alternative Components" href="../AlternativeComponents.html" />
+    <link rel="next" title="SQLAlchemy" href="../SQLAlchemy/index.html" />
+    <link rel="prev" title="Overview" href="../BackEndOverview.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../SQLAlchemy/index.html" title="SQLAlchemy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../BackEndOverview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="../AlternativeComponents.html" accesskey="U">Alternative Components</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject vs SQLAlchemy</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#what-is-an-orm">What is an ORM?</a></li>
+<li><a class="reference internal" href="#feature-comparison">Feature Comparison</a></li>
+<li><a class="reference internal" href="#stability">Stability</a></li>
+<li><a class="reference internal" href="#project-status">Project Status</a></li>
+<li><a class="reference internal" href="#documentation">Documentation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../BackEndOverview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../SQLAlchemy/index.html"
+                        title="next chapter">SQLAlchemy</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-vs-sqlalchemy">
+<h1><a class="toc-backref" href="#id1">SQLObject vs SQLAlchemy</a><a class="headerlink" href="#sqlobject-vs-sqlalchemy" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlobject-vs-sqlalchemy" id="id1">SQLObject vs SQLAlchemy</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#what-is-an-orm" id="id3">What is an ORM?</a></li>
+<li><a class="reference internal" href="#feature-comparison" id="id4">Feature Comparison</a></li>
+<li><a class="reference internal" href="#stability" id="id5">Stability</a></li>
+<li><a class="reference internal" href="#project-status" id="id6">Project Status</a></li>
+<li><a class="reference internal" href="#documentation" id="id7">Documentation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>With the release of TurboGears 1.0, there have been a number of threads on the
+mailing list asking whether a new project should be using <a class="reference external" href="http://www.sqlobject.org/">SQLObject</a> (SO) or
+<a class="reference external" href="http://www.sqlalchemy.org/">SQLAlchemy</a> (SA). The answer is (as always) it depends.</p>
+<p>In brief, SQLObject (SO hereafter) is the official choice for TurboGears 1.0.
+It is fully supported, quite nice and is the easier to learn option. Use SQLAlchemy
+(SA) if you need to do something SQLObject can&#8217;t handle &#8211; the most common case
+is legacy databases using multiple-column primary keys.</p>
+<p>The source of confusion is that TurboGears 1.1 and 2.0 will see the two packages
+swap places, with SA as the official package and SO as a supported but not
+recommended package. This will take a while and your SO-based app won&#8217;t suddenly
+stop working, so you don&#8217;t <em>need</em> to use SA to be future-proof and cool.
+It&#8217;s an option. At the moment, it&#8217;s effectively an in-development option,
+but an option nonetheless. If you&#8217;re still in doubt, the rest of this document
+should help you make your decision.</p>
+</div>
+<div class="section" id="what-is-an-orm">
+<h2><a class="toc-backref" href="#id3">What is an ORM?</a><a class="headerlink" href="#what-is-an-orm" title="Permalink to this headline">¶</a></h2>
+<p>Starting from the beginning, SO and SA are &#8220;object relational mappers&#8221;
+(<a class="reference external" href="http://en.wikipedia.org/wiki/Object-relational_mapping">ORMs</a>). They provide a convenient way to manipulate relational databases
+using Python objects. ORMs are a convenience and an abstraction on top of
+hand-written SQL. Database applications that do not use an ORM tend to have
+SQL statements embedded in the source code.</p>
+<p>Compared to embedded SQL, an ORM offers the advantages of more concise code
+and database independence. The disadvantage is that you incur a processing
+overhead when instantiating objects, so you wouldn&#8217;t (necessarily) want to use
+one for linear processing of millions of DB rows, but for most applications
+the tradeoff is definitely in favor of using an ORM.</p>
+<p>You don&#8217;t <em>have</em> to use an ORM and you don&#8217;t have to use it for everything,
+but many of the advanced features in TurboGears depend on either SO or SA.</p>
+</div>
+<div class="section" id="feature-comparison">
+<h2><a class="toc-backref" href="#id4">Feature Comparison</a><a class="headerlink" href="#feature-comparison" title="Permalink to this headline">¶</a></h2>
+<p>The main advantages for SA:</p>
+<ul class="simple">
+<li>Support for composite keys, i.e. you can have a table whose primary key is a
+combination, say (customerid, orderno). This usually applies to legacy
+databases, since you can usually design your own schema for a new project.</li>
+<li>The SQL queries it generates are more efficient. SA generally needs to
+execute fewer queries than SO to achieve the same goal.  SA has also gone
+through a round of efficiency testing.</li>
+<li>There has been a concerted effort to simplify SA so that it is more like the <cite>Active Record</cite> pattern.  This effort is known as <a class="reference external" href="http://elixir.ematia.de/trac/wiki">Elixir</a> .  Elixir is another product that is actively maintained.</li>
+<li>SA is supported by <a class="reference external" href="http://code.google.com/p/dbsprockets/">DBSprockets</a>, which includes the <a class="reference external" href="http://code.google.com/p/dbsprockets/wiki/DBMechanic">DBMechanic</a>, a replacement for Catwalk, and <a class="reference external" href="http://code.google.com/p/dbsprockets/wiki/Primitives">Primitives</a> which allow automated form creation and validation, akin to FastData.</li>
+</ul>
+<ul class="simple">
+<li>While SA may not have been around as long as SO, it has crossed no fewer than 4 version thresholds.  Because SA is so prolific in the web framework community, bug reports are often found and fixed very quickly.  SA is supported by an excellent staff.</li>
+</ul>
+<p>One disadvantage to SA is that it is not supported by the same toolset as SO, so you may have to learn a new set of tools.</p>
+<ul class="simple">
+<li>Only SO is supported by <a class="reference internal" href="../Catwalk.html"><em>CatWalk</em></a>, the <a class="reference internal" href="../ModelDesigner.html"><em>ModelDesigner</em></a>, and <a class="reference internal" href="../FastData/index.html"><em>FastData</em></a>. The tools which support SO have more-or-less become unmaintained.</li>
+</ul>
+</div>
+<div class="section" id="stability">
+<h2><a class="toc-backref" href="#id5">Stability</a><a class="headerlink" href="#stability" title="Permalink to this headline">¶</a></h2>
+<p>Although both projects have pre-1.0 version numbers, they&#8217;ve both been in
+production for years. The level of support/stability varies between
+databases, with common ones (e.g. MySQL, PostgreSQL) being well supported for both projects.</p>
+<p>Less common databases, e.g. Microsoft SQL Server and Firebird do have support,
+but the support tends to be less complete and not as well tested.</p>
+</div>
+<div class="section" id="project-status">
+<h2><a class="toc-backref" href="#id6">Project Status</a><a class="headerlink" href="#project-status" title="Permalink to this headline">¶</a></h2>
+<p>Both projects are actively maintained. It is safe to say that SA has much
+more support in the web framework community, and therefore level of activity
+on the mailing list is higher than that of SO.</p>
+</div>
+<div class="section" id="documentation">
+<h2><a class="toc-backref" href="#id7">Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>SA&#8217;s documentation is far more voluminous, organized and complete than that of
+SO. SO has good basic documentation, but for special use cases you have to dig
+into the API docs.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

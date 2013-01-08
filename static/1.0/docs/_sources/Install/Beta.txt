@@ -1,0 +1,86 @@
+.. index:: beta versions
+
+Downloading and installing a TurboGears beta version
+====================================================
+
+.. warning:: This page is about installing unfinished, beta versions of TurboGears
+    for those who want to try out a new TurboGears version before its release or
+    help with development.
+
+    These releases are **not meant** for production use and are **not supported**.
+    People who are trying out beta releases are supposed to know what they
+    are doing. That being said, if you are having trouble with these releases,
+    you can write to the mailing list or submit a `bug report`_.
+    See also the :doc:`installation troubleshooting <Troubleshooting>` page.
+
+.. _bug report: http://trac.turbogears.org/newticket
+
+.. contents::
+  :depth: 2
+
+
+Quickstart instructions
+-----------------------
+
+To install a TurboGears beta version, do the following:
+
+* Download `tgsetup.py`_ from the TurboGears project page at SourceForge.
+
+* At the beginning of this script, there is a line setting TGVERSION
+  to the latest stable version. Change this to the beta version wanted.
+
+* Run the following in your command shell (use ``sudo`` only on Unix/Mac OS X
+  if you are installing as a non-root user)::
+
+    [sudo] python tgsetup.py
+
+This will download and install the TurboGears beta version and all dependencies.
+It will install the ``tg-admin`` script and helper scripts for third-party
+packages, like ``kidc``, ``cheetah`` etc., into ``/usr/local/bin`` (Unix) resp.
+in the ``Scripts`` directory in your Python installation (Windows).
+
+See section "Specific version installation" below for detailed instructions on how
+to install a different (beta) version.
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+
+Requirements
+------------
+
+* Windows, Mac OS X 10.3/4/5 or Linux/Unix
+* Python >= 2.3.x (Of course. Details see below)
+* About 20-25 MB of disk space, depending on your OS, architecture and filesystem
+* On some systems you need a C compiler, to compile Python C-extensions from some
+  components that are required by TurboGears. See the detailed instructions for your
+  platform for details.
+* If you need to compile extensions, you'll also need Python header files and libraries.
+  If they are not included in your Python installation, they can usually be installed
+  with a package called ``python-dev``, ``python-devel`` or similar.
+* (Recommended) A database system (see below)
+
+.. note:: The recommended Python version to use with TurboGears currently is **2.5.x**,
+    but we still support **Python 2.4.x** and (:doc:`with some restrictions <Python2.3Support>`)
+    **Python 2.3.x**. Python 2.5.x is supported from TurboGears
+    version **1.0.2** onwards.
+
+
+Detailed platform-specific instructions
+---------------------------------------
+
+On some systems you may need to first install some of the above mentioned requirements. Though we don't provide detailed instructions for this for the TurboGears beta version, you can refer to the matching section of the :doc:`installation guide <index>` for some ideas.
+
+
+Database installation and configuration
+----------------------------------------
+
+Please refer to the :doc:`installation guide <index>`.
+
+
+Where are the download files?
+-----------------------------
+
+There is a `list of all files`_ hosted on turbogears.org available if you
+need to do something manually.
+
+.. _list of all files: http://www.turbogears.org/1.0/downloads/current/index

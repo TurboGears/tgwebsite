@@ -1,0 +1,143 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Auto-updating an attribute with SQLObject &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLObject Debugging" href="Debug.html" />
+    <link rel="prev" title="Using Multiple Databases" href="../MultipleDatabases.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Debug.html" title="SQLObject Debugging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../MultipleDatabases.html" title="Using Multiple Databases"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../MultipleDatabases.html"
+                        title="previous chapter">Using Multiple Databases</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Debug.html"
+                        title="next chapter">SQLObject Debugging</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="auto-updating-an-attribute-with-sqlobject">
+<h1>Auto-updating an attribute with SQLObject<a class="headerlink" href="#auto-updating-an-attribute-with-sqlobject" title="Permalink to this headline">¶</a></h1>
+<p>SQLObject 0.8 (which is currently still in SVN) will add a feature for capturing events. But those of us using the current release (0.7.1) will need to do a little hack to do something I find fairly common.</p>
+<p>An example: a comment system, where user&#8217;s can edit their comments later on. You want to track when the comment was last modified, so you create a Modified field in your Comment class/table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">User</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;TG_User&#39;</span><span class="p">)</span>
+    <span class="n">Created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Modified</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Subject</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">Body</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Obviously this is a very simple example, and you could just do <tt class="docutils literal"><span class="pre">c.Modified</span> <span class="pre">=</span> <span class="pre">datetime.now()</span></tt> on the target of your Edit Comment form. But, think about a case where there are many more fields, and several different places where your record could get modified (not just the Edit Comment form). Then it would be nice to have the Modified field updated automatically every time the record is changed.</p>
+<p>Take the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Comment</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">User</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;TG_User&#39;</span><span class="p">)</span>
+    <span class="n">Created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Modified</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Subject</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="n">Body</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span> <span class="n">Comment</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqlmeta</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="nb">super</span><span class="p">(</span> <span class="n">Comment</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span> <span class="s">&#39;Modified&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>This will update the Modified field every time an assignment is made on any of the other fields (actually, including the Modified field, but doing that would be silly). In place of <tt class="docutils literal"><span class="pre">self.sqlmeta.columns.keys()</span></tt>, you could use a list of the field names you want to catch and update the Modified field for.</p>
+<p><em>-Sean Jamieson (AcidReign)</em></p>
+<p>This is a good recipe, exactly what I needed... but I had to modify is a bit to get it to work properly.  I don&#8217;t know if this is because of changes to SQLObject or what.  What I found was that, in the case of the example above, when <tt class="docutils literal"><span class="pre">__setattr__</span></tt> is called, for example, for the &#8216;Body&#8217; column, what is actually passed as the name to <tt class="docutils literal"><span class="pre">__setattr__</span></tt> is <tt class="docutils literal"><span class="pre">'_SO_val_Body'</span></tt>.  However, what&#8217;s in the list of keys is &#8216;Body&#8217;.  So my fix was as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span> <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span> <span class="n">Comment</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;_SO_val_&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sqlmeta</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="nb">super</span><span class="p">(</span> <span class="n">Comment</span><span class="p">,</span> <span class="bp">self</span> <span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span> <span class="s">&#39;_SO_val_Modified&#39;</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p><em>Mike Kent</em></p>
+<p>Careful though, this won&#8217;t be atomic.</p>
+<p><em>Danny W. Adair</em></p>
+<p>Can someone expand on the problem with atomicity?  Could this kind of thing be made atomic (at least as far as the DB is concerned) by turning off autocommits in SQLObject?  What might some problems be with this technique not being atomic?  Is there an alternative technique which might solve those problems?</p>
+<p><em>Kevin Horn</em></p>
+<p>Yes, it could be made atomic by turning off autocommits. The problem is that, when autocommits are on, you have a chance for the system to go down after a field is updated in the database but before the &#8220;date modified&#8221; attribute can also be changed, which would leave the data out of sync. The alternative would be to run the entire update in a transaction to make sure that it either is fully committed or is not written at all.</p>
+<p><em>Adam Jones</em></p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.command.info</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.command-module.html">Package&nbsp;command</a> ::
+        Module&nbsp;info
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.command.info-module.html">Module turbogears.command.info</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">"""Commands for listing TurboGears default and extension packages info"""</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Variable turbogears.release.email=turbogears.release-module.html#email"><a title="turbogears.release.email" class="py-name" href="#" onclick="return doclink('link-0', 'email', 'link-0');">email</a></tt><tt class="py-op">.</tt><tt class="py-name">parser</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Parser</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> <tt class="py-comment"># Python &lt; 2.5</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line">    <tt class="py-keyword">from</tt> <tt id="link-1" class="py-name"><a title="turbogears.release.email" class="py-name" href="#" onclick="return doclink('link-1', 'email', 'link-0');">email</a></tt><tt class="py-op">.</tt><tt class="py-name">Parser</tt> <tt class="py-keyword">import</tt> <tt class="py-name">Parser</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pkg_resources</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable turbogears.command.info.entrypoints=turbogears.command.info-module.html#entrypoints"><a title="turbogears.command.info.entrypoints" class="py-name" href="#" onclick="return doclink('link-2', 'entrypoints', 'link-2');">entrypoints</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">"tg-admin Commands"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.command"</tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-string">"Template Engines"</tt> <tt class="py-op">:</tt> <tt class="py-string">"python.templating.engines"</tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt class="py-string">"Widget Packages"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.widgets"</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt class="py-string">"TurboGears Extensions"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.extensions"</tt><tt class="py-op">,</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-string">"Identity Providers"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.identity.provider"</tt><tt class="py-op">,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-string">"Visit Managers"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.visit.manager"</tt><tt class="py-op">,</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-string">"Toolbox Gadgets"</tt> <tt class="py-op">:</tt> <tt class="py-string">"turbogears.toolboxcommand"</tt><tt class="py-op">}</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-name">parsestr</tt> <tt class="py-op">=</tt> <tt class="py-name">Parser</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">parsestr</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
+<a name="retrieve_pkg_info"></a><div id="retrieve_pkg_info-def"><a name="L20"></a><tt class="py-lineno">20</tt> <a class="py-toggle" href="#" id="retrieve_pkg_info-toggle" onclick="return toggle('retrieve_pkg_info');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info-module.html#retrieve_pkg_info">retrieve_pkg_info</a><tt class="py-op">(</tt><tt class="py-param">distribution</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="retrieve_pkg_info-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="retrieve_pkg_info-expanded"><a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">    <tt class="py-docstring">"""Retrieve parsed package info from distribution."""</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">parsestr</tt><tt class="py-op">(</tt><tt class="py-name">distribution</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Function turbogears.database.get_metadata()=turbogears.database-module.html#get_metadata"><a title="turbogears.database.get_metadata" class="py-name" href="#" onclick="return doclink('link-3', 'get_metadata', 'link-3');">get_metadata</a></tt><tt class="py-op">(</tt><tt class="py-string">'PKG-INFO'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"> </tt>
+<a name="retrieve_url"></a><div id="retrieve_url-def"><a name="L25"></a><tt class="py-lineno">25</tt> <a class="py-toggle" href="#" id="retrieve_url-toggle" onclick="return toggle('retrieve_url');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info-module.html#retrieve_url">retrieve_url</a><tt class="py-op">(</tt><tt class="py-param">distribution</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="retrieve_url-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="retrieve_url-expanded"><a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">    <tt class="py-docstring">"""Retrieve URL from distribution."""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt id="link-4" class="py-name" targets="Module turbogears.command.info=turbogears.command.info-module.html"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-4', 'info', 'link-4');">info</a></tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name" targets="Function turbogears.command.info.retrieve_pkg_info()=turbogears.command.info-module.html#retrieve_pkg_info"><a title="turbogears.command.info.retrieve_pkg_info" class="py-name" href="#" onclick="return doclink('link-5', 'retrieve_pkg_info', 'link-5');">retrieve_pkg_info</a></tt><tt class="py-op">(</tt><tt class="py-name">distribution</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">:</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt id="link-6" class="py-name" targets="Function turbogears.controllers.url()=turbogears.controllers-module.html#url,Variable turbogears.release.url=turbogears.release-module.html#url"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-6', 'url', 'link-6');">url</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt id="link-7" class="py-name"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-7', 'url', 'link-6');">url</a></tt> <tt class="py-op">=</tt> <tt id="link-8" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-8', 'info', 'link-4');">info</a></tt><tt class="py-op">[</tt><tt class="py-string">'Home-page'</tt><tt class="py-op">]</tt> <tt class="py-keyword">or</tt> <tt id="link-9" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-9', 'info', 'link-4');">info</a></tt><tt class="py-op">[</tt><tt class="py-string">'Url'</tt><tt class="py-op">]</tt>  <tt class="py-keyword">or</tt> <tt id="link-10" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-10', 'info', 'link-4');">info</a></tt><tt class="py-op">[</tt><tt class="py-string">'Download-Url'</tt><tt class="py-op">]</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-11', 'url', 'link-6');">url</a></tt> </tt>
+</div><a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt>
+<a name="add_link"></a><div id="add_link-def"><a name="L36"></a><tt class="py-lineno">36</tt> <a class="py-toggle" href="#" id="add_link-toggle" onclick="return toggle('add_link');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info-module.html#add_link">add_link</a><tt class="py-op">(</tt><tt class="py-param">distribution</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="add_link-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="add_link-expanded"><a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">    <tt class="py-docstring">"""Add link to distribution."""</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">    <tt id="link-12" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-12', 'info', 'link-4');">info</a></tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">distribution</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line">    <tt id="link-13" class="py-name"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-13', 'url', 'link-6');">url</a></tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name" targets="Function turbogears.command.info.retrieve_url()=turbogears.command.info-module.html#retrieve_url"><a title="turbogears.command.info.retrieve_url" class="py-name" href="#" onclick="return doclink('link-14', 'retrieve_url', 'link-14');">retrieve_url</a></tt><tt class="py-op">(</tt><tt class="py-name">distribution</tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-15" class="py-name"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-15', 'url', 'link-6');">url</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt id="link-16" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-16', 'info', 'link-4');">info</a></tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-17', 'info', 'link-4');">info</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt id="link-18" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-18', 'info', 'link-4');">info</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'&lt;a href="%s"&gt;%s&lt;/a&gt;'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-19" class="py-name"><a title="turbogears.controllers.url
+turbogears.release.url" class="py-name" href="#" onclick="return doclink('link-19', 'url', 'link-6');">url</a></tt><tt class="py-op">,</tt> <tt id="link-20" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-20', 'info', 'link-4');">info</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt id="link-21" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-21', 'info', 'link-4');">info</a></tt> <tt class="py-op">=</tt> <tt class="py-string">' '</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-22', 'info', 'link-4');">info</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-23" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-23', 'info', 'link-4');">info</a></tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line"> </tt>
+<a name="retrieve_info"></a><div id="retrieve_info-def"><a name="L47"></a><tt class="py-lineno">47</tt> <a class="py-toggle" href="#" id="retrieve_info-toggle" onclick="return toggle('retrieve_info');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info-module.html#retrieve_info">retrieve_info</a><tt class="py-op">(</tt><tt class="py-param">with_links</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="retrieve_info-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="retrieve_info-expanded"><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">    <tt class="py-docstring">"""Retrieve default and extension packages info."""</tt> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt id="link-24" class="py-name" targets="Module turbogears.i18n.format=turbogears.i18n.format-module.html,Variable turbogears.validators.DateTimeConverter.format=turbogears.validators.DateTimeConverter-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDatePicker.format=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDateTimePicker.format=turbogears.widgets.big_widgets.CalendarDateTimePicker-class.html#format"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-24', 'format', 'link-24');">format</a></tt> <tt class="py-op">=</tt> <tt class="py-name">with_links</tt> <tt class="py-keyword">and</tt> <tt id="link-25" class="py-name" targets="Function turbogears.command.info.add_link()=turbogears.command.info-module.html#add_link"><a title="turbogears.command.info.add_link" class="py-name" href="#" onclick="return doclink('link-25', 'add_link', 'link-25');">add_link</a></tt> <tt class="py-keyword">or</tt> <tt class="py-name">str</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-comment"># get default packages</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">    <tt class="py-name">packages</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-26" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-26', 'format', 'link-24');">format</a></tt><tt class="py-op">(</tt><tt class="py-name">pkg</tt><tt class="py-op">)</tt> <tt class="py-keyword">for</tt> <tt class="py-name">pkg</tt> <tt class="py-keyword">in</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Function turbogears.identity.conditions.require()=turbogears.identity.conditions-module.html#require"><a title="turbogears.identity.conditions.require" class="py-name" href="#" onclick="return doclink('link-27', 'require', 'link-27');">require</a></tt><tt class="py-op">(</tt><tt class="py-string">"Turbogears"</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line">    <tt class="py-comment"># get extension packages</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line">    <tt class="py-name">plugins</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-28" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-28', 'name', 'link-28');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">pointname</tt> <tt class="py-keyword">in</tt> <tt id="link-29" class="py-name"><a title="turbogears.command.info.entrypoints" class="py-name" href="#" onclick="return doclink('link-29', 'entrypoints', 'link-2');">entrypoints</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Function turbogears.i18n.pygettext.catalog.items()=turbogears.i18n.pygettext.catalog-module.html#items"><a title="turbogears.i18n.pygettext.catalog.items" class="py-name" href="#" onclick="return doclink('link-30', 'items', 'link-30');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line">        <tt class="py-name">plugins</tt><tt class="py-op">[</tt><tt id="link-31" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-31', 'name', 'link-28');">name</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"%s (%s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-32" class="py-name" targets="Variable turbogears.entrypoint=turbogears-module.html#entrypoint"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-32', 'entrypoint', 'link-32');">entrypoint</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-33', 'name', 'link-28');">name</a></tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-34', 'format', 'link-24');">format</a></tt><tt class="py-op">(</tt><tt id="link-35" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-35', 'entrypoint', 'link-32');">entrypoint</a></tt><tt class="py-op">.</tt><tt class="py-name">dist</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt id="link-36" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-36', 'entrypoint', 'link-32');">entrypoint</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">iter_entry_points</tt><tt class="py-op">(</tt><tt class="py-name">pointname</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">packages</tt><tt class="py-op">,</tt> <tt class="py-name">plugins</tt> </tt>
+</div><a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"> </tt>
+<a name="InfoCommand"></a><div id="InfoCommand-def"><a name="L60"></a><tt class="py-lineno">60</tt> <a class="py-toggle" href="#" id="InfoCommand-toggle" onclick="return toggle('InfoCommand');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.command.info.InfoCommand-class.html">InfoCommand</a><tt class="py-op">:</tt> </tt>
+</div><div id="InfoCommand-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="InfoCommand-expanded"><a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">    <tt class="py-docstring">"""Shows version info for debugging."""</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">    <tt id="link-37" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.desc=turbogears.command.i18n.InternationalizationTool-class.html#desc,Variable turbogears.command.info.InfoCommand.desc=turbogears.command.info.InfoCommand-class.html#desc,Variable turbogears.command.kid2genshi.Kid2Genshi.desc=turbogears.command.kid2genshi.Kid2Genshi-class.html#desc,Variable turbogears.command.quickstart.quickstart.desc=turbogears.command.quickstart.quickstart-class.html#desc,Variable turbogears.command.quickstart.update.desc=turbogears.command.quickstart.update-class.html#desc"><a title="turbogears.command.i18n.InternationalizationTool.desc
+turbogears.command.info.InfoCommand.desc
+turbogears.command.kid2genshi.Kid2Genshi.desc
+turbogears.command.quickstart.quickstart.desc
+turbogears.command.quickstart.update.desc" class="py-name" href="#" onclick="return doclink('link-37', 'desc', 'link-37');">desc</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"Show version info"</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line"> </tt>
+<a name="InfoCommand.__init__"></a><div id="InfoCommand.__init__-def"><a name="L65"></a><tt class="py-lineno">65</tt> <a class="py-toggle" href="#" id="InfoCommand.__init__-toggle" onclick="return toggle('InfoCommand.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info.InfoCommand-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InfoCommand.__init__-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="InfoCommand.__init__-expanded"><a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line"> </tt>
+<a name="InfoCommand.run"></a><div id="InfoCommand.run-def"><a name="L68"></a><tt class="py-lineno">68</tt> <a class="py-toggle" href="#" id="InfoCommand.run-toggle" onclick="return toggle('InfoCommand.run');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.command.info.InfoCommand-class.html#run">run</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InfoCommand.run-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="InfoCommand.run-expanded"><a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-string">"""TurboGears Complete Version Information</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line"><tt class="py-string">TurboGears requires:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">        <tt class="py-name">packages</tt><tt class="py-op">,</tt> <tt class="py-name">plugins</tt> <tt class="py-op">=</tt> <tt id="link-38" class="py-name" targets="Function turbogears.command.info.retrieve_info()=turbogears.command.info-module.html#retrieve_info"><a title="turbogears.command.info.retrieve_info" class="py-name" href="#" onclick="return doclink('link-38', 'retrieve_info', 'link-38');">retrieve_info</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">packages</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">p</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt id="link-39" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-39', 'name', 'link-28');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">pluginlist</tt> <tt class="py-keyword">in</tt> <tt class="py-name">plugins</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="turbogears.i18n.pygettext.catalog.items" class="py-name" href="#" onclick="return doclink('link-40', 'items', 'link-30');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt> <tt class="py-string">"\n"</tt><tt class="py-op">,</tt> <tt id="link-41" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-41', 'name', 'link-28');">name</a></tt><tt class="py-op">,</tt> <tt class="py-string">"\n"</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">plugin</tt> <tt class="py-keyword">in</tt> <tt class="py-name">pluginlist</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">                <tt class="py-keyword">print</tt> <tt class="py-string">'*'</tt><tt class="py-op">,</tt> <tt class="py-name">plugin</tt> </tt>
+</div></div><a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:42 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

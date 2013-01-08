@@ -1,0 +1,261 @@
+.. index:: offline installation
+
+Offline Installation
+====================
+
+.. contents::
+    :depth: 2
+
+**Abstract**
+
+   *This page describes how to install TurboGears when you do not have an
+   Internet connection or are behind a firewall or proxy that prevents*
+   ``ez_setup`` *or* ``easy_install`` *from working.*
+
+Introduction
+------------
+
+If you are trying to install TurboGears and have unrestricted Internet
+access, then the standard installation instructions can't be beat.
+``easy_install`` is a real walk in the park!  But if you are behind a
+restrictive firewall or proxy  that prevents TurboGears from installing
+successfully, then you need another way to install it.  Or maybe you just
+want to download the files once and then install TurboGears on several
+different machines (via LAN or USB key or whatever).  The instructions
+provided here will let you do that too.
+
+Just follow the steps below and you'll be enjoying the wonders of
+TurboGears in no time. :-)
+
+Some Starting Assumptions
+-------------------------
+
+* Obviously you will have to have *some* internet connection to download the
+  turbogears files once, but after that you can do all the installation
+  without it.
+
+* This page assumes that you already have Python.  If not please see the
+  standard installation instructions for your platform
+  (:doc:`Unix-like systems <Nix>`, :doc:`Windows <Windows>`, :doc:`Max OS X <Mac>`)
+  for help on getting it.
+
+* These instructions are provided in a platform-independent way.  It is
+  assumed that you will know how to follow these steps on your chosen platform.
+
+With that in mind, let's get on with the show!
+
+Step 0: NTLM Authentication
+---------------------------
+
+Many corporate environments use Microsoft Proxy Server to restrict access
+to the Internet.  It uses a proprietary protocol called NTLM for force
+users to authenticate before they can access the Web.  If this is your
+situation, you can use the following shortcut and skip the rest of
+these instructions.  If not, you can skip this section.
+
+The solution that is recommended in the `setuptools installation documentation`_
+for dealing with this problem is to use the
+`NTLM Authorization Proxy Server`_ (APS) to handle the NTLM
+authentication.  Here is a quick run down on how to use it:
+
+.. _setuptools installation documentation: http://peak.telecommunity.com/DevCenter/EasyInstall#installing-easy-install
+.. _NTLM Authorization Proxy Server: http://ntlmaps.sourceforge.net/
+
+Once you `download`_ and extract APS, modify ``server.cfg``:
+
+.. _download: http://sourceforge.net/project/showfiles.php?group_id=69259
+
+* In the ``[GENERAL]`` section set ``PARENT_PROXY`` and
+  ``PARENT_PROXY_PORT`` to match the values in *Internet Explorer |
+  Tools | Internet Options | Connections | LAN settings | Proxy
+  settings*. Leave the ``LISTEN_PORT`` at 5865.
+
+* In the ``[NTLM_AUTH]`` section, set the ``NT_DOMAIN`` to your domain,
+  ``USER`` to your login ID and clear the ``PASSWORD`` field so you will
+  be asked for it in the next step. (It is not advisable to save your
+  password in this text file, for obvious reasons!)
+
+Next, open a DOS command window and change to the folder where you
+extracted APS and run ``runserver.bat``.  This should ask for your
+password.
+
+Now, open another DOS command window and redirect python through
+your APS proxy, by typing::
+
+   set HTTP_PROXY=http://127.0.0.1:5865
+
+Now you can follow the normal install instructions from in that second
+command window.
+
+Once you are done installing TurboGears, you can close the command window
+where APS is running.
+
+That's it!  You're done! :-)
+
+Step 1: Setuptools
+------------------
+
+So if you are here, then you are lucky enough to not be behind a Microsoft
+Proxy Server using NTLM authentication.  In which case please keep reading.
+
+TurboGears is installed using the ``easy_install`` command.  It is part of
+the *setuptools* package.  If you already have setuptools, you can skip
+this section. If not, please read on.
+
+The normal way of installing setuptools for the first time is to download
+the ``ez_setup.py`` file and run it.  It will go out to the internet and
+then download and install the setuptools package for you.  However if it
+cannot connect to the internet (which is why you are reading this page),
+the secret piece of information is that **you can download setuptools as a
+regular python package** and install it using the tried and true::
+
+   python setup.py install
+
+Just head on over to the `setuptools Cheese Shop page`_ and download the zip
+file.
+
+.. _setuptools Cheese Shop page: http://cheeseshop.python.org/pypi/setuptools
+
+Setuptools is generally thought of as the biggest barrier to installing
+TurboGears without the internet because many people only know to use
+``ez_setup.py`` as the installation option for it.  This is understandable
+as that is the promoted and best way to install it.  But as you can see, it
+is not the only way.  Thankfully!
+
+Step 2: Downloading TurboGears
+------------------------------
+
+Now that we have setuptools downloaded and can install it, we need to get
+TurboGears.
+
+TurboGears depends on several other packages and so it has a lot of
+dependencies.  This is a strength (code reuse), but in our case it can be
+a minor annoyance too.
+
+Step 2a: Using easy_install
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you have a way to get unrestricted access to the internet, there is a
+quick an easy way to just download all of TurboGears and all of it's
+dependencies to a directory without installing it.  With setuptools
+installed, make a directory and in it, run::
+
+   easy_install -zmaxd . TurboGears
+
+This will connect to the internet and just download TurboGears and all of
+it's dependencies to the current directory, without installing anything.
+
+   **Caveat:** The ``-a`` option, above, prevents development versions of
+   packages from being downloaded.  Sometimes that is what is required.
+   So if the above command fails, saying ``Could not find suitable
+   distribution`` and ``(--always-copy skips system and development
+   eggs)``, then you cannot use this shortcut and will have to download all
+   the those files manually.
+
+For a more complete explanation of ``-zmaxd``, run::
+
+  easy_install --help
+
+or check out the `setuptools command-line options documentation`_.
+
+.. _setuptools command-line options documentation: http://peak.telecommunity.com/DevCenter/EasyInstall#command-line-options
+
+  **Upgrading**: if you are trying to upgrade your TurboGears using this
+  method, use ``-zmaxUd``.  The ``U`` tells setuptools to upgrade, if
+  possible, over what is currently installed and/or what is currently in your
+  download directory.
+
+Step 2b: Manually Downloading Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If your only access to the internet is restricted so that the above
+shortcut does not work (or if it does not work for any other reason), you
+can always download the files manually, one at a time, from the
+`TurboGears download page`_, or from the `TurboGears downloads file list`_.
+There are a lot of files there, so here is some explanation of them so you can
+know which ones you need to care about, but first, a note about platforms,
+Python versions and eggs:
+
+.. _TurboGears download page: http://www.turbogears.org/1.0/downloads/current/index
+.. _TurboGears downloads file list: http://www.turbogears.org/1.0/downloads/current
+
+About Platforms, Python Versions and Eggs
+`````````````````````````````````````````
+
+Generally you want to download one egg file for each package.  Some
+packages are platform-independant, meaning that they run on Windows, Mac
+and unix-like systems without needing seperate versions.  Others packages,
+however, have to be compiled for different platforms.  In this case,
+precompiled Windows and Mac OS X version are provided.  So when choosing
+your files, if the choice is offered, download files with the following in
+their names:
+
+* ``win32`` for Windows,
+* ``macosx`` for Mac OS X, or
+* ``tar.gz`` source files for Unix systems
+
+For example:
+
+* ``Cheetah-1.0-py2.4-macosx-10.4-ppc.egg`` is for Mac OS X,
+* ``Cheetah-1.0-py2.4-win32.egg`` is for Windows, and
+* ``Cheetah-1.0.tar.gz`` is the source code for Unix systems
+
+Also you only need to choose packages that match your version of Python. So
+look for:
+
+* ``py2.4`` for Python 2.4 or
+* ``py2.3`` for Python 2.3
+
+Finally, egg files are generally preferred over zip or tar.gz files.
+
+
+Step 3: Database Drivers
+------------------------
+
+We are almost done! :-)
+
+While the TurboGears download page includes TurboGears and all of it's
+dependencies, it does not include database driver packages. Which
+driver(s) you need depend on which database(s) you want to use.  At a
+minimum, you probably want to get the ``pysqlite`` package for use during
+development and probably for use in unit tests too.
+
+As is mentioned in the main TurboGears installation documentation, you can
+find links to the various supported database driver libraries in the
+`SQLObject documentation`_.
+
+.. _SQLObject documentation: http://sqlobject.org/SQLObject.html#requirements
+
+That's it!  You now have everything you need to install TurboGears without
+an internet connection.  You can now take your laptop on the plane, copy
+the files to a USB key and take it to work or whatever.  The only thing
+left is how to actually install TurboGears! :-)
+
+Step 4: Installing TurboGears
+-----------------------------
+
+Okay, so just to recap:
+
+* We have setuptools that we can install the "old fashioned way",
+* We have all the packages necessary to install TurboGears, and
+* We have all the database driver packages we want.
+
+So to actually do the installation, do the follwing:
+
+* Install setuptools and the database drivers, each with::
+
+   python setup.py install
+
+* Then, in the directory where the TurboGears files are, run::
+
+   easy_install -f . TurboGears
+
+The ``-f .`` tells easy_install to use the current directory as the source
+of the packages and not go looking on the internet.
+
+You should also see if there are any extra options or steps to take for
+your chosen platform by looking in the main installation instructions for
+your platform.
+
+After that, you should have a nice shiny new TurboGears installed and
+waiting for you to create the next hottest site on the Web! :-D  Good Luck!

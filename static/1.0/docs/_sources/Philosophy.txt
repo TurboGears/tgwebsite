@@ -1,0 +1,63 @@
+.. index:: philosophy
+
+TurboGears Project Philosophy
+=============================
+
+TurboGears builds on other open source projects and that is a benefit to
+everyone involved. TurboGears helps its users through:
+
+  * **Integration** - making the included packages work seamlessly and
+    naturally together
+
+  * **Documentation** - providing a consolidated view of all of the projects
+    and creating new documentation as needed
+
+  * **Improvements** working with the included projects' maintainers to
+    include improvements directly in those projects.
+
+Integration
+-----------
+
+This is an obvious goal: make all of the pieces work well together. None of the
+included projects knows about the others, which is generally a good thing when
+you follow the Model-View-Controller pattern. In TurboGears, your CherryPy
+controllers sit at the hub of your project. This is the biggest area for
+integration. Providing tools that allow the controllers to more easily work
+with SQLObject databases, answer asynchronous calls from MochiKit and render
+out completed Kid templates is where the big win will come.
+
+One other place for integration is in standalone tools: ``tg-admin`` commands
+can help a user create, update and deploy complete TurboGears applications.
+
+Documentation
+-------------
+
+If it isn't documented, it doesn't exist is a good rule of thumb. This is not
+to say that patches will not be accepted without documentation: send the
+patches in, by all means! If the feature is good and valuable, someone will
+document it. However, until the feature is documented, it will not be listed as
+a feature of TurboGears.
+
+Providing good docstrings that epydoc can pull out can go a good portion of the
+distance.
+
+The projects included with TurboGears have varying quantities and qualities of
+documentation. Helping improve the documentation of the other projects will
+help everyone as well.
+
+Improvements
+------------
+
+Contributing improvements back to projects used by TurboGears is a core need
+for TurboGears' own growth. MochiKit, Kid, CherryPy and SQLObject are all used
+by a wide variety of people in contexts other than TurboGears. This is a great
+advantage over an all-in-one framework, because the community, in aggregate, is
+that much larger. There are more eyes looking at the code and more ideas
+flowing in to each part.
+
+Wherever possible, code that is not specific to integration between multiple
+projects within TurboGears should be submitted back to the original project for
+use.
+
+
+:doc:`Next: Getting Started <Wiki20/Page1>`

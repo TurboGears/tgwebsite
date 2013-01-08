@@ -1,0 +1,311 @@
+.. index:: eggs, easy_install
+
+Deploying your TG application with an Egg and Easy Install
+==========================================================
+
+.. contents::
+    :depth: 3
+
+
+How to Build an .egg File for Your Project
+------------------------------------------
+
+An egg is Python's new distribution format, comparable to a ``.jar`` in Java.
+It's basically a zip file with a particular directory structure containing the
+code and a bit of metadata. You can get details on eggs directly from the
+inventor at the `PEAK Developers' Center`_.
+
+A freshly quickstarted project will have a ``setup.py`` file. This file allows
+you to easily package your file for redistribution both for internal use and
+for sharing on the Cheeseshop_ or the Cogbin_. Creating an egg is as simple as
+switching to your project directory and running::
+
+    python setup.py bdist_egg
+
+This will produce an egg file for the current version of your project in the
+``./dist`` folder.
+
+
+How to Install Your .egg
+------------------------
+
+The simplest way to use an egg is to copy it over to your production machine
+and do::
+
+    [sudo] easy_install *myapp*.egg
+
+.. note:: If you do not have ``easy_install`` on the target machine, you need
+   to install the setuptools_ package first to get it, either through your
+   operating system's software package system or by downloading the
+   bootstrapping program `ez_setup.py`_. Conveniently, ``ez_setup.py`` also
+   takes the same arguments that ``easy_install`` takes, so ``python
+   ez_setup.py *myapp*.egg`` will do the full install. Be sure to switch
+   over to ``easy_install`` after the first run.
+
+
+Installing Dependencies
+~~~~~~~~~~~~~~~~~~~~~~~
+
+As long as the ``setup.py`` lists TurboGears as a requirement (see the section
+on :ref:`adding requirements <adding_requirements>`), it should be possible
+for somebody to install your application with just the egg and ``easy_install``
+or ``ez_setup.py`` including the installation of TurboGears itself and all its
+dependencies.
+
+.. warning:: This is a nice feature for application deployment, but be aware that
+    installing an egg can also upgrade TurboGears and other packages if the egg
+    requires a later version than the system provides. If long term system
+    stability is important to you, you may want to investigate solutions like
+    :doc:`virtualenv <NonRoot>`.
+
+    Please be also aware that by default the ``setup.py`` file of a quickstarted
+    project will require a TurboGears version that is equal or newer than the
+    version which was used to run ``tg-admin quickstart``. This means if you
+    install your application and TurboGears is not installed or only an older
+    version than required, ``easy_install`` will fetch and install the newest
+    TurboGears version it can find. **This includes beta versions and release
+    candidates of future TurboGears versions with a higher major version number.**
+    If you want to ensure that your application will only install a known good
+    TurboGears version, you should add a more specific version constraint for
+    TurboGears in ``setup.py`` (again, see :ref:`adding requirements <adding_requirements>`
+    on how to do this).
+
+
+Running Your Application
+------------------------
+
+
+The Start Script
+~~~~~~~~~~~~~~~~
+
+As a part of the ``easy_install process``, a console script that fulfills the same
+function as your ``start-*pkgname*.py`` script is installed in a system binary
+directory, whose location depends on your operating system (e.g. under
+``/usr/bin`` on Unix or ``Python\Scripts`` on Windows). This is the same place
+that ``tg-admin`` is installed and it is usually on your ``PATH``, so you should
+be able to start up your project from anywhere. You can change the installation
+directory for console scripts with the ``--script-dir`` option to ``easy_install``.
+
+Assuming the package name of your project is ``sample``, you would then start your
+application with::
+
+    $ start-sample prod.cfg
+
+where ``prod.cfg`` is your deployment configuration file, which is treated in the
+next section.
+
+
+The Deployment Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To get everything up and running, you also need a deployment :doc:`configuration </Configuration>` file
+(usually called ``prod.cfg`` by convention) and pass the name of this file as the
+first and only argument to your start script.
+
+Since TurboGears 1.0.4 the default start script also can find and use a default
+deployment configuration file, which is packaged in your application's egg. To
+include such a default configuration, all you need to do is to uncomment the
+line that starts with ``#data_files`` in the ``setup.py`` file of your project,
+put your default configuration in a file named ``default.cfg`` in your project
+directory and build the egg as explained above with ``python setup.py bdist_egg``.
+
+
+The Production Database
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Your deployment configuration should specify location and parameters for the
+production :doc:`database </GettingStarted/UseDatabase>` that your project will use.
+
+This can be the same database as the one you created with ``tg-admin sql create``
+while developing your application. If you use a different database for production
+(a wise decision) you will need to create the tables in the database, before using
+it for the first time.
+
+::
+
+    tg-admin -c prod.cfg sql create
+
+will create the necessary tables using the database specified in the deployment
+configuration file ``prod.cfg``.
+
+
+.. _adding_requirements:
+
+How to Make Your Project's .egg Require Additional Packages
+-----------------------------------------------------------
+
+By specifying all your dependencies, not just TurboGears, ``easy_install`` can
+completely automate your package setup. You specify dependencies by modifying
+the ``requires`` argument in ``setup()`` in your ``setup.py`` file to include
+the name of the package you need. Here is an example that adds the fictional
+package ``FooBar`` as an installation requirement::
+
+
+    setup(
+        name="test",
+        version=0.1,
+        zip_safe=False,
+        install_requires = [
+            "TurboGears >= 1.0.1",
+            "FooBar"
+        ],
+        ...
+
+If you need a specific version of the package you can use comparison operators
+against the version name. You can see that happening in the above example, as
+this project depends on "TurboGears version 1.0.1 or greater". See the setuptools_
+documentation for more information on declaring dependencies.
+
+
+How to Make Your Project Available on the Cheeseshop
+----------------------------------------------------
+
+If you decide to share your creation with the world, the easiest way to do so
+is by using the Cheeseshop_ (technically the Python Package Index, but nobody
+calls it that). Before you can upload your project to the Cheeseshop, you will
+need an account. You can create one on the `PyPI registration page`_.
+
+.. _PyPI registration page: http://www.python.org/pypi?:action=register_form
+
+After you have created an account, you will need to tell setuptools your
+account information for uploading the file. See the `distutils documentation`_
+for details on this.
+
+Now that you have your account configured and you've updated the metadata in
+``setup.py``, you need to register a page for your application. setuptools
+can do this for you automatically with the following command::
+
+    python setup.py register
+
+Once you have everything configured, setuptools can upload your egg
+automatically. Here is the command you need::
+
+    python setup.py bdist_egg upload
+
+Any eggs you created in the process should also be available in the ``dist/``
+folder of your project.
+
+You can also register projects and upload your eggs manually. This
+`setuptools tutorial`_ should be enough to get you going.
+
+.. _setuptools tutorial: http://wiki.python.org/moin/CheeseShopTutorial
+
+
+Making Your Project Available in the CogBin
+-------------------------------------------
+
+The CogBin_ scans the CheeseShop for updated packages and looks for keywords it
+recognizes. To make your project available in the CogBin, simply add the
+appropriate keyword(s) to your ``setup.py`` file:
+
++--------------------+----------------------------------+
+| Applications       | ``turbogears.app``               |
++--------------------+----------------------------------+
+| Widgets            | ``turbogears.widgets``           |
++--------------------+----------------------------------+
+| Template plug-ins  | ``python.templating.engines``    |
++--------------------+----------------------------------+
+| Identity providers | ``turbogears.identity.provider`` |
++--------------------+----------------------------------+
+| tg-admin commands  | ``turbogears.command``           |
++--------------------+----------------------------------+
+| Toolbox plug-ins   | ``turbogears.toolboxcommand``    |
++--------------------+----------------------------------+
+
+This goes in the ``keywords`` argument to ``setup()`` in your ``setup.py``
+file. If you are using the file provided in a quickstarted project these
+options should already be listed, just uncomment the ones you need.
+
+
+How to Provide Console Scripts
+------------------------------
+
+.. note::
+    The procedure described here to turn the start script into a setuptools
+    console script is already taken care of with TurboGears versions > 1.0.3.
+
+    However you can use the same technique to provide additional console scripts
+    for your application.
+
+Another nice feature you get for free from setuptools is the ability to
+automatically create console scripts. The TurboGears package itself uses this
+feature to install the ``tg-admin`` command. By declaring a ``console_scripts``
+`entry point`_ in your project's ``setup.py``, you can get setuptools to handle all
+of the  platform-dependent work of setting up a script for you. It even creates
+appropriate ``.exe`` files on windows!
+
+As a sample, let's take the basic ``start-<pkgname>.py`` script and turn
+it into a command you can run. First, copy your ``start-<pkgname>.py``
+file into the project itself in a new file named ``commands.py``. Then
+reformat it so it looks something like this::
+
+    import pkg_resources
+    pkg_resources.require("TurboGears")
+
+    from os.path import *
+    import os
+    import sys
+
+
+    def start():
+        from turbogears import update_config, start_server
+        import cherrypy
+        cherrypy.lowercase_api = True
+
+        # first look on the command line for a desired config file,
+        # if it's not on the command line, then
+        # look for setup.py in the current working directory. If it's not there,
+        #  this script is probably installed
+        if len(sys.argv) > 1:
+            update_config(configfile=sys.argv[1],
+                          modulename="sample.config")
+        elif exists(join(os.getcwd(), "setup.py")):
+            update_config(configfile="dev.cfg",modulename="sample.config")
+        else:
+            update_config(configfile="prod.cfg",modulename="sample.config")
+
+        from sample.controllers import Root
+
+        start_server(Root())
+
+The big change that we made was capturing most of the startup script's logic
+in a new ``start`` function that takes no arguments. Other than that we had to
+modify the ``elif`` statement that is looking for your ``dev.cfg`` file so it
+uses the current directory instead of looking for it in the same directory as
+the calling file.
+
+Now all you have to do is add an entry point that tells setuptools you are
+implementing a console script. This is done in your setup.py file. Here is a
+sample line::
+
+    setup(
+        name="sample",
+        version=version,
+        ...
+        entry_points = """
+            [console_scripts]
+            sample-start = sample.commands:start
+            ...
+        """,
+        ...
+        )
+
+That is pretty much it. When your project is installed, unless the user
+specifically requests that console scripts are not installed, a
+``sample-start`` script is created and placed in the normal system directory.
+
+If you don't want to use a development installation of your egg you can always
+rewrite ``start-<pkgname>.py`` to look something like the following::
+
+    from sample.commands import start
+    start()
+
+
+.. _cheeseshop: http://cheeseshop.python.org/pypi/
+.. _cogbin: http://www.turbogears.org/cogbin/
+.. _distutils documentation: http://docs.python.org/dist/package-index.html
+.. _entry point:
+    http://peak.telecommunity.com/DevCenter/setuptools#extensible-applications-and-frameworks
+.. _ez_setup.py: http://peak.telecommunity.com/dist/ez_setup.py
+.. _peak developers' center: http://peak.telecommunity.com/DevCenter/PythonEggs
+.. _setuptools: http://peak.telecommunity.com/DevCenter/setuptools

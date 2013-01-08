@@ -1,0 +1,15 @@
+.. index:: FormEncode
+
+FormEncode
+==========
+
+FormEncode_ is a validation and form generation package. TurboGears integrates FormEncode_ and
+provides additional or enhanced validators. FormEncode will be installed automatically when you
+install TurboGears.
+
+.. _FormEncode: http://formencode.org/
+
+
+Ben Bangert has some really good slides about FormEncode and SQLObject.
+
+http://www.groovie.org/articles/2005/09/16/presentation-on-sqlobject-formencode

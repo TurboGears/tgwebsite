@@ -1,0 +1,349 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Offline Installation &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installing TurboGears on a host behind a proxy" href="BehindProxy.html" />
+    <link rel="prev" title="How to Install TurboGears Without root Privileges" href="NonRoot.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="BehindProxy.html" title="Installing TurboGears on a host behind a proxy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="NonRoot.html" title="How to Install TurboGears Without root Privileges"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Offline Installation</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#some-starting-assumptions">Some Starting Assumptions</a></li>
+<li><a class="reference internal" href="#step-0-ntlm-authentication">Step 0: NTLM Authentication</a></li>
+<li><a class="reference internal" href="#step-1-setuptools">Step 1: Setuptools</a></li>
+<li><a class="reference internal" href="#step-2-downloading-turbogears">Step 2: Downloading TurboGears</a><ul>
+<li><a class="reference internal" href="#step-2a-using-easy-install">Step 2a: Using easy_install</a></li>
+<li><a class="reference internal" href="#step-2b-manually-downloading-files">Step 2b: Manually Downloading Files</a><ul>
+<li><a class="reference internal" href="#about-platforms-python-versions-and-eggs">About Platforms, Python Versions and Eggs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#step-3-database-drivers">Step 3: Database Drivers</a></li>
+<li><a class="reference internal" href="#step-4-installing-turbogears">Step 4: Installing TurboGears</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="NonRoot.html"
+                        title="previous chapter">How to Install TurboGears Without <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">root</span></tt> Privileges</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="BehindProxy.html"
+                        title="next chapter">Installing TurboGears on a host behind a proxy</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="offline-installation">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Offline Installation</a><a class="headerlink" href="#offline-installation" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#offline-installation" id="id1">Offline Installation</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#some-starting-assumptions" id="id3">Some Starting Assumptions</a></li>
+<li><a class="reference internal" href="#step-0-ntlm-authentication" id="id4">Step 0: NTLM Authentication</a></li>
+<li><a class="reference internal" href="#step-1-setuptools" id="id5">Step 1: Setuptools</a></li>
+<li><a class="reference internal" href="#step-2-downloading-turbogears" id="id6">Step 2: Downloading TurboGears</a></li>
+<li><a class="reference internal" href="#step-3-database-drivers" id="id7">Step 3: Database Drivers</a></li>
+<li><a class="reference internal" href="#step-4-installing-turbogears" id="id8">Step 4: Installing TurboGears</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><strong>Abstract</strong></p>
+<blockquote>
+<div><em>This page describes how to install TurboGears when you do not have an
+Internet connection or are behind a firewall or proxy that prevents</em>
+<tt class="docutils literal"><span class="pre">ez_setup</span></tt> <em>or</em> <tt class="docutils literal"><span class="pre">easy_install</span></tt> <em>from working.</em></div></blockquote>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>If you are trying to install TurboGears and have unrestricted Internet
+access, then the standard installation instructions can&#8217;t be beat.
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> is a real walk in the park!  But if you are behind a
+restrictive firewall or proxy  that prevents TurboGears from installing
+successfully, then you need another way to install it.  Or maybe you just
+want to download the files once and then install TurboGears on several
+different machines (via LAN or USB key or whatever).  The instructions
+provided here will let you do that too.</p>
+<p>Just follow the steps below and you&#8217;ll be enjoying the wonders of
+TurboGears in no time. :-)</p>
+</div>
+<div class="section" id="some-starting-assumptions">
+<h2><a class="toc-backref" href="#id3">Some Starting Assumptions</a><a class="headerlink" href="#some-starting-assumptions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Obviously you will have to have <em>some</em> internet connection to download the
+turbogears files once, but after that you can do all the installation
+without it.</li>
+<li>This page assumes that you already have Python.  If not please see the
+standard installation instructions for your platform
+(<a class="reference internal" href="Nix.html"><em>Unix-like systems</em></a>, <a class="reference internal" href="Windows.html"><em>Windows</em></a>, <a class="reference internal" href="Mac.html"><em>Max OS X</em></a>)
+for help on getting it.</li>
+<li>These instructions are provided in a platform-independent way.  It is
+assumed that you will know how to follow these steps on your chosen platform.</li>
+</ul>
+<p>With that in mind, let&#8217;s get on with the show!</p>
+</div>
+<div class="section" id="step-0-ntlm-authentication">
+<h2><a class="toc-backref" href="#id4">Step 0: NTLM Authentication</a><a class="headerlink" href="#step-0-ntlm-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Many corporate environments use Microsoft Proxy Server to restrict access
+to the Internet.  It uses a proprietary protocol called NTLM for force
+users to authenticate before they can access the Web.  If this is your
+situation, you can use the following shortcut and skip the rest of
+these instructions.  If not, you can skip this section.</p>
+<p>The solution that is recommended in the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall#installing-easy-install">setuptools installation documentation</a>
+for dealing with this problem is to use the
+<a class="reference external" href="http://ntlmaps.sourceforge.net/">NTLM Authorization Proxy Server</a> (APS) to handle the NTLM
+authentication.  Here is a quick run down on how to use it:</p>
+<p>Once you <a class="reference external" href="http://sourceforge.net/project/showfiles.php?group_id=69259">download</a> and extract APS, modify <tt class="docutils literal"><span class="pre">server.cfg</span></tt>:</p>
+<ul class="simple">
+<li>In the <tt class="docutils literal"><span class="pre">[GENERAL]</span></tt> section set <tt class="docutils literal"><span class="pre">PARENT_PROXY</span></tt> and
+<tt class="docutils literal"><span class="pre">PARENT_PROXY_PORT</span></tt> to match the values in <em>Internet Explorer |
+Tools | Internet Options | Connections | LAN settings | Proxy
+settings</em>. Leave the <tt class="docutils literal"><span class="pre">LISTEN_PORT</span></tt> at 5865.</li>
+<li>In the <tt class="docutils literal"><span class="pre">[NTLM_AUTH]</span></tt> section, set the <tt class="docutils literal"><span class="pre">NT_DOMAIN</span></tt> to your domain,
+<tt class="docutils literal"><span class="pre">USER</span></tt> to your login ID and clear the <tt class="docutils literal"><span class="pre">PASSWORD</span></tt> field so you will
+be asked for it in the next step. (It is not advisable to save your
+password in this text file, for obvious reasons!)</li>
+</ul>
+<p>Next, open a DOS command window and change to the folder where you
+extracted APS and run <tt class="docutils literal"><span class="pre">runserver.bat</span></tt>.  This should ask for your
+password.</p>
+<p>Now, open another DOS command window and redirect python through
+your APS proxy, by typing:</p>
+<div class="highlight-python"><pre>set HTTP_PROXY=http://127.0.0.1:5865</pre>
+</div>
+<p>Now you can follow the normal install instructions from in that second
+command window.</p>
+<p>Once you are done installing TurboGears, you can close the command window
+where APS is running.</p>
+<p>That&#8217;s it!  You&#8217;re done! :-)</p>
+</div>
+<div class="section" id="step-1-setuptools">
+<h2><a class="toc-backref" href="#id5">Step 1: Setuptools</a><a class="headerlink" href="#step-1-setuptools" title="Permalink to this headline">¶</a></h2>
+<p>So if you are here, then you are lucky enough to not be behind a Microsoft
+Proxy Server using NTLM authentication.  In which case please keep reading.</p>
+<p>TurboGears is installed using the <tt class="docutils literal"><span class="pre">easy_install</span></tt> command.  It is part of
+the <em>setuptools</em> package.  If you already have setuptools, you can skip
+this section. If not, please read on.</p>
+<p>The normal way of installing setuptools for the first time is to download
+the <tt class="docutils literal"><span class="pre">ez_setup.py</span></tt> file and run it.  It will go out to the internet and
+then download and install the setuptools package for you.  However if it
+cannot connect to the internet (which is why you are reading this page),
+the secret piece of information is that <strong>you can download setuptools as a
+regular python package</strong> and install it using the tried and true:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>Just head on over to the <a class="reference external" href="http://cheeseshop.python.org/pypi/setuptools">setuptools Cheese Shop page</a> and download the zip
+file.</p>
+<p>Setuptools is generally thought of as the biggest barrier to installing
+TurboGears without the internet because many people only know to use
+<tt class="docutils literal"><span class="pre">ez_setup.py</span></tt> as the installation option for it.  This is understandable
+as that is the promoted and best way to install it.  But as you can see, it
+is not the only way.  Thankfully!</p>
+</div>
+<div class="section" id="step-2-downloading-turbogears">
+<h2><a class="toc-backref" href="#id6">Step 2: Downloading TurboGears</a><a class="headerlink" href="#step-2-downloading-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have setuptools downloaded and can install it, we need to get
+TurboGears.</p>
+<p>TurboGears depends on several other packages and so it has a lot of
+dependencies.  This is a strength (code reuse), but in our case it can be
+a minor annoyance too.</p>
+<div class="section" id="step-2a-using-easy-install">
+<h3>Step 2a: Using easy_install<a class="headerlink" href="#step-2a-using-easy-install" title="Permalink to this headline">¶</a></h3>
+<p>If you have a way to get unrestricted access to the internet, there is a
+quick an easy way to just download all of TurboGears and all of it&#8217;s
+dependencies to a directory without installing it.  With setuptools
+installed, make a directory and in it, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">easy_install</span> <span class="o">-</span><span class="n">zmaxd</span> <span class="o">.</span> <span class="n">TurboGears</span>
+</pre></div>
+</div>
+<p>This will connect to the internet and just download TurboGears and all of
+it&#8217;s dependencies to the current directory, without installing anything.</p>
+<blockquote>
+<div><strong>Caveat:</strong> The <tt class="docutils literal"><span class="pre">-a</span></tt> option, above, prevents development versions of
+packages from being downloaded.  Sometimes that is what is required.
+So if the above command fails, saying <tt class="docutils literal"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">find</span> <span class="pre">suitable</span>
+<span class="pre">distribution</span></tt> and <tt class="docutils literal"><span class="pre">(--always-copy</span> <span class="pre">skips</span> <span class="pre">system</span> <span class="pre">and</span> <span class="pre">development</span>
+<span class="pre">eggs)</span></tt>, then you cannot use this shortcut and will have to download all
+the those files manually.</div></blockquote>
+<p>For a more complete explanation of <tt class="docutils literal"><span class="pre">-zmaxd</span></tt>, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">easy_install</span> <span class="o">--</span><span class="n">help</span>
+</pre></div>
+</div>
+<p>or check out the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/EasyInstall#command-line-options">setuptools command-line options documentation</a>.</p>
+<blockquote>
+<div><strong>Upgrading</strong>: if you are trying to upgrade your TurboGears using this
+method, use <tt class="docutils literal"><span class="pre">-zmaxUd</span></tt>.  The <tt class="docutils literal"><span class="pre">U</span></tt> tells setuptools to upgrade, if
+possible, over what is currently installed and/or what is currently in your
+download directory.</div></blockquote>
+</div>
+<div class="section" id="step-2b-manually-downloading-files">
+<h3>Step 2b: Manually Downloading Files<a class="headerlink" href="#step-2b-manually-downloading-files" title="Permalink to this headline">¶</a></h3>
+<p>If your only access to the internet is restricted so that the above
+shortcut does not work (or if it does not work for any other reason), you
+can always download the files manually, one at a time, from the
+<a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">TurboGears download page</a>, or from the <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current">TurboGears downloads file list</a>.
+There are a lot of files there, so here is some explanation of them so you can
+know which ones you need to care about, but first, a note about platforms,
+Python versions and eggs:</p>
+<div class="section" id="about-platforms-python-versions-and-eggs">
+<h4>About Platforms, Python Versions and Eggs<a class="headerlink" href="#about-platforms-python-versions-and-eggs" title="Permalink to this headline">¶</a></h4>
+<p>Generally you want to download one egg file for each package.  Some
+packages are platform-independant, meaning that they run on Windows, Mac
+and unix-like systems without needing seperate versions.  Others packages,
+however, have to be compiled for different platforms.  In this case,
+precompiled Windows and Mac OS X version are provided.  So when choosing
+your files, if the choice is offered, download files with the following in
+their names:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">win32</span></tt> for Windows,</li>
+<li><tt class="docutils literal"><span class="pre">macosx</span></tt> for Mac OS X, or</li>
+<li><tt class="docutils literal"><span class="pre">tar.gz</span></tt> source files for Unix systems</li>
+</ul>
+<p>For example:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">Cheetah-1.0-py2.4-macosx-10.4-ppc.egg</span></tt> is for Mac OS X,</li>
+<li><tt class="docutils literal"><span class="pre">Cheetah-1.0-py2.4-win32.egg</span></tt> is for Windows, and</li>
+<li><tt class="docutils literal"><span class="pre">Cheetah-1.0.tar.gz</span></tt> is the source code for Unix systems</li>
+</ul>
+<p>Also you only need to choose packages that match your version of Python. So
+look for:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">py2.4</span></tt> for Python 2.4 or</li>
+<li><tt class="docutils literal"><span class="pre">py2.3</span></tt> for Python 2.3</li>
+</ul>
+<p>Finally, egg files are generally preferred over zip or tar.gz files.</p>
+</div>
+</div>
+</div>
+<div class="section" id="step-3-database-drivers">
+<h2><a class="toc-backref" href="#id7">Step 3: Database Drivers</a><a class="headerlink" href="#step-3-database-drivers" title="Permalink to this headline">¶</a></h2>
+<p>We are almost done! :-)</p>
+<p>While the TurboGears download page includes TurboGears and all of it&#8217;s
+dependencies, it does not include database driver packages. Which
+driver(s) you need depend on which database(s) you want to use.  At a
+minimum, you probably want to get the <tt class="docutils literal"><span class="pre">pysqlite</span></tt> package for use during
+development and probably for use in unit tests too.</p>
+<p>As is mentioned in the main TurboGears installation documentation, you can
+find links to the various supported database driver libraries in the
+<a class="reference external" href="http://sqlobject.org/SQLObject.html#requirements">SQLObject documentation</a>.</p>
+<p>That&#8217;s it!  You now have everything you need to install TurboGears without
+an internet connection.  You can now take your laptop on the plane, copy
+the files to a USB key and take it to work or whatever.  The only thing
+left is how to actually install TurboGears! :-)</p>
+</div>
+<div class="section" id="step-4-installing-turbogears">
+<h2><a class="toc-backref" href="#id8">Step 4: Installing TurboGears</a><a class="headerlink" href="#step-4-installing-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>Okay, so just to recap:</p>
+<ul class="simple">
+<li>We have setuptools that we can install the &#8220;old fashioned way&#8221;,</li>
+<li>We have all the packages necessary to install TurboGears, and</li>
+<li>We have all the database driver packages we want.</li>
+</ul>
+<p>So to actually do the installation, do the follwing:</p>
+<ul>
+<li><p class="first">Install setuptools and the database drivers, each with:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+</li>
+<li><p class="first">Then, in the directory where the TurboGears files are, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">easy_install</span> <span class="o">-</span><span class="n">f</span> <span class="o">.</span> <span class="n">TurboGears</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">-f</span> <span class="pre">.</span></tt> tells easy_install to use the current directory as the source
+of the packages and not go looking on the internet.</p>
+<p>You should also see if there are any extra options or steps to take for
+your chosen platform by looking in the main installation instructions for
+your platform.</p>
+<p>After that, you should have a nice shiny new TurboGears installed and
+waiting for you to create the next hottest site on the Web! :-D  Good Luck!</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

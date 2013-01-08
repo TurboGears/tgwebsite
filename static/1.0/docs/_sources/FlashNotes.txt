@@ -1,0 +1,80 @@
+.. index:: flash notes
+
+Using Flash Notes
+=================
+
+Turbogears comes with a handy ``flash()`` function that can be used to set
+a plaintext status or feedback message that will be displayed on the next
+web page shown to the user. For instance:
+
+::
+
+  from turbogears import controllers, expose, flash
+
+  class Root(controllers.RootController):
+
+      @expose(template="foo.templates.welcome")
+      def index(self):
+          flash('Your application is now running')
+          return dict()
+
+.. note::
+   The message passed to the flash() function is stored in a cookie,
+   so this does not work if cookies are not enabled in the browser.
+   Also, by default, HTML in flash() messages is rendered literally
+   (see below for how you can change this).
+
+By default, the flash() messages is rendered as a ``div`` block with
+with the CSS class name ``flash``, but you can change this easily in
+your ``master.kid`` template.
+
+
+Fancy Flash Notes
+-----------------
+
+If you want to use XHTML tags or entities in your flash messages,
+you need to modify your ``master.kid`` template to use `Kid's XML() function`__
+for displaying the message, i.e. replace::
+
+  py:content="tg_flash"
+
+in the ``master.kid`` template with::
+
+  py:content="XML(tg_flash)"
+
+__ http://www.kid-templating.org/language.html#xml-function
+
+.. warning::
+   *Caution:*
+   Be careful with the trick using the ``XML()`` function described in the page linked here.
+   This opens up the possibility of introducing Cross-Site-Scripting vulnerabilities,
+   if you include things in your flash messages that were entered by a user, for example
+   the name of a wiki page or similar without escaping them properly.
+
+   Consider the following scenario:
+
+   * User A creates a new wiki page with the title::
+
+       <script>alert("Vulnerable!");</script>
+   * User B views that page and deletes it (assuming there is a delete function)
+   * You controller does::
+
+       turbogears.flash("Page '%s' deleted." % page.title)
+
+     and shows the next page
+   * User B will load the page that contains::
+
+       <div class="flash">Page '<script>alert("Vulnerable!");</script>' deleted.</div>
+
+     and the Javascript is sucessfully injected.
+
+   Without the use of the ``XML()`` function page.title would get properly escaped and no harm is done.
+   You could, of course, escape ``page.title`` seperately and everything would be fine, but it's easy to forget.
+   Granted, you should always escape input from users when redisplaying it later, but Kid makes it easy
+   to forget this, because it normally does not let you insert literal HTML code unescaped.
+
+See also:
+
+* `Fancy status messages using tg_flash`__
+
+__ http://www.splee.co.uk/2005/11/23/fancy-status-messages-using-tg_flash/

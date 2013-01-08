@@ -1,0 +1,25 @@
+.. index:: startup hook
+
+Startup Hook
+=============
+
+.. contents:: Table of Contents
+    :depth: 2
+
+TurboGears has a ``call_on_startup`` and ``call_on_shutdown`` facility
+in the ``turbogears.startup`` module:
+
+It is used by putting code similar to the following in a file imported
+when you application starts up, e.g. ``controllers.py`` or ``command.py``::
+
+    from turbogears.startup import call_on_startup
+
+    def do_your_thing():
+        # do the thing syou want to do on startup here
+        pass
+
+    call_on_startup.append(do_your_thing)
+
+You can name the callables you append to the ``call_on_*`` lists anything you like
+and do anything you need there, e.g. insert filters into the CherryPy request phase
+or set up variables as needed.

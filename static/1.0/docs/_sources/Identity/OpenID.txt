@@ -1,0 +1,374 @@
+.. index:: OpenID
+
+OpenID Authentication with TurboGears Identity
+==============================================
+
+.. contents::
+  :depth: 2
+
+
+What is OpenID?
+---------------
+
+OpenID is an authentication mechanism favouring single-sign-on on the web. If your website implements OpenID authentication (as a client), your site doesn't need to store passwords and ask for simple registration information of your users. If someone has an OpenID (anybody can get an OpenID for free by registering at OpenID provider sites like http://www.myopenid.com), he can directly login through this, and your site can access his information.
+
+More information about OpenID can be found at:
+
+* http://openid.net/
+
+* http://www.openidenabled.com/
+
+Integrating OpenID with TurboGears Identity
+-------------------------------------------
+
+Here we are going to discuss about how to integrate OpenID (client part) with TurboGears identity management.
+
+It is easy to integrate OpenID authentication with the identity framework in a TurboGears application with some tricks. But before we understand how the integration would work, we must understand some TurboGears identity basics.
+
+Let's understand what exactly happens when we call a controller method requiring authentication. Say you have a controller method like this::
+
+    @expose()
+    @identity.require(identity.not_anonymous())
+    def some_url(self, param1, param2)
+        return "Hi " + param1 + param2
+
+
+To call this, you need to invoke ``http://xyz:8080/some_url?param1=x&param2=y.`` Now, if you are not authenticated, you will be redirected to the login page, where you give your user name and password. When you press the "Login" button in the login form, what is actually invoked is::
+
+  http://xyz:8080/some_url?param1=x&param2=y&user_name=your_name&
+  password=your_password&login=Login.
+
+(all on one line)
+
+You might like to have a look at ``login.kid`` to have an understanding on this.
+
+Now let's talk about an interesting rule TurboGears follows. Whenever TurboGears sees an url having ``user_name``, ``password`` and ``login`` parameters, it removes these parameters, after using them if needed.
+
+So, if you invoke::
+
+  http://xyz:8080/some_url?param1=x&param2=y&user_name=your_name&
+  password=your_password&login=Login
+
+(all on one line again)
+
+after the authentication taking place, what actually ``some_url`` will see is only ``param1`` and ``param2``. And, if the authentication fails, you will be redirected to the login page again.
+
+Having understood this, let's now have a minimal understanding how OpenID authentication works in general.
+
+Very briefly, OpenID authentication is done in two steps:
+
+1. After getting the OpenID of the user, you call his OpenID site with his name and some other parameters. Let's name the method to call the OpenID site ``login_begin``.
+
+2. From the OpenID site, you receive authentication information and additional data. Let's name the method to receive this data ``login_finish``.
+
+
+Start to integrate
+------------------
+
+So, to integrate TurboGears identity and OpenID authentication, we need to do the following:
+
+1. Change the login form to post to ``login_begin`` instead of ``${previous_url}``.
+   Your ``login.kid`` will now have::
+
+        <form action="/login_begin" method="POST">
+
+2. Introduce ``previous_url`` as a hidden field, so that its value is preserved.
+   Add this line to the login form::
+
+        <input type="hidden" name="previous_url" value="${previous_url}"/>
+
+3. Change the id and name of the ``user_name`` field to ``openid_url``::
+
+        <input type="text" id="openid_url" name="openid_url"/>
+
+4. Change the type of password field to hidden::
+
+        <input type="hidden" id="password" name="password"/>
+
+5. Write the method ``login_begin``.
+
+6. Write the method ``login_finish``. In ``login finish``, if OpenID authentication
+   succeeds, you need to set a random password for the user.
+
+You may not be able to digest all this now, until you see the tutorial and read through the source code given below.
+
+Tutorial - Creating a TurboGears Application with OpenID support
+----------------------------------------------------------------
+
+Follow these steps below to have an OpenID enabled TurboGears application. This tutorial uses SQLAlchemy and sqlite.
+
+1. Install SQLAlchemy and sqlite (with pysqlite) on your machine if not already installed.
+
+2. Install the python library for OpenID support from `here`_. Download the combo pack - latest version. (This code was tested using Python OpenID 1.2.0 Combo and works well with leading OpenID servers, although I am not aware which specification of OpenID it implements.)
+
+.. _here: http://www.openidenabled.com/openid/libraries/python/downloads
+
+3. Create a TurboGears application by the command::
+
+        tg-admin quickstart -i -s -t tgbig
+
+   Specify project name and package name as ``tgopenid``.
+
+4. In ``root.py`` of the controllers package, ensure that the User class is imported from ``model.py`` by having the line::
+
+        from tgopenid.model import User
+
+5. For OpenID support, we need some imports and utility functions. These are described below. Have these just above the Root class in ``root.py``::
+
+    #########################################################
+    # Added for OpenID support
+    #########################################################
+
+    import turbogears
+    from turbogears import flash
+    from pysqlite2 import dbapi2 as sqlite
+    from openid.consumer import consumer
+    from openid.store import sqlstore
+    from openid.cryptutil import randomString
+    from yadis.discover import DiscoveryFailure
+    from urljr.fetchers import HTTPFetchingError
+
+    # Utility functions
+
+    def _flatten(dictionary, inner_dict):
+        """
+        Given a dictionary like this:
+            {'a':1, 'b':2, 'openid': {'i':1, 'j':2}, 'c': 4},
+        flattens it to have:
+            {'a':1, 'b':2, 'openid.i':1, 'openid.j':2, 'c':4}
+        """
+        if inner_dict in dictionary:
+            d = dictionary.pop(inner_dict)
+            for k, v in d.iteritems():
+                dictionary[inner_dict +'.' + k] = v
+
+    def _prefix_keys(dictionary, prefix):
+        " Prefixes the keys of dictionary with prefix "
+        d = {}
+        for k, v in dictionary.iteritems():
+            d[prefix + '.' + k] = v
+        return d
+
+    def _get_openid_store_connection():
+        """
+        Returns a connection to the database used
+        by openid library
+        Is it needed to close the connection? If yes, where to close it?
+        """
+        return sqlite.connect("openid.db")
+
+    def _get_openid_consumer():
+        """
+        Returns an openid consumer object
+        """
+        from cherrypy import session
+
+        con = _get_openid_store_connection()
+        store = sqlstore.SQLiteStore(con)
+        session['openid_tray'] = session.get('openid_tray', {})
+        return consumer.Consumer(session['openid_tray'], store)
+
+    def _get_previous_url(**kw):
+        """
+        if kw is something like
+            {'previous_url' : 'some_controller_url',
+             'openid_url'   : 'an_openid.myopenid.com',
+             'password'     : 'some_password',
+             'login'        : 'Login',
+             'param1'       : 'param1'
+             'param2'       : 'param2'
+            }
+        the value returned is:
+            http://xyz:8080/come_controller_url?
+            user_name=an_openid.myopenid.com&
+            password=some_password&login=Login&param1=param1&param2=param2
+        (on a single line)
+        """
+        kw['user_name'] = kw.pop('openid_url')
+        previous_url = kw.pop('previous_url')
+        return turbogears.url(previous_url, kw)
+
+  Inside the Root controller class, at the bottom, write the code for
+  login_begin and login_finish as below::
+
+    @expose()
+    def login_begin(self, **kw):
+        if len(kw['openid_url']) == 0:
+            # openid_url was not provided by the user
+            flash('Please enter your openid url')
+            raise redirect(_get_previous_url(**kw))
+
+        oidconsumer = _get_openid_consumer()
+        try:
+            req = oidconsumer.begin(kw['openid_url'])
+        except HTTPFetchingError, exc:
+            flash('HTTPFetchingError retrieving identity URL (%s): %s' \
+              % (kw['openid_url'], str(exc.why)))
+            raise redirect(_get_previous_url(**kw))
+        except DiscoveryFailure, exc:
+            flash('DiscoveryFailure Error retrieving identity URL (%s): %s' \
+              % (kw['openid_url'], str(exc[0])))
+            raise redirect(_get_previous_url(**kw))
+        else:
+            if req is None:
+                flash('No OpenID services found for %s' % \
+                  (kw['openid_url'],))
+                raise redirect(_get_previous_url(**kw))
+            else:
+
+                # Add server.webpath variable
+                # in your configuration file for turbogears.url to
+                # produce full complete urls
+                # e.g. server.webpath="http://localhost:8080"
+
+                trust_root = turbogears.url('/')
+                return_to = turbogears.url('/login_finish',
+                  _prefix_keys(kw, 'app_data'))
+
+                # As we want also to fetch nickname and email
+                # of the user from the server,
+                # we have added the line below
+                req.addExtensionArg('sreg', 'optional', 'nickname,email')
+                req.addExtensionArg('sreg', 'policy_url',
+                  'http://www.google.com')
+
+                redirect_url = req.redirectURL(trust_root, return_to)
+                raise redirect(redirect_url)
+
+    @expose()
+    def login_finish(self, **kw):
+        """Handle the redirect from the OpenID server.
+        """
+        app_data = kw.pop('app_data')
+        # As consumer.complete needs a single flattened dictionery,
+        # we have to flatten kw. See flatten's doc string
+        # for what it exactly does
+        _flatten(kw, 'openid')
+        _flatten(kw, 'openid.sreg')
+
+        oidconsumer = _get_openid_consumer()
+        info = oidconsumer.complete(kw)
+        if info.status == consumer.FAILURE and info.identity_url:
+            # In the case of failure, if info is non-None, it is the
+            # URL that we were verifying. We include it in the error
+            # message to help the user figure out what happened.
+            flash("Verification of %s failed. %s" % \
+              (info.identity_url, info.message))
+            raise redirect(_get_previous_url(**app_data))
+        elif info.status == consumer.SUCCESS:
+            # Success means that the transaction completed without
+            # error. If info is None, it means that the user cancelled
+            # the verification.
+
+            # This is a successful verification attempt.
+
+            # identity url may be like http://yourid.myopenid.com/
+            # strip it to yourid.myopenid.com
+            user_name = info.identity_url.rstrip('/').rsplit('/', 1)[-1]
+
+            # get sreg information about the user
+            user_info = info.extensionResponse('sreg')
+
+            u = User.get_by(user_name=user_name)
+            if u is None: # new user, not found in database
+                u = User(user_name=user_name)
+            if 'email' in user_info:
+                u.email_address = user_info['email']
+            if 'nickname' in user_info:
+                u.display_name = user_info['nickname']
+            u.password = randomString(8,
+              "abcdefghijklmnopqrstuvwxyz0123456789")
+            try:
+                u.flush()
+            except Exception, e:
+                flash('Error saving user: ' + str(e))
+                raise redirect(turbogears.url('/'))
+            app_data['openid_url'] = user_name
+            app_data['password'] = u.password
+            raise redirect(_get_previous_url(**app_data))
+        elif info.status == consumer.CANCEL:
+            # cancelled
+            flash('Verification cancelled')
+            raise redirect(turbogears.url('/'))
+
+        else:
+            # Either we don't understand the code or there is no
+            # openid_url included with the error. Give a generic
+            # failure message. The library should supply debug
+            # information in a log.
+            flash('Verification failed')
+            raise redirect(turbogears.url('/'))
+
+6. To test your program, add a method as below::
+
+        @expose()
+        @identity.require(identity.not_anonymous())
+        def whoami(self, **kw):
+            u = identity.current.user
+            return "\nYour openid_url: " + u.user_name + \
+                   "\nYour email_address: " + u.email_address + \
+                   "\nYour nickname: " + u.display_name + \
+                   "\nThe following parameters were supplied by you: " + str(kw)
+
+7. Change ``login.kid`` as discussed in the previous section.
+
+8. Add ``session_filter.on = True`` under the *global* section in ``app.cfg``. OpenID implementation needs session support.
+
+9. Add ``server.webpath="http://localhost:8080"`` under the *global* section in ``dev.cfg``. It is needed to build full urls in ``login_begin``.
+
+10. You need a database, called ``openid_store`` for OpenID to run. This typically should be different from your application database. To create an OpenID database, run the ``createstore.py`` script given below in the project root directory (wherever you have ``dev.cfg``)::
+
+        # createstore.py
+        from pysqlite2 import dbapi2 as sqlite
+        from openid.store import sqlstore
+
+        con = sqlite.connect('openid.db')
+        store = sqlstore.SQLiteStore(con)
+        store.createTables()
+
+11. In ``model.py``, increase the size of the ``user_name`` field in ``users_table`` from 16 to 255::
+
+        Column('user_name', Unicode(255), unique=True),
+
+12. Create the database for your application by ``tg-admin sql create``.
+
+13. Test your application! An obvious test case is to try ``http://localhost:8080/whoami?a=1``
+
+
+Notes
+-----
+
+1. The sample application is attached as :download:`tgopenid.tar.gz <downloads/tgopenid.tar.gz>`.
+
+2. Find attached a tg-admin command :download:`createopenidstore <downloads/createopenidstore-0.1-py2.4.egg>`.
+   This command looks for a file configured as 'openid_store', and if this does not exist
+   runs the command given as createstore.py in 10. above.
+
+3. If you develop an application using OpenID, it might be time consuming while testing
+   the authentication with a live OpenID server like http://www.myopenid.com/. To save time,
+   you may like to run server.py at ``python-openid-x.x.x/examples`` folder in the Python library
+   you downloaded from http://www.openidenabled.com/openid/libraries/python/downloads and run it
+   using the command ``python server.py --port 7999``. Then, while logging in from your application,
+   you can use OpenID url as ``http://localhost:7999/some_user_name``.
+
+4. TGOpenIDLogin_ may be an even better solutiong than the one presented above.
+
+.. _TGOpenIDLogin: http://nxsy.org/tgopenidlogin---an-openid-consumer-for-turbogears-applications
+
+
+References
+----------
+
+* http://www.openidenabled.com/resources/repos/python/openid/examples/consumer.py
+
+* http://recursivethought.googlecode.com/svn/oididentity/trunk
+
+* http://www.alleged.org.uk/pdc/2006/02/10.html
+
+* http://www.alleged.org.uk/pdc/2006/03/06.html#e20060306-filepic
+
+* http://www.openidenabled.com/
+
+* http://groups.google.co.in/group/turbogears/browse_thread/thread/dfc3523e6f1cfec/d5e38d3e3f77ecfd
+
+* http://nxsy.org/tgopenidlogin---an-openid-consumer-for-turbogears-applications

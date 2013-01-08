@@ -1,0 +1,80 @@
+.. index:: FastData
+
+FastData
+========
+
+.. contents::
+    :depth: 2
+
+.. _pypi page:
+
+Author:
+    Kevin Dangoor
+Maintainer:
+    TurboGears project
+Release information and download URL:
+    http://pypi.python.org/pypi/TGFastData
+SVN repository:
+    http://svn.turbogears.org/projects/FastData
+
+
+Overview
+--------
+
+FastData is a TurboGears extension, designed to make fast proto-typing of
+administrative interfaces for your data easy by providing a CRUD interface to
+Create, Retrieve, Update and Delete instances of your
+:doc:`SQLObject </SQLObject/index>` :doc:`data model </GettingStarted/DefineDatabase>`
+objects.
+
+Fast Data has two main components:
+
+* :doc:`FastDataGrid </Widgets/DataGrid>` -- a :doc:`TurboGears widget </Widgets/index>` for a grid-like display for your data
+  items with action links for adding, changing and deleting items.
+* :doc:`DataController <DataController>` -- a controller class taking an SQLObject class and building
+  the methods for the CRUD interface.
+
+
+Usage
+-----
+
+.. toctree::
+   :hidden:
+
+   ForeignKeys
+
+Documentation about using or including information on FastData can be found on
+the following wiki pages:
+
+* :doc:`DataController <DataController>`
+* :doc:`DataGrid </Widgets/DataGrid>` (see section :ref:`fastdata_integration`)
+* :doc:`Foreign Keys In FastData <ForeignKeys>`
+
+
+Installation
+------------
+
+FastData is an extension package for TurboGears and therefore needs to be
+installed separately. Installable egg files are provided on FastData's `PyPI
+page`_, so to download and install FastData, run the following from the command
+line::
+
+    [sudo] easy_install TGFastData
+
+If you are installing FastData into the system-wide location for Python packages
+(the default with the command above), you will need to obtain root priviledges
+by prefixing this command with ``sudo``.
+
+
+Compatibility
+~~~~~~~~~~~~~
+
+FastData is limited in that it only support :doc:`SQLObject </SQLObject/index>`
+data models. Support for creating forms for working with :doc:`SQLAlchemy </SQLAlchemy/index>`
+model objects is provided by the dbsprockets_ package, which builds on the
+:doc:`ToscaWidgets </ToscaWidgets>` project. dbsprockets can be used with TurboGears 2
+as well as with TurboGears 1.x but at the moment only supports SQLAlchemy and requires
+that you install ToscaWidgets as well.
+
+.. _dbsprockets: http://code.google.com/p/dbsprockets/
+

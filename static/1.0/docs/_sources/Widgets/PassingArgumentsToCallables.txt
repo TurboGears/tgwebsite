@@ -1,0 +1,266 @@
+Building Dynamic Option Lists From Data Objects
+===============================================
+
+.. contents::
+  :depth: 2
+
+
+Problem
+-------
+
+You don't want to have to keep creating new functions to create lists in *just the right way* when populating select-style fields on a widget-based form.  You want something a little more generic, more reusable, or you want to (or need to) be able to supply arguments to your callables, without actually calling them.
+
+
+Synopsis
+--------
+
+We're going to create a variation on a decorator to solve the above problem.  We will define a function which accepts a callable as an argument, and returns another callable.  This technique is a variation on one called *currying* (in honor of Haskell Curry, not the food) though it is also referred to as *partial application*.
+
+
+Solution
+--------
+
+We are going to create two things: a generic method which returns SQLObject records in the correct format (a list of tuples), and a function which modifies that list by prepending optional "empty" item, while passing additional arguments to the generic method.
+
+
+Building Usable Lists from SQLObject
+------------------------------------
+
+This function should be defined (through copy-and-paste or assignment) within each SQLObject class we wish to use as a source of select items::
+
+    @classmethod
+    def build_list(self, field, *args, **kwargs):
+        return [(a.id, getattr(a, field)) for a in self.select(*args, **kwargs)]
+
+Note: the ``@classmethod`` decorator is only available since Python 2.4. If you are using Python 2.3,
+replace ``@classmethod`` before the method with ``build_list = classmethod(build_list)`` after.
+
+An alternative to copying and pasting is adding it to SQLObject dynamically.  Define it in the beginning of your model and add this line after this definition: ::
+
+    SQLObject.build_list = build_list
+
+This way, when your classes inherit from SQLObject, they will already have the ``build_list`` method defined within them through inheritance.
+
+You can test this straight away by running Python over the following application: ::
+
+    from sqlobject import *
+
+    __connection__ = connectionForURI("sqlite:///:memory:")
+    hub = __connection__
+
+    class Role(SQLObject):
+        name = StringCol(length=20)
+
+        @classmethod
+        def build_list(self, field, *args, **kwargs):
+            return [(a.id, getattr(a, field)) for a in self.select(*args, **kwargs)]
+
+    Role.createTable(ifNotExists=True)
+
+If you use the inheritance approach you'll end up with: ::
+
+    from sqlobject import *
+
+    __connection__ = connectionForURI("sqlite:///:memory:")
+    hub = __connection__
+
+    @classmethod
+    def build_list(self, field, *args, **kwargs):
+        return [(a.id, getattr(a, field)) for a in self.select(*args, **kwargs)]
+
+    SQLObject.build_list = build_list
+
+    class Role(SQLObject):
+        name = StringCol(length=20)
+
+    Role.createTable(ifNotExists=True)
+
+Then, we populate our database for testing purposes: ::
+
+    Role(name="Administrator")
+    Role(name="Anonymous")
+    Role(name="Member")
+    Role(name="Author")
+    Role(name="Editor")
+    Role(name="Manager")
+
+    print repr(Role.build_list('name'))
+
+Output should be: ::
+
+    [(1, 'Administrator'), (2, 'Anonymous'), (3, 'Member'), (4, 'Author'), (5, 'Editor'), (6, 'Manager')]
+
+We can also change the last line to add any SQLBuilder query or other SQLObject ``select()`` argument you wish.  For example: ::
+
+    print repr(Role.build_list('name', orderBy=Role.q.name))
+
+Produces: ::
+
+    [(1, 'Administrator'), (2, 'Anonymous'), (4, 'Author'), (5, 'Editor'), (6, 'Manager'), (3, 'Member')]
+
+
+Supplying Options to Select-Style Widgets
+-----------------------------------------
+
+Now that we have nice, pretty, usable lists of tuples (representing the value and caption of the options) we can play with TurboGears' Widgets system.  Normally we would have something like the following, where I use differing quotes to help identify parts: ::
+
+    options = [('red', "Red"), ('green', "Green"), ('blue', "Blue")]
+    colors = SingleSelectField('colors', options=options)
+
+If we were to run ``colors.render()`` we would get: ::
+
+    <SELECT CLASS="singleselectfield" NAME="bob" ID="bob">
+        <OPTION VALUE="red">Red</OPTION>
+        <OPTION VALUE="green">Green</OPTION>
+        <OPTION VALUE="blue">Blue</OPTION>
+    </SELECT>
+
+Not pretty, but it's what we're looking for; a widget.  Now, we want this to be driven via a database of available colors.  The easy way is the demonstrated in the following application: ::
+
+    from turbogears.widgets import *
+    from sqlobject import *
+
+    __connection__ = connectionForURI("sqlite:///:memory:")
+    hub = __connection__
+
+    class Color(SQLObject):
+        name = StringCol(length=20)
+        r = FloatCol()
+        g = FloatCol()
+        b = FloatCol()
+
+    Color.createTable(ifNotExists=True)
+
+    Color(name="Red", r=1.0, g=0.0, b=0.0)
+    Color(name="Green", r=0.0, g=1.0, b=0.0)
+    Color(name="Blue", r=0.0, g=0.0, b=1.0)
+    Color(name="Purple", r=1.0, g=0.0, b=1.0)
+    Color(name="Yellow", r=1.0, g=1.0, b=0.0)
+    Color(name="Teal", r=0.0, g=1.0, b=1.0)
+
+    colors = [(a.id, a.name) for a in Color.select()]
+    widget = SingleSelectField('colors', options=colors)
+    print widget.render()
+
+The output is: ::
+
+    <SELECT CLASS="singleselectfield" NAME="colors" ID="colors">
+        <OPTION VALUE="1">Red</OPTION>
+        <OPTION VALUE="2">Green</OPTION>
+        <OPTION VALUE="3">Blue</OPTION>
+        <OPTION VALUE="4">Purple</OPTION>
+        <OPTION VALUE="5">Yellow</OPTION>
+        <OPTION VALUE="6">Teal</OPTION>
+    </SELECT>
+
+This, however, is a static list.  Making this dynamic is easy, though; simply add the ``build_list`` class method to the ``Color`` class, remembering to default the field name to ``'name'``, remove the ``colors`` assignment third from the bottom, and set ``options`` in the widget equal to ``Color.build_list``.  Now the widget gets its values from the DB on every call.  Now how do we sort them?  We need our second magical function, ``make_list``: ::
+
+    def make_list(c, none=None, *args, **kwargs):
+        def _call():
+            return [ [], [('', none)] ][none is not None] + \
+                    c.build_list(*args, **kwargs)
+        return _call
+
+We can now pass arguments, like ``sortOrder``, to the ``build_list`` method as follows: ::
+
+    # Only list colors that have some red in them, and sort alphabetically.
+    widget = SingleSelectField('colors', options=make_list(Color, None, 'name',
+            Color.q.r > 0, orderBy=Color.q.name)
+
+You can even create these lists ahead of time by setting properties of the SQLObject class (Color in this case) to the appropriate ``make_list`` call.  The final test application, below, does this.
+
+
+Final Test Application
+----------------------
+::
+
+    from turbogears.widgets import *
+    from sqlobject import *
+
+    __connection__ = connectionForURI("sqlite:///:memory:")
+    hub = __connection__
+
+    def make_list(c, none=None, *args, **kwargs):
+        def _call():
+            return [ [], [('', none)] ][none is not None] + \
+                    c.build_list(*args, **kwargs)
+        return _call
+
+    class Color(SQLObject):
+        name = StringCol(length=20)
+        r = FloatCol()
+        g = FloatCol()
+        b = FloatCol()
+
+        @classmethod
+        def build_list(self, field, *args, **kwargs):
+            return [(a.id, getattr(a, field)) for a in self.select(*args, **kwargs)]
+
+    Color.list_bright = staticmethod(make_list(Color, None, 'name',
+                OR(OR(Color.q.r > 0.8, Color.q.g > 0.8, Color.q.b > 0.8),
+                        (Color.q.r + Color.q.g + Color.q.b) > 2),
+                        orderBy=Color.q.name))
+    Color.list_shades = staticmethod(make_list(Color, None, 'name',
+                AND(Color.q.r == Color.q.g, Color.q.g == Color.q.b),
+                        orderBy=Color.q.r))
+
+    Color.createTable(ifNotExists=True)
+
+    Color(name="Red", r=1.0, g=0.0, b=0.0)
+    Color(name="Green", r=0.0, g=1.0, b=0.0)
+    Color(name="Blue", r=0.0, g=0.0, b=1.0)
+    Color(name="Purple", r=1.0, g=0.0, b=1.0)
+    Color(name="Yellow", r=1.0, g=1.0, b=0.0)
+    Color(name="Teal", r=0.0, g=1.0, b=1.0)
+    Color(name="Orange", r=1.0, g=0.5, b=0.0)
+    Color(name="Black", r=0.0, g=0.0, b=0.0)
+    Color(name="25% Grey", r=0.25, g=0.25, b=0.25)
+    Color(name="50% Grey", r=0.5, g=0.5, b=0.5)
+    Color(name="75% Grey", r=0.75, g=0.75, b=0.75)
+    Color(name="White", r=1.0, g=1.0, b=1.0)
+
+    colors = [(a.id, a.name) for a in Color.select()]
+    widget = SingleSelectField('bright_colors', options=Color.list_shades)
+    print widget.render()
+
+::
+
+    <SELECT CLASS="singleselectfield" NAME="bright_colors" ID="bright_colors">
+        <OPTION VALUE="11">75% Grey</OPTION>
+        <OPTION VALUE="3">Blue</OPTION>
+        <OPTION VALUE="2">Green</OPTION>
+        <OPTION VALUE="7">Orange</OPTION>
+        <OPTION VALUE="4">Purple</OPTION>
+        <OPTION VALUE="1">Red</OPTION>
+        <OPTION VALUE="6">Teal</OPTION>
+        <OPTION VALUE="12">White</OPTION>
+        <OPTION VALUE="5">Yellow</OPTION>
+    </SELECT>
+
+
+Discussion
+----------
+
+Currying is described throughly in the Python Cookbook (c. 16.4, p. 594-597) and is also `available on-line <http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52549>`_, although not in as pretty a package, nor as in-depth.
+
+Add-Ons
+-------
+
+Sometimes one wants to use a column other than "id" as the ID, i.e., have something else as the first value while using ``build_list``.  These two alternative methods allows that.  Extending this for other needs should be trivial.
+
+The new ``build_list`` is named ``build_list_with_key`` and its code is: ::
+
+    @classmethod
+    def build_list_with_key(self, key, field, *args, **kwargs):
+        return [(getattr(a, key), getattr(a, field)) for a in self.select(*args, **kwargs)]
+
+    SQLObject.build_list_with_key = build_list_with_key
+
+The new make_list function now can pass a key to ``build_list_with_key``, making it usable with this different value.  The code is: ::
+
+    def make_list_with_key(c, none=None, key = 'id', *args, **kwargs):
+        def _call():
+            return [ [], [('', none)] ][none is not None] + \
+                   c.build_list_with_key(key, *args, **kwargs)
+        return _call
+

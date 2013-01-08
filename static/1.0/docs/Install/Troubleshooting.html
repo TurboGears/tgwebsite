@@ -1,0 +1,452 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation Troubleshooting &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="TurboGears 1.0 Upgrade Guide" href="Upgrade.html" />
+    <link rel="prev" title="Installing TurboGears on a host behind a proxy" href="BehindProxy.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Upgrade.html" title="TurboGears 1.0 Upgrade Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BehindProxy.html" title="Installing TurboGears on a host behind a proxy"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation Troubleshooting</a><ul>
+<li><a class="reference internal" href="#contents">Contents</a></li>
+<li><a class="reference internal" href="#easy-install-can-t-find-one-of-the-packages">easy_install can&#8217;t find one of the packages!</a></li>
+<li><a class="reference internal" href="#error-no-local-packages-or-download-links-found-for-turbogears">Error: No local packages or download links found for TurboGears</a></li>
+<li><a class="reference internal" href="#conflict-warning">Conflict Warning</a></li>
+<li><a class="reference internal" href="#error-couldn-t-find-a-setup-script-in-turbogears">Error: Couldn&#8217;t find a setup script in TurboGears</a></li>
+<li><a class="reference internal" href="#i-m-seeing-a-file-exists-error">I&#8217;m seeing a &#8220;File Exists&#8221; error</a></li>
+<li><a class="reference internal" href="#error-invalid-python-installation">error: invalid Python installation</a></li>
+<li><a class="reference internal" href="#gcc-failed">gcc failed</a></li>
+<li><a class="reference internal" href="#you-are-required-to-install-sqlobject">You are required to install SQLObject</a></li>
+<li><a class="reference internal" href="#sqlobject-is-missing-toolbox-designer-won-t-work">SQLObject is missing, toolbox designer won&#8217;t work</a></li>
+<li><a class="reference internal" href="#typeerror-iterable-argument-required">TypeError: iterable argument required</a></li>
+<li><a class="reference internal" href="#zipimporterror-not-a-zip-file">ZipImportError: not a Zip file</a></li>
+<li><a class="reference internal" href="#overflowerror-long-int-too-large-to-convert-to-int">OverflowError: long int too large to convert to int</a></li>
+<li><a class="reference internal" href="#yum-nothing-to-do">yum: Nothing to do</a></li>
+<li><a class="reference internal" href="#python-script-was-built-with-visual-studio-2003">Python script was built with Visual Studio 2003</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BehindProxy.html"
+                        title="previous chapter">Installing TurboGears on a host behind a proxy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Upgrade.html"
+                        title="next chapter">TurboGears 1.0 Upgrade Guide</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="installation-troubleshooting">
+<span id="index-0"></span><h1>Installation Troubleshooting<a class="headerlink" href="#installation-troubleshooting" title="Permalink to this headline">¶</a></h1>
+<p>This page serves as a collection for solutions to installation problems
+people have run into. If none of these work, write to the mailing list
+where more people can help you. When you have found the solution,
+please <a class="reference external" href="https://sourceforge.net/p/turbogears1/tickets/new/">file a ticket</a> to add it to this page.</p>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="#easy-install-can-t-find-one-of-the-packages">easy_install can&#8217;t find one of the packages!</a></li>
+<li><a class="reference internal" href="#error-no-local-packages-or-download-links-found-for-turbogears">Error: No local packages or download links found for TurboGears</a></li>
+<li><a class="reference internal" href="#conflict-warning">Conflict Warning</a></li>
+<li><a class="reference internal" href="#error-couldn-t-find-a-setup-script-in-turbogears">Error: Couldn&#8217;t find a setup script in TurboGears</a></li>
+<li><a class="reference internal" href="#i-m-seeing-a-file-exists-error">I&#8217;m seeing a &#8220;File exists&#8221; error</a></li>
+<li><a class="reference internal" href="#error-invalid-python-installation">error: invalid Python installation</a></li>
+<li><a class="reference internal" href="#gcc-failed">gcc failed</a></li>
+<li><a class="reference internal" href="#you-are-required-to-install-sqlobject">You are required to install SQLObject</a></li>
+<li><a class="reference internal" href="#sqlobject-is-missing-toolbox-designer-won-t-work">SQLObject is missing, toolbox designer won&#8217;t work</a></li>
+<li><a class="reference internal" href="#typeerror-iterable-argument-required">TypeError: iterable argument required</a></li>
+<li><a class="reference internal" href="#zipimporterror-not-a-zip-file">ZipImportError: not a Zip file</a></li>
+<li><a class="reference internal" href="#overflowerror-long-int-too-large-to-convert-to-int">OverflowError: long int too large to convert to int</a></li>
+<li><a class="reference internal" href="#yum-nothing-to-do">yum: Nothing to do</a></li>
+<li><a class="reference internal" href="#python-script-was-built-with-visual-studio-2003">Python script was built with Visual Studio 2003</a></li>
+</ul>
+</div>
+<div class="section" id="easy-install-can-t-find-one-of-the-packages">
+<h2>easy_install can&#8217;t find one of the packages!<a class="headerlink" href="#easy-install-can-t-find-one-of-the-packages" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Diagnosis</dt>
+<dd>In order to ensure that the components all work together properly,
+TurboGears is set up to require specific versions of the component projects
+and will sometimes rely on unreleased versions. Because of this,
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> is not always able to find the right package in PyPI. If
+this is the case, we will upload the specific package to the <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">download page</a>
+on <tt class="docutils literal"><span class="pre">turbogears.org</span></tt>, where it will be picked up by the <a class="reference internal" href="index.html"><em>standard
+installation procedure</em></a> via <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt>.</dd>
+<dt>Solution</dt>
+<dd><p class="first">Please be sure to follow the download instructions for your platform and
+use <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt>.</p>
+<p>If you must insist on using <tt class="docutils literal"><span class="pre">easy_install</span></tt> directly, try adding the
+appropriate download URL via the <tt class="docutils literal"><span class="pre">-i</span></tt> option, like this:</p>
+<div class="highlight-python"><pre>easy_install -i http://www.turbogears.org/1.0/downloads/current/index TurboGears</pre>
+</div>
+<p>If this does not work for you, use <tt class="docutils literal"><span class="pre">-f</span></tt> instead of <tt class="docutils literal"><span class="pre">-i</span></tt>:</p>
+<blockquote>
+<div>easy_install -f <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">http://www.turbogears.org/1.0/downloads/current/index</a> TurboGears</div></blockquote>
+<p class="last">Please note that this is not supported and several things may go wrong,
+which you need to fix manually.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="error-no-local-packages-or-download-links-found-for-turbogears">
+<h2>Error: No local packages or download links found for TurboGears<a class="headerlink" href="#error-no-local-packages-or-download-links-found-for-turbogears" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Diagnosis</dt>
+<dd>This error most commonly reflects that a firewall is preventing
+the download of the package or you need to go through a proxy to
+access the web.</dd>
+<dt>Solution</dt>
+<dd><blockquote class="first">
+<div><p>Here is the suggestion from Phillip Eby:</p>
+<p>You&#8217;ll need to either find a way to bypass the firewall (e.g. using
+<a class="reference external" href="http://ntlmaps.sf.net/">http://ntlmaps.sf.net/</a> ), or else manually download all required <tt class="docutils literal"><span class="pre">.egg</span></tt>
+files from the <a class="reference external" href="http://www.turbogears.org/1.0/downloads/current/index">download page</a> to a temporary directory, and then run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">easy_install</span> <span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">dldir</span><span class="o">&gt;</span> <span class="n">TurboGears</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">&lt;dldir&gt;</span></tt> is the directory you downloaded the .egg files to.</p>
+</div></blockquote>
+<p class="last">If you need to use a proxy to access the web, you can tell <tt class="docutils literal"><span class="pre">easy_install</span></tt>
+to use the proxy by setting the <tt class="docutils literal"><span class="pre">http_proxy</span></tt> environment variable to point
+to your proxy server.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="conflict-warning">
+<h2>Conflict Warning<a class="headerlink" href="#conflict-warning" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Diagnosis</dt>
+<dd>TurboGears relies on a new Python packaging format called Python Eggs
+(you may also see references to the <tt class="docutils literal"><span class="pre">setuptools</span></tt> package, which
+provides the functionality for handling Eggs). If you have an older,
+non-egg installation of a package used by TurboGears, <tt class="docutils literal"><span class="pre">easy_install</span></tt>
+will display a conflict warning.</dd>
+<dt>Solution</dt>
+<dd><p class="first">In order to get TurboGears running, you need to have the eggs properly
+installed. There are two options for doing this:</p>
+<ul class="simple">
+<li>a non-root installation and</li>
+<li>deletion of the existing package.</li>
+</ul>
+<p>A non-root installation preserves all of your existing Python setup,
+but is more complex. If you have concerns that your system might not
+like different versions of the libraries, this is the safe route to take.
+See the page <a class="reference internal" href="NonRoot.html"><em>How to Install TurboGears Without root Privileges</em></a> for more information.</p>
+<p class="last">Please see the <a class="reference internal" href="Uninstall.html"><em>TurboGears Uninstallation</em></a> page for
+information on how to install packages.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="error-couldn-t-find-a-setup-script-in-turbogears">
+<h2>Error: Couldn&#8217;t find a setup script in TurboGears<a class="headerlink" href="#error-couldn-t-find-a-setup-script-in-turbogears" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Diagnosis</dt>
+<dd><p class="first">Phillip Eby&#8217;s (author of setuptools/<tt class="docutils literal"><span class="pre">easy_install</span></tt>) explanation:</p>
+<p class="last">When you get &#8220;Couldn&#8217;t find a setup script in TurboGears&#8221;, it means
+that you are running in a directory that has a subdirectory called
+&#8220;<tt class="docutils literal"><span class="pre">TurboGears</span></tt>&#8221;. Don&#8217;t do that, because <tt class="docutils literal"><span class="pre">easy_install</span></tt> sees that
+you asked for TurboGears, and it sees there&#8217;s a TurboGears directory,
+so it tries to install that. Unless the directory is a TurboGears
+<em>source</em> checkout, it&#8217;s not going to work.</p>
+</dd>
+<dt>Solution</dt>
+<dd><p class="first">Change to a different directory, or get rid of the TurboGears
+subdirectory!</p>
+<p>Note, by the way, that Windows and OS X have case-insensitive
+filesystems, so the directory could be called &#8216;turbogears&#8217; and it
+would have the same problem.</p>
+<p>If you&#8217;re running in a TurboGears checkout with a setup.py present,
+do this instead:</p>
+<div class="highlight-python"><pre>sudo easy_install --script-dir=/usr/local/bin .</pre>
+</div>
+<p class="last">Notice that there&#8217;s a &#8220;<tt class="docutils literal"><span class="pre">.</span></tt>&#8221; instead of &#8220;<tt class="docutils literal"><span class="pre">TurboGears</span></tt>&#8221; - we&#8217;re
+telling it to install this directory, not a subdirectory.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="i-m-seeing-a-file-exists-error">
+<h2>I&#8217;m seeing a &#8220;File Exists&#8221; error<a class="headerlink" href="#i-m-seeing-a-file-exists-error" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Diagnosis</dt>
+<dd>On Windows machines, there appears to be a problem when setuptools
+thinks it needs to overwrite cElementTree.</dd>
+<dt>Solution</dt>
+<dd>The easiest solution to this is to install with the <tt class="docutils literal"><span class="pre">--always-unzip</span></tt>
+option to <tt class="docutils literal"><span class="pre">tgsetup.py</span></tt> resp. <tt class="docutils literal"><span class="pre">easy_install</span></tt>. You can also fix the
+immediate error by deleting the
+<tt class="docutils literal"><span class="pre">Documents</span> <span class="pre">and</span> <span class="pre">Settings\Your</span> <span class="pre">User\ApplicationSettings\Python</span> <span class="pre">Eggs</span></tt>
+directory.</dd>
+</dl>
+</div>
+<div class="section" id="error-invalid-python-installation">
+<h2>error: invalid Python installation<a class="headerlink" href="#error-invalid-python-installation" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">I get the following error message in the middle of the installation
+process:</p>
+<div class="last highlight-python"><pre>error: invalid Python installation: unable to open
+/usr/lib/python2.4/config/Makefile (No such file or directory)</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>On some Linux systems, notably Debian-based systems, you&#8217;ll need to have
+the Python development package (called <tt class="docutils literal"><span class="pre">python2.4-dev</span></tt> or
+<tt class="docutils literal"><span class="pre">python-devel</span></tt> or similar) installed in order to be able to compile C
+extensions.</dd>
+<dt>Solution</dt>
+<dd>Install the Pyton development package using your system&#8217;s package management.
+See the detailed <a class="reference internal" href="index.html"><em>installation instructions</em></a> for your system for the
+necessary steps.</dd>
+</dl>
+</div>
+<div class="section" id="gcc-failed">
+<h2>gcc failed<a class="headerlink" href="#gcc-failed" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd>The installation fails with an error message containing &#8220;gcc failed&#8221;.</dd>
+<dt>Diagnosis</dt>
+<dd>The installation procedure tried to install a required package that contains
+a C-extension and could not find a pre-compiled binary egg for your operating
+system and/or architecture. It then tried to compile the extension on your
+system and failed, because no compiler could be found.</dd>
+<dt>Solution</dt>
+<dd>Install a C compiler and a proper build environment. See the detailed
+<a class="reference internal" href="index.html"><em>installation instructions</em></a> for your system for the necessary steps.</dd>
+</dl>
+</div>
+<div class="section" id="you-are-required-to-install-sqlobject">
+<h2>You are required to install SQLObject<a class="headerlink" href="#you-are-required-to-install-sqlobject" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">I have created a new project with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt>. When I try to
+start it, I get the error message:</p>
+<div class="last highlight-python"><pre>You are required to install SQLObject but appear not to have done so.
+Please run your projects setup.py or run `easy_install SQLObject`.</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>You have created a project that has identity support and therefor needs a
+database module, which you must install yourself.</dd>
+<dt>Solution</dt>
+<dd><p class="first">Install the <tt class="docutils literal"><span class="pre">SQLObject</span></tt> package by following the commands given in the
+error message.</p>
+<p class="last">If you did not enable identity and are still getting this error, please
+refer to <a class="reference external" href="http://trac.turbogears.org/ticket/1620">bug #1620</a>.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="sqlobject-is-missing-toolbox-designer-won-t-work">
+<h2>SQLObject is missing, toolbox designer won&#8217;t work<a class="headerlink" href="#sqlobject-is-missing-toolbox-designer-won-t-work" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">After installing TurboGears you run <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt> or <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> and you
+get this warning:</p>
+<div class="last highlight-python"><pre>SQLObject is missing, toolbox designer won't work</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>Recent versions of TurboGears do not install an ORM (SQLObject/SQLAlchemy) automatically
+anymore. The Toolbox Designer will not work without SQLObject installed. If you don&#8217;t need
+it, you can ignore this warning.</dd>
+<dt>Solution</dt>
+<dd><p class="first">You either have to create a project, which needs SQLObject/SQLAlchemy (for example by enabling
+identity) and then install it via <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">install</span></tt> or <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> or
+install SQLObject manually via easy_install:</p>
+<div class="last highlight-python"><pre>easy_install -U "SQLObject&gt;=0.8,&lt;=0.10.0"</pre>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="typeerror-iterable-argument-required">
+<h2>TypeError: iterable argument required<a class="headerlink" href="#typeerror-iterable-argument-required" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><div class="first last highlight-python"><pre>File "/usr/local/lib/python2.4/urllib2.py", line 580, in proxy_open
+    if '@' in host:
+TypeError: iterable argument required</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>You probably have a syntax error in your proxy URL specification.</dd>
+<dt>Solution</dt>
+<dd><p class="first">Ray Smith (<a class="reference external" href="http://RaymeondSmith.com">http://RaymeondSmith.com</a>) writes:</p>
+<p>Set the <tt class="docutils literal"><span class="pre">http_proxy</span></tt> environment variable with:</p>
+<p>Windows:</p>
+<div class="highlight-python"><pre>$ set HTTP_PROXY=http://user:password@proxy:port</pre>
+</div>
+<p>Unix/Mac OS X:</p>
+<div class="highlight-python"><pre>$ export http_proxy="http://user:password@proxy:port</pre>
+</div>
+<p class="last">Then try the installation again.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="zipimporterror-not-a-zip-file">
+<h2>ZipImportError: not a Zip file<a class="headerlink" href="#zipimporterror-not-a-zip-file" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">I&#8217;m using Windows XP SP2, Python 2.4.4 getting the following error
+during installation:</p>
+<div class="last highlight-python"><pre>C:\&gt;tgsetup.py
+[...]
+zipimport.ZipImportError: not a Zip file: '[...]\TurboGears-1.0.1-py2.4.egg'</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>The TruboGears egg file got corrupted during the download. This may be
+caused by misbehaving personal firewalls or virus scanners.</dd>
+<dt>Solution</dt>
+<dd>Turn off the personal firewall, e.g. &#8220;Norten Internet Security&#8221; or similar,
+and try to install again</dd>
+</dl>
+</div>
+<div class="section" id="overflowerror-long-int-too-large-to-convert-to-int">
+<h2>OverflowError: long int too large to convert to int<a class="headerlink" href="#overflowerror-long-int-too-large-to-convert-to-int" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">After installation, when I try to create a new project with
+<tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt>, I get:</p>
+<div class="last highlight-python"><pre>OverflowError: long int too large to convert to int</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>You probably have an outdated or incompatible version of the <tt class="docutils literal"><span class="pre">RuleDispatch</span></tt>
+package installed.</dd>
+<dt>Solution</dt>
+<dd><p class="first">Upgrade <tt class="docutils literal"><span class="pre">RuleDispatch</span></tt> with:</p>
+<div class="last highlight-python"><pre>$ easy_install -U RuleDispatch</pre>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="yum-nothing-to-do">
+<h2>yum: Nothing to do<a class="headerlink" href="#yum-nothing-to-do" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><p class="first">I get the following ouput when trying to install TurboGears:</p>
+<div class="highlight-python"><pre>Loading "fastestmirror" plugin
+Loading "installonlyn" plugin
+Loading "skip-broken" plugin
+Loading "downloadonly" plugin
+Loading "fedorakmod" plugin
+Setting up Install Process
+Setting up repositories
+updates        100% |=========================| 1.2 kB    00:00
+core           100% |=========================| 1.1 kB    00:00
+extras         100% |=========================| 1.1 kB    00:00
+Loading mirror speeds from cached hostfile
+Reading repository metadata in from local files
+primary.xml.gz 100% |=========================| 1.8 MB    00:20
+extras    : ################################################## 5679/5679
+Parsing package install arguments
+Nothing to do</pre>
+</div>
+<p class="last">Why do I get the last message?</p>
+</dd>
+<dt>Diagnisis</dt>
+<dd>You seem to be using <tt class="docutils literal"><span class="pre">yum</span></tt> to install a TurboGears RPM package. These
+packages are not supported by the TurboGears project itself.</dd>
+<dt>Solution</dt>
+<dd>Follow the standard <a class="reference internal" href="index.html"><em>installation instructions</em></a> or ask the provider
+of the packages you are trying to install for support.</dd>
+</dl>
+</div>
+<div class="section" id="python-script-was-built-with-visual-studio-2003">
+<h2>Python script was built with Visual Studio 2003<a class="headerlink" href="#python-script-was-built-with-visual-studio-2003" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd><div class="first last highlight-python"><pre>Setup script exited with error: Python script was built with
+Visual Studio 2003</pre>
+</div>
+</dd>
+<dt>Diagnosis</dt>
+<dd>None</dd>
+<dt>Solution</dt>
+<dd>Unknown. If you encounter this problem, please post a detailed
+report to the mailing list.</dd>
+</dl>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

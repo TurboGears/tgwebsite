@@ -1,0 +1,44 @@
+.. index:: init scripts
+
+Starting TurboGears Applications Using Init Scripts
+===================================================
+
+.. contents::
+    :depth: 2
+
+
+When deploying a TurboGears app to a Linux/Unix-based server,
+it may be useful to set up your application to run using an init script.
+
+Here are some init scripts that may be helpful
+(most come from `this thread`_ on the mailing list).
+
+.. _this thread: http://groups.google.com/group/turbogears/browse_thread/thread/af07ba5360a28a95/4aed43ecd6cd4e14
+
+Note that these scripts are unoffical, untested, and probably won't work
+for you unmodified. They're just offered here to help you get moving
+in the right direction.
+
+
+Debian
+------
+
+Here's an example :download:`Debian script <downloads/debian-initscript.rc>`.
+
+
+Gentoo
+------
+
+Here's an example :download:`Gentoo script <downloads/gentoo-initscript.rc>`.
+
+
+RedHat / Fedora / CentOS
+------------------------
+
+Here's an example :download:`Red Hat script <downloads/redhat-initscript.rc>`.
+
+
+Suse / LSB
+----------
+
+Here is an example :download:`LSB script <downloads/lsb-initscript.project>` that should work on SuSE Linux. This scripts needs functions in :download:`rc.status <downloads/rc.status>`

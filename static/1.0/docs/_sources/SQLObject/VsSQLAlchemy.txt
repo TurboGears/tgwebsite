@@ -1,0 +1,109 @@
+SQLObject vs SQLAlchemy
+=======================
+
+.. contents::
+   :depth: 2
+
+
+Introduction
+------------
+
+With the release of TurboGears 1.0, there have been a number of threads on the
+mailing list asking whether a new project should be using `SQLObject`_ (SO) or
+`SQLAlchemy`_ (SA). The answer is (as always) it depends.
+
+.. _SQLObject: http://www.sqlobject.org/
+.. _SQLAlchemy: http://www.sqlalchemy.org/
+
+In brief, SQLObject (SO hereafter) is the official choice for TurboGears 1.0.
+It is fully supported, quite nice and is the easier to learn option. Use SQLAlchemy
+(SA) if you need to do something SQLObject can't handle -- the most common case
+is legacy databases using multiple-column primary keys.
+
+The source of confusion is that TurboGears 1.1 and 2.0 will see the two packages
+swap places, with SA as the official package and SO as a supported but not
+recommended package. This will take a while and your SO-based app won't suddenly
+stop working, so you don't *need* to use SA to be future-proof and cool.
+It's an option. At the moment, it's effectively an in-development option,
+but an option nonetheless. If you're still in doubt, the rest of this document
+should help you make your decision.
+
+
+What is an ORM?
+---------------
+
+Starting from the beginning, SO and SA are "object relational mappers"
+(`ORMs`_). They provide a convenient way to manipulate relational databases
+using Python objects. ORMs are a convenience and an abstraction on top of
+hand-written SQL. Database applications that do not use an ORM tend to have
+SQL statements embedded in the source code.
+
+.. _ORMs: http://en.wikipedia.org/wiki/Object-relational_mapping
+
+Compared to embedded SQL, an ORM offers the advantages of more concise code
+and database independence. The disadvantage is that you incur a processing
+overhead when instantiating objects, so you wouldn't (necessarily) want to use
+one for linear processing of millions of DB rows, but for most applications
+the tradeoff is definitely in favor of using an ORM.
+
+You don't *have* to use an ORM and you don't have to use it for everything,
+but many of the advanced features in TurboGears depend on either SO or SA.
+
+
+Feature Comparison
+------------------
+
+The main advantages for SA:
+
+* Support for composite keys, i.e. you can have a table whose primary key is a
+  combination, say (customerid, orderno). This usually applies to legacy
+  databases, since you can usually design your own schema for a new project.
+
+* The SQL queries it generates are more efficient. SA generally needs to
+  execute fewer queries than SO to achieve the same goal.  SA has also gone
+  through a round of efficiency testing.
+
+* There has been a concerted effort to simplify SA so that it is more like the `Active Record` pattern.  This effort is known as `Elixir`_ .  Elixir is another product that is actively maintained.
+
+* SA is supported by `DBSprockets`_, which includes the `DBMechanic`_, a replacement for Catwalk, and `Primitives`_ which allow automated form creation and validation, akin to FastData.
+
+.. _Data Mapper: http://www.martinfowler.com/eaaCatalog/dataMapper.html
+.. _Elixir: http://elixir.ematia.de/trac/wiki
+.. _DBSprockets: http://code.google.com/p/dbsprockets/
+.. _DBMechanic: http://code.google.com/p/dbsprockets/wiki/DBMechanic
+.. _Primitives: http://code.google.com/p/dbsprockets/wiki/Primitives
+
+* While SA may not have been around as long as SO, it has crossed no fewer than 4 version thresholds.  Because SA is so prolific in the web framework community, bug reports are often found and fixed very quickly.  SA is supported by an excellent staff.
+
+One disadvantage to SA is that it is not supported by the same toolset as SO, so you may have to learn a new set of tools.
+
+* Only SO is supported by :doc:`CatWalk </Catwalk>`, the :doc:`ModelDesigner </ModelDesigner>`, and :doc:`FastData </FastData/index>`. The tools which support SO have more-or-less become unmaintained.
+
+.. _Active Record: http://www.martinfowler.com/eaaCatalog/activeRecord.html
+
+
+Stability
+---------
+
+Although both projects have pre-1.0 version numbers, they've both been in
+production for years. The level of support/stability varies between
+databases, with common ones (e.g. MySQL, PostgreSQL) being well supported for both projects.
+
+Less common databases, e.g. Microsoft SQL Server and Firebird do have support,
+but the support tends to be less complete and not as well tested.
+
+
+Project Status
+--------------
+
+Both projects are actively maintained. It is safe to say that SA has much
+more support in the web framework community, and therefore level of activity
+on the mailing list is higher than that of SO.
+
+
+Documentation
+-------------
+
+SA's documentation is far more voluminous, organized and complete than that of
+SO. SO has good basic documentation, but for special use cases you have to dig
+into the API docs.

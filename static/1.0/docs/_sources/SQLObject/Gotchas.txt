@@ -1,0 +1,50 @@
+SQLObject "gotcha's"
+=====================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+Intercepting Exceptions
+-----------------------
+
+:doc:`SqlObject <index>` does not catch and re-throw the exceptions of the underlying DB-API module. Instead you will get the exceptions of the DB-API module directly in your face, like an IntegrityError if you hit a constraint violation.
+
+I haven't seen a sensible way to intercept those exceptions, yet, something like ::
+
+ try:
+    ...
+ except hub.hub.getConnection().module.IntegrityError, e:
+    ...
+
+just seems to be too kludgy ...
+
+Question: Maybe this is a bug in SQLObject?
+
+Using `PickleCol <http://sqlobject.org/SQLObject.html#column-types>`_ and :doc:`MySQL </Database/MySQL>`
+--------------------------------------------------------------------------------------------------------
+::
+
+    some_field = PickleCol()
+
+Will create a TINYBLOB column in MySQL, which can only hold 256 bytes. Depending on the data you're throwing at it, this may be OK, but if you start getting "Pickle data truncated" errors, add a length to the `PickleCol <http://sqlobject.org/SQLObject.html#column-types>`_, like so: ::
+
+    some_field = PickleCol( length=2**24 )
+
+This will give you more room to pickle stuff.
+
+Check the `MySQL docs <http://dev.mysql.com/doc/refman/5.1/en/storage-requirements.html>`_ to see what length values will map to MEDIUMBLOB and LARGEBLOB, if you need to be precise.
+
+Using a Column named 'dirty'
+----------------------------
+
+I've spent the last few hours tackling a confusing problem in SQLObject, and thought I might post the experience to help other TurboGears people.
+
+I have a table, which has a column named 'dirty' of type Boolean.
+
+Something was mysteriously setting this bit to false. I hunted though all my code, and could not find any code which was generating the update statement::
+
+    UPDATE xxx SET dirty = ('f') WHERE id = (XXX)
+
+As it turns out, one cannot use a field named 'dirty' in SQLObject classes, as it is an internal attribute used by SQLObject. Everytime SQLObject sets this attribute (which was now a property), it triggered a SQL update operation.
+
+I renamed the field, and the problem went away.

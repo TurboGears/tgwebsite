@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.validators.TgFancyValidator</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.validators-module.html">Module&nbsp;validators</a> ::
+        Class&nbsp;TgFancyValidator
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class TgFancyValidator</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears.validators-pysrc.html#TgFancyValidator">source&nbsp;code</a></span></p>
+<pre class="base-tree">
+                        object --+            
+                                 |            
+formencode.declarative.Declarative --+        
+                                     |        
+              formencode.api.Validator --+    
+                                         |    
+             formencode.api.FancyValidator --+
+                                             |
+                                            <strong class="uidshort">TgFancyValidator</strong>
+</pre>
+
+<dl><dt>Known Subclasses:</dt>
+<dd>
+      <ul class="subclass-list">
+<li><a href="turbogears.validators.DateTimeConverter-class.html">DateTimeConverter</a></li><li>, <a href="turbogears.validators.FieldStorageUploadConverter-class.html">FieldStorageUploadConverter</a></li><li>, <a href="turbogears.validators.JSONValidator-class.html">JSONValidator</a></li><li>, <a href="turbogears.validators.Money-class.html">Money</a></li><li>, <a href="turbogears.validators.Number-class.html">Number</a></li>  </ul>
+</dd></dl>
+
+<hr />
+<pre class="literalblock">
+
+
+**Messages**
+
+``badType``:
+  The input must be a string (not a ``%(type)s``: ``%(value)r``)
+
+``empty``:
+  Please enter a value
+
+``noneType``:
+  The input must be a string (not None)
+
+</pre>
+
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Nested Classes</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.FancyValidator</code></b>:
+      <code><a href="formencode.api.NoDefault-class.html">if_empty</a></code>,
+      <code><a href="formencode.api.NoDefault-class.html">if_invalid</a></code>,
+      <code><a href="formencode.api.NoDefault-class.html">if_invalid_python</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.Validator</code></b>:
+      <code><a href="formencode.api.NoDefault-class.html">if_missing</a></code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.declarative.Declarative</code></b>:
+      <code><a href="formencode.declarative.DeclarativeMeta-class.html">__metaclass__</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Instance Methods</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.FancyValidator</code></b>:
+      <code>assert_string</code>,
+      <code>base64encode</code>,
+      <code>empty_value</code>,
+      <code>from_python</code>,
+      <code>is_empty</code>,
+      <code>to_python</code>,
+      <code>validate_other</code>,
+      <code>validate_python</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.Validator</code></b>:
+      <code>__init__</code>,
+      <code>all_messages</code>,
+      <code>message</code>,
+      <code>subvalidators</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.declarative.Declarative</code></b>:
+      <code>__call__</code>,
+      <code>__initargs__</code>,
+      <code>__repr__</code>,
+      <code>__sourcerepr__</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS METHODS ==================== -->
+<a name="section-ClassMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Class Methods</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.declarative.Declarative</code></b>:
+      <code>__classsourcerepr__</code>,
+      <code>singleton</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Static Methods</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.Validator</code></b>:
+      <code>__classinit__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Class Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="gettextargs"></a><span class="summary-name">gettextargs</span> = <code title="{'domain': 'TurboGears'}"><code class="variable-group">{</code><code class="variable-quote">'</code><code class="variable-string">domain</code><code class="variable-quote">'</code><code class="variable-op">: </code><code class="variable-quote">'</code><code class="variable-string">TurboGears</code><code class="variable-quote">'</code><code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="declarative_count"></a><span class="summary-name">declarative_count</span> = <code title="78">78</code>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.FancyValidator</code></b>:
+      <code>accept_python</code>,
+      <code>messages</code>,
+      <code>not_empty</code>,
+      <code>strip</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.api.Validator</code></b>:
+      <code>__singletonmethods__</code>,
+      <code>compound</code>,
+      <code>repeating</code>,
+      <code>use_builtins_gettext</code>
+      </p>
+    <p class="indent-wrapped-lines"><b>Inherited from <code>formencode.declarative.Declarative</code></b>:
+      <code>__mutableattributes__</code>,
+      <code>__unpackargs__</code>,
+      <code>counter</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Properties</span></td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:37 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

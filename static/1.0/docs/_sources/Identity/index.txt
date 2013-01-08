@@ -1,0 +1,47 @@
+.. index:: identity management
+
+Identity Management
+===================
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+Many database Web Apps need to identify users. For example, you log in to access your Gmail account, or to use Amazon bookstore services. TurboGears therefore provides an identity system that you can use in your applications. This system supports both authentication and authorization functions, and allows role-based access control by assigning users to groups.
+
+You use identity decorators to require user authentication and to authorize specific accesses::
+
+    class Root(controllers.RootController):
+        @expose()
+        @identity.require(identity.in_group("admin"))
+        def index(self):
+            ...
+
+The Role of Identity Management
+-------------------------------
+
+You can use identity management in both controllers and templates:
+
+* In **controllers** you specify the access restrictions on particular resources.
+* In **templates** you can adapt the appearance and include or exclude content based on the user's identity.
+
+
+Identity Links
+--------------
+
+.. toctree::
+   :hidden:
+
+   GettingStarted
+   Usage
+   Recipes
+
+* For an introductory tutorial on identity, see
+  :doc:`Getting Started With Identity <GettingStarted>`
+* For in-depth information on using identity, see :doc:`Using Identity <Usage>`
+* For miscellaneous tips and tricks, see :doc:`Identity Recipes <Recipes>`
+* For the configuration of things like password encryption, see
+  the :doc:`Configuration </Configuration>` guide.

@@ -1,0 +1,92 @@
+.. index:: identity failure URL
+
+Identity Failure URL
+====================
+
+.. contents::
+  :depth: 2
+
+
+Overview
+--------
+
+When you protect a controller method via :doc:`identity <index>`, unauthenticated or
+unauthorized users are redirected to the login page. Is it possible to make a
+difference between a user that is not logged in, i.e. unauthenticated
+(redirect to login page) and a logged in user that has not enough credentials,
+i.e. is unauthorized (redirect to a "access denied" page)?
+
+Yes, you can, by setting an identity failure URL callable or by explicitly
+checking permissions and redirecting manually in your controller methods.
+
+
+Setting an Identity Failure URL Callable
+----------------------------------------
+
+You can set the configuration setting identity.failure_url_ to a callable,
+which will get evaluated every time an ``IdentityFailure`` exception occurs.
+In this function you can then, for example, check
+
+* whether the current user is anonymous (not logged in)
+* or, what the error message(s) of the ``IdentityFailure`` exception are
+
+and return different URLs depending on this information.
+
+Example::
+
+    from turbogears import config, identity, url
+
+    def failure_url():
+        if 'Maintenance downtime' in errors:
+            return url('/maintenance')
+        if identity.current.not_anonymous:
+            return url('/access_denied')
+        return url('/login')
+
+    config.update({'identity.failure_url': failure_url})
+
+See the source code for module ``turbogears.identity.exceptions`` (see function
+``set_identity_errors`` and class ``IdentityFailure``) and module
+``turbogears.identity.conditions`` (see class ``Predicate`` and function
+``require``) for particulars.
+
+
+.. _identity.failure_url: http://docs.turbogears.org/1.0/Configuration#identity
+
+
+Manually Redirecting After Explicit Identity Checks
+---------------------------------------------------
+
+As a simpler, but less general alternative, you can test for the required
+permissions *within* your controller method and then just do the redirect
+manually. If you are just redirecting to a "Access denied" page, you probably
+don't need to care about retaining request parameters across redirects, as
+redirecting via the ``IdentityFailure`` exception does.
+
+Example::
+
+    from turbogears import controller, identity, redirect
+
+    class MyController(controllers.Controller, identity.SecureResource):
+
+         @expose('bla')
+         def bla(self):
+             if not 'foo' in identity.current.permissions:
+                 if identity.current.not_anonymous:
+                     redirect('/access_denied')
+                 raise identity.IdentityFailure
+
+See also
+~~~~~~~~
+
+:ref:`Using Identity: Explicit Permission Checking <explicit_permission_checking>`
+
+
+Download the Example Project
+----------------------------
+
+We have created a TurboGears example project, which uses a custom
+identity failure URL callable. It is attached to this page and can
+be downloaded here:
+
+:download:`IdentityURLTest-1.0.zip <downloads/IdentityURLTest-1.0.zip>`

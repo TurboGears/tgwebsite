@@ -1,0 +1,175 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLObject Quick Guide &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Avoiding SQL reserved words in the model definition" href="ReservedWords.html" />
+    <link rel="prev" title="SQLObject Foreign Keys" href="ForeignKeys.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ReservedWords.html" title="Avoiding SQL reserved words in the model definition"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ForeignKeys.html" title="SQLObject Foreign Keys"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLObject Quick Guide</a><ul>
+<li><a class="reference internal" href="#declaring-sqlobject-classes-for-database-tables">Declaring SQLObject classes for database tables</a></li>
+<li><a class="reference internal" href="#getting-query-results-from-the-database">Getting query results from the database</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ForeignKeys.html"
+                        title="previous chapter">SQLObject Foreign Keys</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ReservedWords.html"
+                        title="next chapter">Avoiding SQL reserved words in the model definition</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlobject-quick-guide">
+<h1>SQLObject Quick Guide<a class="headerlink" href="#sqlobject-quick-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="declaring-sqlobject-classes-for-database-tables">
+<h2>Declaring SQLObject classes for database tables<a class="headerlink" href="#declaring-sqlobject-classes-for-database-tables" title="Permalink to this headline">¶</a></h2>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">members</span> <span class="o">=</span> <span class="n">IntCol</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s">&quot;Annonimous&quot;</span><span class="p">,</span> <span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">created</span> <span class="o">=</span> <span class="n">DateTimeCol</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">friends</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-query-results-from-the-database">
+<h2>Getting query results from the database<a class="headerlink" href="#getting-query-results-from-the-database" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way of retrieve data from the db is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mySQLObjectClass</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that SQLObject does not return lists or tuples, it returns <tt class="docutils literal"><span class="pre">SQLResult</span></tt> objects,
+which are iterators and can be turned into a sequence with the <tt class="docutils literal"><span class="pre">list()</span></tt> or <tt class="docutils literal"><span class="pre">tuple()</span></tt>
+functions. For attributes declared with MultipleJoin or RelatedJoin it returns lists
+directly, unless you use <tt class="docutils literal"><span class="pre">SQLMultipleJoin</span></tt>/<tt class="docutils literal"><span class="pre">SQLRelatedJoin</span></tt>.</p>
+<p>You can restrict a query using a where condition like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">WHERE</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">members</span> <span class="o">==</span> <span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the WHERE is left out, it will be silently assumed, so this would work as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">members</span> <span class="o">==</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This returns an iterator for all result objects that fit the where condition.
+If you want to order the results by creation, you can do it like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">members</span> <span class="o">==</span> <span class="mi">10</span><span class="p">,</span> <span class="n">orderBy</span><span class="o">=</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">created</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the result will come sorted from older to newer. If you want it sorted
+from newer to older, do this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">temp</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">members</span> <span class="o">==</span> <span class="mi">10</span><span class="p">,</span> <span class="n">orderBy</span><span class="o">=-</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">created</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And for a limited result, the recommended way is this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">temp</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">members</span> <span class="o">==</span> <span class="mi">10</span><span class="p">,</span> <span class="n">orderBy</span><span class="o">=-</span><span class="n">A</span><span class="o">.</span><span class="n">q</span><span class="o">.</span><span class="n">created</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you pay attention, you&#8217;ll see that the slice is done to the query result.
+It happens because the slicing operator is overwritten and will work just like
+a limit statement in your query.</p>
+<p>If you want to retrieve a single result object through its ID, just do this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">A</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">myClassId</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To retrieve the result object by its primary key, do this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># this may throw a SQLObjectNotFound exception</span>
+<span class="n">A</span><span class="o">.</span><span class="n">byName</span><span class="p">(</span><span class="n">primaryKey</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,295 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Making HTTPS Redirects Work With a Reverse Proxy &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Starting TurboGears Applications Using Init Scripts" href="InitScripts.html" />
+    <link rel="prev" title="How many threads should I use?" href="NumberOfThreads.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="InitScripts.html" title="Starting TurboGears Applications Using Init Scripts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="NumberOfThreads.html" title="How many threads should I use?"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Making HTTPS Redirects Work With a Reverse Proxy</a><ul>
+<li><a class="reference internal" href="#the-problem">The Problem</a></li>
+<li><a class="reference internal" href="#one-solution">One Solution</a><ul>
+<li><a class="reference internal" href="#step-one-have-the-proxy-set-a-custom-header">Step One: Have the proxy set a custom header</a></li>
+<li><a class="reference internal" href="#step-two-create-a-new-filter">Step Two: Create a new filter</a></li>
+<li><a class="reference internal" href="#step-three-set-configuration-file-settings">Step Three: Set configuration file settings</a></li>
+<li><a class="reference internal" href="#step-four-use-the-filter">Step Four: Use the filter</a></li>
+<li><a class="reference internal" href="#step-five-test-things-out">Step Five: Test things out</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#solving-the-problem-with-apache">Solving the problem with Apache</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="NumberOfThreads.html"
+                        title="previous chapter">How many threads should I use?</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="InitScripts.html"
+                        title="next chapter">Starting TurboGears Applications Using Init Scripts</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="making-https-redirects-work-with-a-reverse-proxy">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Making HTTPS Redirects Work With a Reverse Proxy</a><a class="headerlink" href="#making-https-redirects-work-with-a-reverse-proxy" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#making-https-redirects-work-with-a-reverse-proxy" id="id1">Making HTTPS Redirects Work With a Reverse Proxy</a><ul>
+<li><a class="reference internal" href="#the-problem" id="id2">The Problem</a></li>
+<li><a class="reference internal" href="#one-solution" id="id3">One Solution</a></li>
+<li><a class="reference internal" href="#solving-the-problem-with-apache" id="id4">Solving the problem with Apache</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="the-problem">
+<h2><a class="toc-backref" href="#id2">The Problem</a><a class="headerlink" href="#the-problem" title="Permalink to this headline">¶</a></h2>
+<p>One common setup is to have a reverse proxy (like Pound, Lighttpd, or Apache)
+sit in front of CherryPy and handle requests. If you want to handle both http
+and https protocols, you set up your reverse proxy to deal with the secure
+communications, and then pass types of both types of requests (secure and
+insecure) to CherryPy as a normal http request. CherryPy processes the requests,
+returns them to the proxy, and the proxy passes them on to the client (secure
+or insecure, depending on the original request).</p>
+<p>This causes a problem if you do a HTTPRedirect to a URL in your application.
+CherryPy thinks that this is an unencrypted request. So, the redirect URL
+provided by CherryPy will begin with http, regardless of whether or not the
+original URL scheme was http or https.</p>
+</div>
+<div class="section" id="one-solution">
+<h2><a class="toc-backref" href="#id3">One Solution</a><a class="headerlink" href="#one-solution" title="Permalink to this headline">¶</a></h2>
+<p>One way to work around this is to have the proxy give a hint to CherryPy as
+to the original protocol. Most proxies have some way to set a custom header
+to the request before passing it on. So, the general solution is to add a
+special header to https requests, and then have a CherryPy filter look for
+that header and modify the base URL to something more appropriate.</p>
+<div class="section" id="step-one-have-the-proxy-set-a-custom-header">
+<h3>Step One: Have the proxy set a custom header<a class="headerlink" href="#step-one-have-the-proxy-set-a-custom-header" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.apsis.ch/pound/">Pound</a> is a fairly easy to configure reverse proxy that we can use as an example.
+In the Pound configuration, we add a custom header called &#8216;X-Forwarded-Ssl&#8217;.
+The relevant part of the Pound configuration file looks like:</p>
+<div class="highlight-python"><pre>ListenHTTPS
+  Address 127.0.0.1
+  Port 443
+  Cert "/Users/plewis/Desktop/Pound-2.0.2/mycert.pem"
+  AddHeader "X-Forwarded-Ssl: on"
+  Service
+      BackEnd
+          Address 127.0.0.1
+          Port 8080
+      End
+  End
+End</pre>
+</div>
+<p>Apache users can use <a class="reference external" href="http://httpd.apache.org/docs/2.2/mod/mod_headers.html">mod_headers</a> to add a custom header. For example, in your
+SSL virtualhost section, add the following line:</p>
+<div class="highlight-python"><pre>RequestHeader add X-Forwarded-Ssl on</pre>
+</div>
+<p>Lighttpd users can set a custom header via <a class="reference external" href="http://trac.lighttpd.net/trac/wiki/Docs%3AModSetEnv">setenv.add-request-header</a>.</p>
+<p>Regardless of the proxy you are using, you don&#8217;t want to add this header on a
+global basis, but only for https requests.</p>
+</div>
+<div class="section" id="step-two-create-a-new-filter">
+<h3>Step Two: Create a new filter<a class="headerlink" href="#step-two-create-a-new-filter" title="Permalink to this headline">¶</a></h3>
+<p>Now, we create a special CherryPy filter to search for the &#8220;X-Forwarded-Ssl&#8221;
+header. Below is one file that will do the trick:</p>
+<p><em>httpsfilter.py</em></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cherrypy.filters.basefilter</span> <span class="kn">import</span> <span class="n">BaseFilter</span>
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">config</span>
+
+<span class="k">class</span> <span class="nc">HTTPSFilter</span><span class="p">(</span><span class="n">BaseFilter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">before_request_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># if the filter isn&#39;t turned on, exit immediately</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;https_filter.on&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">return</span>
+
+        <span class="n">request</span> <span class="o">=</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">request</span>
+
+        <span class="c"># Check for a special header &#39;X-Forwarded-Ssl&#39;.</span>
+        <span class="c"># If we have it, then we substitute the secure base URL.</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span>
+        <span class="n">forwarded_ssl</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;X-Forwarded-Ssl&#39;</span><span class="p">,</span> <span class="s">&#39;off&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">forwarded_ssl</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;https_filter.secure_base_url&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;base_url_filter.use_x_forwarded_host&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                    <span class="n">base</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;X-Forwarded-Host&#39;</span><span class="p">,</span> <span class="s">&#39;localhost&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">base</span> <span class="o">=</span> <span class="s">&#39;localhost&#39;</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="s">&#39;https://&#39;</span> <span class="o">+</span> <span class="n">base</span>
+</pre></div>
+</div>
+<p>When the filter finds the &#8216;X-Forwarded-Ssl&#8217; header, it sets the base URL
+of the request with the secure URL.</p>
+</div>
+<div class="section" id="step-three-set-configuration-file-settings">
+<h3>Step Three: Set configuration file settings<a class="headerlink" href="#step-three-set-configuration-file-settings" title="Permalink to this headline">¶</a></h3>
+<p>In your configuration file (e.g. prod.cfg),
+set the following configuration variables:</p>
+<div class="highlight-python"><pre>[/]
+https_filter.on = True
+# You can ommit the following setting if you set
+# base_url_filter.use_x_forwarded_host to True. In this case, the HTTPSFilter
+# will just use the X-Forwarded-Host header value so there is no need to hard
+# code your URL. If you do specify a value for https_filter.secure_base_url it
+# will take preference over the X-Forwarded-Host header.
+# https_filter.secure_base_url = "https://secure.site.example"</pre>
+</div>
+</div>
+<div class="section" id="step-four-use-the-filter">
+<h3>Step Four: Use the filter<a class="headerlink" href="#step-four-use-the-filter" title="Permalink to this headline">¶</a></h3>
+<p>Assuming you want to use this filter throughout your application,
+add the following to your root controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">httpsfilter</span> <span class="kn">import</span> <span class="n">HTTPSFilter</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">turbogears</span><span class="o">.</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="n">_cp_filters</span> <span class="o">=</span> <span class="p">[</span><span class="n">HTTPSFilter</span><span class="p">()]</span>
+    <span class="c"># Rest of controller code ...</span>
+</pre></div>
+</div>
+<p>This is the super-secret semi-undocumented way to add a custom filter
+to your controller.</p>
+</div>
+<div class="section" id="step-five-test-things-out">
+<h3>Step Five: Test things out<a class="headerlink" href="#step-five-test-things-out" title="Permalink to this headline">¶</a></h3>
+<p>You should be able to add a method to your controller like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@turbogears.expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">test_redirect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">turbogears</span><span class="o">.</span><span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span> <span class="c"># uses cherrypy.HTTPRedirect</span>
+</pre></div>
+</div>
+<p>Calling this URL should work over both http and https, and will properly
+redirect to the base of your application.</p>
+</div>
+</div>
+<div class="section" id="solving-the-problem-with-apache">
+<h2><a class="toc-backref" href="#id4">Solving the problem with Apache</a><a class="headerlink" href="#solving-the-problem-with-apache" title="Permalink to this headline">¶</a></h2>
+<p>The above solution will work for any protocol/URL combination.
+For example, if you have a controller &#8216;do_stuff&#8217; that redirects to &#8216;done&#8217;,
+the following will work:</p>
+<blockquote>
+<div><ul class="simple">
+<li>http://example.com/do_stuff -&gt; redirects to -&gt; http://example.com/done</li>
+<li>https://example.com/do_stuff -&gt; redirects to -&gt; https://example.com/done</li>
+</ul>
+</div></blockquote>
+<p>However, you may not need to do this in all cases. If part of your site is only
+going to be accessed via https (e.g. https://example.com/secure), you may be
+able to have configure Apache to fix the redirected URLs to this area.</p>
+<p>Using Apache you configure it normally to listen on whatever port you&#8217;d like
+to have it. And code your TurboGears code normally, as if it was all local.
+Using any of cherrypy.HTTPRedirect or turbogears.redirect work the same way.</p>
+<p>To achieve that you just need to put in your server (if you&#8217;re only serving one
+website in one port) or virtual host (if you&#8217;re serving more websites, mixing
+technologies such as TurboGears and Zope, using both HTTP and HTTPS, etc.)
+the following lines:</p>
+<div class="highlight-python"><pre>ProxyPass /root_of_site http://localhost:8080/
+ProxyPassReverse /root_of_site http://localhost:8080/</pre>
+</div>
+<p>If your newly developed TurboGears site is the root of your HTTPS website,
+then those lines would become:</p>
+<div class="highlight-python"><pre>&lt;VirtualHost hostname:443&gt;
+  # Several common Apache configurations for servername, certificate, etc.
+
+  # Let the magic begin!
+  ProxyPass / http://localhost:8080/
+  ProxyPassReverse / http://localhost:8080/
+&lt;/VirtualHost&gt;</pre>
+</div>
+<p>ProxyPass takes care of passing the request on the SSL-encrypted port to the
+local 8080 port where CherryPy is listening. Then, ProxyPassReverse takes care
+that everything coming back from CherryPy references the public website.</p>
+<p>I&#8217;ve been using these without any new filter or change to headers and with a
+lot of turbogears.redirects inside the code. I&#8217;ve also found that using Apache
+makes the site more responsive than using Pound, I believe it is due cache.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

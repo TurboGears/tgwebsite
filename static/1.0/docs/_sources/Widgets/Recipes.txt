@@ -1,0 +1,397 @@
+.. index:: widget recipes
+
+Widget Recipes
+==============
+
+.. contents:: Table of Contents
+    :depth: 1
+
+
+This page contains miscellaneous recipes for custom :doc:`widgets <index>` and widget usage.
+Feel free to add your own recipe!
+
+
+Google Chart Widget
+-------------------
+
+Contributed by: Christopher Arndt
+
+This is a simple widget class that allows to easily create image links which
+use the `Google chart API`_ to display nice diagrams and graphs.
+
+See the docstring for usage information. You can also download an example
+project built with TurboGears 1.1, which showcases a few simple graphs
+created with this widget. The example project also contains the the code
+below in the ``googlecharts.py`` module file.
+
+The example code is attached to this page and can be downloaded here:
+
+    :download:`Google Chart Demo (.tar.bz2) <downloads/GoogleChartDemo.tar.bz2>`
+
+Here's a simple example of a chart image link created with this widget:
+
+::
+
+  <img
+    src="http://chart.apis.google.com/chart?cht=p3&amp;chs=350x150&amp;chl=Python|Perl|PHP&amp;chd=t:60,15,25"
+    height="150"
+    class="googlechart"
+    width="350">
+
+And here is the resulting image delivered by the Google chart web service:
+
+.. image:: images/widget_recipes_piechart.png
+
+And, finally, here's the widget code. There are many possibilities for enhancing
+this widget. Please use this as a base for your own experiments!
+
+::
+
+    from turbogears import widgets
+
+    class GoogleChart(widgets.Widget):
+        """A simple widget to display Google Chart image links.
+
+        Example usage::
+
+            widget = GoogleChart(attrs={'class': 'googlechart'},
+                width=500, height=200)
+            widget.display((('Python', 60), ('Perl', 15), ('PHP', 25)))
+
+        or::
+
+            widget.display(dict(Python=60, Perl=15, PHP=25), type='bvs')
+
+        or::
+
+            widget.display([60, 15, 25], labels=['Python', 'Perl', 'PHP'],
+               type='bhs')
+
+        The widget value is taken as the chart data. It can be either a simple list
+        or tuple of values, a list or tuple of (label, value) items or a dictionary
+        with label=value items.
+
+        """
+        template="""\
+        <img xmlns:py="http://purl.org/kid/ns#"
+          src="${api_base_uri}?cht=$type&amp;chs=$size&amp;chl=$labels&amp;chd=$data"
+          width="$width"
+          height="$height"
+          py:attrs="attrs"
+        />
+        """
+        params = ['api_base_uri', 'attrs', 'type', 'width', 'height', 'labels']
+        params_doc = dict(
+            attrs = 'Dictionary containing extra (X)HTML attributes for the IMG tag',
+            api_base_uri = 'The base URI of the Google Chart web service',
+            type = "The code for the chart type (default: 'p3' (a pie chart))",
+            width = "The width of teh chart image in pixels",
+            height = "The height of the chart image in pixels",
+            labels = "The labels for the chart data values. Can be a tuple or list"
+                " of values or a string of values separated by pipe symbols ('|')"
+        )
+
+        api_base_uri = 'http://chart.apis.google.com/chart'
+        attrs = {}
+        height = 150
+        labels = []
+        type = 'p3'
+        width = 250
+
+        def update_params(self, params):
+            super(GoogleChart, self).update_params(params)
+            value = params.get('value', [])
+            labels = params.get('labels', [])
+            if isinstance(value, dict):
+                # value is a dict of label=value items
+                value = value.items()
+            if isinstance(value, (list, tuple)):
+                if value and isinstance(value[0], (list, tuple)):
+                    # value is a list of (label, value) items
+                    params['labels'] = "|".join([i[0] for i in value])
+                    params['data'] = "t:" + ",".join([str(i[1]) for i in value])
+                else:
+                    # value is a list of values
+                    params['data'] = "t:" + ",".join([str(i) for i in value])
+            else:
+                params['data'] = value
+            # explicit 'labels' keyword arg overrides labels in data list or dict
+            if labels and isinstance(labels, (list, tuple)):
+                params['labels'] = "|".join(list(labels))
+            params['size'] = "%sx%s" % (params['width'], params['height'])
+
+
+.. _christopher arndt: /ChristopherArndt
+.. _google chart api: http://code.google.com/apis/chart/
+.. _turbogears 1.1: /1.1
+
+
+General Flash Widget
+--------------------
+
+Contributed by: Christoph Zwerschke
+
+This recipe shows how you can easily embed any Flash Player content
+on your pages with a TurboGears widget using SWFObject_.
+
+1. Create a subdirectory ``/static/flash`` in your project's ``/static``
+   directory and copy your Flash Player content into that subdirectory.
+
+2. Download the latest version of SWFObject
+   from http://code.google.com/p/swfobject/
+   (this recipe has been tested with SWFObject v2.1).
+
+3. Copy the ``swfobject.js`` file from the SWFObject archive into your project's
+   ``/static/javascript`` directory, and the ``expressInstall.swf`` file into
+   your project's ``/static/flash`` directory.
+
+4. Use the code below to define a TurboGears widget class ``FlashWidget``
+   for embedding your Flash Player content on any web page.
+
+5. Create a ``FlashWidget`` instance, specifying the name of the flash file
+   (you can leave out the ``.swf``` ending) and its title, pass it via your
+   controller to your template and display it there. We're assuming here that
+   you will only display one of these widgets per web page because we are
+   using a fixed element id.
+
+This is how a basic FlashWidget class can be defined
+(modify the template and the parameters as appropriate)::
+
+    from pkg_resources import resource_filename
+
+    from turbogears import url, util, widgets
+    from turbogears.widgets import Widget, JSLink, JSSource
+
+    this_package = util.get_package_name()
+    static = resource_filename(this_package, 'static')
+    widgets.register_static_directory(this_package, static)
+
+
+    class FlashWidget(Widget):
+        """Embeds Adobe Flash Player content using SWFObject 2.
+
+        We assume that you're only using one of these widgets per page.
+
+        See http://code.google.com/p/swfobject for info on SWFObject.
+
+        """
+
+        params = 'name base title width height flash_vars'.split()
+
+        object_id = 'flashwidget'
+        base = '/static/flash'
+        width, height = 550, 400
+        flash_version = '9.0.0'
+        get_flash_url = 'http://www.adobe.com/go/getflashplayer'
+        get_flash_button = 'http://www.adobe.com/images/shared/' \
+            'download_buttons/get_flash_player.gif'
+
+        javascript=[JSLink(this_package, 'javascript/swfobject.js'),
+            JSSource("swfobject.registerObject('flashwidget', '%s', '%s');"
+                % (flash_version, url(base + '/expressInstall.swf')))]
+
+        template = """
+            <div xmlns:py="http://purl.org/kid/ns#" py:strip="True">
+            <h2 py:if="title" py:content="title">Title</h2>
+            <object id="%s"
+                classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+            width="$width" height="$height">
+            <param name="base" value="$base"/>
+            <param name="movie" value="$name"/>
+            <param name="play" value="true"/>
+            <param name="loop" value="false"/>
+            <param name="menu" value="true"/>
+            <param name="quality" value="high"/>
+            <param name="scale" value="showall"/>
+            <param name="FlashVars" value="$flash_vars"/>
+            <!--[if !IE]>-->
+            <object type="application/x-shockwave-flash"
+                codebase="$base" data="$name"
+                width="$width" height="$height">
+            <param name="base" value="$base"/>
+            <param name="play" value="true"/>
+            <param name="loop" value="false"/>
+            <param name="menu" value="true"/>
+            <param name="quality" value="high"/>
+            <param name="scale" value="showall"/>
+            <param name="FlashVars" value="$flash_vars"/>
+            <!--<![endif]-->
+            <p>&#160;</p>
+            <div style="width:${width}px;">
+            <a href="%s"><img src="%s"
+                align="right" border="0" hspace="16" vspace="2"
+                alt="Get Adobe Flash player"/></a>
+            <p style="text-align:left">You need an up to date version
+                of the Adobe Flash Player to view this content.</p>
+            </div>
+            <p>&#160;</p>
+            <!--[if !IE]>-->
+            </object>
+            <!--<![endif]-->
+            </object>
+            </div>
+        """ % (object_id, get_flash_url, get_flash_button)
+
+        def __init__(self, name, title=None, flash_vars=None,
+                width=None, height=None, *args, **kwargs):
+            Widget.__init__(self, *args, **kwargs)
+            if not '.' in name:
+                name += '.swf'
+            self.base = url(self.base)
+            self.name = url([self.base, name])
+            self.title = title
+            if isinstance(flash_vars, dict):
+                flash_vars = ['%s=%s' % item for item in flash_vars.items()]
+            if isinstance(flash_vars, list):
+                flash_vars = '&'.join(flash_vars)
+            self.flash_vars = flash_vars or None
+            if width:
+                self.width = width
+            if height:
+                self.height = height
+
+
+See the MP3 Player Flash widget below for a demo application using this general Flash widget.
+
+.. _christoph zwerschke: /ChrisZwerschke
+.. _swfobject: http://code.google.com/p/swfobject/wiki/documentation
+
+
+MP3 Player Flash Widget
+-----------------------
+
+Contributed by: Christoph Zwerschke
+
+This recipe shows how you can easily embed an MP3 player on your pages with
+a TurboGears widget using the open source `MP3 Player`_ and SWFObject_.
+
+1. Follow the instructions above for creating a general ``FlashWidget`` class.
+
+2. Copy your MP3 files and playlists into your project's ``/static/flash`` directory.
+
+3. Download the latest version of `MP3 Player Multi`_
+   from http://flash-mp3-player.net/players/multi/download/
+   (this recipe has been tested with MP3 Player Multi v1.2.1).
+
+4. Copy the ``player_mp3_multi.swf`` file that you downloaded into your project's
+   ``/static/flash`` directory.
+
+5. Use the code below to define a TurboGears widget class ``MP3Widget`` based
+   on the ``FlashWidget`` class.
+
+6. Create a ``MP3Widget`` instance, specifying a title and parameters
+   as listed in the `MP3 Player Multi documentation`_, pass it via your
+   controller to your template and display it there. We're assuming here that
+   you will only display one of these widgets per web page because we are
+   using a fixed element id.
+
+
+This is how a basic MP3Widget class can be defined
+(you can choose a different MP3 player by setting ``name``)::
+
+    class MP3Widget(FlashWidget):
+        """Embeds MP3 content using MP3 Player and SWFObject 2.
+
+        See http://flash-mp3-player.net for info on MP3 Player.
+
+        """
+
+        object_id = 'mp3widget'
+        name = 'player_mp3_multi.swf'
+        width, height = 200, 100
+
+        def __init__(self, title=None, flash_vars=None,
+                width=None, height=None, *args, **kwargs):
+            if not flash_vars:
+                flash_vars = {}
+            if 'width' in flash_vars:
+                if not width:
+                    width = flash_vars['width']
+            elif width:
+                flash_vars['width'] = width
+            if 'height' in flash_vars:
+                if not height:
+                    height = flash_vars['height']
+            elif height:
+                flash_vars['height'] = width
+            FlashWidget.__init__(self, self.name, title, flash_vars,
+                width, height, *args, **kwargs)
+
+
+An example application using the MP3 player is attached to this page and can be downloaded here:
+
+    :download:`MP3 Player Demo (.tar.bz2) <downloads/MP3PlayerDemo.tar.bz2>`
+
+Here is how the MP3 player embedded on the web page looks like:
+
+.. image:: images/widget_recipes_mp3_player.png
+
+.. _mp3 player: http://flash-mp3-player.net
+.. _mp3 player multi: http://flash-mp3-player.net/players/multi/
+.. _mp3 player multi documentation: http://flash-mp3-player.net/players/multi/documentation/
+
+
+RepeatingFieldSet With Custom Legend and Field Names
+----------------------------------------------------
+
+Contributed by: `Dimitris Glezos <http://trac.turbogears.org/ticket/1479>`_
+
+The Problem
+~~~~~~~~~~~
+
+The current implementation of ``widgets.RepeatingFieldSet`` creates a set of
+fieldsets with common attributes; for example, legends are the same for each
+fieldset. In addition, the variables in each fieldset are automatically
+numbered -- one might want to give them custom names.
+
+
+The Solution
+~~~~~~~~~~~~
+
+Here is an implementation of the widget that accepts lists of the size of
+repetitions for legends and fields::
+
+    class RepeatingFieldSetPlus(RepeatingFormField):
+        """
+        A widget similar to RepeatingFieldSet, but with differentiation
+        between each field set. Accepts ids and legends as lists.
+        """
+
+        template="""
+        <div xmlns:py="http://purl.org/kid/ns#">
+        <fieldset py:for="repetition, id in enumerate(ids)"
+            class="${field_class}"
+            id="${field_id}_${id}"
+        >
+            <legend py:if="legends[repetition]"
+                    py:content="legends[repetition]" />
+            <div py:for="field in hidden_fields"
+                 py:replace="field.display(value_for(field[repetition]),
+                            **params_for(field[repetition]))"
+            />
+            <label class="fieldlabel" for="${field.field_id}"
+                   py:content="field.label" />
+            <span py:replace="field.display(value_for(field),
+                                            **params_for(field))" />
+            <span py:if="error_for(field)" class="fielderror"
+                  py:content="error_for(field)" />
+            <span py:if="field.help_text" class="fieldhelp"
+                  py:content="field.help_text" />
+        </fieldset>
+        </div>
+        """
+        params = ["legends", "ids", "table_attrs"]
+        params_doc = {'legend' : _('Text to display as the legend '
+                                 'for the fieldset')}
+        legends = None
+        ids = None
+        table_attrs = {}
+
+This widget can be used like this::
+
+    RepeatingFieldSetPlus(
+        ids = [f.id for f in foo.items]
+        legends = [f.leg for f in foo.items]
+        fields=[SingleSelectField(":doc:`/foo`%s" % f.id) for f in foo.items]
+
+I hope I'm even somewhat close to something useful/unimplemented here..

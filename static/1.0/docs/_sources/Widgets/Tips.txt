@@ -1,0 +1,111 @@
+.. index:: widget tips
+
+Widget Tips
+===========
+
+.. contents::
+    :depth: 2
+
+
+Notes
+-----
+
+* One must return the widget in the dict returned by the controller, for JS/CSS links
+  to be picked up.
+* Nesting (arbitrary depth) is fully supported.
+* The following tags in `sitetemplate.kid`_ (from which the default ``master.kid`` in a
+  quickstarted project inherits) are used by the view logic to include the CSS and
+  JavaScript resources attached to widgets.
+
+  Header::
+
+    <link py:strip="1" py:for="css in tg_css">${css.insert()}</link>
+    <link py:strip="1" py:for="js in tg_js_head">${js.insert()}</link>
+
+  Body::
+
+    <div py:for="js in tg_js_bodytop" py:replace="js.display()" />
+    <div py:for="js in tg_js_bodybottom" py:replace="js.display()" />
+
+.. _sitetemplate.kid:
+    http://trac.turbogears.org/browser/branches/1.0/turbogears/view/templates/sitetemplate.kid
+
+
+Tips
+----
+
+* When displaying a compound widget, you can pass parameters to an internal widget like this::
+
+    form.display(value, repetitions=dict(address=3))
+
+  Unfortunately, you cannot pass arguments to an inner widget whose name collides with an argument
+  the outer widget accepts.
+
+  For a more complete example of widget modification at run time,
+  :doc:`see here <ModifyDefaults>`.
+
+
+* To put extra HTML attributes on a widget, use the ``attrs`` parameter, which takes a dictionary.
+  For example::
+
+    TextField(attrs={'onchange':'alert(1)'})
+
+* To set the HTML attributes of a widget contained in a form, you combine the two techniques above::
+
+    form.display(...,
+        attrs=dict(
+            field1=dict(
+                onchange="alert('Field #1 changed!');"
+            ),
+            field2 = {
+                'onchange': "alert('Field #2 changed!');",
+                'class': 'someclass'
+            }
+        )
+    )
+
+* To set the HTML attributes of the form widget itself, use the ``form_attrs`` parameter when
+  creating or displaying the form::
+
+    form.display(.., form_attrs={'id': 'theform', 'enctype': 'multipart/form-data'})
+
+
+Class Hierarchy
+---------------
+
+This helped me figure out a few things related to RepeatingFieldSet::
+
+    class Widget(object)
+
+    class InputWidget(Widget) # has idea of validator
+    class CompoundWidget(Widget)
+    class CompoundInputWidget(CompoundWidget, InputWidget)
+    class RepeatingInputWidget(CompoundInputWidget)
+
+    class FormField(InputWidget)
+    class FormFieldsContainer(CompoundInputWidget)
+    class CompoundFormField(FormFieldsContainer, FormField)
+
+    class RepeatingFormField(RepeatingInputWidget, CompoundFormField)
+    class RepeatingFieldSet(RepeatingFormField)
+
+    class Form(FormFieldsContainer)
+    class TableForm(Form)
+    class ListForm(Form)
+
+
+ToscaWidgets
+------------
+
+TurboGears 1.0 has widgets built-in, as a part of TurboGears itself. The ToscaWidgets_
+project has extracted the widgets framework and converted it into a framework-independent
+standalone package. In TurboGears 1.1 widgets support will be provided by ToscaWidgets
+as an extension. You can already use ToscaWidgets with TurboGears from version 1.0.
+
+The API is similar but not identical. The semantics are nearly identical.
+
+.. _ToscaWidgets: http://www.toscawidgets.org/
+
+If trying out ToscaWidgets, please direct your questions to the `ToscaWidgets-discuss`_ mailing list.
+
+.. _ToscaWidgets-discuss: http://groups.google.com/group/toscawidgets-discuss/

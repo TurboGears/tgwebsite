@@ -1,0 +1,271 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>20 Minute Wiki Page 3 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="The 20 Minutes Wiki" href="Page1.html" />
+    <link rel="next" title="page.kid" href="templates/page.kid.html" />
+    <link rel="prev" title="20 Minute Wiki Page 2" href="Page2.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="templates/page.kid.html" title="page.kid"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Page2.html" title="20 Minute Wiki Page 2"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Page1.html" accesskey="U">The 20 Minutes Wiki</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">20 Minute Wiki Page 3</a><ul>
+<li><a class="reference internal" href="#i-do-my-turn-on-the">I do my turn on the ...</a></li>
+<li><a class="reference internal" href="#how-do-we-make-a-better-page">How do we make a better page?</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-our-edits">Saving our edits</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Page2.html"
+                        title="previous chapter">20 Minute Wiki Page 2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="templates/page.kid.html"
+                        title="next chapter">page.kid</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="minute-wiki-page-3">
+<h1>20 Minute Wiki Page 3<a class="headerlink" href="#minute-wiki-page-3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="i-do-my-turn-on-the">
+<h2>I do my turn on the ...<a class="headerlink" href="#i-do-my-turn-on-the" title="Permalink to this headline">¶</a></h2>
+<p>So we need to create some data in our page table. We can do it from a shell, but
+we&#8217;ll do it the fancy way with CatWalk, the model browser. Open up your second
+terminal and type:</p>
+<div class="highlight-python"><pre>tg-admin toolbox</pre>
+</div>
+<p>A new browser window will open with the TurboGears toolbox. Click on the
+CatWalk model browser (marked in red below).</p>
+<img alt="../_images/TGToolbox.png" src="../_images/TGToolbox.png" />
+<img alt="../_images/TGCatwalkAdding.png" src="../_images/TGCatwalkAdding.png" />
+<p>You&#8217;ll see &#8220;Page&#8221; listed on the left (marked in red above). Click on that,
+select the &#8220;Add Page&#8221; tab and create a page with the name &#8220;FrontPage&#8221; and
+with whatever text you want for the data.</p>
+<p>That&#8217;s all there is to it. We just created a new page in the database.</p>
+<p>Reload your browser window, and you&#8217;ll see our beautiful page.</p>
+</div>
+<div class="section" id="how-do-we-make-a-better-page">
+<h2>How do we make a better page?<a class="headerlink" href="#how-do-we-make-a-better-page" title="Permalink to this headline">¶</a></h2>
+<p>One of the fundamental features of a wiki is the ability to edit the page just
+by clicking &#8220;Edit This Page&#8221;. That and the wikispam that follows... hopefully,
+spammers won&#8217;t find your wiki before we&#8217;re done with it!</p>
+<div class="toctree-wrapper compound">
+</div>
+<p>Let&#8217;s start by creating a <a class="reference internal" href="templates/page.kid.html"><em>template for editing</em></a>. Let&#8217;s start with a copy of
+<tt class="docutils literal"><span class="pre">page.kid</span></tt>:</p>
+<div class="highlight-python"><pre>cd wiki20/templates
+cp page.kid edit.kid
+cd ../..</pre>
+</div>
+<p>We need to replace the content with an editing form and ensure people know this
+is an editing page. Here&#8217;s the changes needed in <tt class="docutils literal"><span class="pre">edit.kid</span></tt>:</p>
+<pre class="literal-block">
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;<a class="reference external" href="http://www.w3.org/TR/xhtml1/DTD/xhtml-transitional.dtd">http://www.w3.org/TR/xhtml1/DTD/xhtml-transitional.dtd</a>&quot;&gt;
+&lt;html xmlns=&quot;<a class="reference external" href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>&quot;
+      xmlns:py=&quot;http://purl.org/kid/ns#&quot;
+      py:extends=&quot;'master.kid'&quot;&gt;
+&lt;head&gt;
+&lt;meta content=&quot;text/html; charset=utf-8&quot;
+      http-equiv=&quot;Content-Type&quot; py:replace=&quot;''&quot;/&gt;
+&lt;title&gt; <strong>Editing</strong> ${page.pagename} - 20 Minute Wiki&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;main_content&quot;&gt;
+        &lt;div style=&quot;float:right; width: 10em&quot;&gt;
+            <strong>Editing</strong> &lt;span py:replace=&quot;page.pagename&quot;&gt;Page Name Goes Here&lt;/span&gt;
+            &lt;br/&gt;
+            You can return to the &lt;a href=&quot;/&quot;&gt;FrontPage&lt;/a&gt;.
+        &lt;/div&gt;
+        <strong>&lt;form action=&quot;save&quot; method=&quot;post&quot;&gt;</strong>
+            <strong>&lt;input type=&quot;hidden&quot; name=&quot;pagename&quot; value=&quot;${page.pagename}&quot;/&gt;</strong>
+            <strong>&lt;textarea name=&quot;data&quot; py:content=&quot;page.data&quot; rows=&quot;10&quot; cols=&quot;60&quot;/&gt;</strong>
+            <strong>&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Save&quot;/&gt;</strong>
+        <strong>&lt;/form&gt;</strong>
+        <strong>&lt;!-- Remove &lt;div py:replace=&quot;XML(data)&quot;&gt;Page text goes here.&lt;/div&gt; --&gt;</strong>
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>Now that we have our view, we need to update our controller in order to display
+the form and handle the form submission. For displaying the form, we&#8217;ll add an
+<tt class="docutils literal"><span class="pre">edit</span></tt> method to our controller:</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last"><strong>If you&#8217;re copying/pasting the code below</strong>, you must ensure that
+it goes in the <tt class="docutils literal"><span class="pre">Root</span></tt> class. This means you need to indent it.
+Ensure your editor is putting in all spaces for indention rather
+than a mix of tabs and spaces. Finally, remember to repeat this
+for all the samples, especially if you get a 404 error. There&#8217;s
+a &#8220;watch the indent&#8221; as a reminder, but people still get tripped up.</p>
+</div>
+<pre class="literal-block">
+#... imports, etc
+# watch the indent
+
+&#64;expose(template=&quot;wiki20.templates.page&quot;)
+def index(self, pagename=&quot;FrontPage&quot;):
+    page = Page.byPagename(pagename)
+    content = publish_parts(page.data,
+                            writer_name=&quot;html&quot;)['html_body']
+    return dict(data=content, page=page)
+
+<strong>&#64;expose(template=&quot;wiki20.templates.edit&quot;)</strong>
+<strong>def edit(self, pagename):</strong>
+    <strong>page = Page.byPagename(pagename)</strong>
+    <strong>return dict(page=page)</strong>
+</pre>
+<p>This method is very similar to our index method. The main difference is that
+the index method renders the wiki content as HTML, and this one returns an
+unprocessed <tt class="docutils literal"><span class="pre">page</span></tt> object.</p>
+<p>We need a way to get to our edit method, so we&#8217;ll edit <tt class="docutils literal"><span class="pre">page.kid</span></tt> to add this
+below our content:</p>
+<pre class="literal-block">
+&lt;div id=&quot;main_content&quot;&gt;
+    &lt;!-- ... --&gt;
+    &lt;div py:replace=&quot;XML(data)&quot;&gt;Page text goes here.&lt;/div&gt;
+
+    <strong>&lt;p&gt;&lt;a href=&quot;${tg.url('/edit', pagename=page.pagename)}&quot;&gt;Edit this page&lt;/a&gt;&lt;/p&gt;</strong>
+&lt;/div&gt;
+</pre>
+<p>That should do it! Reload the page in your browser, and you&#8217;ll see the edit
+link. Follow that link, and you&#8217;ll get a page that lets you edit. Don&#8217;t
+click that save button, yet! We still need to write that method.</p>
+</div>
+<div class="section" id="saving-our-edits">
+<h2>Saving our edits<a class="headerlink" href="#saving-our-edits" title="Permalink to this headline">¶</a></h2>
+<p>When we displayed our wiki&#8217;s edit form in the last section, the form&#8217;s
+<tt class="docutils literal"><span class="pre">action</span></tt> was <tt class="docutils literal"><span class="pre">/save</span></tt>.  So, we need to make a method called <tt class="docutils literal"><span class="pre">save</span></tt> in
+the Root class of our controller. Here&#8217;s what it looks like:</p>
+<pre class="literal-block">
+# index method, etc
+# watch the indent
+
+&#64;expose(template=&quot;wiki20.templates.edit&quot;)
+def edit(self, pagename):
+    page = Page.byPagename(pagename)
+    return dict(page=page)
+
+<strong>&#64;expose()</strong>
+<strong>def save(self, pagename, data, submit):</strong>
+    <strong>page = Page.byPagename(pagename)</strong>
+    <strong>page.data = data</strong>
+    <strong>turbogears.flash(&quot;Changes saved!&quot;)</strong>
+    <strong>raise turbogears.redirect(&quot;/&quot;, pagename=pagename)</strong>
+</pre>
+<p>Interesting things to note about this:</p>
+<ol class="arabic">
+<li><p class="first">Unlike the previous methods we&#8217;ve made, this one is just <tt class="docutils literal"><span class="pre">&#64;expose()</span></tt>&#8216;d
+without any template specified. That&#8217;s because we&#8217;re only redirecting the
+user back to the viewing page.</p>
+</li>
+<li><p class="first">A transaction is set up for us implicitly, if our database supports
+transactions.</p>
+<p>You can see for yourself... if you were to add <tt class="docutils literal"><span class="pre">raise</span> <span class="pre">ValueError</span></tt> after
+page.data is set in that method, you&#8217;ll see that the data is not actually
+saved in the database. If no exception is raised, the data is committed.</p>
+<p>If an exception is raised, the changes are rolled back. The exception to this
+rule is with redirects: they short-circuit execution of the method, but they
+don&#8217;t count as &#8220;errors.&#8221;</p>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">page.data</span> <span class="pre">=</span> <span class="pre">data</span></tt> is all it takes to create the appropriate UPDATE SQL
+statement.</p>
+</li>
+<li><p class="first">The <tt class="docutils literal"><span class="pre">turbogears.flash()</span></tt> call is setting a notification message to appear
+in the user&#8217;s browser on the next screen. You&#8217;ll see a reference to the
+<tt class="docutils literal"><span class="pre">tg_flash</span></tt> variable in the <tt class="docutils literal"><span class="pre">master.kid</span></tt> template.</p>
+</li>
+<li><p class="first">Since a redirect is raised as an exception, all other processing is
+short circuited. Very handy!</p>
+</li>
+</ol>
+<p>Go ahead and try it out! You can make changes and save the page we were
+editing. Pretty wiki-like, no?</p>
+<p><a class="reference internal" href="Page2.html"><em>Go back to page 2</em></a> | <a class="reference internal" href="Page4.html"><em>Continue on to page 4</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,340 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started With Identity &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Using Identity" href="Usage.html" />
+    <link rel="prev" title="Identity Failure URL" href="FailureURL.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Usage.html" title="Using Identity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FailureURL.html" title="Identity Failure URL"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Getting Started With Identity</a><ul>
+<li><a class="reference internal" href="#create-an-sqlobject-project">Create an SQLObject Project</a></li>
+<li><a class="reference internal" href="#create-an-sqlalchemy-project">Create an SQLAlchemy Project</a></li>
+<li><a class="reference internal" href="#test-the-login-page">Test the Login Page</a></li>
+<li><a class="reference internal" href="#adding-a-user-and-group">Adding a User and Group</a></li>
+<li><a class="reference internal" href="#adding-permissions">Adding Permissions</a><ul>
+<li><a class="reference internal" href="#using-catwalk">Using CatWalk</a><ul>
+<li><a class="reference internal" href="#create-a-user">Create a user</a></li>
+<li><a class="reference internal" href="#create-an-admin-group">Create an admin group</a></li>
+<li><a class="reference internal" href="#add-the-new-user-to-the-admin-group">Add the new user to the admin group</a></li>
+<li><a class="reference internal" href="#create-an-admin-permission">Create an admin permission</a></li>
+<li><a class="reference internal" href="#add-the-new-permission-to-the-admin-group">Add the new permission to the admin group</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-the-shell">Using the Shell</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="FailureURL.html"
+                        title="previous chapter">Identity Failure URL</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Usage.html"
+                        title="next chapter">Using Identity</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="getting-started-with-identity">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Getting Started With Identity</a><a class="headerlink" href="#getting-started-with-identity" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#getting-started-with-identity" id="id1">Getting Started With Identity</a><ul>
+<li><a class="reference internal" href="#create-an-sqlobject-project" id="id2">Create an SQLObject Project</a></li>
+<li><a class="reference internal" href="#create-an-sqlalchemy-project" id="id3">Create an SQLAlchemy Project</a></li>
+<li><a class="reference internal" href="#test-the-login-page" id="id4">Test the Login Page</a></li>
+<li><a class="reference internal" href="#adding-a-user-and-group" id="id5">Adding a User and Group</a></li>
+<li><a class="reference internal" href="#adding-permissions" id="id6">Adding Permissions</a></li>
+<li><a class="reference internal" href="#further-reading" id="id7">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This tutorial shows you how to enable and use identity support in a new
+quickstart project. Please note that there is additional Identity functionality
+beyond what is covered in this tutorial. See the list at the end of this page
+for links to more information.</p>
+<div class="section" id="create-an-sqlobject-project">
+<h2><a class="toc-backref" href="#id2">Create an SQLObject Project</a><a class="headerlink" href="#create-an-sqlobject-project" title="Permalink to this headline">¶</a></h2>
+<p>First, let&#8217;s create a new project called &#8220;<tt class="docutils literal"><span class="pre">identity_tutorial</span></tt>&#8221;, requesting
+that identity management features be included:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart --identity identity_tutorial</pre>
+</div>
+<p>Or, more briefly:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart -i identity_tutorial</pre>
+</div>
+<p>Accept the default package name of &#8220;<tt class="docutils literal"><span class="pre">identity_tutorial</span></tt>&#8221;, and TurboGears will
+generate the project skeleton for you, including identity-specific data objects
+and controllers.</p>
+<p>When the project skeleton is generated the model generated in
+<tt class="docutils literal"><span class="pre">identity_tutorial/identity_tutorial/model.py</span></tt> includes the necessary database
+schema definitions for maintaining identities. You might customize them as you
+can do with the other parts of the model.</p>
+<p>Make your newly created project directory the current directory and initialize
+the database to store the identity information:</p>
+<div class="highlight-python"><pre>$ cd identity_tutorial
+$ tg-admin sql create</pre>
+</div>
+<p>This creates a database called &#8220;<tt class="docutils literal"><span class="pre">devdata.sqlite</span></tt>&#8221;, that contains the empty
+tables needed for identity management.</p>
+</div>
+<div class="section" id="create-an-sqlalchemy-project">
+<h2><a class="toc-backref" href="#id3">Create an SQLAlchemy Project</a><a class="headerlink" href="#create-an-sqlalchemy-project" title="Permalink to this headline">¶</a></h2>
+<p>To generate an SQLAlchemy-based identity and data model you can use the
+following command:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart --identity --sqlalchemy identity_tutorial</pre>
+</div>
+<p>Or more briefly:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart -i -s identity_tutorial</pre>
+</div>
+</div>
+<div class="section" id="test-the-login-page">
+<span id="index-1"></span><h2><a class="toc-backref" href="#id4">Test the Login Page</a><a class="headerlink" href="#test-the-login-page" title="Permalink to this headline">¶</a></h2>
+<p>To check that everything is set up correctly so far, start the project as
+usual:</p>
+<div class="highlight-python"><pre>$ python start-identity_tutorial.py</pre>
+</div>
+<p>In your browser, visit <tt class="docutils literal"><span class="pre">http://localhost:8080/login</span></tt>. You should see a login
+page with username and password fields &#8211; login and logout methods are added to
+your project&#8217;s <tt class="docutils literal"><span class="pre">controllers.py</span></tt> and appropriate templates are created because
+you requested that your project include identity management.</p>
+<p>All login attempts will fail at this stage because you haven&#8217;t yet added any
+users or groups.</p>
+</div>
+<div class="section" id="adding-a-user-and-group">
+<span id="index-2"></span><h2><a class="toc-backref" href="#id5">Adding a User and Group</a><a class="headerlink" href="#adding-a-user-and-group" title="Permalink to this headline">¶</a></h2>
+<p>When SQLObject database support is used you can use either CatWalk or the
+TurboGears shell to maintain user and group data. If you are using a different
+object-relation mapper (e.g. SQLAlchemy) you will have to use the TurboGears
+shell.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">By default the users&#8217; passwords are saved as plaintext in the
+database. That&#8217;s fine for now, but in a production environment, you&#8217;ll
+want to specify a password encryption scheme. See the
+<a class="reference internal" href="../Configuration.html"><em>configuration reference</em></a> section on &#8220;Visit and Identity Configuration&#8221;
+for the <tt class="docutils literal"><span class="pre">encryption_algorithm</span></tt> setting, that enables on-the-fly password
+encryption with different algorithms.</p>
+</div>
+</div>
+<div class="section" id="adding-permissions">
+<span id="index-3"></span><h2><a class="toc-backref" href="#id6">Adding Permissions</a><a class="headerlink" href="#adding-permissions" title="Permalink to this headline">¶</a></h2>
+<p>Often users and groups are all you need, but as an additional level of
+indirection you may want to assign permissions to groups and then let
+your application check for the existence of the required permission instead
+of directly checking for the membership in the required group. You can
+add and assign permissions similarly to groups either using CatWalk or the
+TurboGears shell.</p>
+<div class="section" id="using-catwalk">
+<span id="setup-users-using-catwalk"></span><h3>Using CatWalk<a class="headerlink" href="#using-catwalk" title="Permalink to this headline">¶</a></h3>
+<p>Start the TurboGears toolbox:</p>
+<div class="highlight-python"><pre>$ tg-admin toolbox</pre>
+</div>
+<p>A browser window should open automatically; if it doesn&#8217;t, go to
+<tt class="docutils literal"><span class="pre">http://localhost:7654/</span></tt>. Select the &#8216;&#8217;CatWalk&#8217;&#8217; link and you should see the
+identity management classes listed on the left side of the page.</p>
+<div class="section" id="create-a-user">
+<h4>Create a user<a class="headerlink" href="#create-a-user" title="Permalink to this headline">¶</a></h4>
+<p>Select &#8220;User&#8221; on the left side of the page and the user list will be shown.
+Click the &#8220;Add User+&#8221; button on the middle of the page and the edit interface
+will be shown.  Fill the user information into the fields. For example:</p>
+<div class="highlight-python"><pre>user_name: jdoe
+password: xxx
+display_name: Jane Doe
+email_address: jdoe@example.com</pre>
+</div>
+<p>Click &#8220;Save&#8221;. You&#8217;ve created your first user.</p>
+</div>
+<div class="section" id="create-an-admin-group">
+<h4>Create an admin group<a class="headerlink" href="#create-an-admin-group" title="Permalink to this headline">¶</a></h4>
+<p>Select &#8220;Group&#8221; on the left side of the page. Click the &#8220;Add Group+&#8221; button on
+the middle of the page. Enter the <tt class="docutils literal"><span class="pre">group_name</span></tt> and <tt class="docutils literal"><span class="pre">display_name</span></tt>, for
+example:</p>
+<div class="highlight-python"><pre>group_name: admin
+display_name: Administrators</pre>
+</div>
+<p>Click &#8220;Save&#8221;. Now you have a group and a user; let&#8217;s combine them:</p>
+</div>
+<div class="section" id="add-the-new-user-to-the-admin-group">
+<h4>Add the new user to the admin group<a class="headerlink" href="#add-the-new-user-to-the-admin-group" title="Permalink to this headline">¶</a></h4>
+<p>Note that we are now in the &#8220;Browse&#8221; tab, with the new group displayed.</p>
+<p>Click the expansion triangle in front of &#8220;users&#8221;. This will reveal a &#8220;Manage
+Relations&#8221; link. Click on it.</p>
+<p>CatWalk will display two lists. The list on the left-hand side shows the users
+currently assigned to this group; the list on the right-hand side contains all
+users. Select the new user on the right list and click on &#8220;Add Selected&#8221; to move
+it to the left list. Then click &#8220;Save&#8221; to confirm the change.</p>
+</div>
+<div class="section" id="create-an-admin-permission">
+<h4>Create an admin permission<a class="headerlink" href="#create-an-admin-permission" title="Permalink to this headline">¶</a></h4>
+<p>Select &#8220;Permission&#8221; on the left side of the page. Click the &#8220;Add Permission+&#8221;
+button on the middle of the page. Enter the <tt class="docutils literal"><span class="pre">permission_name</span></tt> and
+<tt class="docutils literal"><span class="pre">description</span></tt>, for example:</p>
+<div class="highlight-python"><pre>permission_name: admin
+descpription: Administer the application</pre>
+</div>
+<p>Click &#8220;Save&#8221;. Now you have a group and a permission with the name <tt class="docutils literal"><span class="pre">admin</span></tt>;
+let&#8217;s combine them:</p>
+</div>
+<div class="section" id="add-the-new-permission-to-the-admin-group">
+<h4>Add the new permission to the admin group<a class="headerlink" href="#add-the-new-permission-to-the-admin-group" title="Permalink to this headline">¶</a></h4>
+<p>Note that we are now in the &#8220;Browse&#8221; tab, with the new permission displayed.</p>
+<p>Click the expansion triangle in front of &#8220;groups&#8221;. This will reveal a &#8220;Manage
+Relations&#8221; link. Click on it. Select the admin group on the right list and
+click on &#8220;Add Selected&#8221; to move it to the left list. Then click &#8220;Save&#8221; to
+confirm the change.</p>
+</div>
+</div>
+<div class="section" id="using-the-shell">
+<span id="setup-users-using-the-shell"></span><h3>Using the Shell<a class="headerlink" href="#using-the-shell" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;d rather use the shell to create the user and group, or if you&#8217;re using
+SQLAlchemy, you can do this from the top-level project directory:</p>
+<div class="highlight-python"><pre>$ tg-admin shell</pre>
+</div>
+<p>Recall that your model is always imported into the shell environment as if
+you&#8217;d typed &#8220;<tt class="docutils literal"><span class="pre">from</span> <span class="pre">model</span> <span class="pre">import</span> <span class="pre">*</span></tt>&#8221;.</p>
+<p>Now create the initial user:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">user_name</span><span class="o">=</span><span class="s">u&#39;jdoe&#39;</span><span class="p">,</span> <span class="n">email_address</span><span class="o">=</span><span class="s">u&#39;jdoe@example.com&#39;</span><span class="p">,</span>
+<span class="go">    display_name=u&#39;Jane Doe&#39;, password=u&#39;xxx&#39;)</span>
+</pre></div>
+</div>
+<p>You will see messages indicating that the shell has loaded identity models
+and the user obejct will be created.</p>
+<p>Similarly, create the group:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">group_name</span><span class="o">=</span><span class="s">u&#39;admin&#39;</span><span class="p">,</span> <span class="n">display_name</span><span class="o">=</span><span class="s">u&#39;Administrators&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now add the user to the group. If you have a SQLObject model, use this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">addUser</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or, if you are using SQLAlchemy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can see that the user is indeed part of the group:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">users</span>
+<span class="go">[&lt;User 1 user_name=u&#39;jdoe&#39; email_address=u&#39;jdoe@example.com&#39;</span>
+<span class="go">display_name=u&#39;Jane Doe&#39; password=u&#39;xxx&#39; created=&#39;datetime.datetime...)&#39;&gt;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">groups</span>
+<span class="go">[&lt;Group 1 group_name=u&#39;admin&#39; display_name=u&#39;Administrators&#39;</span>
+<span class="go">created=&#39;datetime.datetime...)&#39;&gt;]</span>
+</pre></div>
+</div>
+<p>Create a permission:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Permission</span><span class="p">(</span><span class="n">permission_name</span><span class="o">=</span><span class="s">&#39;admin&#39;</span><span class="p">,</span>
+<span class="go">        description=u&quot;Administer the application&quot;)</span>
+</pre></div>
+</div>
+<p>Now, add the permission to the group. If you have a SQLObject model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">addPermission</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or, if you are using SQLAlchemy:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span><span class="o">.</span><span class="n">permissions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now exit the shell (using <tt class="docutils literal"><span class="pre">Ctrl-Z</span></tt> on Windows, or <tt class="docutils literal"><span class="pre">Ctrl-D</span></tt> on other
+systems). Choose &#8220;yes&#8221; when you are asked whether you want to commit you
+database changes.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2><a class="toc-backref" href="#id7">Further Reading</a><a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<p>Now that you have identity up and running, you probably want to know how to use
+it. Be sure to check out the following pages</p>
+<ul class="simple">
+<li><a class="reference internal" href="Usage.html"><em>Using Identity</em></a> - A tutorial on using the identity
+system to secure your website</li>
+<li><a class="reference internal" href="Recipes.html"><em>Identity Recipes</em></a> - A list of useful identity tips
+and tricks.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

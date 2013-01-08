@@ -1,0 +1,473 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using Identity &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Using Identity with Encrypted Passwords" href="EncryptedPassword.html" />
+    <link rel="prev" title="Getting Started With Identity" href="GettingStarted.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="EncryptedPassword.html" title="Using Identity with Encrypted Passwords"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GettingStarted.html" title="Getting Started With Identity"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using Identity</a><ul>
+<li><a class="reference internal" href="#using-identity-in-the-controller">Using Identity in the Controller</a><ul>
+<li><a class="reference internal" href="#protecting-resources">Protecting Resources</a><ul>
+<li><a class="reference internal" href="#protecting-object-attribute-access">Protecting Object Attribute Access</a></li>
+<li><a class="reference internal" href="#protecting-a-controller">Protecting a Controller</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#explicit-permission-checking">Explicit Permission Checking</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#index-2">Identity Predicates</a><ul>
+<li><a class="reference internal" href="#single-permission-checks">Single Permission Checks</a></li>
+<li><a class="reference internal" href="#combining-predicates">Combining Predicates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-identity-in-templates">Using Identity in Templates</a></li>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#identity-current-interface"><tt class="docutils literal"><span class="pre">identity.current</span></tt> Interface</a><ul>
+<li><a class="reference internal" href="#properties">Properties</a></li>
+<li><a class="reference internal" href="#methods">Methods</a></li>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#further-reading">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GettingStarted.html"
+                        title="previous chapter">Getting Started With Identity</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="EncryptedPassword.html"
+                        title="next chapter">Using Identity with Encrypted Passwords</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="using-identity">
+<h1><a class="toc-backref" href="#id2">Using Identity</a><a class="headerlink" href="#using-identity" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-identity" id="id2">Using Identity</a><ul>
+<li><a class="reference internal" href="#using-identity-in-the-controller" id="id3">Using Identity in the Controller</a></li>
+<li><a class="reference internal" href="#index-2" id="id4">Identity Predicates</a></li>
+<li><a class="reference internal" href="#using-identity-in-templates" id="id5">Using Identity in Templates</a></li>
+<li><a class="reference internal" href="#reference" id="id6">Reference</a></li>
+<li><a class="reference internal" href="#further-reading" id="id7">Further Reading</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This page will show you how to use identity in your controller and templates
+to manage access to your application&#8217;s resources. If you don&#8217;t know how to
+enable identity for your project yet, please read the tutorial linked in
+the section &#8220;Further Reading&#8221; at the end of this end page first.</p>
+<div class="section" id="using-identity-in-the-controller">
+<span id="index-0"></span><h2><a class="toc-backref" href="#id3">Using Identity in the Controller</a><a class="headerlink" href="#using-identity-in-the-controller" title="Permalink to this headline">¶</a></h2>
+<p>To restrict access to a controller method, add an <tt class="docutils literal"><span class="pre">&#64;identity.require(...)</span></tt>
+decorator to that method. This decorator takes a single argument, the
+<em>predicate</em> that specifies the conditions that must be true for the access to
+be permitted. For example to protect the index page so that only members of the
+admin group can access it you would use the <tt class="docutils literal"><span class="pre">identity.in_group(&quot;admin&quot;)</span></tt>
+predicate:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="nd">@identity.require</span><span class="p">(</span><span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="o">...</span>
+</pre></div>
+</div>
+<p>After making the above change (your server should restart automatically
+when you save the <tt class="docutils literal"><span class="pre">controllers.py</span></tt> file), visit <tt class="docutils literal"><span class="pre">http://localhost:8080/</span></tt>.
+Since the index page is now protected, you will be redirected to the login page
+where you must authenticate yourself. Log in using the name and password of the
+account you created in the <a class="reference internal" href="GettingStarted.html"><em>Getting Started With Identity</em></a> tutorial.
+Now you should see the index page, with &#8220;Welcome, <em>your name</em>.&#8221; and a &#8220;Logout&#8221; link
+at the top of the page. This is created for you in the <tt class="docutils literal"><span class="pre">master.kid</span></tt> template.</p>
+<div class="section" id="protecting-resources">
+<span id="index-1"></span><h3>Protecting Resources<a class="headerlink" href="#protecting-resources" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes, just restricting access to individual methods (pages) isn&#8217;t enough.
+For example, you might want to protect an entire controller, or maybe your
+access permissions depend on the data viewed.</p>
+<div class="section" id="protecting-object-attribute-access">
+<h4>Protecting Object Attribute Access<a class="headerlink" href="#protecting-object-attribute-access" title="Permalink to this headline">¶</a></h4>
+<p>If you wrap an object with a <tt class="docutils literal"><span class="pre">identity.SecureObject</span></tt> object, you can restrict
+access to its attributes with the same predicates you can use for the
+<tt class="docutils literal"><span class="pre">identity.require</span></tt> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">secure_obj</span> <span class="o">=</span> <span class="n">SecureObject</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="s">&#39;premium_users&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This functionality is used by the <tt class="docutils literal"><span class="pre">SecureResource</span></tt> object discussed in the
+next section.</p>
+</div>
+<div class="section" id="protecting-a-controller">
+<h4>Protecting a Controller<a class="headerlink" href="#protecting-a-controller" title="Permalink to this headline">¶</a></h4>
+<p>To restrict access to an entire controller (i.e. a whole URL subtree), add
+<tt class="docutils literal"><span class="pre">identity.SecureResource</span></tt> to the base classes of your  <tt class="docutils literal"><span class="pre">Controller</span></tt> and
+add a <tt class="docutils literal"><span class="pre">require</span></tt> attribute at the class level:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MySecureController</span><span class="p">(</span><span class="n">turbogears</span><span class="o">.</span><span class="n">Controller</span><span class="p">,</span> <span class="n">identity</span><span class="o">.</span><span class="n">SecureResource</span><span class="p">):</span>
+    <span class="n">require</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">in_group</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">)</span>
+
+    <span class="c"># etc ...</span>
+</pre></div>
+</div>
+<p>You can apply whatever decorators you want on the methods of the
+<tt class="docutils literal"><span class="pre">MySecureController</span></tt> instance. So each method could have additional
+restrictions. And <tt class="docutils literal"><span class="pre">MySecureController</span></tt> could have <tt class="docutils literal"><span class="pre">SecureObjects</span></tt> as well.
+However, access to exposed methods of <tt class="docutils literal"><span class="pre">MySecureController</span></tt> and any
+<tt class="docutils literal"><span class="pre">SecureObjects</span></tt> would have to satisfy the authorization requirements for
+<tt class="docutils literal"><span class="pre">MySecureController</span></tt> first.</p>
+</div>
+</div>
+<div class="section" id="explicit-permission-checking">
+<span id="id1"></span><h3>Explicit Permission Checking<a class="headerlink" href="#explicit-permission-checking" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s say you are creating a web site where users can add their own content,
+like a blogging tool or a photo sharing site. Users should be able to edit
+their own content, but not the content added by other users.  You can&#8217;t do
+these checks in a decorator, as you need access to the actual data, which is
+only loaded in the method body (and you don&#8217;t want to load the data twice).
+Instead of using a decorator you can perform the identity checks in the method
+body.</p>
+<p>Again, derive your controller from <tt class="docutils literal"><span class="pre">identity.SecureResource</span></tt>. Perform your
+identity check at the method level. If the user doesn&#8217;t have the required
+permissions, throw a suitable <tt class="docutils literal"><span class="pre">IdentityException</span></tt>:</p>
+<div class="highlight-python"><pre>class GroupMembershipRequiredException(identity.IdentityException):
+    message = "To access this resource you must be a member of one of these groups: %s"
+    def __init__(self, groups=None):
+        if groups is None:
+            groups = (,)
+        self.groups = groups
+    def __str__(self):
+        return self.message % ", ".join(self.groups)
+
+class MyController(controllers.Controller, identity.SecureResource):
+
+     @turbogears.expose("mytemplate")
+     def myFunction(self):
+        if not ("admin" in identity.current.groups or
+            "super" in identity.current.groups):
+            raise GroupMembershipRequiredException(("admin", "super"))</pre>
+</div>
+<p>This will work because <tt class="docutils literal"><span class="pre">SecureResource</span></tt> wraps all exposed methods with code
+that checks permissions and traps (sub-classes of) <tt class="docutils literal"><span class="pre">IdentityException</span></tt> and
+throws an <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt> exception if necessary, which will cause a
+redirect to the configured <tt class="docutils literal"><span class="pre">identity.failure_url</span></tt> (i.e the login page). So
+if your code raises an <tt class="docutils literal"><span class="pre">IdentityException</span></tt> or a sub-class thereof, everything
+will be handled correctly.</p>
+<p>Of course, you can then pull your authorization logic out into a function that
+you call rather than copying and pasting it into each function that requires it.</p>
+<p>You can also use the identity predicates in your own code, which makes handling
+error messages a bit more comfortable:</p>
+<div class="highlight-python"><pre>errors = []
+if (identity.in_group("admin", errors) and
+        identity.has_permission("edit", errors)):
+    # everything ok
+else:
+    raise IdentityFailure(errors)</pre>
+</div>
+</div>
+</div>
+<div class="section" id="index-2">
+<span id="identity-predicates"></span><h2><a class="toc-backref" href="#id4">Identity Predicates</a><a class="headerlink" href="#index-2" title="Permalink to this headline">¶</a></h2>
+<p>Here are a few commonly-used identity predicates:</p>
+<div class="section" id="single-permission-checks">
+<h3>Single Permission Checks<a class="headerlink" href="#single-permission-checks" title="Permalink to this headline">¶</a></h3>
+<p>Checking that the user is logged in:</p>
+<div class="highlight-python"><pre>@identity.require(identity.not_anonymous())</pre>
+</div>
+<p>Checking access groups:</p>
+<div class="highlight-python"><pre>@identity.require(identity.in_group("admin"))</pre>
+</div>
+<p>You can also specify multiple groups:</p>
+<div class="highlight-python"><pre>@identity.require(identity.in_all_groups("admin", "editor"))
+
+@identity.require(identity.in_any_group("admin", "editor"))</pre>
+</div>
+<p>Checking access permissions:</p>
+<div class="highlight-python"><pre>@identity.require(identity.has_permission("edit"))
+
+@identity.require(identity.has_all_permissions("edit", "delete", "update"))
+
+@identity.require(identity.has_any_permission("edit", "delete", "update"))</pre>
+</div>
+<p>Checking hosts:</p>
+<div class="highlight-python"><pre>@identity.require(identity.from_host("127.0.0.1"))
+
+@identity.require(identity.from_any_host(("127.0.0.1", "10.0.0.1")))</pre>
+</div>
+</div>
+<div class="section" id="combining-predicates">
+<h3>Combining Predicates<a class="headerlink" href="#combining-predicates" title="Permalink to this headline">¶</a></h3>
+<p>You can combine several predicates using <tt class="docutils literal"><span class="pre">identity.Any</span></tt> and <tt class="docutils literal"><span class="pre">identity.All</span></tt>.
+Each of these takes multiple predicates as arguments:</p>
+<div class="highlight-python"><pre>@identity.require(identity.Any(identity.in_group("admin"),
+    identity.has_permission("edit")))</pre>
+</div>
+<p>The decorator above grants access to members of the &#8220;admin&#8221; group as well as
+any user who has the &#8220;edit&#8221; permission. A combination of host and permissions
+requirements is quite common:</p>
+<div class="highlight-python"><pre>@identity.require(identity.All(identity.from_host("127.0.0.1"),
+    identity.has_permission("edit")))
+
+@identity.require(identity.All(
+    identity.from_any_host(("127.0.0.1", "10.0.0.1")),
+    identity.in_group("editor")))</pre>
+</div>
+</div>
+</div>
+<div class="section" id="using-identity-in-templates">
+<h2><a class="toc-backref" href="#id5">Using Identity in Templates</a><a class="headerlink" href="#using-identity-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>Identity checks can also be used in the templates to customize the appearance
+of the page depending on the user&#8217;s identity. For example, you might show links
+to administrative functions only if the user is an administrator. (You still
+need to check identity in the controllers that handle those links: just hiding
+them doesn&#8217;t prevent a knowledgeable user from accessing those URIs directly.)</p>
+<p>Within a template, <tt class="docutils literal"><span class="pre">tg.identity</span></tt> is an alias for
+<tt class="docutils literal"><span class="pre">turbogears.identity.current</span></tt>.</p>
+<p>Checking access groups:</p>
+<div class="highlight-python"><pre>&lt;a py:if="'admin' in tg.identity.groups" href="/admin"&gt;This is a link for
+    admins&lt;/a&gt;</pre>
+</div>
+<p>Checking access permissions:</p>
+<div class="highlight-python"><pre>&lt;div py:if="'write' in tg.identity.permissions"&gt;This is a write
+    permissions area&lt;/div&gt;</pre>
+</div>
+<p>Displaying user-specific information:</p>
+<div class="highlight-python"><pre>&lt;div py:if="tg.identity.anonymous"&gt;Welcome, guest!&lt;/div&gt;
+&lt;div py:if="not tg.identity.anonymous"&gt;Welcome,
+   ${tg.identity.user.display_name}!&lt;/div&gt;</pre>
+</div>
+</div>
+<div class="section" id="reference">
+<h2><a class="toc-backref" href="#id6">Reference</a><a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Identity configuration is done in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>. Normally, you shouldn&#8217;t need to
+change any of the identity configuration options if you use the default identity
+framework setup. But if you won&#8217;t to customize some aspects of the identity
+model or how identity failures are handled, please refer to the <a class="reference external" href="http://docs.turbogears.org/1.0/Configuration#identity">identity
+configuration reference</a> for a thorough description of the available settings.</p>
+</div>
+<div class="section" id="identity-current-interface">
+<h3><tt class="docutils literal"><span class="pre">identity.current</span></tt> Interface<a class="headerlink" href="#identity-current-interface" title="Permalink to this headline">¶</a></h3>
+<p>In the controller, you have access to <tt class="docutils literal"><span class="pre">turbogears.identity.current</span></tt>, which
+contains the following properties and methods.</p>
+<div class="section" id="properties">
+<h4>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>visit_key</em></td>
+<td>Returns a string with a unique visit key (from
+<tt class="docutils literal"><span class="pre">turbogears.visit</span></tt>)</td>
+</tr>
+<tr class="row-odd"><td><em>user</em></td>
+<td>Returns a User object if the visitor is authenticated,
+otherwise returns None</td>
+</tr>
+<tr class="row-even"><td><em>user_name</em></td>
+<td>Returns User.user_name if the visitor is authenticated,
+otherwise returns None</td>
+</tr>
+<tr class="row-odd"><td><em>user_id</em></td>
+<td>Returns User.user_id if the visitor is authenticated,
+otherwise returns None</td>
+</tr>
+<tr class="row-even"><td><em>anonymous</em></td>
+<td>Returns True if the visitor is not authenticated, False
+otherwise</td>
+</tr>
+<tr class="row-odd"><td><em>permissions</em></td>
+<td>Returns a sequence of Permission.permission_name strings if
+the visitor is authenticated. Returns an empty sequence for
+anonymous visitors.</td>
+</tr>
+<tr class="row-even"><td><em>groups</em></td>
+<td>Returns a sequence of Group.group_name strings if the
+visitor is authenticated.
+Returns an empty sequence for anonymous visitors.</td>
+</tr>
+<tr class="row-odd"><td><em>group_ids</em></td>
+<td>Returns a sequence of Group.group_id numbers if the
+visitor is authenticated.
+Returns an empty sequence for anonymous visitors.</td>
+</tr>
+<tr class="row-even"><td><em>login_url</em></td>
+<td>Returns the URL set by <tt class="docutils literal"><span class="pre">identity.failure_url</span></tt>
+<a class="reference internal" href="../Configuration.html"><em>configuration</em></a> setting or - if this
+is a callable - the return value of this callable.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="methods">
+<h4>Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>login()</em></td>
+<td>Associates the identity with the current
+<a class="reference internal" href="../Visit/index.html"><em>visit</em></a>. See  the
+<a class="reference internal" href="Recipes.html"><em>identity recipes</em></a> page for
+information on how to use this.</td>
+</tr>
+<tr class="row-odd"><td><em>logout()</em></td>
+<td>Removes authentication from the current visitor.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="exceptions">
+<h4>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h4>
+<p>The identity module defines several types of exception:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="44%" />
+<col width="56%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><em>IdentityException</em></td>
+<td>Base exception type</td>
+</tr>
+<tr class="row-even"><td><em>RequestRequiredException</em></td>
+<td>Raised when identity features are used outside the
+scope of an HTTP request.</td>
+</tr>
+<tr class="row-odd"><td><em>IdentityManagementNotEnabledException</em></td>
+<td>Raised when identity features are used without
+being enabled in the configuration file.</td>
+</tr>
+<tr class="row-even"><td><em>IdentityConfigurationException</em></td>
+<td>Raised when identity features are incorrectly
+configured (usually when <tt class="docutils literal"><span class="pre">failure_url</span></tt> is not set).</td>
+</tr>
+<tr class="row-odd"><td><em>IdentityFailure</em></td>
+<td>Raise this when an access control check fails.
+CherryPy will redirect to <tt class="docutils literal"><span class="pre">identity.failure_url</span></tt>.</td>
+</tr>
+</tbody>
+</table>
+<p>Most of the above exceptions are raised by the TurboGears framework. Your code
+can raise <em>IdentityFailure</em> if a user attempts to access a resource for which
+they do not possess the necessary permissions. See above under <a class="reference internal" href="#id1">Explicit
+Permission Checking</a> for an example.</p>
+<p>Raising an <em>IdentityFailure</em> exception causes CherryPy to perform a redirect to
+the URL set by <a class="reference internal" href="../Configuration.html"><em>configuration</em></a> item <tt class="docutils literal"><span class="pre">identity.failure_url</span></tt>.
+If your configuration files do not set this item then an <em>IdentityConfigurationException</em>
+will be raised.</p>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2><a class="toc-backref" href="#id7">Further Reading</a><a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Before you can use identity, you must set up your project accordingly. See
+<a class="reference internal" href="GettingStarted.html"><em>Getting Started With Identity</em></a> - A tutorial on using the identity system
+to secure your website - on how to do this.</li>
+<li>Next, be sure to check out the <a class="reference internal" href="Recipes.html"><em>Identity Recipes</em></a>
+- A list of useful identity tips and tricks.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

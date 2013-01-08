@@ -1,0 +1,267 @@
+Extending Quickstart
+====================
+
+.. contents::
+  :depth: 2
+
+
+TurboGears uses `Paste Script`_ under the hood when you run ``tg-admin
+quickstart``. This provides a standard way for you to extend an existing
+template or create your own.
+
+Why would you want to do this?  Well, if you have your own conventions for
+applications, this is a way to add those to new TurboGears projects --
+documentation templates, testing frameworks, whatever.
+
+Also, if you already have a project started, you can run ``tg-admin
+quickstart`` on it again (perhaps with your new template!) and see how the
+current project differs, and maybe apply some of the changes.
+
+.. _paste script: http://pythonpaste.org/script/
+
+
+Creating a New Template
+-----------------------
+
+So let's go ahead and create our own template!  Let's say that you want to
+create a template containing only your favorite custom css file,
+``default.css``. We will create this as an installable package (since you'll
+want to redistribute your wonderful creation). To do this we'll create our own
+custom template from scratch.
+
+Our directory structure will eventually look like::
+
+    mytemplate/
+    mytemplate/setup.py
+    mytemplate/mytemplate/__init__.py
+    mytemplate/mytemplate/template/setup.py_tmpl
+    mytemplate/mytemplate/template/+package+/static/css/default.css
+    mytemplate/mytemplate/template/+package+.egg-info/paster_plugins.txt
+
+First we'll create the directory structure. If you're on a machine with gnu
+mkdir, you can simply do::
+
+    mkdir -p mytemplate/mytemplate/template/+package+.egg-info/
+    mkdir -p mytemplate/mytemplate/template/+package+/static/css
+
+Otherwise, it'll take a few more commands. You'll also want to create your
+wonderful css file and an empty ``paster_plugins.txt``::
+
+    vim mytemplate/mytemplate/template/+package+/static/css/default.css
+    touch mytemplate/mytemplate/template/+package+.egg-info/paster_plugins.txt
+
+After doing all this boilerplate creation, you'll want to get started with the
+real stuff. The ``setup.py`` file looks like::
+
+    from setuptools import setup, find_packages
+    from turbogears import finddata
+
+    setup(name='mytemplate',
+          packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+          zip_safe=False,
+          package_data=finddata.find_package_data(),
+          entry_points="""
+              [paste.paster_create_template]
+                  mytemplate = mytemplate:MyTemplate
+            """
+          )
+
+The first few lines are setup data for our distributable ``'mytemplate'``
+package. The ``packages=`` argument notifies setuptools that we're leaving out
+a few packages from our bundle. The ``zip_safe=False`` and ``package_data=``
+arguments are standard.
+
+The important bit here is the ``entry_points`` argument. This line notifies
+paste that there is a template called ``mytemplate`` (what we will pass as a
+``-t`` to ``tg-admin quickstart``) and its class is ``MyTemplate`` in the
+``mytemplate`` module.
+
+Now let's edit ``__init__.py``::
+
+    from paste.script import templates
+    import pkg_resources
+
+    class MyTemplate(templates.Template):
+
+        egg_plugins = ['MyTemplate']
+        _template_dir = pkg_resources.resource_filename("mytemplate",
+                                                        "template")
+        #use_cheetah = True
+        summary = "my own cute template"
+
+The ``_template_dir`` line provides the location of the ``template`` dir to
+paste. That and inheriting from ``paste.script.templates.Template`` is all
+that's required.
+
+The commented out ``use_cheetah`` tells paste that you want to use `Cheetah`_
+for templating in your templates (discussed next). The default is to use the
+standard library `string.Template`_
+
+.. _Cheetah: http://www.cheetahtemplate.org/
+.. _string.Template: http://python.org/doc/current/lib/node109.html
+
+Finally, we'll create a skeleton ``setup.py_tmpl`` template for our
+quickstarted templates::
+
+    from setuptools import setup, find_packages
+    from turbogears.finddata import find_package_data
+
+    import os
+
+    setup(
+        name="${project}",
+        version="0.1",
+
+        #description=description,
+        #author=author,
+        #author_email=email,
+        #url=url,
+        #download_url=download_url,
+        #license=license,
+
+        zip_safe=False,
+        packages=find_packages(),
+        package_data = find_package_data(where='${package}',
+                                         package='${package}')
+        )
+
+Notice the ``_tmpl`` tacked onto the end of the filename. This notifies paste
+that we're creating a template file. Template files get their contents
+substituted, so all the ``${project}`` occurrences will get substituted for
+whatever project name people type during their quickstart. The default paste
+variables are:
+
+=========  =========  ================================================
+Name       Example    Description
+=========  =========  ================================================
+project    Wiki-20    The project's name
+package    wiki20     The project's Python package
+egg        Wiki_20    The project's egg name (generated by setuptools)
+=========  =========  ================================================
+
+At this point we'd add documentation templates, testing frameworks, etc to the
+template, but we're sticking to our css file.
+
+In order to make use of this template, you'll have to install it into your
+system::
+
+    cd mytemplate
+    sudo python setup.py develop  #or install if you prefer
+
+After you've finished all that, you can run::
+
+    tg-admin quickstart -t mytemplate
+
+After the standard prompts and a bit of processing, there should be a
+``default.css`` file in your ``static/css/`` directory! You can find a bit
+more in the templates `api documentation`__ on the paste site.
+
+__ http://pythonpaste.org/script/module-paste.script.templates.html
+
+
+Extending Templates
+-------------------
+
+After that rather long introduction, you might think that it'll be even more
+difficult to extend the TurboGears templates. Fear not! The process is largely
+the same with a slight twist if you want to remove files provided by the
+standard template.
+
+Our updated directory structure will look like::
+
+    mytemplate/
+    mytemplate/setup.py
+    mytemplate/mytemplate/__init__.py
+    mytemplate/mytemplate/template/+package+/static/css/default.css
+
+The ``paster_plugins.txt`` and ``setup.py_tmpl`` have been removed since
+they'll be provided by the underlying
+
+Our ``setup.py``, updated for distribution to the cheeseshop::
+
+    from setuptools import setup, find_packages
+    from turbogears.finddata import find_package_data
+
+    import os
+
+    setup(
+        name="mytemplate",
+        version=version,
+        #description = "The most awesome CSS Template EVAR!"
+        #long_description = "More description about your greatness"
+        #author = "Your Name Here"
+        #email = "YourEmail@YourDomain"
+        #copyright = "Vintage 2006 - a good year indeed"
+
+        #if it's open source, you might want to specify these
+        #url = "http://yourcool.site/"
+        #download_url = "http://yourcool.site/download"
+        #license = "MIT"
+
+        install_requires = [
+            "TurboGears >= 0.9a8",
+        ],
+        zip_safe=False,
+        packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+        package_data = find_package_data(),
+        keywords = [
+            'python.templating.engines',
+        ],
+        classifiers = [
+            'Development Status :: 3 - Alpha',
+            'Operating System :: OS Independent',
+            'Programming Language :: Python',
+            'Topic :: Software Development :: Libraries :: Python Modules',
+            'Framework :: TurboGears',
+            'Framework :: TurboGears :: Templates',
+        ]
+    )
+
+And our updated ``__init__.py``::
+
+    from paste.script import templates
+    import pkg_resources
+
+    class MyTemplate(templates.Template):
+
+        egg_plugins = ['MyTemplate']
+        required_templates = ['turbogears']
+        _template_dir = pkg_resources.resource_filename("mytemplate",
+                                                        "template")
+        use_cheetah = True
+        summary = "my own cute template"
+
+The first change is the addition of the ``required_templates`` line, which
+ensures that the standard quickstart template is run before this one is. The
+second is that ``use_cheetah=True`` is now set. The standard templates make use
+of Cheetah to control how Identity is created.
+
+
+Removing Inherited Files
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes you'll want to use a quickstart template, but perhaps you don't like
+one part. In this case your template's ``__init__.py`` might look like this::
+
+    from paste.script import templates
+    import pkg_resources
+    import os
+
+    class AdvancedStart(templates.Template):
+
+        egg_plugins = ['AdvancedStart']
+        _template_dir = pkg_resources.resource_filename('advancedstart',
+                                                        'template')
+        summary = 'TurboGears Advanced project template'
+        required_templates = ['turbogears']
+        use_cheetah = True
+
+        def post(self, command, output_dir, vars):
+            templates.Template.post(self, command, output_dir, vars)
+            try:
+                path = os.path.join(output_dir,
+                         vars['package'] + '/controllers.py')
+                os.remove(path)
+                print 'Removing', path
+            except OSError:
+                pass

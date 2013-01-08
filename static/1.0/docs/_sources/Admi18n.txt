@@ -1,0 +1,31 @@
+.. index:: Admi18n, internationalization, i18n
+
+The Admi18n Tool
+----------------
+
+.. contents::
+    :depth: 2
+
+Admi18n is the web based internationalization (*i18n* for short) tool, which is
+part of the TurboGears :doc:`Toolbox <Toolbox>`.
+
+To use it, open the Toolbox and click on the "admi18n" link on the bottom right.
+
+.. image:: images/admi18n.png
+
+Admi18n can help you to:
+
+* Collect translatable strings from your Python code and templates
+  and generate a translation template file (``.pot``) from them.
+* Add translation files (``.po``) for the languages you want to support.
+* Import/export the ``.po`` and the ``.pot`` files.
+* Edit the translation files through a web interface, optionally with
+  the help of the Google translation web service.
+* Compile the language files with your translations into message files
+  (``.mo``), which can be used by the TurboGears i18n framework.
+
+Please refer to the :doc:`internationalization <Internationalization>` documentation
+for more information about the i18n framework.
+
+.. _toolbox: Toolbox
+.. _internationalization: Internationalization

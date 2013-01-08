@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.widgets.rpc</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.widgets-module.html">Package&nbsp;widgets</a> ::
+        Module&nbsp;rpc
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.widgets.rpc-module.html">Module turbogears.widgets.rpc</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package turbogears.widgets=turbogears.widgets-module.html"><a title="turbogears.widgets" class="py-name" href="#" onclick="return doclink('link-1', 'widgets', 'link-1');">widgets</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module turbogears.command.base=turbogears.command.base-module.html,Module turbogears.filters.base=turbogears.filters.base-module.html,Module turbogears.identity.base=turbogears.identity.base-module.html,Module turbogears.toolbox.base=turbogears.toolbox.base-module.html,Module turbogears.view.base=turbogears.view.base-module.html,Module turbogears.widgets.base=turbogears.widgets.base-module.html"><a title="turbogears.command.base
+turbogears.filters.base
+turbogears.identity.base
+turbogears.toolbox.base
+turbogears.view.base
+turbogears.widgets.base" class="py-name" href="#" onclick="return doclink('link-2', 'base', 'link-2');">base</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class turbogears.widgets.base.Widget=turbogears.widgets.base.Widget-class.html"><a title="turbogears.widgets.base.Widget" class="py-name" href="#" onclick="return doclink('link-3', 'Widget', 'link-3');">Widget</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class turbogears.widgets.base.JSLink=turbogears.widgets.base.JSLink-class.html"><a title="turbogears.widgets.base.JSLink" class="py-name" href="#" onclick="return doclink('link-4', 'JSLink', 'link-4');">JSLink</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Package turbogears.static=turbogears.static-module.html,Variable turbogears.widgets.base.static=turbogears.widgets.base-module.html#static"><a title="turbogears.static
+turbogears.widgets.base.static" class="py-name" href="#" onclick="return doclink('link-5', 'static', 'link-5');">static</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Variable turbogears.mochikit=turbogears-module.html#mochikit,Variable turbogears.widgets.base.mochikit=turbogears.widgets.base-module.html#mochikit"><a title="turbogears.mochikit
+turbogears.widgets.base.mochikit" class="py-name" href="#" onclick="return doclink('link-6', 'mochikit', 'link-6');">mochikit</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">turbojson</tt> <tt class="py-keyword">import</tt> <tt class="py-name">jsonify</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"RPC"</tt><tt class="py-op">]</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="RPC"></a><div id="RPC-def"><a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="RPC-toggle" onclick="return toggle('RPC');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.widgets.rpc.RPC-class.html">RPC</a><tt class="py-op">(</tt><tt class="py-base-class">Widget</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RPC-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="RPC-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-docstring">"""RPC base widget."""</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">    <tt id="link-7" class="py-name" targets="Variable turbogears.database.AutoConnectHub.params=turbogears.database.AutoConnectHub-class.html#params,Variable turbogears.widgets.base.CSSLink.params=turbogears.widgets.base.CSSLink-class.html#params,Variable turbogears.widgets.base.CSSSource.params=turbogears.widgets.base.CSSSource-class.html#params,Variable turbogears.widgets.base.JSLink.params=turbogears.widgets.base.JSLink-class.html#params,Variable turbogears.widgets.base.JSSource.params=turbogears.widgets.base.JSSource-class.html#params,Variable turbogears.widgets.base.Resource.params=turbogears.widgets.base.Resource-class.html#params,Variable turbogears.widgets.base.Source.params=turbogears.widgets.base.Source-class.html#params,Variable turbogears.widgets.base.Widget.params=turbogears.widgets.base.Widget-class.html#params,Variable turbogears.widgets.big_widgets.AjaxGrid.params=turbogears.widgets.big_widgets.AjaxGrid-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteField.params=turbogears.widgets.big_widgets.AutoCompleteField-class.html#params,Variable turbogears.widgets.big_widgets.AutoCompleteTextField.params=turbogears.widgets.big_widgets.AutoCompleteTextField-class.html#params,Variable turbogears.widgets.big_widgets.CalendarDatePicker.params=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#params,Variable turbogears.widgets.big_widgets.LinkRemoteFunction.params=turbogears.widgets.big_widgets.LinkRemoteFunction-class.html#params,Variable turbogears.widgets.big_widgets.RemoteForm.params=turbogears.widgets.big_widgets.RemoteForm-class.html#params,Variable turbogears.widgets.big_widgets.URLLink.params=turbogears.widgets.big_widgets.URLLink-class.html#params,Variable turbogears.widgets.forms.Button.params=turbogears.widgets.forms.Button-class.html#params,Variable turbogears.widgets.forms.CheckBox.params=turbogears.widgets.forms.CheckBox-class.html#params,Variable turbogears.widgets.forms.CheckBoxList.params=turbogears.widgets.forms.CheckBoxList-class.html#params,Variable turbogears.widgets.forms.CompoundFormField.params=turbogears.widgets.forms.CompoundFormField-class.html#params,Variable turbogears.widgets.forms.CompoundInputWidget.params=turbogears.widgets.forms.CompoundInputWidget-class.html#params,Variable turbogears.widgets.forms.FieldSet.params=turbogears.widgets.forms.FieldSet-class.html#params,Variable turbogears.widgets.forms.FileField.params=turbogears.widgets.forms.FileField-class.html#params,Variable turbogears.widgets.forms.Form.params=turbogears.widgets.forms.Form-class.html#params,Variable turbogears.widgets.forms.FormField.params=turbogears.widgets.forms.FormField-class.html#params,Variable turbogears.widgets.forms.FormFieldsContainer.params=turbogears.widgets.forms.FormFieldsContainer-class.html#params,Variable turbogears.widgets.forms.HiddenField.params=turbogears.widgets.forms.HiddenField-class.html#params,Variable turbogears.widgets.forms.ImageButton.params=turbogears.widgets.forms.ImageButton-class.html#params,Variable turbogears.widgets.forms.InputWidget.params=turbogears.widgets.forms.InputWidget-class.html#params,Variable turbogears.widgets.forms.Label.params=turbogears.widgets.forms.Label-class.html#params,Variable turbogears.widgets.forms.ListForm.params=turbogears.widgets.forms.ListForm-class.html#params,Variable turbogears.widgets.forms.MultipleSelectField.params=turbogears.widgets.forms.MultipleSelectField-class.html#params,Variable turbogears.widgets.forms.PasswordField.params=turbogears.widgets.forms.PasswordField-class.html#params,Variable turbogears.widgets.forms.RadioButtonList.params=turbogears.widgets.forms.RadioButtonList-class.html#params,Variable turbogears.widgets.forms.RepeatingFieldSet.params=turbogears.widgets.forms.RepeatingFieldSet-class.html#params,Variable turbogears.widgets.forms.RepeatingFormField.params=turbogears.widgets.forms.RepeatingFormField-class.html#params,Variable turbogears.widgets.forms.RepeatingInputWidget.params=turbogears.widgets.forms.RepeatingInputWidget-class.html#params,Variable turbogears.widgets.forms.SelectionField.params=turbogears.widgets.forms.SelectionField-class.html#params,Variable turbogears.widgets.forms.SingleSelectField.params=turbogears.widgets.forms.SingleSelectField-class.html#params,Variable turbogears.widgets.forms.TableForm.params=turbogears.widgets.forms.TableForm-class.html#params,Variable turbogears.widgets.forms.TextArea.params=turbogears.widgets.forms.TextArea-class.html#params,Variable turbogears.widgets.forms.TextField.params=turbogears.widgets.forms.TextField-class.html#params,Variable turbogears.widgets.i18n.LocalizableJSLink.params=turbogears.widgets.i18n.LocalizableJSLink-class.html#params,Variable turbogears.widgets.links.JumpMenu.params=turbogears.widgets.links.JumpMenu-class.html#params,Variable turbogears.widgets.rpc.RPC.params=turbogears.widgets.rpc.RPC-class.html#params"><a title="turbogears.database.AutoConnectHub.params
+turbogears.widgets.base.CSSLink.params
+turbogears.widgets.base.CSSSource.params
+turbogears.widgets.base.JSLink.params
+turbogears.widgets.base.JSSource.params
+turbogears.widgets.base.Resource.params
+turbogears.widgets.base.Source.params
+turbogears.widgets.base.Widget.params
+turbogears.widgets.big_widgets.AjaxGrid.params
+turbogears.widgets.big_widgets.AutoCompleteField.params
+turbogears.widgets.big_widgets.AutoCompleteTextField.params
+turbogears.widgets.big_widgets.CalendarDatePicker.params
+turbogears.widgets.big_widgets.LinkRemoteFunction.params
+turbogears.widgets.big_widgets.RemoteForm.params
+turbogears.widgets.big_widgets.URLLink.params
+turbogears.widgets.forms.Button.params
+turbogears.widgets.forms.CheckBox.params
+turbogears.widgets.forms.CheckBoxList.params
+turbogears.widgets.forms.CompoundFormField.params
+turbogears.widgets.forms.CompoundInputWidget.params
+turbogears.widgets.forms.FieldSet.params
+turbogears.widgets.forms.FileField.params
+turbogears.widgets.forms.Form.params
+turbogears.widgets.forms.FormField.params
+turbogears.widgets.forms.FormFieldsContainer.params
+turbogears.widgets.forms.HiddenField.params
+turbogears.widgets.forms.ImageButton.params
+turbogears.widgets.forms.InputWidget.params
+turbogears.widgets.forms.Label.params
+turbogears.widgets.forms.ListForm.params
+turbogears.widgets.forms.MultipleSelectField.params
+turbogears.widgets.forms.PasswordField.params
+turbogears.widgets.forms.RadioButtonList.params
+turbogears.widgets.forms.RepeatingFieldSet.params
+turbogears.widgets.forms.RepeatingFormField.params
+turbogears.widgets.forms.RepeatingInputWidget.params
+turbogears.widgets.forms.SelectionField.params
+turbogears.widgets.forms.SingleSelectField.params
+turbogears.widgets.forms.TableForm.params
+turbogears.widgets.forms.TextArea.params
+turbogears.widgets.forms.TextField.params
+turbogears.widgets.i18n.LocalizableJSLink.params
+turbogears.widgets.links.JumpMenu.params
+turbogears.widgets.rpc.RPC.params" class="py-name" href="#" onclick="return doclink('link-7', 'params', 'link-7');">params</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">"action"</tt><tt class="py-op">,</tt> <tt class="py-string">"update"</tt><tt class="py-op">,</tt> <tt class="py-string">"data"</tt><tt class="py-op">,</tt> <tt class="py-string">"on_success"</tt><tt class="py-op">,</tt> <tt class="py-string">"on_failure"</tt><tt class="py-op">,</tt> <tt class="py-string">"on_complete"</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">                     <tt class="py-string">"before"</tt><tt class="py-op">,</tt> <tt class="py-string">"after"</tt><tt class="py-op">,</tt> <tt class="py-string">"loading"</tt><tt class="py-op">,</tt> <tt class="py-string">"loaded"</tt><tt class="py-op">,</tt> <tt class="py-string">"confirm"</tt><tt class="py-op">]</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt id="link-8" class="py-name" targets="Variable turbogears.widgets.base.Widget.javascript=turbogears.widgets.base.Widget-class.html#javascript,Variable turbogears.widgets.links.JumpMenu.javascript=turbogears.widgets.links.JumpMenu-class.html#javascript,Variable turbogears.widgets.rpc.RPC.javascript=turbogears.widgets.rpc.RPC-class.html#javascript"><a title="turbogears.widgets.base.Widget.javascript
+turbogears.widgets.links.JumpMenu.javascript
+turbogears.widgets.rpc.RPC.javascript" class="py-name" href="#" onclick="return doclink('link-8', 'javascript', 'link-8');">javascript</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-9" class="py-name"><a title="turbogears.mochikit
+turbogears.widgets.base.mochikit" class="py-name" href="#" onclick="return doclink('link-9', 'mochikit', 'link-6');">mochikit</a></tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name"><a title="turbogears.widgets.base.JSLink" class="py-name" href="#" onclick="return doclink('link-10', 'JSLink', 'link-4');">JSLink</a></tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="turbogears.static
+turbogears.widgets.base.static" class="py-name" href="#" onclick="return doclink('link-11', 'static', 'link-5');">static</a></tt><tt class="py-op">,</tt><tt class="py-string">'ajax.js'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"> </tt>
+<a name="RPC.update_params"></a><div id="RPC.update_params-def"><a name="L14"></a><tt class="py-lineno">14</tt> <a class="py-toggle" href="#" id="RPC.update_params-toggle" onclick="return toggle('RPC.update_params');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.rpc.RPC-class.html#update_params">update_params</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RPC.update_params-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="RPC.update_params-expanded"><a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name" targets="Class turbogears.widgets.rpc.RPC=turbogears.widgets.rpc.RPC-class.html"><a title="turbogears.widgets.rpc.RPC" class="py-name" href="#" onclick="return doclink('link-12', 'RPC', 'link-12');">RPC</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method turbogears.widgets.base.CompoundWidget.update_params()=turbogears.widgets.base.CompoundWidget-class.html#update_params,Method turbogears.widgets.base.Link.update_params()=turbogears.widgets.base.Link-class.html#update_params,Method turbogears.widgets.base.Widget.update_params()=turbogears.widgets.base.Widget-class.html#update_params,Method turbogears.widgets.big_widgets.AjaxGrid.update_params()=turbogears.widgets.big_widgets.AjaxGrid-class.html#update_params,Method turbogears.widgets.big_widgets.CalendarDatePicker.update_params()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#update_params,Method turbogears.widgets.big_widgets.RemoteForm.update_params()=turbogears.widgets.big_widgets.RemoteForm-class.html#update_params,Method turbogears.widgets.datagrid.DataGrid.update_params()=turbogears.widgets.datagrid.DataGrid-class.html#update_params,Method turbogears.widgets.forms.Button.update_params()=turbogears.widgets.forms.Button-class.html#update_params,Method turbogears.widgets.forms.CheckBox.update_params()=turbogears.widgets.forms.CheckBox-class.html#update_params,Method turbogears.widgets.forms.CompoundInputWidget.update_params()=turbogears.widgets.forms.CompoundInputWidget-class.html#update_params,Method turbogears.widgets.forms.Form.update_params()=turbogears.widgets.forms.Form-class.html#update_params,Method turbogears.widgets.forms.FormField.update_params()=turbogears.widgets.forms.FormField-class.html#update_params,Method turbogears.widgets.forms.FormFieldsContainer.update_params()=turbogears.widgets.forms.FormFieldsContainer-class.html#update_params,Method turbogears.widgets.forms.InputWidget.update_params()=turbogears.widgets.forms.InputWidget-class.html#update_params,Method turbogears.widgets.forms.RepeatingInputWidget.update_params()=turbogears.widgets.forms.RepeatingInputWidget-class.html#update_params,Method turbogears.widgets.forms.SelectionField.update_params()=turbogears.widgets.forms.SelectionField-class.html#update_params,Method turbogears.widgets.i18n.CalendarLangFileLink.update_params()=turbogears.widgets.i18n.CalendarLangFileLink-class.html#update_params,Method turbogears.widgets.i18n.LocalizableJSLink.update_params()=turbogears.widgets.i18n.LocalizableJSLink-class.html#update_params,Method turbogears.widgets.rpc.RPC.update_params()=turbogears.widgets.rpc.RPC-class.html#update_params"><a title="turbogears.widgets.base.CompoundWidget.update_params
+turbogears.widgets.base.Link.update_params
+turbogears.widgets.base.Widget.update_params
+turbogears.widgets.big_widgets.AjaxGrid.update_params
+turbogears.widgets.big_widgets.CalendarDatePicker.update_params
+turbogears.widgets.big_widgets.RemoteForm.update_params
+turbogears.widgets.datagrid.DataGrid.update_params
+turbogears.widgets.forms.Button.update_params
+turbogears.widgets.forms.CheckBox.update_params
+turbogears.widgets.forms.CompoundInputWidget.update_params
+turbogears.widgets.forms.Form.update_params
+turbogears.widgets.forms.FormField.update_params
+turbogears.widgets.forms.FormFieldsContainer.update_params
+turbogears.widgets.forms.InputWidget.update_params
+turbogears.widgets.forms.RepeatingInputWidget.update_params
+turbogears.widgets.forms.SelectionField.update_params
+turbogears.widgets.i18n.CalendarLangFileLink.update_params
+turbogears.widgets.i18n.LocalizableJSLink.update_params
+turbogears.widgets.rpc.RPC.update_params" class="py-name" href="#" onclick="return doclink('link-13', 'update_params', 'link-13');">update_params</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">)</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line">        <tt class="py-name">d</tt><tt class="py-op">[</tt><tt class="py-string">'js'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">"return ! remoteRequest(self, '%s', '%s', %s, %s)"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">            <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-14', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'action'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">            <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-15', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'update'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">            <tt class="py-name">jsonify</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-16', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'data'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">            <tt class="py-name">jsonify</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Method turbogears.widgets.rpc.RPC.get_options()=turbogears.widgets.rpc.RPC-class.html#get_options"><a title="turbogears.widgets.rpc.RPC.get_options" class="py-name" href="#" onclick="return doclink('link-17', 'get_options', 'link-17');">get_options</a></tt><tt class="py-op">(</tt><tt class="py-name">d</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">        <tt class="py-op">)</tt> </tt>
+</div><a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="RPC.get_options"></a><div id="RPC.get_options-def"><a name="L24"></a><tt class="py-lineno">24</tt> <a class="py-toggle" href="#" id="RPC.get_options-toggle" onclick="return toggle('RPC.get_options');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.widgets.rpc.RPC-class.html#get_options">get_options</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">d</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="RPC.get_options-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="RPC.get_options-expanded"><a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-18" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-18', 'dict', 'link-18');">dict</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">            <tt id="link-19" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.on_success=turbogears.widgets.rpc.RPC-class.html#on_success"><a title="turbogears.widgets.rpc.RPC.on_success" class="py-name" href="#" onclick="return doclink('link-19', 'on_success', 'link-19');">on_success</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-20', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"on_success"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L27"></a><tt class="py-lineno">27</tt>  <tt class="py-line">            <tt id="link-21" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.on_failure=turbogears.widgets.rpc.RPC-class.html#on_failure"><a title="turbogears.widgets.rpc.RPC.on_failure" class="py-name" href="#" onclick="return doclink('link-21', 'on_failure', 'link-21');">on_failure</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-22', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"on_failure"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">            <tt id="link-23" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.on_complete=turbogears.widgets.rpc.RPC-class.html#on_complete"><a title="turbogears.widgets.rpc.RPC.on_complete" class="py-name" href="#" onclick="return doclink('link-23', 'on_complete', 'link-23');">on_complete</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-24', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"on_complete"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">            <tt id="link-25" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.before=turbogears.widgets.rpc.RPC-class.html#before"><a title="turbogears.widgets.rpc.RPC.before" class="py-name" href="#" onclick="return doclink('link-25', 'before', 'link-25');">before</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-26', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"before"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">            <tt id="link-27" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.after=turbogears.widgets.rpc.RPC-class.html#after"><a title="turbogears.widgets.rpc.RPC.after" class="py-name" href="#" onclick="return doclink('link-27', 'after', 'link-27');">after</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-28', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"after"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt id="link-29" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.loading=turbogears.widgets.rpc.RPC-class.html#loading"><a title="turbogears.widgets.rpc.RPC.loading" class="py-name" href="#" onclick="return doclink('link-29', 'loading', 'link-29');">loading</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-30', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"loading"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">            <tt id="link-31" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.loaded=turbogears.widgets.rpc.RPC-class.html#loaded"><a title="turbogears.widgets.rpc.RPC.loaded" class="py-name" href="#" onclick="return doclink('link-31', 'loaded', 'link-31');">loaded</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-32', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"loaded"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt id="link-33" class="py-name" targets="Variable turbogears.widgets.rpc.RPC.confirm=turbogears.widgets.rpc.RPC-class.html#confirm"><a title="turbogears.widgets.rpc.RPC.confirm" class="py-name" href="#" onclick="return doclink('link-33', 'confirm', 'link-33');">confirm</a></tt> <tt class="py-op">=</tt> <tt class="py-name">d</tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-34', 'get', 'link-14');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"confirm"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-op">)</tt> </tt>
+</div></div><a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:42 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

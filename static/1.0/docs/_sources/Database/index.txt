@@ -1,0 +1,247 @@
+Database Installation
+=====================
+
+.. contents::
+    :depth: 2
+
+
+This page is give some hints on the database back-ends supported by SQLObject
+and SQLAlchemy and how to install them on different operating systems.
+
+
+
+Supported Database Backends
+---------------------------
+
+`SQLObject Supported Backends <http://www.sqlobject.org/SQLObject.html#dbconnection-database-connections>`_:
+
+.. toctree::
+   :hidden:
+
+   SQLite
+   MySQL
+   PostgreSQL
+   Firebird
+
+* :doc:`SQLite <SQLite>`
+* :doc:`MySQL <MySQL>`
+* :doc:`PostgreSQL <PostgreSQL>`
+* :doc:`Firebird <Firebird>`
+* MS SQL Server
+* Sybase
+* MAX DB
+
+`SQLAlchemy Supported Backends <http://www.sqlalchemy.org/trac/browser/sqlalchemy/trunk/lib/sqlalchemy/databases>`_:
+
+* SQLite
+* MySQL
+* Postgres
+* Firebird
+* MS SQL Server
+* Oracle
+
+The process of installing a database system differs greatly from each database
+and each operating system to another and therefore we can only refer you to
+the documentation of the database system in question and give you some hints
+below.
+
+After you have installed a database system we need Python bindings for it,
+that is a library that lets Python programs interact with the database backend.
+
+
+Linux
+-----
+
+There are many ways to install software on Linux:
+
+- Have a look whether there is a package in your distribution's package
+  collection.
+- If not, you can make your own package for it.
+- Or look if the Python package is available from the Cheeseshop_ (PyPI)
+  and ``easy_install`` it.
+- As a last resort, build from source.
+
+.. _cheeseshop: http://www.python.org/pypi
+
+Which way to go depends on your prefenrences and your expertise, although for
+most distributions it is prefered to manage all installed software through the
+package management. ``easy_install`` is probably the easiest way, when there is
+a binary egg for your system available.
+
+
+MySQL
+~~~~~
+
+You will need the mysqldb_ module, which may be called ``mysql-python`` in
+your distribution and it is also called like that in the PyPI.
+
+.. _mysqldb: http://sourceforge.net/projects/mysql-python
+
+Best Approach:
+
+Use your package manager to install ``mysql-python``. If that fails:
+
+- Install development tools (gcc, make, etc.).
+- Install MySQL development tools.
+
+::
+
+    easy_install mysql-python
+
+
+
+SQLite
+~~~~~~
+
+You will need the pysqlite_ modul.
+
+.. _pysqlite: http://initd.org/tracker/pysqlite
+
+Best Approach:
+
+Use your package manager to install ``pysqlite``. If that fails:
+
+- Install development tools (gcc, make, etc.).
+- Install SQLite and the SQlite development files.
+
+::
+
+  easy_install pysqlite
+
+
+PostgreSQL
+~~~~~~~~~~
+
+You will need the `psycopg2`_ module if you're going to use Unicode, otherwise
+either psycopg or psycopg2 will do it. We recommend using psycopg2 because of
+other features besides unicode.
+
+Best Approach:
+
+Use your package manager. If that fails:
+
+- Look for binaries at `the psycopg2 install page`_
+
+- Build it yourself using the instructions on the above page.
+
+
+.. _psycopg2: http://initd.org/tracker/psycopg/wiki/PsycopgTwo
+.. _the psycopg2 install page:
+    http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall
+
+
+Windows
+-------
+
+On Windows there is basically one way to install packages, an exe file (aka
+installer), provided by the package author or users. Installing from source is a
+pain and should be your last resource. If you do choose to go this way you will
+need VisualStudio or equivalent tools.
+
+*TODO add link to MC visual C compiler*
+
+.. warning::
+    Setting up the tools to compile Python C-extension on Windows is not for the
+    faint of heart.
+
+
+MySQL
+~~~~~
+
+You will need `mysqldb`_, mysql-python is the name in in pypi.
+
+Best Approach:
+
+You can find an installer at in `MySQL-python download section`_ on Sourceforge.
+Get the latest version and install it by double-clicking on the installer.
+
+.. _MySQL-python download section:
+    http://sourceforge.net/project/showfiles.php?group_id=22307
+
+If that fails:
+
+- *TODO (If you get this working, post it here)*
+
+
+SQLite
+~~~~~~
+
+For Python versions < 2.5, you will need pysqlite_. In Python >= 2.5, pysqlite
+is already integrated as sqlite3_, but maybe an older version than the current
+pysqlite. Make sure you have a recent version installed.
+
+.. _sqlite3: http://docs.python.org/lib/module-sqlite3.html
+
+Best Approach:
+
+- easy_install pysqlite
+
+
+PostgreSQL
+~~~~~~~~~~
+
+- Download and install from here_.
+
+.. _here: http://www.stickpeople.com/projects/python/win-psycopg/index.html
+
+
+Mac OS X
+--------
+
+The easiest way of installed most of the common open source databases on OS X is
+to either use `MacPorts`_ or `Fink`_.
+
+.. _MacPorts: http://www.macports.org/
+.. _Fink: http://fink.sourceforge.net/
+
+Both of these are package management systems that will install all the
+dependencies for you.
+
+To install Mac Ports, first install X11 and Xcode from Apple, and then install
+the dmg from `MacPorts installation page`_ and follow the instructions on
+the MacPorts site.
+
+.. _macports installation page: http://www.macports.org/install.php
+
+
+MySQL
+~~~~~
+
+For Darwin Ports
+
+::
+
+$ sudo port install mysql4 +server
+
+or
+
+::
+
+$ sudo port install mysql5 +server
+
+
+SQLite
+~~~~~~
+
+
+For Darwin Ports
+
+::
+
+$ sudo port install sqlite2
+
+
+PostgreSQL
+~~~~~~~~~~
+
+For Darwin Ports
+
+::
+
+$ sudo port install postgresql8
+
+or
+
+::
+
+$ sudo port install portgresql7

@@ -1,0 +1,49 @@
+.. index:: DreamWeaver
+
+DreamWeaver Integration
+=======================
+
+
+Problem
+-------
+
+DreamWeaver is a useful IDE but it doesn't recognize Kid files as HTML and will **not** allow you to edit them.
+
+
+Solution
+--------
+
+DreamWeaver must be taught that the type .kid is HTML like. Alas, there is no UI to do this.
+Two files must be edited:
+
+1.  Configuration\\Extensions.txt
+2.  Configuration\\DocumentTypes\\MMDocumentTypes.xml
+
+.. _DocumentTypes?: /wiki/DocumentTypes
+
+The editing is basically, where you see a line or doctype for html with a list of extensions,
+you can add ``kid`` to the list. The `DreamWeaver tech note`__ says it best.
+
+__ http://www.macromedia.com/cfusion/knowledgebase/index.cfm?id=tn_16410
+
+One important point to note is that on windows these files can live in several locations.
+They will be in the Configuration directory beneath the DreamWeaver install directory
+and they will Application Data directory.
+
+For example:
+
+1.  C:\Program Files\Macromedia\Dreamweaver MX 2004\Configuration
+2.  C:\Documents and Settings\<username>\Application Data\Macromedia\Dreamweaver MX 2004\Configuration
+
+Once I edited the files in both locations and restarted DreamWeaver I could edit
+the files in the IDE and they were rendered as HTML reasonably well. The other thing
+I did was to make my DreamWeaver project lock down to the right level such that
+/static hrefs would point to my /static folder.
+
+
+Information on integration with DreamWeaver and Windows XP
+----------------------------------------------------------
+
+`Teach DreamWeaver and Windows About KID Files on Google Groups`_
+
+.. _Teach DreamWeaver and Windows About KID Files on Google Groups: http://groups.google.com/group/turbogears/browse_frm/thread/76b8d86d8c98e0aa/e0b8ccd4f9d2bebd#e0b8ccd4f9d2bebd

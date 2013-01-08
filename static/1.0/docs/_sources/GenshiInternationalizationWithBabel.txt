@@ -1,0 +1,114 @@
+Genshi Templates Internationalization with Babel
+================================================
+
+.. contents::
+    :depth: 2
+
+
+Abstract
+--------
+
+In TurboGears 1.0, internationalization support on templates
+is limited to Lid templates.
+
+This article explains how you can use `Babel <http://babel.edgewall.org/>`_
+to manage the translations and how to enable Genshi translation
+without having to patch TurboGears.
+
+Installation
+------------
+
+Install Babel
+~~~~~~~~~~~~~
+
+Installing python-babel is straighforward,
+as it integrates nicely with setuptools::
+
+    easy_install Babel
+
+
+Babel-able your TurboGears application
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add these files to your root directory.
+
+babel.cfg::
+
+    # Extraction from Python source files
+    [python: **.py]
+
+    # Extraction from Genshi HTML templates
+    [genshi: **/templates/**.html]
+
+setup.cfg::
+
+    [extract_messages]
+    keywords = _, gettext, ngettext
+    mapping_file = babel.cfg
+    width = 76
+    output_file = locales/messages.pot
+
+    [update_catalog]
+    output_dir = locales
+    input_file = locales/messages.pot
+
+    [compile_catalog]
+    directory = locales
+
+    [init_catalog]
+    input_file = locales/messages.pot
+    output_dir = locales
+
+
+Enable Genshi templates translation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add, for example in controller.py, the following code::
+
+    from turbogears.i18n import gettext
+    from genshi.filters import Translator
+    import turbogears.startup
+    import turbogears.view
+
+    def genshi_loader_callback(template):
+        template.filters.insert(0, Translator(gettext))
+
+    def init_callback():
+        turbogears.view.engines['genshi'].loader.callback = genshi_loader_callback
+
+    turbogears.startup.call_on_startup.append( init_callback )
+
+If you're using Genshi-based ToscaWidgets like I do, you also need to add the following::
+
+    config.update({'genshi.loader_callback': genshi_loader_callback})
+
+Translate your application
+--------------------------
+
+Now you can work almost like you used to with tg-admin i18n, except that setup.py
+is now doing the work, thanks to setuptools integration of Babel.
+
+Extract your messages::
+
+    ./setup.py extract_messages
+
+Add a new locale::
+
+    ./setup.py init_catalog -l fr
+
+Update your existing translations after a messages extraction::
+
+    ./setup.py update_catalog
+
+Translate your strings in locales/fr/LC_MESSAGE/messages.po
+
+Compile your catalog::
+
+    ./setup.py compile_catalog
+
+If you run your application, the templates should be translated.
+
+Links
+-----
+
+ * `Babel documentation <http://babel.edgewall.org/wiki/Documentation/>`_

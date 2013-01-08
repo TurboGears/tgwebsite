@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Implementing and using CompoundWidgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="RepeatingFieldSet Tips" href="RepeatingFieldSet.html" />
+    <link rel="prev" title="Wrap Ajax Operations in Widgets" href="RemoteLink.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RepeatingFieldSet.html" title="RepeatingFieldSet Tips"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="RemoteLink.html" title="Wrap Ajax Operations in Widgets"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Implementing and using CompoundWidgets</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#how-was-the-egg-built">How was the egg built?</a></li>
+<li><a class="reference internal" href="#example-project">Example project</a><ul>
+<li><a class="reference internal" href="#download">Download</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="RemoteLink.html"
+                        title="previous chapter">Wrap Ajax Operations in Widgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="RepeatingFieldSet.html"
+                        title="next chapter">RepeatingFieldSet Tips</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="implementing-and-using-compoundwidgets">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Implementing and using CompoundWidgets</a><a class="headerlink" href="#implementing-and-using-compoundwidgets" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#implementing-and-using-compoundwidgets" id="id1">Implementing and using CompoundWidgets</a><ul>
+<li><a class="reference internal" href="#introduction" id="id2">Introduction</a></li>
+<li><a class="reference internal" href="#how-was-the-egg-built" id="id3">How was the egg built?</a></li>
+<li><a class="reference internal" href="#example-project" id="id4">Example project</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id2">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>In this section I&#8217;ll describe how to build compound widgets and use them. For the time being, here&#8217;s a commented CompoundWidget demo TG widget&#8217;s package. To install:</p>
+<div class="highlight-python"><pre>$ tar xvjf compounddemo.X.Y.tar.bz2
+$ cd compounddemo
+$ [sudo] python setup.py develop
+$ tg-admin toolbox</pre>
+</div>
+<p>And watch the examples at the toolbox&#8217;s widget browser. You can also download &amp; install
+one of the provided eggs:</p>
+<div class="highlight-python"><pre>$ [sudo] easy_install compounddemo-X.Y-py2.N.egg
+$ tg-admin toolbox</pre>
+</div>
+</div>
+<div class="section" id="how-was-the-egg-built">
+<h2><a class="toc-backref" href="#id3">How was the egg built?</a><a class="headerlink" href="#how-was-the-egg-built" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">tg-admin</span></tt> can create the skeleton of a widget&#8217;s egg like this:</p>
+<div class="highlight-python"><pre>tg-admin quickstart -t tgwidget compounddemo</pre>
+</div>
+<p>It&#8217;s the best way to reuse widgets among projects and to modularize your apps for easier maintenance. Best of all, they are easily re-distributed.</p>
+<p>Once you install the resulting egg just import the widgets in your app and enjoy.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">compounddemo</span> <span class="kn">import</span> <span class="n">MyCompound</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">MyCompound</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-project">
+<h2><a class="toc-backref" href="#id4">Example project</a><a class="headerlink" href="#example-project" title="Permalink to this headline">¶</a></h2>
+<p>This demo widget&#8217;s package aims to show how to create a custom
+CompoundWidget and a CompoundFormField for reusing view code amongst
+templates and forms.</p>
+<p>It covers:</p>
+<blockquote>
+<div>How to define child widget&#8217;s (which, of course, can also be compound).
+How to initialize them at the constructor to implement a facade pattern.
+How to override their params and value at display time.</div></blockquote>
+<p>It doesnt cover (yet):</p>
+<blockquote>
+<div>How to deal with input conversion/facading. Take a look at the
+SelectShuttle&#8217;s code for an example: <a class="reference external" href="http://cheeseshop.python.org/pypi/Select-Shuttle/">http://cheeseshop.python.org/pypi/Select-Shuttle/</a></div></blockquote>
+<p><strong>Q.</strong></p>
+<p>When to choose a CompoundWidget or a CompoundFormField as a base class?</p>
+<p><strong>A.</strong></p>
+<p>You should use a CompoundFormField whenever the widget is intended for use
+in a form, this is, a widget that we expect to generate input for our app
+<em>inside</em> a form that&#8217;s going to be submitted.</p>
+<p>Use a CompoundWidget otherwise, this is, widgets like a an Ajax search field
+or any other kind of widget that might generate input but noy by means of
+form submission, like in AJAX requests.</p>
+<p>Feel free to use and modify this code for any purpose in any way you like.</p>
+<div class="section" id="download">
+<h3>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference download internal" href="../_downloads/compounddemo-1.0.1.tar.bz2"><tt class="xref download docutils literal"><span class="pre">compounddemo-1.0.1.tar.bz2</span></tt></a></li>
+<li><a class="reference download internal" href="../_downloads/compounddemo-1.0.1.zip"><tt class="xref download docutils literal"><span class="pre">compounddemo-1.0.1.zip</span></tt></a></li>
+<li><a class="reference download internal" href="../_downloads/compounddemo-1.0.1-py2.4.egg"><tt class="xref download docutils literal"><span class="pre">compounddemo-1.0.1-py2.4.egg</span></tt></a></li>
+<li><a class="reference download internal" href="../_downloads/compounddemo-1.0.1-py2.5.egg"><tt class="xref download docutils literal"><span class="pre">compounddemo-1.0.1-py2.5.egg</span></tt></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+.. index:: RepeatingFieldSet
+
+RepeatingFieldSet Tips
+======================
+
+The code in this article is abstracted from my working code, but I don't
+have time to test this version (which is not 100% complete, as you
+will see).  Since it took me a while to figure this out and I didn't
+find any docs on it I thought I'd at least put down what I learned to
+give the next person a leg up on figuring it out.
+
+My goal was to create an edit page for an SQLObject, where I wanted
+a list of sub-objects to be edited along with the main object.
+RepeatingFieldSet turned out to be perfect for this.
+
+So suppose you have a model like::
+
+    class Foo(SQLObject):
+        name = UnicodeCol()
+        bars = RelatedJoin('Bar')
+
+    class Bar(SQLObject):
+        name = UnicodeCol()
+        description = UnicodeCol()
+
+We can edit a Foo and all its Bars in one go with the following
+set of widgets::
+
+    form = TableForm(fields=[
+        TextField(name='name',label='Name'),
+        RepeatingFieldSet(
+            name='bars',
+            label='Bars',
+            fields=[
+                TextField(name='name',label='Name'),
+                TextField(name='description', label='Description')
+            ]
+        )
+
+Note that the name of the RepeatingFieldSet is bars, which means it will
+pick up its list of values from the 'bars' field of our Foo.  Automagic
+niceness.
+
+Here's the controller::
+
+    @expose('.templates.editform')
+    def edit(self, tg_errors=None, **data):
+        if tg_errors: flash("Fix your errors and resubmit")
+        else: data = self.foo
+        return dict(
+            form=form,
+            data=data,
+            parms=dict(
+                action=url('save'),
+                submit_text="save",
+                repetitions=dict(bars=len(self.foo.bars)+1)
+            )
+        )
+
+This gives us one repeat of the fieldset for each Bar in Foo, and one
+more besides (so the user can add a new bar in the same form).
+
+The callout for the form in editform.kid looks like this::
+
+    ${form.display(data, **parms)}
+
+The trickiest bit to figure out was how to modify the template for
+the RepeatingFieldSet widget.  I didn't actually want a repeating
+FieldSet, what I wanted was a table.  This is what I came up with::
+
+    <div xmlns:py="http://purl.org/kid/ns#">
+    <table>
+      <tr>
+          <th py:for="field in fields">
+            <label class="fieldlabel" for="${field.field_id}" py:content="field.label" />
+          </th>
+      </tr>
+      <tr py:for="repetition in repetitions" class="${field_class}" id="${field_id}_${repetition}">
+        <legend py:if="legend" py:content="legend" />
+        <div py:for="field in hidden_fields"
+            py:replace="field.display(value_for(field), **params_for(field))"
+        />
+        <td py:for="field in fields">
+            <span py:content="field.display(value_for(field), **params_for(field))" />
+            <span py:if="error_for(field)" class="fielderror" py:content="error_for(field)" />
+        </td>
+      </tr>
+    </table>
+    </div>
+
+The 'repetition in repetitions' does some black mojo behind the scenes
+so that when we have reached repetition N in the loop, the various
+functions of each 'field' in 'fields' will pull data from the Nth
+element of the list of bars.  But fields is just the widget list of the
+RepeatingFieldSet, so we can access the attributes of the widgets that do
+not relate to values, such as the label, at any point.  That enables us
+to set the titles for the table columns before starting the values loop.

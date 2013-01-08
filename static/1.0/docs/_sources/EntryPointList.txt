@@ -1,0 +1,99 @@
+.. index:: entry points
+
+TurboGears Entry Point list
+===========================
+
+.. contents::
+    :depth: 1
+
+
+The following is a list of ``setuptools`` `entry points`_ used by the
+TurboGears framework.
+
+.. _entry points:
+    http://peak.telecommunity.com/DevCenter/setuptools#extensible-applications-and-frameworks
+
+
+paste.paster_create_template
+----------------------------
+
+Entry point for TurboGears quickstart templates. Please read how to
+create your own quickstart templates on the page about
+:doc:`extending quickstart <ExtendingQuickstart>`.
+
+
+python.templating.engines
+-------------------------
+
+
+.. toctree::
+   :hidden:
+
+   TurboKid
+   TurboCheetah
+   TurboJson
+
+Entry point for Python template engine plugins, like :doc:`/TurboKid`,
+:doc:`/TurboCheetah` and :doc:`/TurboJson`. For information on writing a template
+engine plugin, see :doc:`Writing a Template Engine <TemplatePlugins>`.
+
+
+turbogears.command
+------------------
+
+This entry point is used for extensions to the ``tg-admin`` utility. The
+``tg-admin`` utility expects that the provided object is a class which has a
+``desc`` attribute and a ``run()`` method. It can also have an optional
+``need_project`` attribute, which if set to True will cause the command to fail
+unless it is being run from the root folder of a project. Below is a sample
+do-nothing class that correctly implements a tg-admin command.::
+
+    class Sample:
+        desc = "This is a sample class which must be run in a project"
+        need_project = True
+        def __init__(self, version):
+            pass
+
+        def run(self):
+            pass
+
+Detailed information can be found on the about :doc:`tg-admin Command Plugins <CommandPlugins>`.
+
+
+turbogears.identity.provider
+----------------------------
+
+This entry point is used for extensions to the :doc:`identity <Identity/index>` system.
+:doc:`New authentication providers <Identity/Recipes>` can be used to allow authentication against
+a variety of sources.
+
+
+turbogears.extensions
+---------------------
+
+This entry point is for TurboGears extension components that hook into the
+TurboGears server when it starts up. Examples are the :doc:`visit </Visit/index>`
+and :doc:`identity </Identity/index>` frameworks and the TurboMail_ extension.
+
+.. _turbomail: http://www.python-turbomail.org/
+
+
+turbogears.visit.manager
+------------------------
+
+This entry point is used for extensions to the visit system. You can register
+a visit manager plugin here, and enable it through the visit configuration.
+This allows, for example, to use different storage backends for visit objects
+or perform housekeeping tasks, e.g. cleaning up old visits etc.
+
+The visit framework provides its own plugin mechanism for plugins which are
+called on every request. See :doc:`Extending the Visit Framework <Visit/Extending>`
+for more information.
+
+
+turbogears.toolboxcommand
+-------------------------
+
+The ``turbogears.toolboxcommand`` entry point defines items that are available
+on the :doc:`Toolbox <Toolbox>`, the web application that is launched by the
+``tg-admin toolbox`` command.

@@ -1,0 +1,200 @@
+20 Minute Wiki Page 2
+=====================
+
+Pointing to a database
+----------------------
+
+TurboGears has a minimum of required configuration. It *does* need to know
+where your database lives if you're not using sqlite. If you are using sqlite,
+the database is configured by default and you don't need to do anything.
+
+If you're not, the configuration is quite simple. The ``quickstart`` command has
+created two config files, one for 'dev'elopment and one for 'prod'uction.
+The config files are are more-or-less the same format as the .ini files used by
+windows apps, check the :doc:`configuration reference </Configuration>` for a full listing of
+configuration options and settings. For information on how to install alternative
+database support and set up the connection, you should also read the
+:doc:`Database Installation </Database/index>` and the :doc:`Database Getting Started </GettingStarted/UseDatabase>` page
+
+Since we are doing development, load up ``dev.cfg`` in your favorite editor,
+uncomment the ``sqlobject.dburi`` line that corresponds to your database and
+modify the values to match your environment. You'll also want to comment out the
+sqlite line. You'll also probably want to create a new database so that our wiki
+tables don't muck up one of your other projects.
+
+With all that done, restart the web server by hitting Control-C and running the
+startup script again::
+
+    python start-wiki20.py
+
+From here on, you'll only have to restart the server when you make a change to
+the configuration. When in development mode, CherryPy detects when you save a
+file in your project and automatically reloads itself with the new code. This
+takes around 5 seconds, so if you're quick about saving, flipping to your
+browser, and reloading, you can get a "server not found" error in your browser.
+
+
+Creating the tables
+-------------------
+
+Since we've created, in Python code, the schema for our simple database and
+we've also told TurboGears where to look for the database, we're ready to
+actually create our tables::
+
+    tg-admin sql create
+
+The ``tg-admin sql`` command is a wrapper around SQLObject's ``sqlobject-admin``
+command. The ``create`` subcommand searches through your model and creates all
+the tables currently missing from the database.
+
+If you're unfamiliar with Object-Relational Mappers (ORMs), then you may want
+to play around with ``tg-admin sql sql``, which prints the SQL commands run by
+``tg-admin sql create`` to your terminal instead of sending them to the
+database. Here's what our ``Page`` model looks like in sqlite::
+
+    CREATE TABLE page (
+        id INTEGER PRIMARY KEY,
+        pagename VARCHAR(30) NOT NULL UNIQUE,
+        data TEXT
+    );
+    ;;
+
+.. note: There are a few other sql commands, check ``tg-admin sql help`` for all
+         the options (but watch out for ``upgrade``, it doesn't work like you
+         expect).
+
+
+Let's display a wiki page!
+--------------------------
+
+Hard to believe it, but we're already ready to start displaying pages. The
+first step, is to rename our template. ``welcome.kid`` just won't do. Rename
+the template using whatever commands do the trick for your operating system::
+
+    cd wiki20/templates
+    mv welcome.kid page.kid
+    cd ../..
+
+Now, let's replace the body of the template with something more reasonable
+for a wiki page:
+
+.. parsed-literal::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+              "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:py="http://purl.org/kid/ns#"
+          py:extends="'master.kid'">
+    <head>
+    <meta content="text/html; charset=utf-8"
+          http-equiv="Content-Type" py:replace="''"/>
+    <title> **${page.pagename} - 20 Minute Wiki** </title>
+    </head>
+    <body>
+        <div class="main_content">
+            **<div style="float:right; width: 10em">**
+                **Viewing <span py:replace="page.pagename">Page Name Goes Here</span>**
+                **<br/>**
+                **You can return to the <a href="/">FrontPage</a>.**
+            **</div>**
+
+            **<div py:replace="XML(data)">Page text goes here.</div>**
+        </div>
+    </body>
+    </html>
+
+Notice that you can open the ``page.kid`` **file** directly in your web browser,
+and it is still perfectly viewable. It also doesn't add wonky directive markers,
+so it'll pass cleanly through most current WYSIWYG editors. This can be convenient
+when you're working with others who insist on using such editors.
+
+This template is using two Kid replacement methods, the first is the expression
+substitution syntax ``${var}``. The python code inside (yes, real python code,
+not some weird template language) is evaluated and the result replaces the
+expression.
+
+The second is the ``py:replace`` attribute, which replaces the tag contents with
+the result of the expression. Both these will escape the results to ensure you
+produce well formed XML. The ``XML()`` function tells Kid not to escape the
+contents of the ``data`` variable.
+
+So, where do these ``page`` and ``data`` variables come from? Both are items in
+the dictionary returned by your controller. Or they will be when we add them...
+
+TurboGears greatly reduces the amount of boilerplate code you need to write, but
+it does not eliminate it. We need to hook up our ``Page`` class in our model and
+the template we just created. This is done in your controller, which is found in
+``wiki20/controllers.py``. We'll replace the old ``index`` method with one that
+does something more interesting that grabbing the current time.
+
+.. parsed-literal::
+
+    **import turbogears**
+    from turbogears import controllers, expose
+    **from wiki20.model import Page**
+    **from docutils.core import publish_parts**
+
+    class Root(controllers.RootController):
+        @expose(template="**wiki20.templates.page**")   #1
+        def index(self **, pagename="FrontPage"**):     #2
+            **page = Page.byPagename(pagename)**       #3
+            **content = publish_parts(page.data,**
+                **writer_name="html")['html_body']**   #4
+            **return dict(data=content, page=page)**   #5
+
+That's a lot of changes! Let's break it down.
+
+The first few changes are imports. We first pull in the ``turbogears``
+package, which we'll make use of later. Next we pull in the ``Page`` from our
+model into our controller. The last change is our wiki parser. What? You
+didn't think we were going to write a structured text parser, did you? The
+Python community has a wide range of useful modules outside of TurboGears and
+there is no sense in not making use of them.
+
+
+As for the rest, the changes are:
+
+1. Set the template to our newly named "page". Notice we don't add the
+   ``.kid`` extension. (line 1)
+2. Add a ``pagename`` parameter to our method with a default pagename of ``"FrontPage"`` (line 2)
+3. Retrieve the page from the database, this is why we added the ``alternateId``
+   in our ``Page`` class. Convenient, eh? (line 3)
+4. Format the text in Page's ``data`` as HTML (line 4)
+5. Return a dictionary with ``page`` and ``data`` items. Notice the keys
+   correspond to the variable names in our template. (line 5)
+
+All that in six, very readable lines. The dictionary that we're returning at
+the end provides the data that populates the template and will be reused for
+other, more exotic purposes a bit later.
+
+
+Let's check out that first page!
+--------------------------------
+
+The code is in place... Point your browser to `http://localhost:8080/ <http://localhost:8080/>`_
+and let's see what we've got!
+
+Oh, we've got an error. Since we're in development mode, CherryPy gives us
+the whole traceback, which is very convenient. The traceback is telling us
+that we got a ``SQLObjectNotFound`` exception.
+
+.. note:**If you get an ImportError** for ``docutils.core`` you need to install
+        docutils first, as explained on :doc:`page 1 <Page1>`.
+
+.. note:**If you get a KeyError** on the publish_parts line instead of a
+        SQLObjectNotFound when you try to access the page, you are using an
+        older version of docutils and should upgrade to the latest.
+
+.. note:When you run the application in development mode, CherryPy detects changes
+        to the code and automatically restarts the application so that your changes
+        will be effective. Therefore, after saving files with your editor, you may
+        need to wait a short time before you can access the application again.
+
+.. tip: You can get more information from your tracebacks by setting
+        ``tg.fancy_exception = True`` in your dev.cfg. This isn't set by
+        default because it allows arbitrary remote code evaluation.
+
+D'oh! We forgot to put a page in the database! Let's do something about that.
+
+
+:doc:`Go back to page 1 <Page1>` | :doc:`Continue on page 3 <Page3>`

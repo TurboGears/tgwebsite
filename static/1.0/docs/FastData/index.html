@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FastData &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Foreign Keys In Fast Data" href="ForeignKeys.html" />
+    <link rel="prev" title="Nicer Forms" href="../Widgets/NicerForms.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ForeignKeys.html" title="Foreign Keys In Fast Data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Widgets/NicerForms.html" title="Nicer Forms"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FastData</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#compatibility">Compatibility</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Widgets/NicerForms.html"
+                        title="previous chapter">Nicer Forms</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ForeignKeys.html"
+                        title="next chapter">Foreign Keys In Fast Data</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="fastdata">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">FastData</a><a class="headerlink" href="#fastdata" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#fastdata" id="id1">FastData</a><ul>
+<li><a class="reference internal" href="#overview" id="id2">Overview</a></li>
+<li><a class="reference internal" href="#usage" id="id3">Usage</a></li>
+<li><a class="reference internal" href="#installation" id="id4">Installation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<dl class="docutils" id="pypi-page">
+<dt>Author:</dt>
+<dd>Kevin Dangoor</dd>
+<dt>Maintainer:</dt>
+<dd>TurboGears project</dd>
+<dt>Release information and download URL:</dt>
+<dd><a class="reference external" href="http://pypi.python.org/pypi/TGFastData">http://pypi.python.org/pypi/TGFastData</a></dd>
+<dt>SVN repository:</dt>
+<dd><a class="reference external" href="http://svn.turbogears.org/projects/FastData">http://svn.turbogears.org/projects/FastData</a></dd>
+</dl>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id2">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>FastData is a TurboGears extension, designed to make fast proto-typing of
+administrative interfaces for your data easy by providing a CRUD interface to
+Create, Retrieve, Update and Delete instances of your
+<a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a> <a class="reference internal" href="../GettingStarted/DefineDatabase.html"><em>data model</em></a>
+objects.</p>
+<p>Fast Data has two main components:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../Widgets/DataGrid.html"><em>FastDataGrid</em></a> &#8211; a <a class="reference internal" href="../Widgets/index.html"><em>TurboGears widget</em></a> for a grid-like display for your data
+items with action links for adding, changing and deleting items.</li>
+<li><a class="reference internal" href="DataController.html"><em>DataController</em></a> &#8211; a controller class taking an SQLObject class and building
+the methods for the CRUD interface.</li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#id3">Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<p>Documentation about using or including information on FastData can be found on
+the following wiki pages:</p>
+<ul class="simple">
+<li><a class="reference internal" href="DataController.html"><em>DataController</em></a></li>
+<li><a class="reference internal" href="../Widgets/DataGrid.html"><em>DataGrid</em></a> (see section <a class="reference internal" href="../Widgets/DataGrid.html#fastdata-integration"><em>FastData integration</em></a>)</li>
+<li><a class="reference internal" href="ForeignKeys.html"><em>Foreign Keys In FastData</em></a></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2><a class="toc-backref" href="#id4">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>FastData is an extension package for TurboGears and therefore needs to be
+installed separately. Installable egg files are provided on FastData&#8217;s <a class="reference internal" href="#pypi-page">PyPI
+page</a>, so to download and install FastData, run the following from the command
+line:</p>
+<div class="highlight-python"><pre>[sudo] easy_install TGFastData</pre>
+</div>
+<p>If you are installing FastData into the system-wide location for Python packages
+(the default with the command above), you will need to obtain root priviledges
+by prefixing this command with <tt class="docutils literal"><span class="pre">sudo</span></tt>.</p>
+<div class="section" id="compatibility">
+<h3>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h3>
+<p>FastData is limited in that it only support <a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a>
+data models. Support for creating forms for working with <a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a>
+model objects is provided by the <a class="reference external" href="http://code.google.com/p/dbsprockets/">dbsprockets</a> package, which builds on the
+<a class="reference internal" href="../ToscaWidgets.html"><em>ToscaWidgets</em></a> project. dbsprockets can be used with TurboGears 2
+as well as with TurboGears 1.x but at the moment only supports SQLAlchemy and requires
+that you install ToscaWidgets as well.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

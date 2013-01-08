@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.i18n.format</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.i18n-module.html" onclick="show_private();">Package&nbsp;i18n</a> ::
+        Module&nbsp;format
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.i18n.format-module.html">Module turbogears.i18n.format</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Localized formatting functions.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">These functions extract localization data from config files located</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">in the data/directory.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">operator</tt> <tt class="py-keyword">import</tt> <tt class="py-name">itemgetter</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">warnings</tt> <tt class="py-keyword">import</tt> <tt class="py-name">filterwarnings</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pkg_resources</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module turbogears.command.i18n=turbogears.command.i18n-module.html,Package turbogears.i18n=turbogears.i18n-module.html,Module turbogears.widgets.i18n=turbogears.widgets.i18n-module.html"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-1', 'i18n', 'link-1');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module turbogears.i18n.utils=turbogears.i18n.utils-module.html"><a title="turbogears.i18n.utils" class="py-name" href="#" onclick="return doclink('link-2', 'utils', 'link-2');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Function turbogears.i18n.utils.get_locale()=turbogears.i18n.utils-module.html#get_locale"><a title="turbogears.i18n.utils.get_locale" class="py-name" href="#" onclick="return doclink('link-3', 'get_locale', 'link-3');">get_locale</a></tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-comment"># locale modules can have same name as locale directories</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">    <tt class="py-name">filterwarnings</tt><tt class="py-op">(</tt><tt class="py-string">'ignore'</tt><tt class="py-op">,</tt> <tt class="py-name">message</tt><tt class="py-op">=</tt><tt class="py-string">"Not importing directory"</tt><tt class="py-op">,</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">        <tt class="py-name">category</tt><tt class="py-op">=</tt><tt class="py-name">ImportWarning</tt><tt class="py-op">,</tt> <tt class="py-name">module</tt><tt class="py-op">=</tt><tt class="py-string">'turbogears.i18n'</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">except</tt> <tt class="py-name">NameError</tt><tt class="py-op">:</tt> <tt class="py-comment"># Python &lt; 2.5</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> <tt class="py-comment"># does not have ImportWarning anyway</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="is_locale_format"></a><div id="is_locale_format-def"><a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="is_locale_format-toggle" onclick="return toggle('is_locale_format');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#is_locale_format">is_locale_format</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="is_locale_format-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="is_locale_format-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">    <tt class="py-docstring">"""Check if locale is supported."""</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-name">py_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">resource_filename</tt><tt class="py-op">(</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">        <tt class="py-string">'turbogears.i18n.data'</tt><tt class="py-op">,</tt> <tt class="py-string">'%s.py'</tt> <tt class="py-op">%</tt> <tt id="link-4" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Message.locale=turbogears.i18n.sagettext.model.TG_Message-class.html#locale,Variable turbogears.i18n.sogettext.model.TG_Message.locale=turbogears.i18n.sogettext.model.TG_Message-class.html#locale"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-4', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Variable turbogears.widgets.forms.InputWidget.path=turbogears.widgets.forms.InputWidget-class.html#path"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-5', 'path', 'link-5');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">py_filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-name">pyc_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">resource_filename</tt><tt class="py-op">(</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">        <tt class="py-string">'turbogears.i18n.data'</tt><tt class="py-op">,</tt> <tt class="py-string">'%s.pyc'</tt> <tt class="py-op">%</tt> <tt id="link-6" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-6', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-7', 'path', 'link-5');">path</a></tt><tt class="py-op">.</tt><tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">pyc_filename</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="get_locale_module"></a><div id="get_locale_module-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="get_locale_module-toggle" onclick="return toggle('get_locale_module');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_locale_module">get_locale_module</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_locale_module-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_locale_module-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get i18n module supporting the locale."""</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-comment"># check if locale is supported. If not, check again with</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-comment"># first part of locale for example, 'fi_FI' &gt; 'fi'.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-8" class="py-name" targets="Function turbogears.i18n.format.is_locale_format()=turbogears.i18n.format-module.html#is_locale_format"><a title="turbogears.i18n.format.is_locale_format" class="py-name" href="#" onclick="return doclink('link-8', 'is_locale_format', 'link-8');">is_locale_format</a></tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-9', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">            <tt id="link-10" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-10', 'locale', 'link-4');">locale</a></tt> <tt class="py-op">=</tt> <tt id="link-11" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-11', 'locale', 'link-4');">locale</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">        <tt id="link-12" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-12', 'name', 'link-12');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'turbogears.i18n.data.%s'</tt> <tt class="py-op">%</tt> <tt id="link-13" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-13', 'locale', 'link-4');">locale</a></tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">mod</tt> <tt class="py-op">=</tt> <tt class="py-name">__import__</tt><tt class="py-op">(</tt><tt id="link-14" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-14', 'name', 'link-12');">name</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">parts</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-15', 'name', 'link-12');">name</a></tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">parts</tt><tt class="py-op">:</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">            <tt class="py-name">mod</tt> <tt class="py-op">=</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">mod</tt><tt class="py-op">,</tt> <tt class="py-name">p</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">mod</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-op">(</tt><tt class="py-name">ImportError</tt><tt class="py-op">,</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+</div><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="get"></a><div id="get-def"><a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="get-toggle" onclick="return toggle('get');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get">get</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">,</tt> <tt class="py-param">name</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get an attribute value for the locale."""</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt id="link-16" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-16', 'locale', 'link-4');">locale</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="turbogears.i18n.utils.get_locale" class="py-name" href="#" onclick="return doclink('link-17', 'get_locale', 'link-3');">get_locale</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-18', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">mod</tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name" targets="Function turbogears.i18n.format.get_locale_module()=turbogears.i18n.format-module.html#get_locale_module"><a title="turbogears.i18n.format.get_locale_module" class="py-name" href="#" onclick="return doclink('link-19', 'get_locale_module', 'link-19');">get_locale_module</a></tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-20', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">mod</tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-21', 'name', 'link-12');">name</a></tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name" targets="Variable turbogears.widgets.base.Widget.default=turbogears.widgets.base.Widget-class.html#default,Variable turbogears.widgets.big_widgets.CalendarDatePicker.default=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#default"><a title="turbogears.widgets.base.Widget.default
+turbogears.widgets.big_widgets.CalendarDatePicker.default" class="py-name" href="#" onclick="return doclink('link-22', 'default', 'link-22');">default</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="get_countries"></a><div id="get_countries-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="get_countries-toggle" onclick="return toggle('get_countries');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_countries">get_countries</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_countries-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_countries-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get all supported countries.</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring">    Returns a list of tuples, consisting of international country code</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">    and localized name, e.g. ('AU', 'Australia').</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-name">countries</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-23', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-24', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'countries'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name" targets="Function turbogears.i18n.pygettext.catalog.items()=turbogears.i18n.pygettext.catalog-module.html#items"><a title="turbogears.i18n.pygettext.catalog.items" class="py-name" href="#" onclick="return doclink('link-25', 'items', 'link-25');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-name">countries</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Function turbogears.i18n.pygettext.catalog.sort()=turbogears.i18n.pygettext.catalog-module.html#sort"><a title="turbogears.i18n.pygettext.catalog.sort" class="py-name" href="#" onclick="return doclink('link-26', 'sort', 'link-26');">sort</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">=</tt><tt class="py-name">itemgetter</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">countries</tt> </tt>
+</div><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="get_country"></a><div id="get_country-def"><a name="L74"></a><tt class="py-lineno"> 74</tt> <a class="py-toggle" href="#" id="get_country-toggle" onclick="return toggle('get_country');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_country">get_country</a><tt class="py-op">(</tt><tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_country-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_country-expanded"><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get localized name of country based on international country code."""</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-27" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-27', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-28', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'countries'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="get_languages"></a><div id="get_languages-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="get_languages-toggle" onclick="return toggle('get_languages');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_languages">get_languages</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_languages-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_languages-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get all supported languages.</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    Returns a list of tuples, with language code and localized name,</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">    e.g. ('en', 'English').</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt id="link-29" class="py-name" targets="Variable turbogears.toolbox.admi18n.Internationalization.languages=turbogears.toolbox.admi18n.Internationalization-class.html#languages"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-29', 'languages', 'link-29');">languages</a></tt> <tt class="py-op">=</tt> <tt id="link-30" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-30', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-31" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-31', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'languages'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="turbogears.i18n.pygettext.catalog.items" class="py-name" href="#" onclick="return doclink('link-32', 'items', 'link-25');">items</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt id="link-33" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-33', 'languages', 'link-29');">languages</a></tt><tt class="py-op">.</tt><tt id="link-34" class="py-name"><a title="turbogears.i18n.pygettext.catalog.sort" class="py-name" href="#" onclick="return doclink('link-34', 'sort', 'link-26');">sort</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">=</tt><tt class="py-name">itemgetter</tt><tt class="py-op">(</tt><tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-35" class="py-name"><a title="turbogears.toolbox.admi18n.Internationalization.languages" class="py-name" href="#" onclick="return doclink('link-35', 'languages', 'link-29');">languages</a></tt> </tt>
+</div><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="get_language"></a><div id="get_language-def"><a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="get_language-toggle" onclick="return toggle('get_language');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_language">get_language</a><tt class="py-op">(</tt><tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_language-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_language-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get localized name of language based on language code."""</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-36" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-36', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-37', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'languages'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="get_month_names"></a><div id="get_month_names-def"><a name="L96"></a><tt class="py-lineno"> 96</tt> <a class="py-toggle" href="#" id="get_month_names-toggle" onclick="return toggle('get_month_names');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_month_names">get_month_names</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_month_names-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_month_names-expanded"><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get list of full month names, starting with January."""</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-38" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-38', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-39', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'months'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"> </tt>
+<a name="get_abbr_month_names"></a><div id="get_abbr_month_names-def"><a name="L101"></a><tt class="py-lineno">101</tt> <a class="py-toggle" href="#" id="get_abbr_month_names-toggle" onclick="return toggle('get_abbr_month_names');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_abbr_month_names">get_abbr_month_names</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_abbr_month_names-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_abbr_month_names-expanded"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get list of abbreviated month names, starting with Jan."""</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-40" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-40', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-41', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'abbrMonths'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="get_weekday_names"></a><div id="get_weekday_names-def"><a name="L106"></a><tt class="py-lineno">106</tt> <a class="py-toggle" href="#" id="get_weekday_names-toggle" onclick="return toggle('get_weekday_names');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_weekday_names">get_weekday_names</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_weekday_names-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_weekday_names-expanded"><a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get list of full weekday names."""</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-42" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-42', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-43', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'days'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="get_abbr_weekday_names"></a><div id="get_abbr_weekday_names-def"><a name="L111"></a><tt class="py-lineno">111</tt> <a class="py-toggle" href="#" id="get_abbr_weekday_names-toggle" onclick="return toggle('get_abbr_weekday_names');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_abbr_weekday_names">get_abbr_weekday_names</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_abbr_weekday_names-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_abbr_weekday_names-expanded"><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get list of abbreviated weekday names."""</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-44" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-44', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-45', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'abbrDays'</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name" targets="Function turbogears.i18n.format.get_weekday_names()=turbogears.i18n.format-module.html#get_weekday_names"><a title="turbogears.i18n.format.get_weekday_names" class="py-name" href="#" onclick="return doclink('link-46', 'get_weekday_names', 'link-46');">get_weekday_names</a></tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-47', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="get_decimal_format"></a><div id="get_decimal_format-def"><a name="L116"></a><tt class="py-lineno">116</tt> <a class="py-toggle" href="#" id="get_decimal_format-toggle" onclick="return toggle('get_decimal_format');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_decimal_format">get_decimal_format</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_decimal_format-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_decimal_format-expanded"><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get decimal point for the locale."""</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-48" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-48', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-49" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-49', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'numericSymbols'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-50', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'decimal'</tt><tt class="py-op">,</tt> <tt class="py-string">'.'</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="get_group_format"></a><div id="get_group_format-def"><a name="L121"></a><tt class="py-lineno">121</tt> <a class="py-toggle" href="#" id="get_group_format-toggle" onclick="return toggle('get_group_format');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_group_format">get_group_format</a><tt class="py-op">(</tt><tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_group_format-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_group_format-expanded"><a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get digit group separator for thousands for the locale."""</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-51" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-51', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-52" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-52', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'numericSymbols'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-53" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-53', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'group'</tt><tt class="py-op">,</tt> <tt class="py-string">','</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"> </tt>
+<a name="format_number"></a><div id="format_number-def"><a name="L126"></a><tt class="py-lineno">126</tt> <a class="py-toggle" href="#" id="format_number-toggle" onclick="return toggle('format_number');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#format_number">format_number</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="format_number-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="format_number-expanded"><a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get number formatted with grouping for thousands.</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-docstring">    E.g. 5000000 will be formatted as 5,000,000.</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-name">gf</tt> <tt class="py-op">=</tt> <tt id="link-54" class="py-name" targets="Function turbogears.i18n.format.get_group_format()=turbogears.i18n.format-module.html#get_group_format"><a title="turbogears.i18n.format.get_group_format" class="py-name" href="#" onclick="return doclink('link-54', 'get_group_format', 'link-54');">get_group_format</a></tt><tt class="py-op">(</tt><tt id="link-55" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-55', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-name">thou</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-string">r'([0-9])([0-9][0-9][0-9]([%s]|$))'</tt> <tt class="py-op">%</tt> <tt class="py-name">gf</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">search</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">v</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-56" class="py-name" targets="Variable turbogears.view.base.cycle.value=turbogears.view.base.cycle-class.html#value"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-56', 'value', 'link-56');">value</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-name">mo</tt> <tt class="py-op">=</tt> <tt class="py-name">thou</tt><tt class="py-op">(</tt><tt class="py-name">v</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-keyword">while</tt> <tt class="py-name">mo</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-name">i</tt> <tt class="py-op">=</tt> <tt class="py-name">mo</tt><tt class="py-op">.</tt><tt id="link-57" class="py-name" targets="Method turbogears.scheduler.ForkedScheduler.start()=turbogears.scheduler.ForkedScheduler-class.html#start,Method turbogears.scheduler.Scheduler.start()=turbogears.scheduler.Scheduler-class.html#start,Method turbogears.scheduler.ThreadedScheduler.start()=turbogears.scheduler.ThreadedScheduler-class.html#start"><a title="turbogears.scheduler.ForkedScheduler.start
+turbogears.scheduler.Scheduler.start
+turbogears.scheduler.ThreadedScheduler.start" class="py-name" href="#" onclick="return doclink('link-57', 'start', 'link-57');">start</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-name">v</tt> <tt class="py-op">=</tt> <tt class="py-name">v</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">i</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-name">gf</tt> <tt class="py-op">+</tt> <tt class="py-name">v</tt><tt class="py-op">[</tt><tt class="py-name">i</tt><tt class="py-op">+</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">        <tt class="py-name">mo</tt> <tt class="py-op">=</tt> <tt class="py-name">thou</tt><tt class="py-op">(</tt><tt class="py-name">v</tt><tt class="py-op">)</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">unicode</tt><tt class="py-op">(</tt><tt class="py-name">v</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="format_decimal"></a><div id="format_decimal-def"><a name="L143"></a><tt class="py-lineno">143</tt> <a class="py-toggle" href="#" id="format_decimal-toggle" onclick="return toggle('format_decimal');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#format_decimal">format_decimal</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">num_places</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="format_decimal-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="format_decimal-expanded"><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get number formatted with grouping for thousands and decimal places.</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    E.g. 5000000.898 will be formatted as 5,000,000.898.</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">    <tt class="py-name">v</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'%%.%df'</tt> <tt class="py-op">%</tt> <tt class="py-name">num_places</tt><tt class="py-op">)</tt> <tt class="py-op">%</tt> <tt id="link-58" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-58', 'value', 'link-56');">value</a></tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">num_places</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-59" class="py-name" targets="Function turbogears.i18n.format.format_number()=turbogears.i18n.format-module.html#format_number"><a title="turbogears.i18n.format.format_number" class="py-name" href="#" onclick="return doclink('link-59', 'format_number', 'link-59');">format_number</a></tt><tt class="py-op">(</tt><tt class="py-name">v</tt><tt class="py-op">,</tt> <tt id="link-60" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-60', 'locale', 'link-4');">locale</a></tt><tt class="py-op">=</tt><tt id="link-61" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-61', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">    <tt class="py-name">num</tt><tt class="py-op">,</tt> <tt id="link-62" class="py-name" targets="Variable turbogears.validators.Number.decimals=turbogears.validators.Number-class.html#decimals"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-62', 'decimals', 'link-62');">decimals</a></tt> <tt class="py-op">=</tt> <tt class="py-name">v</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">,</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-63" class="py-name"><a title="turbogears.i18n.format.format_number" class="py-name" href="#" onclick="return doclink('link-63', 'format_number', 'link-59');">format_number</a></tt><tt class="py-op">(</tt><tt class="py-name">num</tt><tt class="py-op">,</tt> <tt id="link-64" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-64', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">unicode</tt><tt class="py-op">(</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">        <tt id="link-65" class="py-name" targets="Function turbogears.i18n.format.get_decimal_format()=turbogears.i18n.format-module.html#get_decimal_format"><a title="turbogears.i18n.format.get_decimal_format" class="py-name" href="#" onclick="return doclink('link-65', 'get_decimal_format', 'link-65');">get_decimal_format</a></tt><tt class="py-op">(</tt><tt id="link-66" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-66', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt id="link-67" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-67', 'decimals', 'link-62');">decimals</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line"> </tt>
+<a name="format_currency"></a><div id="format_currency-def"><a name="L157"></a><tt class="py-lineno">157</tt> <a class="py-toggle" href="#" id="format_currency-toggle" onclick="return toggle('format_currency');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#format_currency">format_currency</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="format_currency-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="format_currency-expanded"><a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get formatted currency value."""</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-68" class="py-name" targets="Function turbogears.i18n.format.format_decimal()=turbogears.i18n.format-module.html#format_decimal"><a title="turbogears.i18n.format.format_decimal" class="py-name" href="#" onclick="return doclink('link-68', 'format_decimal', 'link-68');">format_decimal</a></tt><tt class="py-op">(</tt><tt id="link-69" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-69', 'value', 'link-56');">value</a></tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">,</tt> <tt id="link-70" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-70', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"> </tt>
+<a name="parse_number"></a><div id="parse_number-def"><a name="L162"></a><tt class="py-lineno">162</tt> <a class="py-toggle" href="#" id="parse_number-toggle" onclick="return toggle('parse_number');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#parse_number">parse_number</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="parse_number-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="parse_number-expanded"><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">    <tt class="py-docstring">"""Take localized number string and return a long integer.</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring">    Throws ValueError if bad format.</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">long</tt><tt class="py-op">(</tt><tt id="link-71" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-71', 'value', 'link-56');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt id="link-72" class="py-name"><a title="turbogears.i18n.format.get_group_format" class="py-name" href="#" onclick="return doclink('link-72', 'get_group_format', 'link-54');">get_group_format</a></tt><tt class="py-op">(</tt><tt id="link-73" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-73', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">""</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"> </tt>
+<a name="parse_decimal"></a><div id="parse_decimal-def"><a name="L171"></a><tt class="py-lineno">171</tt> <a class="py-toggle" href="#" id="parse_decimal-toggle" onclick="return toggle('parse_decimal');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#parse_decimal">parse_decimal</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="parse_decimal-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="parse_decimal-expanded"><a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">    <tt class="py-docstring">"""Take localized decimal string and return a float.</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">    Throws ValueError if bad format.</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">    <tt id="link-74" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-74', 'value', 'link-56');">value</a></tt> <tt class="py-op">=</tt> <tt id="link-75" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-75', 'value', 'link-56');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt id="link-76" class="py-name"><a title="turbogears.i18n.format.get_group_format" class="py-name" href="#" onclick="return doclink('link-76', 'get_group_format', 'link-54');">get_group_format</a></tt><tt class="py-op">(</tt><tt id="link-77" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-77', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">    <tt id="link-78" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-78', 'value', 'link-56');">value</a></tt> <tt class="py-op">=</tt> <tt id="link-79" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-79', 'value', 'link-56');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">replace</tt><tt class="py-op">(</tt><tt id="link-80" class="py-name"><a title="turbogears.i18n.format.get_decimal_format" class="py-name" href="#" onclick="return doclink('link-80', 'get_decimal_format', 'link-65');">get_decimal_format</a></tt><tt class="py-op">(</tt><tt id="link-81" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-81', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt id="link-82" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-82', 'value', 'link-56');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"> </tt>
+<a name="get_date_format"></a><div id="get_date_format-def"><a name="L182"></a><tt class="py-lineno">182</tt> <a class="py-toggle" href="#" id="get_date_format-toggle" onclick="return toggle('get_date_format');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#get_date_format">get_date_format</a><tt class="py-op">(</tt><tt class="py-param">format</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_date_format-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_date_format-expanded"><a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get localized date format."""</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">    <tt class="py-name">formats</tt> <tt class="py-op">=</tt> <tt id="link-83" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-83', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-84" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-84', 'locale', 'link-4');">locale</a></tt><tt class="py-op">,</tt> <tt class="py-string">'dateFormats'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">formats</tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-85', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt id="link-86" class="py-name" targets="Module turbogears.i18n.format=turbogears.i18n.format-module.html,Variable turbogears.validators.DateTimeConverter.format=turbogears.validators.DateTimeConverter-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDatePicker.format=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDateTimePicker.format=turbogears.widgets.big_widgets.CalendarDateTimePicker-class.html#format"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-86', 'format', 'link-86');">format</a></tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"> </tt>
+<a name="format_date"></a><div id="format_date-def"><a name="L188"></a><tt class="py-lineno">188</tt> <a class="py-toggle" href="#" id="format_date-toggle" onclick="return toggle('format_date');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.format-module.html#format_date">format_date</a><tt class="py-op">(</tt><tt class="py-param">dt</tt><tt class="py-op">,</tt> <tt class="py-param">format</tt><tt class="py-op">=</tt><tt class="py-string">'medium'</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">        <tt class="py-param">time_format</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">,</tt> <tt class="py-param">date_format</tt><tt class="py-op">=</tt><tt class="py-string">''</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="format_date-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="format_date-expanded"><a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get formatted date value.</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring">    format can be "full", "long", "medium" or "short".</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">    To have complete control over formatting,</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">    use time_format and date_format parameters.</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">    @param dt: datetime</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">    @type dt: datetime.datetime</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">    @param format: format('full', 'long', 'medium', 'short')</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">    @type format: string</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">    @param locale: the locale</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">    @type locale: string</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">    @param time_format: standard time formatting string, e.g. %H:%M</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-docstring">    @type time_format:s tring</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">    @param time_format: date formatting template string.</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring">    Template variables include standard date formatting string like %d or %Y</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">    plus a few locale-specific names:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"><tt class="py-docstring">    %%(abbrmonthname)s, %%(dayname)s, %%(abbrmonthname)s and %%(monthname)s.</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line"><tt class="py-docstring">    @type time_format: string</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">    <tt class="py-name">pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">date_format</tt> <tt class="py-keyword">or</tt> <tt id="link-87" class="py-name" targets="Function turbogears.i18n.format.get_date_format()=turbogears.i18n.format-module.html#get_date_format"><a title="turbogears.i18n.format.get_date_format" class="py-name" href="#" onclick="return doclink('link-87', 'get_date_format', 'link-87');">get_date_format</a></tt><tt class="py-op">(</tt><tt id="link-88" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-88', 'format', 'link-86');">format</a></tt><tt class="py-op">,</tt> <tt id="link-89" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-89', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">pattern</tt><tt class="py-op">:</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">)</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">    <tt class="py-name">month</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">month</tt> <tt class="py-op">-</tt> <tt class="py-number">1</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">    <tt class="py-name">weekday</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">weekday</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">    <tt class="py-comment"># becasue strftime() accepts str only but not unicode,</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">    <tt class="py-comment"># we encode string to utf-8 and then decode back</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">    <tt class="py-name">date_str</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt class="py-name">pattern</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt class="py-string">'utf8'</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">time_format</tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">date_str</tt><tt class="py-op">.</tt><tt class="py-name">decode</tt><tt class="py-op">(</tt><tt class="py-string">'utf8'</tt><tt class="py-op">)</tt> <tt class="py-op">%</tt> <tt id="link-90" class="py-name" targets="Class dict=dict-class.html"><a title="dict" class="py-name" href="#" onclick="return doclink('link-90', 'dict', 'link-90');">dict</a></tt><tt class="py-op">(</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">        <tt class="py-name">monthname</tt><tt class="py-op">=</tt><tt id="link-91" class="py-name" targets="Function turbogears.i18n.format.get_month_names()=turbogears.i18n.format-module.html#get_month_names"><a title="turbogears.i18n.format.get_month_names" class="py-name" href="#" onclick="return doclink('link-91', 'get_month_names', 'link-91');">get_month_names</a></tt><tt class="py-op">(</tt><tt id="link-92" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-92', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">month</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-name">abbrmonthname</tt><tt class="py-op">=</tt><tt id="link-93" class="py-name" targets="Function turbogears.i18n.format.get_abbr_month_names()=turbogears.i18n.format-module.html#get_abbr_month_names"><a title="turbogears.i18n.format.get_abbr_month_names" class="py-name" href="#" onclick="return doclink('link-93', 'get_abbr_month_names', 'link-93');">get_abbr_month_names</a></tt><tt class="py-op">(</tt><tt id="link-94" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-94', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">month</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-name">dayname</tt><tt class="py-op">=</tt><tt id="link-95" class="py-name"><a title="turbogears.i18n.format.get_weekday_names" class="py-name" href="#" onclick="return doclink('link-95', 'get_weekday_names', 'link-46');">get_weekday_names</a></tt><tt class="py-op">(</tt><tt id="link-96" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-96', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">weekday</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">        <tt class="py-name">abbrdayname</tt><tt class="py-op">=</tt><tt id="link-97" class="py-name" targets="Function turbogears.i18n.format.get_abbr_weekday_names()=turbogears.i18n.format-module.html#get_abbr_weekday_names"><a title="turbogears.i18n.format.get_abbr_weekday_names" class="py-name" href="#" onclick="return doclink('link-97', 'get_abbr_weekday_names', 'link-97');">get_abbr_weekday_names</a></tt><tt class="py-op">(</tt><tt id="link-98" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-98', 'locale', 'link-4');">locale</a></tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-name">weekday</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

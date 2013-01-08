@@ -1,0 +1,31 @@
+.. index:: Sphinx
+
+Using Sphinx
+============
+
+After using the Trac_ and MoinMoin_ Wikis for a long time for the TurboGears
+documentation, we have now decided to using Sphinx_ instead. You may also want
+to use Sphinx for documentation your TurboGears applications.
+
+.. _Trac: http://trac.edgewall.org/
+.. _MoinMoin: http://moinmo.in/
+.. _Sphinx: http://sphinx.pocoo.org/
+
+Common issues
+-------------
+
+Here is a small issue we encountered when using
+TurboGears 1.0, Sphinx >= 0.5 and ToscaWidgets:
+
+If you use the autodoc module, and document a module
+(or objects inside a module) that instantiate a tw.form InputWidget
+that has validator, Sphinx will fail with a
+"TypeError: ugettext() got an unexpected keyword argument 'domain'".
+This `issue <http://trac.turbogears.org/ticket/2062>`_ involves
+TG, Sphinx, tw.forms and FormEncode.
+
+The workaround is pretty simple, just add the two following two
+lines into your Sphinx conf.py file::
+
+    import turbogears.validators
+    turbogears.validators.Validator.gettextargs = {}

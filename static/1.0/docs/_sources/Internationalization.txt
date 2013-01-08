@@ -1,0 +1,318 @@
+.. index:: internationalization, i18n
+
+Internationalizing your application
+===================================
+
+.. contents::
+    :depth: 2
+
+
+To internationalize your application, you have to:
+
+* Set up the configuration
+* Format your strings
+* Collect your strings
+* Translate your messages
+* Compile the message catalogs
+
+
+Set up the configuration
+------------------------
+
+1. Add "session_filter.on = True" and "i18n.run_template_filter = True" description in app.cfg::
+
+    session_filter.on = True
+    i18n.run_template_filter = True
+
+2. Add i18n.set_session_locale in class method::
+
+    @expose(....)
+    def index(...)
+        turbogears.i18n.set_session_locale('tw')
+
+
+Format your strings
+-------------------
+
+1. Wrap your strings
+~~~~~~~~~~~~~~~~~~~~
+
+All text strings you want translated should be included in the ``_()``
+function. This function is builtin to turbogears, so you don't need to import
+it specifically into your module, if you have already called ``import
+turbogears``. The ``_()`` and all formatting functions return unicode strings.
+
+For example::
+
+        import turbogears
+        from turbogears import controllers
+
+        class Controller(controllers.Root):
+          @turbogears.expose(html="myapp.templates.welcome")
+          def index(self):
+              return dict(message=_("Welcome"))
+
+
+If you want to explicitly pass in the locale in the ``_()`` call, you can do
+this::
+
+  print _("Welcome", "de")
+
+Handling text strings in Kid templates is somewhat easier. If you set the
+cherrypy configuration setting ``i18n.run_template_filter`` to ``True``, all
+text inside your Kid templates will be passed through ``_()`` automatically.
+The user locale (see below) can be overriden in your template by using the
+``lang`` attribute. For example::
+
+        <div>
+          <p>Welcome</p>
+          <p lang="de">Welcome</p>
+        </div>
+
+The first "Welcome" will be translated using the user locale setting, the
+second using the German locale. Assuming your user locale is English, you would
+see::
+
+        <div>
+          <p>Welcome</p>
+          <p lang="de">Willkommen</p>
+        </div>
+
+
+However, attribute values are not translated and so have to be handled
+explicitly by using the ``_()`` call::
+
+        <img py:attrs="src=_('flag_icon_gb.bmp')" />
+
+Note that text inside widget templates, etc. will also be translated.
+
+
+2. Localize Dates and Numbers
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``turbogears.i18n`` package has a number of useful functions for handling
+date, location and number formats. Data for these formats is contained in
+Python modules under ``turbogears/i18n/data``, for example the module for
+Danish is ``turbogears/i18n/data/da.py``. The functions include:
+
+``format_date``
+  returns a localized date string
+
+``get_countries``
+  returns a list of tuples, with the international country code and localized
+  name (e.g. ("AU", "Australia"))
+
+``format_currency``
+  returns a formatted currency value (e.g. in German 56.89 > 56,89)
+
+All have full docstrings explaining parameters and provide sophisticated
+control over formatting.
+
+Ensure any date or number strings are formatted using the ``turbogears.i18n``
+formatting functions.
+
+
+3. Localization of JavaScript
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Since TG 1.0.4 and in the 1.1 branch, it's possible to localize JavaScript as well. To do so,
+encapsulate the strings in your ``.js``-files in ``_()``-calls as described above. This will make
+them subject to the collection process, as with other file-types as well.
+
+The messages then appear in the ``.po``-files as normal texts. Translate them as you desire, compile, and then
+invoke the new command
+
+``tg-admin i18n create_js_messages``
+
+The result are ``messages-<language>.js``-files in your static javascript folder. To handle these properly
+at runtime, you need to include a widget in each rendered page. You can achieve this using
+
+``tg.include_widgets = ['turbogears.jsi18nwidget']``
+
+This will define the needed ``_()`` via including ``i18n.js``.
+
+If for whatever reason the location for the ``messages-<language>.js``-files is to be changed, you
+can use the ``--js-base-dir``-option to the ``create_js_messages``-command. But then you have to make sure
+that the ``js``-files are included properly. That can be done using the
+
+``turbogears.widgets.base.jsi18nwidget.register_package_provider(self, package=None, directory=None, domain=None)``
+
+method, where ``directory`` is the path that defaults to ``static/javascript`` and package is the package name
+registered as static directory - default is the current project's base package. With ``domain`` you can change the name of the catalogs, default is ``messages``.
+
+
+Collect your strings
+--------------------
+
+To collect your strings, you have to create your message catalogs in the right
+directory structure for all your text strings and supported languages.
+
+By default, ``_()`` looks for subdirectory "locales" and domain "messages" in
+your project directory. You can override these settings in your config file by
+setting ``i18n.locale_dir`` and ``i18n.domain`` respectively.
+
+If a language file(.mo) is not found, the ``_()`` call will return the plain
+text string.
+
+TurboGears ships with a suite of tools that help you to build and maintain
+message catalogs for translation. One is "admi18n" from the :doc:`Toolbox <Toolbox>` and
+another is part of :ref:`tg-admin i18n <tgadmin_i18n>` command.
+
+.. _Toolbox: Toolbox
+
+To collect the strings from your code an templates, using the ``tg-admin``
+command, run the following in your project's top-level directory::
+
+    tg-admin i18n collect
+
+
+Translate your messages
+-----------------------
+
+For every language that you want to support, now run the following in your
+project's top-level directory::
+
+    tg-admin i18n add <lang>
+
+and replace ``<lang>`` with the two-letter code of the language. This will
+create a subdirectory in the ``locales`` directory, named after the language
+code. In  this directory, under the ``LC_MESSAGES`` sub-directory, you will
+find several ``*.po`` files, which you need to translate by filling in the
+``msgstr`` for every ``msgid``.
+
+
+.. warning:: ``*.po`` files should be saved with UTF-8 encoding and no byte-order
+    marker (BOM) at the start of the file, or the compiling of the message
+    catalogs will fail.
+
+
+Compile the message catalogs
+----------------------------
+
+After you have collected the messages into ``*.po`` files and translated them,
+run the following command  in your project's top-level directory to convert
+the ``*.po`` files into the binary mesage catalogs (file extension ``.mo``)::
+
+    tg-admin i18n compile
+
+
+Tips And Hints
+--------------
+
+
+Finding the user locale
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The default locale function, ``urbogears.i18n.util._get_locale``, can be
+overriden by your own callable using the config setting ``i18n.get_locale``.
+The default function finds the locale setting in the following order:
+
+1.  By looking for a session value. By default this is ``locale``, but can be
+    changed in the config setting ``i18n.session_key``.
+2.  By looking in the HTTP Accept-Language header for the most preferred
+    language.
+3.  By using the default locale (config setting ``i18n.default_locale``,
+    by default "en").
+
+
+Handling international (UTF-8) form data
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TurboGears automatically sets correct charset info in Content-Type HTTP header
+and it just works (usually).
+
+If you prefer you may add the following to your HTML (kid) templates to enforce
+it::
+
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+
+
+When the browser sends unicode data in a request (via a textarea, for example),
+CherryPy gives you the string as is.
+
+By default TurboGears uses a CherryPy filter to decode all of the incoming
+request parameters into unicode strings using a given encoding. In most cases
+you would just keep it that way.
+
+To get Kid to work, you may want to tweak ``kid.encoding`` option (which
+defaults to utf8) though using utf-8 is advised.
+
+
+Form error messages
+~~~~~~~~~~~~~~~~~~~
+
+For translation of FormEncode messages be sure to use a recent version of TurboGears, since
+version >= 1.0.2 automatically requires FormEncode >= 0.7.0, which brings support for i18n.
+
+``tg-admin i18n add`` also installs the ``FormEncode.mo`` and ``TurboGears.mo`` files into
+the project locale directory.
+
+
+Custom validators with localized error messages
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you write custom validators and use ``_("...")`` to localize your messages
+you will get a TypeError exception when starting your app (``"TypeError: Error
+when calling the metaclass bases - expected string or buffer"``).
+
+You need to add a small "i18n hack" to your validator as `demonstrated by Christoph Zwerschke`_::
+
+     class NoWar(validators.FancyValidator):
+          def _(s): return s
+          gettextargs = {'domain': 'messages'}
+          messages = {'war': _("Don't mention the war!")}
+
+          def validate_python(self, value, state):
+              if 'war' in value:
+                  raise validators.Invalid(
+                      self.message('war', state), value, state)
+
+Please note that you need at least TurboGears 1.0.2 and FormEncode 0.7 for
+localized error messages.
+
+.. _demonstrated by Christoph Zwerschke:
+    http://groups.google.com/group/turbogears/msg/61831c58b4684ac4
+
+
+Doing i18n without using TurboGears session module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You don't need to use the session module from turbogears to get translated
+messages. You can insert a custom function which returns a locale string like
+"de" into the TurboGears config which controls which locale is used when
+TurboGears needs to translated something.
+
+The configuration change should take place in the start-up code created by
+``tg-admin quickstart`` (i.e. the ``start`` function in ``commands.py`` in your
+project's package directory). Assuming a very simple scenario where you support
+only one language, this may be as easy as this::
+
+    [...]
+    from <package>.controllers import Root
+
+    turbogears.config.update({'i18n.get_locale' : lambda: "de"})
+
+    turbogears.start_server(Root())
+
+After this modification, all localized strings should be displayed in German.
+
+
+Performance
+~~~~~~~~~~~
+
+TurboGears versions prior to 1.0.2 exhibited a bug in Kid in relation to ``i18n.run_template_filters``, which kills server performance. (See
+`ticket 1296`_ on the TurboGears Trac for an explanation and a simple fix.)
+If you use i18n, be sure to use the latest TurboGears version.
+
+
+.. _ticket 1296: http://trac.turbogears.org/ticket/1296
+
+
+References
+----------
+
+* See the mailing list post `Internationalization, i18n`_ for some more background information.
+* See also the :doc:`FAQ <FAQ>` entry "How do I activate localization for my TurboGears project?"
+
+.. _Internationalization, i18n: http://groups.google.com/group/turbogears/browse_thread/thread/9536b5fd925ebe78/2e994c3005997c87?lnk=gst&ampq=i18n&amprnum=2#2e994c3005997c87
+

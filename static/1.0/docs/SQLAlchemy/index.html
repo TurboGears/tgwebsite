@@ -1,0 +1,478 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQLAlchemy &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Alternative Components" href="../AlternativeComponents.html" />
+    <link rel="next" title="ActiveMapper Crash Course" href="ActiveMapper.html" />
+    <link rel="prev" title="SQLObject vs SQLAlchemy" href="../SQLObject/VsSQLAlchemy.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ActiveMapper.html" title="ActiveMapper Crash Course"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../SQLObject/VsSQLAlchemy.html" title="SQLObject vs SQLAlchemy"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="../AlternativeComponents.html" accesskey="U">Alternative Components</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SQLAlchemy</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#turbogears-support-for-sqlalchemy">TurboGears Support for SQLAlchemy</a></li>
+<li><a class="reference internal" href="#defining-the-model">Defining the Model</a></li>
+<li><a class="reference internal" href="#getting-sqlalchemy">Getting SQLAlchemy</a></li>
+<li><a class="reference internal" href="#using-sqlalchemy-in-turbogears">Using SQLAlchemy in TurboGears</a><ul>
+<li><a class="reference internal" href="#plain-sqlalchemy-with-contextual-sessions">Plain SQLAlchemy with contextual sessions</a></li>
+<li><a class="reference internal" href="#accessing-your-data">Accessing your data</a></li>
+<li><a class="reference internal" href="#the-elixir-layer-on-top-of-sqlalchemy">The Elixir layer on top of SQLAlchemy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tips">Tips</a><ul>
+<li><a class="reference internal" href="#logging">Logging</a></li>
+<li><a class="reference internal" href="#custom-column-types">Custom Column Types</a></li>
+<li><a class="reference internal" href="#using-predefined-databases">Using Predefined Databases</a></li>
+<li><a class="reference internal" href="#passing-parameters-to-create-engine">Passing Parameters to create_engine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#common-problems">Common Problems</a><ul>
+<li><a class="reference internal" href="#module-object-has-no-attribute-bind-meta-data">&#8216;module&#8217; object has no attribute &#8216;bind_meta_data&#8217;</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#future-developments">Future Developments</a></li>
+<li><a class="reference internal" href="#turbogears-interface">TurboGears Interface</a></li>
+<li><a class="reference internal" href="#multiple-databases">Multiple Databases</a></li>
+<li><a class="reference internal" href="#migrating-existing-projects">Migrating Existing Projects</a><ul>
+<li><a class="reference internal" href="#from-sqlobject">From SQLObject</a></li>
+<li><a class="reference internal" href="#from-sqlalchemy-0-3">From SQLAlchemy 0.3</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../SQLObject/VsSQLAlchemy.html"
+                        title="previous chapter">SQLObject vs SQLAlchemy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ActiveMapper.html"
+                        title="next chapter">ActiveMapper Crash Course</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="sqlalchemy">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">SQLAlchemy</a><a class="headerlink" href="#sqlalchemy" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqlalchemy" id="id2">SQLAlchemy</a><ul>
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
+<li><a class="reference internal" href="#turbogears-support-for-sqlalchemy" id="id4">TurboGears Support for SQLAlchemy</a></li>
+<li><a class="reference internal" href="#defining-the-model" id="id5">Defining the Model</a></li>
+<li><a class="reference internal" href="#getting-sqlalchemy" id="id6">Getting SQLAlchemy</a></li>
+<li><a class="reference internal" href="#using-sqlalchemy-in-turbogears" id="id7">Using SQLAlchemy in TurboGears</a></li>
+<li><a class="reference internal" href="#tips" id="id8">Tips</a></li>
+<li><a class="reference internal" href="#common-problems" id="id9">Common Problems</a></li>
+<li><a class="reference internal" href="#future-developments" id="id10">Future Developments</a></li>
+<li><a class="reference internal" href="#turbogears-interface" id="id11">TurboGears Interface</a></li>
+<li><a class="reference internal" href="#multiple-databases" id="id12">Multiple Databases</a></li>
+<li><a class="reference internal" href="#migrating-existing-projects" id="id13">Migrating Existing Projects</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id3">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.sqlalchemy.org">SQLAlchemy</a> is a database library by Michael Bayer. It can be used as an ORM in TurboGears, just like SQLObject. It has some advantages over SQLObject, particularly composite keys and query efficiency. There are disadvantages too; a full comparison is in <a class="reference internal" href="../SQLObject/VsSQLAlchemy.html"><em>SQLObject vs SQLAlchemy</em></a>.</p>
+<p>In TurboGears 1.0, SQLObject is the default. SQLAlchemy can be used and support is solid, especially in 1.0.4 and newer. In TurboGears 1.1, SQLAlchemy is the default, and SQLObject is still supported. SQLAlchemy is recommended for new TurboGears projects. If you&#8217;re converting an existing SQLObject project to SQLALchemy, see the notes at the end.</p>
+<p>One thing to be aware of is that SA has just had a significant new release. SA 0.4 has some backwards-incompatible changes with SA 0.3. This document will focus on the SA 0.4 approach. You can check the version installed by issuing &#8220;import sqlalchemy; sqlalchemy.__version__&#8221;. TurboGears 1.0.4 and newer supports both SA 0.4 and 0.3 (requiring at least 0.3.10). Older versions only support SA 0.3. There are notes about migrating existing 0.3 applications to 0.4, at the end of the document.</p>
+</div>
+<div class="section" id="turbogears-support-for-sqlalchemy">
+<h2><a class="toc-backref" href="#id4">TurboGears Support for SQLAlchemy</a><a class="headerlink" href="#turbogears-support-for-sqlalchemy" title="Permalink to this headline">¶</a></h2>
+<p>What works:</p>
+<ul class="simple">
+<li>Automatic request transactions</li>
+<li><a class="reference internal" href="../TgAdmin.html"><em>Quickstart</em></a></li>
+<li><a class="reference internal" href="../Identity/index.html"><em>Identity</em></a></li>
+<li><a class="reference internal" href="../JSON.html"><em>jsonify</em></a></li>
+<li><a class="reference internal" href="../TgAdmin.html"><em>tg-admin sql</em></a></li>
+<li><a class="reference internal" href="../PaginateDecorator.html"><em>Paginate</em></a></li>
+<li><a class="reference external" href="http://dbsprockets.googlecode.com">DBSprockets</a> (FastData replacement)</li>
+<li><a class="reference external" href="http://code.google.com/p/dbsprockets/wiki/DBMechanic">DBMechanic</a> (Catwalk replacement)</li>
+</ul>
+<p>What doesn&#8217;t work:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../Catwalk.html"><em>Catwalk</em></a></li>
+<li><a class="reference internal" href="../ModelDesigner.html"><em>Model Designer</em></a></li>
+<li><a class="reference internal" href="../FastData/index.html"><em>FastData</em></a></li>
+</ul>
+</div>
+<div class="section" id="defining-the-model">
+<h2><a class="toc-backref" href="#id5">Defining the Model</a><a class="headerlink" href="#defining-the-model" title="Permalink to this headline">¶</a></h2>
+<p>There are two main ways to define the model:</p>
+<ul class="simple">
+<li>using plain SQLAlchemy with contextual sessions</li>
+<li>using the Elixir layer on top of SQLAlchemy</li>
+</ul>
+<p>Plain SQLAlchemy is recommend for new projects, as it offers the full power of SQLAlchemy. Elixir often results in shorter code, however some advanced functionality can&#8217;t be achieved (e.g. mapping objects to select statements, rather than tables). Elixir is recommended for users experienced with SQLAlchemy, who understand the complexity/functionality trade-off made when using it.</p>
+</div>
+<div class="section" id="getting-sqlalchemy">
+<h2><a class="toc-backref" href="#id6">Getting SQLAlchemy</a><a class="headerlink" href="#getting-sqlalchemy" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.sqlalchemy.org">SQLAlchemy</a> is automatically installed with TurboGears 1.1. For 1.0 users,
+you can grab the most recent release via the <a class="reference external" href="http://pypi.python.org">cheeseshop</a>:</p>
+<div class="highlight-python"><pre>easy_install SQLAlchemy</pre>
+</div>
+<p>You can also get it via the <a class="reference external" href="http://www.sqlalchemy.org/download.myt">SQLAlchemy download</a> page.
+The <a class="reference external" href="http://www.sqlalchemy.org/docs/">SqlAlchemy documentation</a> is quite thorough.</p>
+</div>
+<div class="section" id="using-sqlalchemy-in-turbogears">
+<h2><a class="toc-backref" href="#id7">Using SQLAlchemy in TurboGears</a><a class="headerlink" href="#using-sqlalchemy-in-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>The simplest way to get started using SQLAlchemy is to quickstart a new project
+with either the <tt class="docutils literal"><span class="pre">--sqlalchemy</span></tt> or <tt class="docutils literal"><span class="pre">--elixir</span></tt> switch:</p>
+<div class="highlight-python"><pre>tg-admin quickstart --sqlalchemy / --elixir</pre>
+</div>
+<p>(Or more briefly: tg-admin quickstart -s / -e)</p>
+<p>This switch sets up your <tt class="docutils literal"><span class="pre">model.py</span></tt> properly for using SQLAlchemy. If you said yes to the identity prompt, you&#8217;ll get the identity tables as either plain SQLAlchemy or Elixir.</p>
+<p>Now change the value of <tt class="docutils literal"><span class="pre">sqlalchemy.dburi</span></tt> to point to a valid database connection. During development, this is in dev.cfg.</p>
+<p>To init the database schema you need to run:</p>
+<blockquote>
+<div>tg-admin sql create</div></blockquote>
+<div class="section" id="plain-sqlalchemy-with-contextual-sessions">
+<h3>Plain SQLAlchemy with contextual sessions<a class="headerlink" href="#plain-sqlalchemy-with-contextual-sessions" title="Permalink to this headline">¶</a></h3>
+<p>Use <tt class="docutils literal"><span class="pre">turbogears.database.mapper</span></tt> as the mapper:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.database</span> <span class="kn">import</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">mapper</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">Column</span><span class="p">,</span> <span class="n">Integer</span>
+
+<span class="n">mytable</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span><span class="s">&#39;mytable&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span>
+    <span class="n">Column</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="k">class</span> <span class="nc">MyTable</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
+<span class="n">mapper</span><span class="p">(</span><span class="n">MyTable</span><span class="p">,</span> <span class="n">mytable</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The mapper function from <tt class="docutils literal"><span class="pre">turbogears.database</span></tt> is identical with SQLAlchemy&#8217;s contextual mapper() if you use SQLAlchemy &gt;= 0.4, and something similar if you use SQLAlchemy &lt; 0.4</p>
+<p>For more information, see <a class="reference external" href="http://www.sqlalchemy.org/docs/04/session.html#unitofwork_contextual">http://www.sqlalchemy.org/docs/04/session.html#unitofwork_contextual</a></p>
+<p>In TurboGears &lt;= 1.0.4b2, <tt class="docutils literal"><span class="pre">turbogears.database.mapper</span></tt> is not available; you must define it explicitly in one of the following ways:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># standard SQLAlchemy mapper</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">mapper</span>
+
+<span class="c"># contextual mapper (only for SQLAlchemy &gt;= 0.4)</span>
+<span class="n">mapper</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">mapper</span>
+
+<span class="c"># assignmapper extension (deprecated)</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.ext.assignmapper</span> <span class="kn">import</span> <span class="n">assign_mapper</span>
+<span class="n">mapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">:</span> <span class="n">assign_mapper</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-your-data">
+<h3>Accessing your data<a class="headerlink" href="#accessing-your-data" title="Permalink to this headline">¶</a></h3>
+<p>There&#8217;s a special way for the controller to access the session and data.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">turbogears</span> <span class="kn">as</span> <span class="nn">tg</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span><span class="p">,</span> <span class="n">flash</span>
+<span class="kn">from</span> <span class="nn">turbogears.database</span> <span class="kn">import</span> <span class="n">session</span>
+<span class="kn">from</span> <span class="nn">YOURPACKAGE</span> <span class="kn">import</span> <span class="n">model</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;YOURPACKAGE.templates.test&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">entries</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span><span class="p">[</span><span class="s">&#39;entries&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span>
+
+        <span class="n">myTable</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">MyTable</span><span class="p">()</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">myTable</span><span class="p">)</span> <span class="c"># TurboGears handles session creation</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">table</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">MyTable</span><span class="p">):</span>
+            <span class="n">entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span>
+        <span class="c"># session is automatically closed for you</span>
+</pre></div>
+</div>
+<p>Then in the template you can have something like:</p>
+<div class="highlight-python"><pre>&lt;span py:for="table_id in entries"&gt;${table_id}&lt;/span&gt;</pre>
+</div>
+<p>Don&#8217;t use .all() in your queries. The only place where you need to use .all() is with MSSQL server
+2000 which does not support offsets.</p>
+</div>
+<div class="section" id="the-elixir-layer-on-top-of-sqlalchemy">
+<h3>The Elixir layer on top of SQLAlchemy<a class="headerlink" href="#the-elixir-layer-on-top-of-sqlalchemy" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://elixir.ematia.de/trac/wiki">Elixir</a> is a declarative layer on top of the SQLAlchemy library.</p>
+<p>Using Elixir, you would define your model like that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">elixir</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">Unicode</span>
+
+<span class="k">class</span> <span class="nc">MyTable</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">Unicode</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In Elixir &lt; 0.4, this new syntax is not available, you have to use the old syntax:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">elixir</span> <span class="kn">import</span> <span class="n">Entity</span><span class="p">,</span> <span class="n">has_field</span><span class="p">,</span> <span class="n">Unicode</span>
+
+<span class="k">class</span> <span class="nc">MyTable</span><span class="p">(</span><span class="n">Entity</span><span class="p">):</span>
+    <span class="n">has_field</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">Unicode</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The differences between Elixir 0.3 and 0.4 are explained here: <a class="reference external" href="http://elixir.ematia.de/trac/wiki/Migrate03to04">http://elixir.ematia.de/trac/wiki/Migrate03to04</a></p>
+<p>In future Elixir versions, you may need to create your mappings explicitly using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">setup_all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For more information on Elixir, see the <a class="reference external" href="http://elixir.ematia.de/trac/wiki/Documentation">Elixir documentation</a>.</p>
+</div>
+</div>
+<div class="section" id="tips">
+<h2><a class="toc-backref" href="#id8">Tips</a><a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="logging">
+<h3>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h3>
+<p>The default dev.cfg files contains the following to configure SA logging. By default it will not log every SQL statement issued. This can be changed for debugging.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[[[</span><span class="n">database</span><span class="p">]]]</span>
+<span class="c"># Set to INFO to make SQLAlchemy display SQL commands</span>
+<span class="n">level</span><span class="o">=</span><span class="s">&#39;ERROR&#39;</span>
+<span class="n">qualname</span><span class="o">=</span><span class="s">&#39;sqlalchemy.engine&#39;</span>
+<span class="n">handlers</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;debug_out&#39;</span><span class="p">]</span>
+<span class="n">propagate</span><span class="o">=</span><span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="custom-column-types">
+<h3>Custom Column Types<a class="headerlink" href="#custom-column-types" title="Permalink to this headline">¶</a></h3>
+<p>While SQLObject uses formencode to perform Python to database conversions, SQLAlchemy
+performs conversions through defining its column datatypes.
+This section demonstrates how to use the SQLAlchemy column datatypes.</p>
+<p>Below are two examples, one which converts a number representing the system timestamp to a
+Python <tt class="docutils literal"><span class="pre">datetime</span></tt> while the other converts IPv4 addresses between integer and
+octet notation. Keep in mind that <tt class="docutils literal"><span class="pre">convert_bind_param</span></tt> is <em>to</em> the database
+while <tt class="docutils literal"><span class="pre">convert_result_value</span></tt> is <em>from</em> the database.</p>
+<p>Creating a <tt class="docutils literal"><span class="pre">TIMESTAMP</span></tt> column type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span> <span class="nc">TIMESTAMP</span><span class="p">(</span><span class="n">Numeric</span><span class="p">):</span>
+    <span class="c"># to the database</span>
+    <span class="k">def</span> <span class="nf">convert_bind_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TIMESTAMP</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">convert_bind_param</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()),</span><span class="n">engine</span><span class="p">)</span>
+    <span class="c"># from the database</span>
+    <span class="k">def</span> <span class="nf">convert_result_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">value</span><span class="p">,</span><span class="n">engine</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">TIMESTAMP</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">convert_result_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span><span class="n">engine</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Creating an <tt class="docutils literal"><span class="pre">IPV4</span></tt> column type:</p>
+<div class="highlight-python"><pre>import struct
+from socket import inet_aton, inet_ntoa, error as socket_error
+
+class IPv4AddrTypeError(TypeError):
+    def __init__(self, addr):
+        self.addr = addr
+    def __str__(self):
+        return "Illegal IPv4 address '%s'" % self.addr
+
+class IPV4(Numeric):
+    # to the database
+    def convert_bind_param(self,value,engine):
+        try:
+            return super(IPV4,self).convert_bind_param(struct.unpack('!L',inet_aton(value))[0],engine)
+        except socket_error:
+            raise IPv4AddrTypeError(value)
+    # from the database
+    def convert_result_value(self,value,engine):
+        return inet_ntoa(struct.pack('!L',super(IPV4,self).convert_result_value(value,engine))</pre>
+</div>
+</div>
+<div class="section" id="using-predefined-databases">
+<h3>Using Predefined Databases<a class="headerlink" href="#using-predefined-databases" title="Permalink to this headline">¶</a></h3>
+<p>There are times when you want to load your table definitions from a preexisting database.  SQLAlchemy makes it easy to do this via an argument to the Table creation function and the addition of one function call:</p>
+<pre class="literal-block">
+from turbogears.database import metadata, bind_meta_data
+# This function makes the metadata variable ready for us to use
+<strong>bind_meta_data()</strong>
+
+# Notice the autoload=True parameter.  This tells SQLAlchemy
+# to load the table definition by introspecting the database
+MyTable = Table('mytable', metadata, <strong>autoload=True</strong>)
+</pre>
+</div>
+<div class="section" id="passing-parameters-to-create-engine">
+<h3>Passing Parameters to create_engine<a class="headerlink" href="#passing-parameters-to-create-engine" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to specify parameters for create_engine in the configuration file (dev.cfg during development). The syntax looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&#39;sqlite:///mydb&#39;</span>
+<span class="n">sqlalchemy</span><span class="o">.</span><span class="n">pool_recycle</span> <span class="o">=</span> <span class="mi">30</span>
+</pre></div>
+</div>
+<p>In this example, pool_recycle=30 will be passed to create_engine. If multiple databases are used all create_engine calls get the same arguments.</p>
+</div>
+</div>
+<div class="section" id="common-problems">
+<h2><a class="toc-backref" href="#id9">Common Problems</a><a class="headerlink" href="#common-problems" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-object-has-no-attribute-bind-meta-data">
+<h3>&#8216;module&#8217; object has no attribute &#8216;bind_meta_data&#8217;<a class="headerlink" href="#module-object-has-no-attribute-bind-meta-data" title="Permalink to this headline">¶</a></h3>
+<p>If you are using a version of SQLAlchemy that is too old (or you did not install SQLAlchemy at all), you will receive the following error message:</p>
+<div class="highlight-python"><pre>Unhandled exception in thread started by &lt;bound method Server._start of &lt;cherrypy._cpserver.Server object at 0x832ce0c&gt;&gt;
+Traceback (most recent call last):
+  File ".../site-packages/CherryPy....egg/cherrypy/_cpserver.py", line 78, in _start
+    Engine._start(self)
+  File ".../site-packages/CherryPy....egg/cherrypy/_cpengine.py", line 108, in _start
+    func()
+  File ".../site-packages/TurboGears....egg/turbogears/startup.py", line 227, in startTurboGears
+    database.bind_meta_data()
+AttributeError: 'module' object has no attribute 'bind_meta_data'</pre>
+</div>
+<p>If this is the case, you should update to a newer version of SQLAlchemy.</p>
+</div>
+</div>
+<div class="section" id="future-developments">
+<h2><a class="toc-backref" href="#id10">Future Developments</a><a class="headerlink" href="#future-developments" title="Permalink to this headline">¶</a></h2>
+<p>Evan Rosson, as part of the Google Summer of Code 2006, was the original author of the
+<a class="reference external" href="http://code.google.com/p/sqlalchemy-migrate/">Migrate</a> project, which provides tools to enable controlled schema migration. Currently,
+migrate does not work with SQLAlchemy 0.4 but there is some work underway to revive this
+project.</p>
+</div>
+<div class="section" id="turbogears-interface">
+<h2><a class="toc-backref" href="#id11">TurboGears Interface</a><a class="headerlink" href="#turbogears-interface" title="Permalink to this headline">¶</a></h2>
+<p>The TurboGears <tt class="docutils literal"><span class="pre">database</span></tt> module provides the following:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">session</span></tt> - The SQLAlchemy session, in a thread local wrapper. This is mostly used in the controller.</li>
+<li><tt class="docutils literal"><span class="pre">get_engine()</span></tt> - Connects to the database (if not already connected) and returns the SQLAlchemy engine. Only used rarely. With TG 1.1, a package name can be passed as an argument.</li>
+<li><tt class="docutils literal"><span class="pre">metadata</span></tt> - The SQLAlchemy metadata, initially not bound to any database. This is mostly used in the model.</li>
+<li><tt class="docutils literal"><span class="pre">get_metadata(pkg)</span></tt> - With TG 1.1, gets the metadata for the given package name, or the default package if not specified.</li>
+<li><tt class="docutils literal"><span class="pre">bind_meta_data()</span></tt> - Bind the SQLAlchemy metadata to the database connection. Automatically called from <tt class="docutils literal"><span class="pre">startTurboGears()</span></tt>, so rarely used manually.</li>
+<li><tt class="docutils literal"><span class="pre">mapper</span></tt>: - A contextual SQLAlchemy mapper. This is identical with <tt class="docutils literal"><span class="pre">session.mapper</span></tt> for SQLAlchemy 0.4 and above.</li>
+<li><tt class="docutils literal"><span class="pre">cherrypy.request.sa_transaction</span></tt> - Can be used to manually control the transaction that is created automatically for each request. For SQLAlchemy 0.4 and above, it is recommended to use transaction methods on the session instead.</li>
+</ul>
+</div>
+<div class="section" id="multiple-databases">
+<h2><a class="toc-backref" href="#id12">Multiple Databases</a><a class="headerlink" href="#multiple-databases" title="Permalink to this headline">¶</a></h2>
+<p>With TG 1.1, multiple databases are fully supported. Multiple DBURIs can be specified in the configuration. With TG 1.0 it is possible to use multiple databases, although secondary databases must have their connection details embedded in the code.</p>
+<p>The configuration file (dev.cfg during development) could look like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlalchemy</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&#39;mysql://maindb/myapp&#39;</span>
+<span class="n">sales</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&#39;oracle://extserver/oldapp&#39;</span>
+</pre></div>
+</div>
+<p>To define tables in these databases using plain SA, code would look like:</p>
+<div class="highlight-python"><pre>from turbogears.database import get_metadata
+mytbl = Table('mytbl', get_metadata(), # Creates in main db
+...
+tbl2 = Table('tbl2', get_metadata('sales'), # Creates in sales db
+...</pre>
+</div>
+<p>The equivalent TG 1.0 code would be:</p>
+<div class="highlight-python"><pre>from turbogears.database import metadata
+sales_metadata = MetaData('oracle://extserver/oldapp')
+mytbl = Table('mytbl', metadata, # Creates in main db
+...
+tbl2 = Table('tbl2', sales_metadata, # Creates in sales db
+...</pre>
+</div>
+<p>With Elixir, one option is specify the metadata for every table, with using_options(metadata=alt_metadata). Another approach (usually preferable) is to keep the table definitions for each database in separate files. In each file, set the global variable &#8220;metadata&#8221; (__metadata__ with Elixir 0.4) to the appropriate metadata.</p>
+<p>The controller can use tables from multiple databases, being mostly unaware of the separation. Queries can only use tables from a single database.</p>
+</div>
+<div class="section" id="migrating-existing-projects">
+<h2><a class="toc-backref" href="#id13">Migrating Existing Projects</a><a class="headerlink" href="#migrating-existing-projects" title="Permalink to this headline">¶</a></h2>
+<p>Before starting, be warned this can be quite a major task. You&#8217;ll need to be reasonably familiar with SQLAlchemy. And make sure you test your application thoroughly after the change.</p>
+<div class="section" id="from-sqlobject">
+<h3>From SQLObject<a class="headerlink" href="#from-sqlobject" title="Permalink to this headline">¶</a></h3>
+<p>To update the model, start by using <a class="reference external" href="http://www.sqlalchemy.org/trac/wiki/UsageRecipes/AutoCode">AutoCode</a> to generate SQLAlchemy code that matches your existing database. Then, by hand, move all the logic code from your old model into the new one.</p>
+<p>You&#8217;ll also need to update any other code that calls the model. The main change is that MyTable.get becomes MyTable.query.get, and .select becomes .filter.</p>
+</div>
+<div class="section" id="from-sqlalchemy-0-3">
+<h3>From SQLAlchemy 0.3<a class="headerlink" href="#from-sqlalchemy-0-3" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<p>See the SQLAlchemy docs: <a class="reference external" href="http://www.sqlalchemy.org/docs/04/intro.html#overview_migration">http://www.sqlalchemy.org/docs/04/intro.html#overview_migration</a></p>
+<p>The most significant change is a change to query syntax that affects migrating from assign_mapper (or ActiveMapper) to the SQLAlchemy contextual mapper. The previous syntax of <tt class="docutils literal"><span class="pre">Object.get(id)</span></tt> is now <tt class="docutils literal"><span class="pre">Object.query.get(id)</span></tt>, <tt class="docutils literal"><span class="pre">get_by()</span></tt> is gone,  <tt class="docutils literal"><span class="pre">select()</span></tt> and <tt class="docutils literal"><span class="pre">select_by()</span></tt> are replaced by <tt class="docutils literal"><span class="pre">query.filter()</span></tt> and <tt class="docutils literal"><span class="pre">query.filter_by()</span></tt>. Elixir is affected in the same way, since it inherited its methods from assign_mapper; however the <tt class="docutils literal"><span class="pre">Object.get(id)</span></tt> and <tt class="docutils literal"><span class="pre">Object.get_by(id)</span></tt> shortcuts still remain if you are using Elixir.</p>
+<p>There were several approaches for defining the model in SQLAlchemy 0.3, with different suggestions for migration</p>
+<ul class="simple">
+<li>Plain SA (manual sessions) - this will work in SQLAlchemy 0.4 without changes. Consider changing to contextual session, as that is the convenient new way.</li>
+<li>assign_mapper - will <em>not</em> work with TurboGears and SQLAlchemy 0.4. Change to contextual session.</li>
+<li><a class="reference external" href="SQLAlchemy/ActiveMapper">ActiveMapper</a> - will work in SQLAlchemy 0.4. It is now deprecated and should not be used for new projects; use Elixir instead. Changes will be needed for TG 1.1, see below.</li>
+<li><cite>Elixir &lt;GettingStarted/UseElixir&gt;</cite> - will work with SQLAlchemy 0.4</li>
+</ul>
+<p>TurboGears projects that use <tt class="docutils literal"><span class="pre">req.sa_transaction</span></tt> will see no visible change. However, they should now use transaction controls on the <tt class="docutils literal"><span class="pre">turbogears.database.session</span></tt> object. <tt class="docutils literal"><span class="pre">req.sa_transaction</span></tt> will be removed at some point.</p>
+<p>Also, in the TG config file, <tt class="docutils literal"><span class="pre">sqlalchemy.echo</span></tt> no longer works. There is an alternative log configuration syntax, see above.</p>
+<p>In TG 1.0, ActiveMapper is bound to the turbogears database and session automatically. To use ActiveMapper with TG 1.1, you must add the following boiler plate to the top of your model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlalchemy.ext</span> <span class="kn">import</span> <span class="n">activemapper</span>
+<span class="kn">from</span> <span class="nn">turbogears.database</span> <span class="kn">import</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">session</span>
+<span class="n">activemapper</span><span class="o">.</span><span class="n">objectstore</span> <span class="o">=</span> <span class="n">session</span>
+<span class="n">__metadata__</span> <span class="o">=</span> <span class="n">metadata</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

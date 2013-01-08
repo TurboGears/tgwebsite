@@ -1,0 +1,303 @@
+.. index:: @validate, validate decorator, validation
+
+@validate()
+===========
+
+.. contents::
+    :depth: 2
+
+
+When using TurboGears, your controller methods get their arguments built from
+the various GET, POST, and URL mechanisms provided by CherryPy. The only
+downside is that all the arguments will be strings and you'd like them
+converted to their normal Python datatype: numbers to ``int``, dates to
+``datetime``, etc.
+
+This conversion functionality is provided by the `FormEncode`_ package and is
+applied to your methods using the ``@validate()`` decorator. FormEncode
+provides both validation and conversion as a single step, reasoning that you
+frequently need to validate something before you can convert it or that you'll
+need to convert something before you can really validate it.
+
+The ``@validate()`` decorator can evaluate both widget-based forms and the
+standard CherryPy arguments. The ``@validate()`` decorator is not required in
+order to use TurboGears. If you don't put a ``@validate()`` decorator on your
+method, you'll simply have to do the string validation and conversion yourself.
+
+.. _FormEncode: http://formencode.org/
+
+
+Validating Widget Forms
+-----------------------
+
+The simplest way to use ``@validate()`` is to pass in a reference to a
+widgets-based form instance::
+
+    @expose('yourpkg.templates.aform')
+    @validate(yourpkg.forms.my_form)
+    def show_form(self, field1, field2, ...):
+        ...
+        return dict(form=yourpkg.forms.a_form)
+
+where ``yourpkg.forms.a_form`` is an instance of a ``turbogears.widgets.Form``
+sub-class or a callable that returns such an instance. The callable will be
+called for each request, so you can dynamically build forms depending on the
+request context.
+
+The widgets system will take care of building a schema to handle the data
+conversions and you'll wind up with the ``int`` or ``datetime`` objects you
+specified when building the form. When paired with the :doc:`error handling <ErrorHandling>`
+decorators, you can handle the common case of building a form, validating it,
+re-displaying the form if there are errors, and converting a valid form into the
+proper arguments in only a few lines of Python.
+
+See :doc:`Widget Form Validation with Schemas <Widgets/FormValidationWithSchemas>`
+for more information.
+
+
+Validating Arguments (Without Form Widgets)
+-------------------------------------------
+
+When not using forms, the story gets a bit more complex. Basically, you need to
+specify which validator goes with which argument using the ``validators``
+keyword argument for the ``validate`` decorator. Here's a simple example::
+
+    from turbogears import controllers, expose, validate, validators
+
+
+    class Root(controllers.RootController):
+
+        @expose('yourpkg.templates.someform')
+        @validate(validators = dict(
+            # Only letters/numbers/underscores/dashes
+            item=validators.PlainText(),
+            # Default value 'M'
+            size=validators.OneOf(['S', 'M', 'L'], if_empty='M'),
+            # Required field
+            price=validators.Money(not_empty=True)))
+        def storeitem(self, tg_errors=None, **kwargs):
+            if tg_errors:
+                pass # handle the error however you want!
+            return dict(newvalue=value*2)
+
+As you can see FormEncode and TurboGears provide a number of useful validators
+that are available in the ``turbogears.validators`` module.
+
+For most validators, you can pass keyword arguments for more specific
+constraints. For the list of available validators, check both the
+`FormEncode validators`_ and `TurboGears validators`_ (`source`_) modules.
+You can also create your own validators or build on existing validators by
+inheriting from one of the defaults. See the `FormEncode documentation`_
+for how this is done.
+
+The dictionary passed to the ``validators`` argument of the ``validate``
+decorator maps the incoming field names to the appropriate FormEncode
+validators - in this example, we used ``PlainText``, ``OneOf`` and ``Money``.
+If all values pass validation, ``tg_errors`` won't change from it's default
+value of ``None`` and you are assured that value will be an ``int``.
+Wait a minute! What's this ``tg_errors``?
+
+.. _FormEncode documentation: http://formencode.org/
+.. _FormEncode validators:
+    http://formencode.org/module-formencode.validators.html#classes
+.. _TurboGears validators:
+    http://turbogears.org/1.0/docs/api/turbogears.validators-module.html
+.. _source:
+    http://trac.turbogears.org/browser/branches/1.0/turbogears/validators.py
+
+
+Handling Validation Errors
+--------------------------
+
+If there's a validation error, a dictionary named ``tg_errors`` will be passed
+to the function, with keys for the field names that failed validation. If you
+look up the keys, such as ``tg_errors['value']``, you'll find an ``Invalid``
+exception object. ``Invalid`` exception objects can be ``str()``'d if you'd like
+to use them as user-friendly error messages or you can use the information
+contained in them to handle the error as you like::
+
+    @expose('yourpkg.templates.someform')
+    @validate(validators=dict(value=validators.Int()))
+    def index(self, value=0, tg_errors=None):
+        if tg_errors:
+            message = ', '.join(str(item) for item in tg_errors.values())
+        else:
+            message = "Success!"
+        return dict(message=message)
+
+.. note::
+    If you use form-based validation or if you pass a validation schema to the
+    ``validators`` argument (see below), the values in the ``tg_errors`` will
+    already be coerced into strings for your convenience. If you still need
+    access to the ``Invalid`` exception object thrown by the validation schema,
+    you can access it through ``cherrypy.request.validation_exception`` and
+    retrieve the ``Invalid`` exceptions for the individual fields that failed
+    validation through its ``error_dict`` attribute.
+
+.. note::
+    If you omit the ``tg_errors=None`` keyword from the controller method's
+    arguments, you get told that there is no error handler function. This is
+    a bit misleading as you don't really need an error handler if you handle
+    things on your own, as explained here. See the documentation on
+    :doc:`Error Handling <ErrorHandling>` for learning more about error handlers.
+
+
+Schema Validation
+-----------------
+
+If you want to do multiple-field validation, reuse validators or just clean up
+your code, validation ``Schema``s are the way to go. You create a validation
+schema by inheriting from ``turbogears.validators.Schema`` and pass the newly
+created ``Schema`` as the ``validators`` argument instead of passing a
+dictionary::
+
+    class MySchema(validators.Schema):
+        pwd1 = validators.String(not_empty=True)
+        pwd2 = validators.String(not_empty=True)
+        chained_validators = [validators.FieldsMatch('pwd1', 'pwd2')]
+
+    @expose()
+    @validate(validators=MySchema())
+    def password(self, pwd1, pwd2, tg_errors=None):
+        if tg_errors:
+            return "There was an error"
+        return "Password ok!"
+
+Besides noticing our brilliant security strategy, please notice the
+``chained_validators`` part of the schema that guarantees a pair of matching
+fields.
+
+Again, for information about ``Invalid`` exception objects, creating your
+own validators, schema and FormEncode in general, refer to the `FormEncode
+Validator`_ documentation and don't be afraid to check the
+``formencode.validators`` source. It's often more clear than the docs.
+
+.. _formencode validator: http://formencode.org/docs/Validator.html
+
+
+Converting URL Strings to Python Types Manually
+-----------------------------------------------
+
+You can always use e.g. Python's ``int()`` method to convert a string to an
+integer and use a try/except block to catch errors in the conversion process::
+
+  from turbogears import controllers, expose
+
+
+  class Root(controllers.RootController):
+
+      @expose()
+      def addnum(self, x, y):
+          """Return the result of x+y."""
+          try:
+             return str(int(x) + int(y))
+          except ValueError:
+             return "Input is not valid!"
+
+This isn't that hard, but it quickly becomes unwieldy when you start converting
+large numbers of arguments. Moreover, you still have the problem of propagating
+the errors back to your users. In the end, it's usually far simpler to use the
+validation framework.
+
+
+Advanced Topics
+---------------
+
+
+Providing State
+~~~~~~~~~~~~~~~
+
+Sometimes you need access to external and possibly dynamic information in your
+validators, for example to change the outcome of the validation depending on this
+information. The ``validate_python`` and ``_to_python`` methods of all validators
+take an optional argument called ``state`` which is exactly for this purpose. The
+value of this argument should be  a ``turbogears.util.Bunch``-like object (i.e. just
+a simple data class that has arbitrary attributes) which provides the state
+information for the validator (schema). See the `FormEncode documentation about
+'state' <http://formencode.org/Validator.html#state>`_ for more information.
+
+The ``validate`` decorator function takes a keyword argument named ``state_factory``
+which expects a callable, which should return a Bunch object suitable to be passed
+as the ``state`` parameter to the validator schema of the form widget.
+
+Here's a small example of how you can provide a validator with access to information
+about the current request::
+
+    from turbogears import util, expose, validate
+    from myproject.forms import myform
+
+    def state_provider():
+        return util.Bunch(request=cherrypy.request)
+
+    @expose()
+    @validate(form=myform, state_factory=state_provider)
+    def mymethod(self, ...)
+        ...
+
+
+When You Really Need That Value: ``failsafe_values``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the arguments, for whatever reason, fail validation, you will receive no
+values for the failing arguments.
+
+If you would rather not get a ``tg_errors`` dict when this occurs, simply
+provide the validator with a value for its ``if_invalid`` keyword argument.
+
+If you'd like to get both a ``tg_errors`` dict (so you can do some error
+handling) and a default value, supply a dictionary to the ``failsafe_values``
+keyword argument containing the parameter/value pairs::
+
+    @expose()
+    @validate(validators=MySchema(),
+              failsafe_values=dict(pwd1='swordfish'))
+    def password(self, pwd1, pwd2, tg_errors=None):
+        if tg_errors:
+            return "There was an error"
+        return "Password ok!"
+
+
+Beware of the Recursion Guard
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The validate decorator has a built-in "recursion guard" which should prevent
+unwanted recursions. Unfortunately, the current implementation (1.0.x) causes
+some side effects which may affect you:
+
+1) Parameters for methods named ``"validate"`` won't get validated despite a
+correctly placed validate decorator. The only workaround is to choose a
+different name.
+
+The following example code demonstrates this::
+
+    ## BAD, DOES NOT WORK AS EXPECTED!
+    @expose()
+    @validate(validators=dict(userid=validators.Int()))
+    def validate(self, userid=None, tg_errors=None):
+        if not isinstance(userid, int):
+            if tg_errors is None:
+                return "No validation, userid=%s (type %s)" % (
+                    userid, type(userid))
+            else:
+                return "Validation failed, userid=%s (type %s)" % (
+                    userid, type(userid))
+        else:
+            return "Validation passed, userid=%d" % userid
+
+2) The validate decorator will only be called once per request. This can be a
+problem if you call other exposed methods from another method.
+
+The latter can be demonstrated with the following controller example snippet::
+
+    ## BAD, DOES NOT WORK AS EXPECTED!
+    @expose()
+    @validate(validators=dict(userid=validators.String()))
+    def foo(self, userid=None, tg_errors=None):
+       return self.bar(userid=userid)
+
+    @expose()
+    @validate(validators=dict(userid=validators.Int()))
+    def bar(self, userid=None, tg_errors=None):
+        # userid is not validated if the call came from foo()
+        return userid
+

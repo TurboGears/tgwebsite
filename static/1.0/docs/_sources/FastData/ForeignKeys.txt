@@ -1,0 +1,45 @@
+Foreign Keys In Fast Data
+=========================
+
+Suppose you have a model that looks like this:
+
+::
+
+
+    class Employee(SQLObject):
+       name = StringCol(length=40, alternateID=True, title="Name")
+       department = ForeignKey('Department')
+
+    class Department(SQLObject):
+       number = IntCol(alternateID=True, title="Department Number")
+       name = StringCol(length=40, alternateID=True, title="Department Name")
+
+
+
+If you use FastData to display an Employee's Department in a grid, the Department will show up like this:
+
+::
+
+  <Department number=123, name="Accounting">
+
+
+
+What you're seeing is the output from SQLObject's default __str__ method. To make this more readable, override that method:
+
+::
+
+
+    class Department(SQLObject):
+       number = IntCol(alternateID=True, title="Department Number")
+       name = StringCol(length=40, alternateID=True, title="Department Name")
+
+       def __str__(self):
+          return  "%d(%s)" % (self.number, self.name)
+
+
+
+Now, whenever you display the Department as a ForeignKey, you will see:
+
+::
+
+  123 (Accounting)

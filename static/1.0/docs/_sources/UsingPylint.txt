@@ -1,0 +1,312 @@
+.. index:: pylint
+
+Using Pylint to Improve the Quality of Your Code
+================================================
+
+.. contents::
+    :depth: 2
+
+Pylint_ is a Python tool that checks a module for coding standards. According
+to the TurboGears project coding guidelines, PEP8_ is the standard and pylint
+is a good mechanical test to help us in attaining that goal.
+
+The range of checks run from Python errors, missing docstrings, unused imports,
+unintended redefinition of built-ins, to bad naming and more.
+
+.. _pylint: http://www.logilab.org/857
+.. _pep8: http://www.python.org/dev/peps/pep-0008/
+
+
+Installation
+------------
+
+Currently pylint is not ``easy_install``'able but is available in most package
+managers and there are source/install packages for a number of systems
+available on the logilab site.
+
+
+
+Usage
+-----
+
+While you simply can run pylint by hand we would advise to rather use a script
+named :download:`pylint_projectname.py <downloads/pylint_projectname.py>` which
+you should copy to the base dir of your TurboGears project and let your RCS
+handle its backup and revisioning. Its main purpose is to call pylint on either
+the files you specify on its command line or on all your projects files ending
+in `.py`. It also adds the following parameters to the call to pylint:
+
+
+``--reports=n``
+    Turn off the code metric reports as theyjust get in the way while you are
+    refactoring.
+``--include-ids=y``
+    List the message id on each line, this makes for a faster reference while
+    refactoring.
+``--additional-builtins=_``
+    Kid has adopted some of the bad habits of other projects and uses the
+    shorthand underscore as a valid variable, this will stop pylint from crying
+    foul
+``--disable-msg=I0011``
+    Suppress messages referring to in-line suppression of messages. Read on to
+    learn why this is useful.
+
+Please note that you can easily override these parameters either by changing
+the script or by adding new parameters to its command line.
+
+pylint also allows you to modify it's global presets from a configuration file
+in your home directory. However, the preferred method is to use in-line
+comments in your Python source code files to suppress specific occurrences of
+specific messages. The reason for this is that TurboGears combines a lot of
+other projects into one single distribution and some of these projects use
+advanced magic that is not understood by pylint. For example SQLObject makes
+heavy use of Python's introspection capabilities to generate methods
+on-the-fly, a feature that doesn't mix well with pylint's static analysis
+method. SQLObject also provides some means to modify the behaviour of your
+classes via an inner class named ``sqlmeta`` which also triggers some pylint
+warnings as these classes usually have no ``__init__`` method and the class
+name doesn't start with a capital letter. Thus some of pylints warnings could
+be disabled in certain circumstances. But you should not disable them globally
+(either in your ``~/.pylintrc`` or in the ``pylint_projectname.py`` script)
+because the warnings are valid and should be considered. Rather, disable each
+warning on the line or in the class where it is flagged after you checked that
+you can disregard it.
+
+An analogy to this approach might be Python's ``try/except`` error handling.
+The except block should be explicit about the error condition and preferably
+not universal. As a rule of thumb, if you own the code you shouldn't suppress
+the message but if the condition occurs because of the a 3rd party module, it
+is ok to suppress it explicitly. Always prefer to use in-line suppression and
+only as a last resort use global suppression.
+
+Remember the goal is better code not getting a 10/10 score from pylint. Don't
+just suppress a message because you want a clean pylint report. Fix the code or
+leave it unsuppressed so that it is easily seen by someone else who might have
+the time and inclination to refactor it.
+
+For more information about the arcane art of creating a ``~/.pylintrc`` file
+you might want to look into `pylint's documentation`_. A quick way to generate
+such a file is to call pylint directly, maybe with a set of parameters you want
+to have set within the generated file, and add the special parameter
+``--generate-rcfile`` to the command line. Pylint then prints out a config
+file, and by redirecting this output to a file you have your config file in no
+time. For example::
+
+    pylint --reports=n --include-ids=y --additional-builtins=_ \
+        --disable-msg=I0011 --generate-rcfile > .pylintrc
+
+
+generates such a resource file in your working directory. Note that pylint only
+searches your home directory and not the working directory for such a file. You
+can use the ``--rcfile=filename`` option to have pylint read a complex set of
+options from such a (or any) file.
+
+.. tip:: **Hint:** you can set up a number of editors to call external commands
+    with a single keystroke or even every time you save a file. Doing this so
+    that pylint checks your changes every time is a very good way to keep
+    rolling while you are refactoring.
+
+.. _pylint's documentation: http://www.logilab.org/card/pylint_tutorial
+
+
+Where to Use Pylint
+-------------------
+
+Pylint should be ran against anything that ends in ``.py`` and is TurboGears
+proper (including tests) and modules specifically designed to enhance
+TurboGears.
+
+Rule of thumb: If it ends in ``.py`` and is in the repository, run pylint
+against it. The :download:`pylint_projectname.py <downloads/pylint_projectname.py>`
+script mentioned above does that for you automatically.
+
+Common Scenarios
+----------------
+
+The following are examples found while running pylint against ``model.py`` for a
+project that had :doc:`Identity <Identity/index>` enabled. Most of the problems that pylint
+found can be refactored out but some can not as they would require changes to SQLObject.
+For those, you can just explicitly suppress those messages. Please note that pylint
+shows an informational message named I0011 for such inlined suppressions. To get
+rid of these messages you might want to add ``--disable-msg=I0011`` to your pylint
+command line. ``pylint_projectname.py`` has this option activated by default.
+
+.. _identity: Identity
+
+
+E1101 - Accessing a non-existent class member
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+If you have an ``alternateMethodName`` for a column, you will encounter this error.
+SQLObject uses some introspection techniques that are not visible to pylint.
+
+::
+
+    ...
+    return cls.by_visit_key(visit_key)  #pylint: disable-msg=E1101
+
+A working example of a ``model.py`` file that has been run through pylint,
+refactored and fitted with pylint special comments supressing messages that are
+beyond the scope of TurboGears is attached to this page as :download:`clean-model.py <downloads/clean-model.py>`.
+
+
+R0903 & R0904 - Too Few or Many Public methods
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pylint thinks that the acceptable number of public methods of a class is between
+five and 20. Five is just five more than the usual number of methods in a
+``SQLObject.sqlmeta`` class, and 20 much too low for any SQLObject with three or
+more columns/attributes/properties. So you can either adjust these values with
+``--max-public-methods=30`` (or more) and ``--min-public-methods=0``, but you
+can only do this globally on pylints command line or in its configuration file.
+A better solution might be to specifically acknowledge that your Model classes
+don't fit the standard::
+
+    class Visit(SQLObject):     #pylint: disable-msg=R0904
+        class sqlmeta:          #pylint: disable-msg=R0903
+            table="tg_visit"
+
+
+
+C0103 - Invalid class name
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This warnings name is a bit misleading as it also complains about class names
+that are legal in Python but counter to PEP8. pylint expects classes to start
+with a capital letter and having at least two more characters (letters, digits,
+underscores). SQLObject's ``sqlmeta`` classes do not fit this rule, but you
+can't rename them, so you might want to disable this error during the definition
+of each sqlmeta::
+
+    class Visit(SQLObject):     #pylint: disable-msg=R0904
+        class sqlmeta:          #pylint: disable-msg=R0903,C0103
+            table="tg_visit"
+
+W0232 - No ``__init__`` method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This one gets triggered by the inner ``sqlmeta`` classes of SQLObjects unless
+you change them to new-style classes by deriving the from object. It also gets
+triggered by classes deriving from ``turbogears.controllers.Controller``. One
+could say that SQLObjects and Controllers make up for most of the classes in a
+simple project and thus disabling this warning in the global settings would make
+sense. We'd rather advise to disable it on a per file basis, it's more explicit
+and you won't run into the problem of accidently supressing the warning in a
+class where it would be important. To do so just add
+
+::
+
+    #pylint: disable-msg: W0232
+
+to the header of each Controller file and to your ``model.py`` file.
+
+
+
+R0201 - Walks like a function, talks like a method
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*"Used when a method doesn't use its bound instance, and so could be written as
+a function."*
+
+Having a class or object method that does not access its ``cls`` or ``self`` is
+a perfect candidate for refactoring. For methods of CherryPy controllers however
+this is absolute correct behaviour, since most of the time they only use their
+parameters to control their inner flow. Still these methods need to be methods,
+otherwise CherryPy would not be able to find them. Thus, disabling this warning
+on the outermost scope of a controller module seems acceptable.
+
+Border cases
+------------
+
+There are some decisions you have to make when using pylint. On one hand it is
+not easy but desirable to get a perfect score of 10 for every ``*.py`` file in
+your project. On the other, hand many people have added the call to pylint to
+their development routine, maybe right before finally committing your local
+changes to the RCS repository, and want to have the number of errors as low as
+possible. So for some warnings (and maybe even errors) you might decide to just
+ignore them for a short time and disable them locally and/or temporarily. Here
+are some errors that might pop up at you:
+
+W0401 & W0611 - Wildcard imports
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+*"Used when* ``from module import *`` *is detected."*
+
+
+*"Used when an imported module or variable is not used."*
+
+While wildcard imports don't belong in production code, but they might have a
+place in modules that are under heavy development. For example the ``model.py``
+file probably doesn't get changed during 90% of the development time, but during
+the other 10% you might change it more often then any other file (except for
+unit tests files, of course). You might add new columns every other hour, change
+hand crafted SQL queries and so on. And during this period it is quite
+convenient to have all the Columns from ``sqlobject.col`` and the ``AND`` and
+``OR`` functions right at your fingertips so that you can go ahead and rework
+your model (and test it right after every non trivial change) and even check it
+in without pylint yelling about minor issues like wildcard imports and unused
+imports. And please don't disable them globally, just drop the following line
+right before the import section::
+
+    #pylint: disable-msg=W0401,W0611
+
+But beware that after you have a stable model, you definitely should re-enable
+all warnings and check pylints output. After all you might have overlooked
+something :-)
+
+But that is not all that is to this. Some people prefer to have their cake and
+eat it too, so instead of
+
+::
+
+    #pylint: disable-msg=W0401,W0611
+    from sqlobject import *
+
+they do
+
+::
+
+    import sqlobject as orm
+
+and can access everything that sqlobject provides through the ``orm`` namespace.
+The only drawback of this solution is that your code gets lengthier and more
+boiler-platy. Instead of
+
+
+::
+
+    class Visit(SQLObject):
+        class sqlmeta:
+            table = "visit"
+        visit_key = StringCol(length=40, alternateID=True,
+                alternateMethodName="by_visit_key")
+        created = DateTimeCol(default=datetime.now)
+        expiry = DateTimeCol()
+
+you'd have to type::
+
+    class Visit(orm.SQLObject):
+        class sqlmeta:
+            table = "visit"
+        visit_key = orm.col.StringCol(length=40, alternateID=True,
+                alternateMethodName="by_visit_key")
+        created = orm.col.DateTimeCol(default=datetime.now)
+        expiry = orm.col.DateTimeCol()
+
+Note that docstrings and pylint inline directives have been omitted for brevity,
+don't do this at home. And brevity is what the second form is lacking, it has
+traded brevity ("Readability counts") for explicitness ("Explicit is better than
+implicit"). It's your choice.
+
+Future
+------
+
+This document is a starting point for improving the code base and is subject to
+change as more input is received.  There may very well be items that we want
+changed globally with respect to TurboGears.  And finally, yes there does exist
+perfectly valid and reasonable code that pylint may throw a tantrum about that
+is why in-line suppression is a good thing.
+
+And it also might happen that the :download:`pylint_projectname.py <downloads/pylint_projectname.py>`
+script becomes a standard part of a quickstart project. Who knows?

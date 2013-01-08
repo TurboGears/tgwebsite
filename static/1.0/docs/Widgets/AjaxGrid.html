@@ -1,0 +1,333 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ajax Grid Widget &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="The AutoCompleteField Widget" href="AutoCompleteField.html" />
+    <link rel="prev" title="DataGrid" href="DataGrid.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AutoCompleteField.html" title="The AutoCompleteField Widget"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="DataGrid.html" title="DataGrid"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Ajax Grid Widget</a><ul>
+<li><a class="reference internal" href="#an-easy-example">An Easy Example</a><ul>
+<li><a class="reference internal" href="#quickstart-a-project">1. Quickstart a project</a></li>
+<li><a class="reference internal" href="#create-the-controllers">2. Create the controllers</a></li>
+<li><a class="reference internal" href="#create-the-template">3. Create the template</a></li>
+<li><a class="reference internal" href="#try-it-out">4. Try it out</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-parameters">Using Parameters</a><ul>
+<li><a class="reference internal" href="#default-parameters">1. Default parameters</a></li>
+<li><a class="reference internal" href="#dynamic-parameters">2. Dynamic parameters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#an-example-using-results-from-the-database">An Example Using Results from the Database</a><ul>
+<li><a class="reference internal" href="#id1">1. Quickstart a project</a></li>
+<li><a class="reference internal" href="#id2">2. Create the controllers</a></li>
+<li><a class="reference internal" href="#id3">3. Create the template</a></li>
+<li><a class="reference internal" href="#id4">4. Try it out</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="DataGrid.html"
+                        title="previous chapter">DataGrid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="AutoCompleteField.html"
+                        title="next chapter">The AutoCompleteField Widget</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="ajax-grid-widget">
+<span id="index-0"></span><h1>Ajax Grid Widget<a class="headerlink" href="#ajax-grid-widget" title="Permalink to this headline">¶</a></h1>
+<p><strong>Note:</strong> This has been written up after a mailing list <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/fb6c3611b49af727/3d4d4ad72610b638#3d4d4ad72610b638">post</a>
+by Steve Bergman.</p>
+<div class="section" id="an-easy-example">
+<h2>An Easy Example<a class="headerlink" href="#an-easy-example" title="Permalink to this headline">¶</a></h2>
+<p>Using <tt class="docutils literal"><span class="pre">AjaxGrid</span></tt> is really quite simple.
+For first-timers, here is an easy example:</p>
+<div class="section" id="quickstart-a-project">
+<h3>1. Quickstart a project<a class="headerlink" href="#quickstart-a-project" title="Permalink to this headline">¶</a></h3>
+<p>Quickstart a project to try out a simple example:</p>
+<div class="highlight-python"><pre>tg-admin quickstart AjaxGridDemo</pre>
+</div>
+</div>
+<div class="section" id="create-the-controllers">
+<h3>2. Create the controllers<a class="headerlink" href="#create-the-controllers" title="Permalink to this headline">¶</a></h3>
+<p>Edit <tt class="docutils literal"><span class="pre">controllers.py</span></tt> to look like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">AjaxGrid</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">AjaxGrid</span><span class="p">(</span><span class="n">refresh_url</span><span class="o">=</span><span class="s">&#39;gettime&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&#39;.templates.grid&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">gettime</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Fake a row of results</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%H&#39;</span><span class="p">)</span>
+        <span class="n">minute</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%M&#39;</span><span class="p">)</span>
+        <span class="n">second</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%S&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Hour&#39;</span><span class="p">,</span> <span class="s">&#39;Minute&#39;</span><span class="p">,</span> <span class="s">&#39;Second&#39;</span><span class="p">],</span>
+            <span class="n">rows</span><span class="o">=</span><span class="p">[[</span><span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-the-template">
+<h3>3. Create the template<a class="headerlink" href="#create-the-template" title="Permalink to this headline">¶</a></h3>
+<p>Create a template <tt class="docutils literal"><span class="pre">grid.kid</span></tt> in the <tt class="docutils literal"><span class="pre">templates</span></tt> directory and make it
+look like this:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'"&gt;
+&lt;head&gt;
+  &lt;meta http-equiv="content-type"
+    content="text/html; charset=utf-8" py:replace="''"/&gt;
+  &lt;title&gt;AjaxGrid Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div py:replace="grid.display()"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+</div>
+<div class="section" id="try-it-out">
+<h3>4. Try it out<a class="headerlink" href="#try-it-out" title="Permalink to this headline">¶</a></h3>
+<p>Start your project and try it out. You should get a single row with the current
+hour, minute, and second. It should update when you click &#8216;Update&#8217;.</p>
+<p>What happens is that the <tt class="docutils literal"><span class="pre">AjaxGrid</span></tt> calls the <tt class="docutils literal"><span class="pre">gettime()</span></tt> controller specified
+in the <tt class="docutils literal"><span class="pre">refresh_url</span></tt> parameter and displays the returned JSON data as a grid.</p>
+</div>
+</div>
+<div class="section" id="using-parameters">
+<h2>Using Parameters<a class="headerlink" href="#using-parameters" title="Permalink to this headline">¶</a></h2>
+<p>You can let AjaxGrid pass parameters to the controller specified in <tt class="docutils literal"><span class="pre">refresh_url</span></tt>.
+For example, let&#8217;s add a parameter <tt class="docutils literal"><span class="pre">format</span></tt> for choosing between the 12-hour
+and the 24-hour clock format when displaying the time in our simple example.</p>
+<div class="section" id="default-parameters">
+<h3>1. Default parameters<a class="headerlink" href="#default-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Slightly change the controller to include a <tt class="docutils literal"><span class="pre">format</span></tt> parameter as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">gettime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">format</span><span class="o">=</span><span class="s">&#39;24h&#39;</span><span class="p">):</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">format</span> <span class="o">==</span> <span class="s">&#39;12h&#39;</span> <span class="ow">and</span> <span class="s">&#39;%I %p&#39;</span> <span class="ow">or</span> <span class="s">&#39;%H&#39;</span><span class="p">)</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%M&#39;</span><span class="p">)</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%S&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;Hour&#39;</span><span class="p">,</span> <span class="s">&#39;Minute&#39;</span><span class="p">,</span> <span class="s">&#39;Second&#39;</span><span class="p">],</span>
+        <span class="n">rows</span><span class="o">=</span><span class="p">[[</span><span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">]])</span>
+</pre></div>
+</div>
+<p>Without further change, the time will still be displayed with 24-hour clock
+format because this has been chosen as the default value for the <tt class="docutils literal"><span class="pre">format</span></tt> parameter.</p>
+<p>But you can define a different default value for the <tt class="docutils literal"><span class="pre">format</span></tt> parameter without
+changing the default value for the <tt class="docutils literal"><span class="pre">format</span></tt> parameter in the controller, by
+telling the <tt class="docutils literal"><span class="pre">AjaxGrid</span></tt> to use default parameters like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">grid</span> <span class="o">=</span> <span class="n">AjaxGrid</span><span class="p">(</span><span class="n">refresh_url</span><span class="o">=</span><span class="s">&#39;gettime&#39;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;12h&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The AjaxGrid will now call the <tt class="docutils literal"><span class="pre">gettime()</span></tt> controller with the format
+parameter set to <tt class="docutils literal"><span class="pre">12h</span></tt> resulting in a 12-hour clock output.</p>
+</div>
+<div class="section" id="dynamic-parameters">
+<h3>2. Dynamic parameters<a class="headerlink" href="#dynamic-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Maybe you want to pass parameters to the <tt class="docutils literal"><span class="pre">refresh_url</span></tt> controller that are
+dependent on another widget, e.g. a <tt class="docutils literal"><span class="pre">SelectList</span></tt>. In this case, you need to
+define a custom update link instead of the default one. You can suppress the
+default update link by setting the <tt class="docutils literal"><span class="pre">refresh_text</span></tt> parameter to <tt class="docutils literal"><span class="pre">None</span></tt>
+(normally, you can choose the text for the update link with this parameter).
+Let&#8217;s do this and also choose a prefix for the <tt class="docutils literal"><span class="pre">AjaxGrid</span></tt> id attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">grid</span> <span class="o">=</span> <span class="n">AjaxGrid</span><span class="p">(</span><span class="n">refresh_url</span><span class="o">=</span><span class="s">&#39;gettime&#39;</span><span class="p">,</span> <span class="n">refresh_text</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+   <span class="nb">id</span><span class="o">=</span><span class="s">&#39;time&#39;</span><span class="p">,</span> <span class="n">defaults</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;24h&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now, we add a selector for the clock format and a custom update button to our
+<tt class="docutils literal"><span class="pre">grid.kid</span></tt> Kid template, so that it looks like this:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'"&gt;
+&lt;head&gt;
+  &lt;meta http-equiv="content-type"
+    content="text/html; charset=utf-8" py:replace="''"/&gt;
+  &lt;title&gt;Ajaxgrid Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;select onchange="$$(time_AjaxGrid).refresh({format: this.value})"
+      id="format"&gt;
+    &lt;option value="12h"&gt;12-hour clock&lt;/option&gt;
+    &lt;option value="24h" selected="selected"&gt;24-hour clock&lt;/option&gt;
+  &lt;/select&gt;
+  &lt;button onclick="$$(time_AjaxGrid).refresh({format: $$('format').value})"&gt;
+    Update
+  &lt;/button&gt;
+  &lt;div py:replace="grid.display()"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>Since <tt class="docutils literal"><span class="pre">AjaxGrid</span></tt> is based on MochiKit, we can use the MochiKit <tt class="docutils literal"><span class="pre">$()</span></tt> function
+without having to care that MochiKit is loaded, but note that the <tt class="docutils literal"><span class="pre">$</span></tt> characters
+need to be escaped here by doubling them because otherwise they will be interpreted
+by Kid as signifying string substitutions.</p>
+</div>
+</div>
+<div class="section" id="an-example-using-results-from-the-database">
+<h2>An Example Using Results from the Database<a class="headerlink" href="#an-example-using-results-from-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Our simple example showed displayed only one row that has been computed and
+not read from a database. But displaying results from database queries is not
+much different. As an example, we show how to display the values in the <tt class="docutils literal"><span class="pre">visit</span></tt>
+table in an updateable grid.</p>
+<div class="section" id="id1">
+<h3>1. Quickstart a project<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Quickstart a new project with an Identity model:</p>
+<div class="highlight-python"><pre>tg-admin quickstart -i AjaxGridVisitDemo
+cd AjaxGridVisitDemo
+tg-admin sql create</pre>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>2. Create the controllers<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Edit <tt class="docutils literal"><span class="pre">controllers.py</span></tt> to look like the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controllers</span><span class="p">,</span> <span class="n">expose</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">AjaxGrid</span>
+
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="n">Visit</span>
+
+<span class="n">grid</span> <span class="o">=</span> <span class="n">AjaxGrid</span><span class="p">(</span><span class="n">refresh_url</span><span class="o">=</span><span class="s">&#39;getvisits&#39;</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&#39;.templates.grid&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">getvisits</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;Key&#39;</span><span class="p">,</span> <span class="s">&#39;Created&#39;</span><span class="p">,</span> <span class="s">&#39;Expiry&#39;</span><span class="p">),</span>
+            <span class="n">rows</span><span class="o">=</span><span class="p">[(</span><span class="n">v</span><span class="o">.</span><span class="n">visit_key</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">created</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">expiry</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">Visit</span><span class="o">.</span><span class="n">select</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id3">
+<h3>3. Create the template<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>We can use exactly the same template <tt class="docutils literal"><span class="pre">grid.kid</span></tt> as in our first simple example:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://purl.org/kid/ns#" py:extends="'master.kid'"&gt;
+&lt;head&gt;
+  &lt;meta http-equiv="content-type"
+    content="text/html; charset=utf-8" py:replace="''"/&gt;
+  &lt;title&gt;AjaxGrid Example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div py:replace="grid.display()"/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>4. Try it out<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Start your project and try it out. You should get one row for your current
+visit. Connect with a different browser instance and click &#8216;Update&#8217;. The grid
+should now display a new row repesenting the view with the other browser.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

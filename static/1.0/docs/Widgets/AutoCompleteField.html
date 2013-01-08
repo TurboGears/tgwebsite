@@ -1,0 +1,241 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The AutoCompleteField Widget &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="RemoteForm Widget Tutorial" href="RemoteForm.html" />
+    <link rel="prev" title="Ajax Grid Widget" href="AjaxGrid.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RemoteForm.html" title="RemoteForm Widget Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AjaxGrid.html" title="Ajax Grid Widget"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The AutoCompleteField Widget</a><ul>
+<li><a class="reference internal" href="#how-to-use-autocompletefield">How to use AutoCompleteField</a></li>
+<li><a class="reference internal" href="#possible-additions">Possible additions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="AjaxGrid.html"
+                        title="previous chapter">Ajax Grid Widget</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="RemoteForm.html"
+                        title="next chapter">RemoteForm Widget Tutorial</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="the-autocompletefield-widget">
+<span id="index-0"></span><h1>The AutoCompleteField Widget<a class="headerlink" href="#the-autocompletefield-widget" title="Permalink to this headline">¶</a></h1>
+<p>Check out <a class="reference external" href="http://labs.google.com/suggest/">Google Suggest</a> to see an example of input completion in action. The AutoCompleteField widgets allows you to very easily create a similar effect in TurboGears. See also the <a class="reference external" href="http://trac.turbogears.org/turbogears/browser/trunk/turbogears/widgets/big_widgets.py#L83">AutoCompleteField</a> and the <a class="reference external" href="http://trac.turbogears.org/turbogears/browser/trunk/turbogears/widgets/big_widgets.py#L83">AutoCompleteDesc</a> classes source code.</p>
+<div class="section" id="how-to-use-autocompletefield">
+<h2>How to use AutoCompleteField<a class="headerlink" href="#how-to-use-autocompletefield" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Create a new probject (<cite>tg-admin quickstart</cite>) and name it autocomplete, or reuse an old one. We will mount the code required for the <cite>AutoCompleteField</cite> one level below your <cite>RootController</cite>.</p>
+</li>
+<li><p class="first">If you created a new project, remove the methods <cite>login</cite> and <cite>logout</cite> from your <cite>controllers.py</cite> file. We won&#8217;t use them for this tutorial.</p>
+</li>
+<li><p class="first">Import the AutoCompleteField widget to <cite>controllers.py</cite> with:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">AutoCompleteField</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Create a controller-class with an index-method that shows an empty page (for now):</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TestInputCompletion</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;autocomplete.templates.complete&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Mount an instance of your new controller:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">testcompletion</span> <span class="o">=</span> <span class="n">TestInputCompletion</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Create the <cite>complete.kid</cite> file necessary to display the empty page by copying <cite>welcome.kid</cite> to <cite>complete.kid</cite> and clearing out everything inside the body. The file should look like this:</p>
+<blockquote>
+<div><div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML#.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+    py:extends="'master.kid'"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/&gt;
+    &lt;title&gt;Testing the AutoCompleteField widget!&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">You can check if everything works OK so far by going to <cite>localhost:8080/testcompletion</cite>. You should see a blank page.</p>
+</li>
+<li><p class="first">Add an <cite>__init__</cite> method to <cite>TestInputCompletion</cite> where you instantiate the AutoCompleteField widget:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acfield</span> <span class="o">=</span> <span class="n">AutoCompleteField</span><span class="p">()</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Modify complete.kid and add <tt class="docutils literal"><span class="pre">${acfield.display()}</span></tt> inside the <cite>&lt;body&gt;</cite> tag. That code automagically inserts all the HTML and Javascript code necessary to display the AutoCompleteField if we pass it an instance. It should look something like:</p>
+<blockquote>
+<div><div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML#.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml" xmlns:py="http://purl.org/kid/ns#"
+    py:extends="'master.kid'"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=UTF-8" http-equiv="content-type" py:replace="''"/&gt;
+    &lt;title&gt;Testing the AutoCompleteField widget!&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    ${acfield.display()}
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Then change the <cite>index</cite> method so that the template gets passed our widget:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="s">&quot;autocomplete.templates.complete&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">acfield</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">acfield</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">You should now be able to see a lonely input-box if you go to <a class="reference external" href="http://localhost:8080/testcompletion">http://localhost:8080/testcompletion</a>. However, it doesn&#8217;t complete any input yet.</p>
+</li>
+<li><p class="first">The next step is to give the AutoCompleteField some data with which it can complete input. In a real program the data probably comes from a database, but here we just add the strings to the TestInputCompletion class that we wan&#8217;t completed:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TestInputCompletion</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="n">countries</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Abkhazia&quot;</span><span class="p">,</span> <span class="s">&quot;Afghanistan&quot;</span><span class="p">,</span> <span class="s">&quot;Akrotiri&quot;</span><span class="p">,</span> <span class="s">&quot;Ã…land&quot;</span><span class="p">,</span> <span class="s">&quot;Albania&quot;</span><span class="p">,</span>
+                 <span class="s">&quot;Algeria&quot;</span><span class="p">,</span>  <span class="s">&quot;American Samoa&quot;</span><span class="p">,</span> <span class="s">&quot;Andorra&quot;</span><span class="p">,</span> <span class="s">&quot;Angola&quot;</span><span class="p">,</span> <span class="s">&quot;Anguilla&quot;</span><span class="p">,</span>
+                 <span class="s">&quot;Antigua and Barbuda&quot;</span><span class="p">,</span> <span class="s">&quot;Argentina&quot;</span><span class="p">,</span> <span class="s">&quot;Armenia&quot;</span><span class="p">,</span> <span class="s">&quot;Aruba&quot;</span><span class="p">,</span>
+                 <span class="s">&quot;Ascension Island&quot;</span><span class="p">,</span> <span class="s">&quot;Austria&quot;</span><span class="p">,</span> <span class="s">&quot;Azerbaijan&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Add a <cite>search</cite> method to TestInputCompletion:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="nd">@turbogears.expose</span><span class="p">(</span><span class="n">format</span> <span class="o">=</span> <span class="s">&quot;json&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">country</span> <span class="k">for</span> <span class="n">country</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">countries</span> \
+               <span class="k">if</span> <span class="n">country</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">input</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">matches</span> <span class="o">=</span> <span class="n">matches</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This method takes as it&#8217;s input a search string and returns a page in JSON format with all the countries it thinks matches the search string. You can test it out by going to: <a class="reference external" href="http://localhost:8080/testcompletion/search?input=a">http://localhost:8080/testcompletion/search?input=a</a>.</p>
+</li>
+<li><p class="first">Change how the AutoCompleteField is constructed so that it can interact witht the search method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">acfield</span> <span class="o">=</span> <span class="n">AutoCompleteField</span><span class="p">(</span><span class="n">search_controller</span> <span class="o">=</span> <span class="s">&quot;search&quot;</span><span class="p">,</span>
+                                     <span class="n">search_param</span> <span class="o">=</span> <span class="s">&quot;input&quot;</span><span class="p">,</span>
+                                     <span class="n">result_name</span> <span class="o">=</span> <span class="s">&quot;matches&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>That&#8217;s it! You should now have an awesome AutoCompleteField that completes on countrynames. If not, state your problem here and the tutorial will be updated.</p>
+</div>
+<div class="section" id="possible-additions">
+<h2>Possible additions<a class="headerlink" href="#possible-additions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>It would be cool if the AutoCompleteField updated a FastDataGrid in realtime. Only those rows that matches the input in the AutoCompleteField should be shown.</li>
+<li>Instead of hardcoding which strings that should be completed, the strings should come from a database.</li>
+</ul>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.validators</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;validators
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.validators-module.html">Module turbogears.validators</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Convenient validators and converters for data coming in from the web.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-docstring">This module also imports everything from formencode.validators, so all</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-docstring">common validation routines are available here."""</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">time</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">datetime</tt> <tt class="py-keyword">import</tt> <tt class="py-name">datetime</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">warnings</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">simplejson</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt> <tt class="py-keyword">import</tt> <tt class="py-name">ForEach</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module turbogears.validators=turbogears.validators-module.html"><a title="turbogears.validators" class="py-name" href="#" onclick="return doclink('link-0', 'validators', 'link-0');">validators</a></tt> <tt class="py-comment"># to disambiguate the Number validator...</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt> <tt class="py-keyword">import</tt> <tt class="py-name">national</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name"><a title="turbogears.validators" class="py-name" href="#" onclick="return doclink('link-1', 'validators', 'link-0');">validators</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Variable turbogears.widgets.base.CompoundWidget.compound=turbogears.widgets.base.CompoundWidget-class.html#compound"><a title="turbogears.widgets.base.CompoundWidget.compound" class="py-name" href="#" onclick="return doclink('link-2', 'compound', 'link-2');">compound</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module turbogears.visit.api=turbogears.visit.api-module.html"><a title="turbogears.visit.api" class="py-name" href="#" onclick="return doclink('link-3', 'api', 'link-3');">api</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">Invalid</tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class formencode.api.NoDefault=formencode.api.NoDefault-class.html,Variable turbogears.widgets.datagrid.NoDefault=turbogears.widgets.datagrid-module.html#NoDefault"><a title="formencode.api.NoDefault
+turbogears.widgets.datagrid.NoDefault" class="py-name" href="#" onclick="return doclink('link-4', 'NoDefault', 'link-4');">NoDefault</a></tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">formencode</tt><tt class="py-op">.</tt><tt class="py-name">schema</tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Class turbogears.validators.Schema=turbogears.validators.Schema-class.html"><a title="turbogears.validators.Schema" class="py-name" href="#" onclick="return doclink('link-5', 'Schema', 'link-5');">Schema</a></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">turbojson</tt> <tt class="py-keyword">import</tt> <tt class="py-name">jsonify</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-6" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-6', 'turbogears', 'link-6');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-7" class="py-name" targets="Module turbogears.util=turbogears.util-module.html"><a title="turbogears.util" class="py-name" href="#" onclick="return doclink('link-7', 'util', 'link-7');">util</a></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-8', 'turbogears', 'link-6');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module turbogears.command.i18n=turbogears.command.i18n-module.html,Package turbogears.i18n=turbogears.i18n-module.html,Module turbogears.widgets.i18n=turbogears.widgets.i18n-module.html"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-9', 'i18n', 'link-9');">i18n</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Module turbogears.i18n.format=turbogears.i18n.format-module.html,Variable turbogears.validators.DateTimeConverter.format=turbogears.validators.DateTimeConverter-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDatePicker.format=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDateTimePicker.format=turbogears.widgets.big_widgets.CalendarDateTimePicker-class.html#format"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-10', 'format', 'link-10');">format</a></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"> </tt>
+<a name="_"></a><div id="_-def"><a name="L28"></a><tt class="py-lineno"> 28</tt> <a class="py-toggle" href="#" id="_-toggle" onclick="return toggle('_');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#_">_</a><tt class="py-op">(</tt><tt class="py-param">s</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> <tt class="py-comment"># dummy</tt> </tt>
+</div><a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-comment"># FormEncode should call TG's gettext function with domain = "FormEncode"</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-name">Validator</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Variable turbogears.validators.TgFancyValidator.gettextargs=turbogears.validators.TgFancyValidator-class.html#gettextargs"><a title="turbogears.validators.TgFancyValidator.gettextargs" class="py-name" href="#" onclick="return doclink('link-11', 'gettextargs', 'link-11');">gettextargs</a></tt><tt class="py-op">[</tt><tt class="py-string">'domain'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'FormEncode'</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-comment"># Validators handling country names and/or languages</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="StateProvince"></a><div id="StateProvince-def"><a name="L36"></a><tt class="py-lineno"> 36</tt> <a class="py-toggle" href="#" id="StateProvince-toggle" onclick="return toggle('StateProvince');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#StateProvince">StateProvince</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="StateProvince-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="StateProvince-expanded"><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Please use national.USStateProvince"</tt><tt class="py-op">,</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-name">DeprecationWarning</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">national</tt><tt class="py-op">.</tt><tt class="py-name">USStateProvince</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"> </tt>
+<a name="PhoneNumber"></a><div id="PhoneNumber-def"><a name="L41"></a><tt class="py-lineno"> 41</tt> <a class="py-toggle" href="#" id="PhoneNumber-toggle" onclick="return toggle('PhoneNumber');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#PhoneNumber">PhoneNumber</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PhoneNumber-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PhoneNumber-expanded"><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Please use national.USPhoneNumber"</tt><tt class="py-op">,</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">DeprecationWarning</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">national</tt><tt class="py-op">.</tt><tt class="py-name">USPhoneNumber</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="PostalCode"></a><div id="PostalCode-def"><a name="L46"></a><tt class="py-lineno"> 46</tt> <a class="py-toggle" href="#" id="PostalCode-toggle" onclick="return toggle('PostalCode');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#PostalCode">PostalCode</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PostalCode-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PostalCode-expanded"><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Please use national.USPostalCode"</tt><tt class="py-op">,</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-name">DeprecationWarning</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">national</tt><tt class="py-op">.</tt><tt class="py-name">USPostalCode</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="IPhoneNumberValidator"></a><div id="IPhoneNumberValidator-def"><a name="L51"></a><tt class="py-lineno"> 51</tt> <a class="py-toggle" href="#" id="IPhoneNumberValidator-toggle" onclick="return toggle('IPhoneNumberValidator');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#IPhoneNumberValidator">IPhoneNumberValidator</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="IPhoneNumberValidator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="IPhoneNumberValidator-expanded"><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">"Please use national.InternationalPhoneNumber"</tt><tt class="py-op">,</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">        <tt class="py-name">DeprecationWarning</tt><tt class="py-op">,</tt> <tt class="py-number">2</tt><tt class="py-op">)</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">national</tt><tt class="py-op">.</tt><tt class="py-name">InternationalPhoneNumber</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">kw</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="TgFancyValidator"></a><div id="TgFancyValidator-def"><a name="L57"></a><tt class="py-lineno"> 57</tt> <a class="py-toggle" href="#" id="TgFancyValidator-toggle" onclick="return toggle('TgFancyValidator');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.TgFancyValidator-class.html">TgFancyValidator</a><tt class="py-op">(</tt><tt class="py-base-class">FancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="TgFancyValidator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="TgFancyValidator-expanded"><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt id="link-12" class="py-name"><a title="turbogears.validators.TgFancyValidator.gettextargs" class="py-name" href="#" onclick="return doclink('link-12', 'gettextargs', 'link-11');">gettextargs</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'domain'</tt><tt class="py-op">:</tt> <tt class="py-string">'TurboGears'</tt><tt class="py-op">}</tt> </tt>
+</div><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="Money"></a><div id="Money-def"><a name="L61"></a><tt class="py-lineno"> 61</tt> <a class="py-toggle" href="#" id="Money-toggle" onclick="return toggle('Money');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.Money-class.html">Money</a><tt class="py-op">(</tt><tt class="py-base-class">TgFancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Money-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Money-expanded"><a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-docstring">"""Validate a monetary value with currency."""</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt id="link-13" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Domain.messages=turbogears.i18n.sagettext.model.TG_Domain-class.html#messages,Variable turbogears.i18n.sogettext.model.TG_Domain.messages=turbogears.i18n.sogettext.model.TG_Domain-class.html#messages,Variable turbogears.validators.DateTimeConverter.messages=turbogears.validators.DateTimeConverter-class.html#messages,Variable turbogears.validators.FieldStorageUploadConverter.messages=turbogears.validators.FieldStorageUploadConverter-class.html#messages,Variable turbogears.validators.Money.messages=turbogears.validators.Money-class.html#messages"><a title="turbogears.i18n.sagettext.model.TG_Domain.messages
+turbogears.i18n.sogettext.model.TG_Domain.messages
+turbogears.validators.DateTimeConverter.messages
+turbogears.validators.FieldStorageUploadConverter.messages
+turbogears.validators.Money.messages" class="py-name" href="#" onclick="return doclink('link-13', 'messages', 'link-13');">messages</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-string">'badFormat'</tt><tt class="py-op">:</tt> <tt id="link-14" class="py-name" targets="Function turbogears.i18n.pygettext.pygettext._()=turbogears.i18n.pygettext.pygettext-module.html#_,Function turbogears.validators._()=turbogears.validators-module.html#_"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-14', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">'Invalid number format'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-string">'empty'</tt><tt class="py-op">:</tt> <tt id="link-15" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-15', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">'Empty values not allowed'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"> </tt>
+<a name="Money._to_python"></a><div id="Money._to_python-def"><a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="Money._to_python-toggle" onclick="return toggle('Money._to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.Money-class.html#_to_python">_to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Money._to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Money._to_python-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-docstring">"""Parse a string and return a float or integer."""</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-16" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-16', 'format', 'link-10');">format</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Function turbogears.i18n.format.parse_decimal()=turbogears.i18n.format-module.html#parse_decimal"><a title="turbogears.i18n.format.parse_decimal" class="py-name" href="#" onclick="return doclink('link-17', 'parse_decimal', 'link-17');">parse_decimal</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name" targets="Variable turbogears.view.base.cycle.value=turbogears.view.base.cycle-class.html#value"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-18', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">:</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Invalid</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">message</tt><tt class="py-op">(</tt><tt class="py-string">'badFormat'</tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-19" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-19', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="Money._from_python"></a><div id="Money._from_python-def"><a name="L76"></a><tt class="py-lineno"> 76</tt> <a class="py-toggle" href="#" id="Money._from_python-toggle" onclick="return toggle('Money._from_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.Money-class.html#_from_python">_from_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Money._from_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Money._from_python-expanded"><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a string using the correct grouping."""</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-20" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-20', 'format', 'link-10');">format</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Function turbogears.i18n.format.format_currency()=turbogears.i18n.format-module.html#format_currency"><a title="turbogears.i18n.format.format_currency" class="py-name" href="#" onclick="return doclink('link-21', 'format_currency', 'link-21');">format_currency</a></tt><tt class="py-op">(</tt><tt id="link-22" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-22', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"> </tt>
+<a name="Number"></a><div id="Number-def"><a name="L81"></a><tt class="py-lineno"> 81</tt> <a class="py-toggle" href="#" id="Number-toggle" onclick="return toggle('Number');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.Number-class.html">Number</a><tt class="py-op">(</tt><tt class="py-base-class">TgFancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Number-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Number-expanded"><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-docstring">"""Validate a decimal number."""</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt id="link-23" class="py-name" targets="Variable turbogears.validators.Number.decimals=turbogears.validators.Number-class.html#decimals"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-23', 'decimals', 'link-23');">decimals</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"> </tt>
+<a name="Number._to_python"></a><div id="Number._to_python-def"><a name="L86"></a><tt class="py-lineno"> 86</tt> <a class="py-toggle" href="#" id="Number._to_python-toggle" onclick="return toggle('Number._to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.Number-class.html#_to_python">_to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Number._to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Number._to_python-expanded"><a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">        <tt class="py-docstring">"""Parse a string and return a float or integer."""</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-24" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-24', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">basestring</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                <tt id="link-25" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-25', 'value', 'link-18');">value</a></tt> <tt class="py-op">=</tt> <tt id="link-26" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-26', 'format', 'link-10');">format</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="turbogears.i18n.format.parse_decimal" class="py-name" href="#" onclick="return doclink('link-27', 'parse_decimal', 'link-17');">parse_decimal</a></tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-28', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-29" class="py-name"><a title="turbogears.validators" class="py-name" href="#" onclick="return doclink('link-29', 'validators', 'link-0');">validators</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Class turbogears.validators.Number=turbogears.validators.Number-class.html"><a title="turbogears.validators.Number" class="py-name" href="#" onclick="return doclink('link-30', 'Number', 'link-30');">Number</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method turbogears.validators.MultipleSelection.to_python()=turbogears.validators.MultipleSelection-class.html#to_python"><a title="turbogears.validators.MultipleSelection.to_python" class="py-name" href="#" onclick="return doclink('link-31', 'to_python', 'link-31');">to_python</a></tt><tt class="py-op">(</tt><tt id="link-32" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-32', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="Number._from_python"></a><div id="Number._from_python-def"><a name="L95"></a><tt class="py-lineno"> 95</tt> <a class="py-toggle" href="#" id="Number._from_python-toggle" onclick="return toggle('Number._from_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.Number-class.html#_from_python">_from_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Number._from_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Number._from_python-expanded"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a string using the correct grouping.</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-docstring">        If the validator was instantiated with a decimals parameter,</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-docstring">        this is used for the number  of decimals. If None ist given,</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-docstring">        the number of decimals is determined by the value itself.</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-33', 'decimals', 'link-23');">decimals</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">            <tt id="link-34" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-34', 'decimals', 'link-23');">decimals</a></tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="turbogears.util" class="py-name" href="#" onclick="return doclink('link-35', 'util', 'link-7');">util</a></tt><tt class="py-op">.</tt><tt id="link-36" class="py-name" targets="Function turbogears.util.find_precision()=turbogears.util-module.html#find_precision"><a title="turbogears.util.find_precision" class="py-name" href="#" onclick="return doclink('link-36', 'find_precision', 'link-36');">find_precision</a></tt><tt class="py-op">(</tt><tt id="link-37" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-37', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt id="link-38" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-38', 'decimals', 'link-23');">decimals</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-39" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-39', 'decimals', 'link-23');">decimals</a></tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-40" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-40', 'decimals', 'link-23');">decimals</a></tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-41" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-41', 'format', 'link-10');">format</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name" targets="Function turbogears.i18n.format.format_decimal()=turbogears.i18n.format-module.html#format_decimal"><a title="turbogears.i18n.format.format_decimal" class="py-name" href="#" onclick="return doclink('link-42', 'format_decimal', 'link-42');">format_decimal</a></tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-43', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt id="link-44" class="py-name"><a title="turbogears.validators.Number.decimals" class="py-name" href="#" onclick="return doclink('link-44', 'decimals', 'link-23');">decimals</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-45" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-45', 'format', 'link-10');">format</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name" targets="Function turbogears.i18n.format.format_number()=turbogears.i18n.format-module.html#format_number"><a title="turbogears.i18n.format.format_number" class="py-name" href="#" onclick="return doclink('link-46', 'format_number', 'link-46');">format_number</a></tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-47', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="DateTimeConverter"></a><div id="DateTimeConverter-def"><a name="L113"></a><tt class="py-lineno">113</tt> <a class="py-toggle" href="#" id="DateTimeConverter-toggle" onclick="return toggle('DateTimeConverter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.DateTimeConverter-class.html">DateTimeConverter</a><tt class="py-op">(</tt><tt class="py-base-class">TgFancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DateTimeConverter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="DateTimeConverter-expanded"><a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-docstring">"""Convert between Python datetime objects and strings."""</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">    <tt id="link-48" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-48', 'format', 'link-10');">format</a></tt><tt class="py-op">=</tt><tt class="py-string">"%Y/%m/%d %H:%M"</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt id="link-49" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Domain.messages
+turbogears.i18n.sogettext.model.TG_Domain.messages
+turbogears.validators.DateTimeConverter.messages
+turbogears.validators.FieldStorageUploadConverter.messages
+turbogears.validators.Money.messages" class="py-name" href="#" onclick="return doclink('link-49', 'messages', 'link-13');">messages</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">        <tt class="py-string">'badFormat'</tt><tt class="py-op">:</tt> <tt id="link-50" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-50', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">'Invalid datetime format'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">        <tt class="py-string">'empty'</tt><tt class="py-op">:</tt> <tt id="link-51" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-51', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">'Empty values not allowed'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"> </tt>
+<a name="DateTimeConverter._to_python"></a><div id="DateTimeConverter._to_python-def"><a name="L123"></a><tt class="py-lineno">123</tt> <a class="py-toggle" href="#" id="DateTimeConverter._to_python-toggle" onclick="return toggle('DateTimeConverter._to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.DateTimeConverter-class.html#_to_python">_to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DateTimeConverter._to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DateTimeConverter._to_python-expanded"><a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-docstring">"""Parse a string and return a datetime object."""</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-52" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-52', 'value', 'link-18');">value</a></tt> <tt class="py-keyword">and</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-53" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-53', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">datetime</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-54" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-54', 'value', 'link-18');">value</a></tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">                <tt id="link-55" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-55', 'format', 'link-10');">format</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-56', 'format', 'link-10');">format</a></tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt id="link-57" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-57', 'format', 'link-10');">format</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">                    <tt id="link-58" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-58', 'format', 'link-10');">format</a></tt> <tt class="py-op">=</tt> <tt id="link-59" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-59', 'format', 'link-10');">format</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                <tt class="py-name">tpl</tt> <tt class="py-op">=</tt> <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">strptime</tt><tt class="py-op">(</tt><tt id="link-60" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-60', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt id="link-61" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-61', 'format', 'link-10');">format</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">ValueError</tt><tt class="py-op">:</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">Invalid</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">message</tt><tt class="py-op">(</tt><tt class="py-string">'badFormat'</tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-62" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-62', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">            <tt class="py-comment"># shoudn't use time.mktime() because it can give OverflowError,</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">            <tt class="py-comment"># depending on the date (e.g. pre 1970) and underlying C library</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">datetime</tt><tt class="py-op">(</tt><tt class="py-name">year</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_year</tt><tt class="py-op">,</tt> <tt class="py-name">month</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_mon</tt><tt class="py-op">,</tt> <tt class="py-name">day</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_mday</tt><tt class="py-op">,</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">                    <tt class="py-name">hour</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_hour</tt><tt class="py-op">,</tt> <tt class="py-name">minute</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_min</tt><tt class="py-op">,</tt> <tt class="py-name">second</tt><tt class="py-op">=</tt><tt class="py-name">tpl</tt><tt class="py-op">.</tt><tt class="py-name">tm_sec</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"> </tt>
+<a name="DateTimeConverter._from_python"></a><div id="DateTimeConverter._from_python-def"><a name="L140"></a><tt class="py-lineno">140</tt> <a class="py-toggle" href="#" id="DateTimeConverter._from_python-toggle" onclick="return toggle('DateTimeConverter._from_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.DateTimeConverter-class.html#_from_python">_from_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="DateTimeConverter._from_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="DateTimeConverter._from_python-expanded"><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">        <tt class="py-docstring">"""Return a string representation of a datetime object."""</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-63" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-63', 'value', 'link-18');">value</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt id="link-64" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-64', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">datetime</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">            <tt class="py-comment"># Python stdlib can only handle dates with year greater than 1900</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">            <tt id="link-65" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-65', 'format', 'link-10');">format</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-66" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-66', 'format', 'link-10');">format</a></tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">callable</tt><tt class="py-op">(</tt><tt id="link-67" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-67', 'format', 'link-10');">format</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">                <tt id="link-68" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-68', 'format', 'link-10');">format</a></tt> <tt class="py-op">=</tt> <tt id="link-69" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-69', 'format', 'link-10');">format</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-70" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-70', 'format', 'link-10');">format</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">                <tt id="link-71" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-71', 'format', 'link-10');">format</a></tt> <tt class="py-op">=</tt> <tt class="py-string">"%Y-%m-%d"</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-72" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-72', 'value', 'link-18');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">year</tt> <tt class="py-op">&lt;=</tt> <tt class="py-number">1900</tt><tt class="py-op">:</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-73" class="py-name" targets="Function turbogears.validators.strftime_before1900()=turbogears.validators-module.html#strftime_before1900"><a title="turbogears.validators.strftime_before1900" class="py-name" href="#" onclick="return doclink('link-73', 'strftime_before1900', 'link-73');">strftime_before1900</a></tt><tt class="py-op">(</tt><tt id="link-74" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-74', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt id="link-75" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-75', 'format', 'link-10');">format</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt id="link-76" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-76', 'value', 'link-18');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt id="link-77" class="py-name"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-77', 'format', 'link-10');">format</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-78" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-78', 'value', 'link-18');">value</a></tt> </tt>
+</div></div><a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt class="py-comment"># Improved FieldStorageUploadConverter heeding not_empty=False</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"><tt class="py-comment"># (see TurboGears ticket #1705, FormEncode bug #1905250)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line"> </tt>
+<a name="FieldStorageUploadConverter"></a><div id="FieldStorageUploadConverter-def"><a name="L162"></a><tt class="py-lineno">162</tt> <a class="py-toggle" href="#" id="FieldStorageUploadConverter-toggle" onclick="return toggle('FieldStorageUploadConverter');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.FieldStorageUploadConverter-class.html">FieldStorageUploadConverter</a><tt class="py-op">(</tt><tt class="py-base-class">TgFancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FieldStorageUploadConverter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FieldStorageUploadConverter-expanded"><a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">    <tt id="link-79" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Domain.messages
+turbogears.i18n.sogettext.model.TG_Domain.messages
+turbogears.validators.DateTimeConverter.messages
+turbogears.validators.FieldStorageUploadConverter.messages
+turbogears.validators.Money.messages" class="py-name" href="#" onclick="return doclink('link-79', 'messages', 'link-13');">messages</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-string">'notEmpty'</tt><tt class="py-op">:</tt> <tt id="link-80" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-80', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">"Filename must not be empty"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">        <tt class="py-op">}</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="FieldStorageUploadConverter._to_python"></a><div id="FieldStorageUploadConverter._to_python-def"><a name="L168"></a><tt class="py-lineno">168</tt> <a class="py-toggle" href="#" id="FieldStorageUploadConverter._to_python-toggle" onclick="return toggle('FieldStorageUploadConverter._to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.FieldStorageUploadConverter-class.html#_to_python">_to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FieldStorageUploadConverter._to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="FieldStorageUploadConverter._to_python-expanded"><a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-name">filename</tt> <tt class="py-op">=</tt> <tt id="link-81" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-81', 'value', 'link-18');">value</a></tt><tt class="py-op">.</tt><tt class="py-name">filename</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">            <tt class="py-name">filename</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">filename</tt> <tt class="py-keyword">and</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">not_empty</tt><tt class="py-op">:</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Invalid</tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">message</tt><tt class="py-op">(</tt><tt class="py-string">'notEmpty'</tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-82" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-82', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-83" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-83', 'value', 'link-18');">value</a></tt> </tt>
+</div></div><a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-comment"># For translated messages that are not wrapped in a Validator.messages</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-comment"># dictionary, we need to reinstate the Turbogears gettext function under</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-comment"># the name "_", with the "TurboGears" domain, so that the TurboGears.mo</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-comment"># file is selected.</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt id="link-84" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-84', 'turbogears', 'link-6');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-85" class="py-name"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-85', 'i18n', 'link-9');">i18n</a></tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt id="link-86" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-86', '_', 'link-14');">_</a></tt> <tt class="py-op">=</tt> <tt class="py-keyword">lambda</tt> <tt class="py-name">s</tt><tt class="py-op">:</tt> <tt id="link-87" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-87', 'turbogears', 'link-6');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-88', 'i18n', 'link-9');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-89" class="py-name" targets="Function turbogears.i18n.tg_gettext.gettext()=turbogears.i18n.tg_gettext-module.html#gettext"><a title="turbogears.i18n.tg_gettext.gettext" class="py-name" href="#" onclick="return doclink('link-89', 'gettext', 'link-89');">gettext</a></tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">,</tt> <tt id="link-90" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.domain=turbogears.command.i18n.InternationalizationTool-class.html#domain,Variable turbogears.i18n.sogettext.model.TG_Message.domain=turbogears.i18n.sogettext.model.TG_Message-class.html#domain"><a title="turbogears.command.i18n.InternationalizationTool.domain
+turbogears.i18n.sogettext.model.TG_Message.domain" class="py-name" href="#" onclick="return doclink('link-90', 'domain', 'link-90');">domain</a></tt><tt class="py-op">=</tt><tt class="py-string">'TurboGears'</tt><tt class="py-op">)</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="MultipleSelection"></a><div id="MultipleSelection-def"><a name="L186"></a><tt class="py-lineno">186</tt> <a class="py-toggle" href="#" id="MultipleSelection-toggle" onclick="return toggle('MultipleSelection');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.MultipleSelection-class.html">MultipleSelection</a><tt class="py-op">(</tt><tt class="py-base-class">ForEach</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MultipleSelection-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="MultipleSelection-expanded"><a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">    <tt class="py-docstring">"""A default validator for SelectionFields with multiple selection."""</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt class="py-name">if_missing</tt> <tt class="py-op">=</tt> <tt id="link-91" class="py-name"><a title="formencode.api.NoDefault
+turbogears.widgets.datagrid.NoDefault" class="py-name" href="#" onclick="return doclink('link-91', 'NoDefault', 'link-4');">NoDefault</a></tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">    <tt id="link-92" class="py-name" targets="Variable turbogears.validators.MultipleSelection.if_empty=turbogears.validators.MultipleSelection-class.html#if_empty"><a title="turbogears.validators.MultipleSelection.if_empty" class="py-name" href="#" onclick="return doclink('link-92', 'if_empty', 'link-92');">if_empty</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"> </tt>
+<a name="MultipleSelection.to_python"></a><div id="MultipleSelection.to_python-def"><a name="L192"></a><tt class="py-lineno">192</tt> <a class="py-toggle" href="#" id="MultipleSelection.to_python-toggle" onclick="return toggle('MultipleSelection.to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.MultipleSelection-class.html#to_python">to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="MultipleSelection.to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="MultipleSelection.to_python-expanded"><a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-93" class="py-name" targets="Class turbogears.validators.MultipleSelection=turbogears.validators.MultipleSelection-class.html"><a title="turbogears.validators.MultipleSelection" class="py-name" href="#" onclick="return doclink('link-93', 'MultipleSelection', 'link-93');">MultipleSelection</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-94" class="py-name"><a title="turbogears.validators.MultipleSelection.to_python" class="py-name" href="#" onclick="return doclink('link-94', 'to_python', 'link-31');">to_python</a></tt><tt class="py-op">(</tt><tt id="link-95" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-95', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">Invalid</tt><tt class="py-op">:</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Invalid</tt><tt class="py-op">(</tt><tt id="link-96" class="py-name"><a title="turbogears.i18n.pygettext.pygettext._
+turbogears.validators._" class="py-name" href="#" onclick="return doclink('link-96', '_', 'link-14');">_</a></tt><tt class="py-op">(</tt><tt class="py-string">"Please select at least a value"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt id="link-97" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-97', 'value', 'link-18');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">state</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"> </tt>
+<a name="Schema"></a><div id="Schema-def"><a name="L199"></a><tt class="py-lineno">199</tt> <a class="py-toggle" href="#" id="Schema-toggle" onclick="return toggle('Schema');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.Schema-class.html">Schema</a><tt class="py-op">(</tt><tt class="py-base-class">Schema</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Schema-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Schema-expanded"><a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">    <tt class="py-docstring">"""Modified Schema validator for TurboGears.</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">    A schema validates a dictionary of values, applying different validators</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">    (by key) to the different values.</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">    This modified Schema allows fields that do not appear in the fields</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line"><tt class="py-docstring">    parameter of your schema, but filters them out from the value dictionary.</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line"><tt class="py-docstring">    You might want to set filter_extra_fields to True when you're building a</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line"><tt class="py-docstring">    dynamic form with unpredictable keys and need these values.</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">    <tt id="link-98" class="py-name" targets="Variable turbogears.validators.Schema.filter_extra_fields=turbogears.validators.Schema-class.html#filter_extra_fields"><a title="turbogears.validators.Schema.filter_extra_fields" class="py-name" href="#" onclick="return doclink('link-98', 'filter_extra_fields', 'link-98');">filter_extra_fields</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">    <tt id="link-99" class="py-name" targets="Variable turbogears.validators.Schema.allow_extra_fields=turbogears.validators.Schema-class.html#allow_extra_fields"><a title="turbogears.validators.Schema.allow_extra_fields" class="py-name" href="#" onclick="return doclink('link-99', 'allow_extra_fields', 'link-99');">allow_extra_fields</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">    <tt id="link-100" class="py-name" targets="Variable turbogears.validators.Schema.if_key_missing=turbogears.validators.Schema-class.html#if_key_missing"><a title="turbogears.validators.Schema.if_key_missing" class="py-name" href="#" onclick="return doclink('link-100', 'if_key_missing', 'link-100');">if_key_missing</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line"> </tt>
+<a name="Schema.from_python"></a><div id="Schema.from_python-def"><a name="L216"></a><tt class="py-lineno">216</tt> <a class="py-toggle" href="#" id="Schema.from_python-toggle" onclick="return toggle('Schema.from_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.Schema-class.html#from_python">from_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Schema.from_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Schema.from_python-expanded"><a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">        <tt class="py-comment"># The Schema shouldn't do any from_python conversion because</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">        <tt class="py-comment"># adjust_value already takes care of that for all childs.</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-101" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-101', 'value', 'link-18');">value</a></tt> </tt>
+</div></div><a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line"> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line"> </tt>
+<a name="JSONValidator"></a><div id="JSONValidator-def"><a name="L222"></a><tt class="py-lineno">222</tt> <a class="py-toggle" href="#" id="JSONValidator-toggle" onclick="return toggle('JSONValidator');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.validators.JSONValidator-class.html">JSONValidator</a><tt class="py-op">(</tt><tt class="py-base-class">TgFancyValidator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JSONValidator-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="JSONValidator-expanded"><a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">    <tt class="py-docstring">"""A validator for JSON format."""</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line"> </tt>
+<a name="JSONValidator._from_python"></a><div id="JSONValidator._from_python-def"><a name="L225"></a><tt class="py-lineno">225</tt> <a class="py-toggle" href="#" id="JSONValidator._from_python-toggle" onclick="return toggle('JSONValidator._from_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.JSONValidator-class.html#_from_python">_from_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JSONValidator._from_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JSONValidator._from_python-expanded"><a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">jsonify</tt><tt class="py-op">.</tt><tt class="py-name">encode</tt><tt class="py-op">(</tt><tt id="link-102" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-102', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line"> </tt>
+<a name="JSONValidator._to_python"></a><div id="JSONValidator._to_python-def"><a name="L228"></a><tt class="py-lineno">228</tt> <a class="py-toggle" href="#" id="JSONValidator._to_python-toggle" onclick="return toggle('JSONValidator._to_python');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators.JSONValidator-class.html#_to_python">_to_python</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">state</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="JSONValidator._to_python-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="JSONValidator._to_python-expanded"><a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">simplejson</tt><tt class="py-op">.</tt><tt class="py-name">loads</tt><tt class="py-op">(</tt><tt id="link-103" class="py-name"><a title="turbogears.view.base.cycle.value" class="py-name" href="#" onclick="return doclink('link-103', 'value', 'link-18');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line"> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line"><tt class="py-comment"># Auxiliary functions</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="_findall"></a><div id="_findall-def"><a name="L234"></a><tt class="py-lineno">234</tt> <a class="py-toggle" href="#" id="_findall-toggle" onclick="return toggle('_findall');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#_findall">_findall</a><tt class="py-op">(</tt><tt class="py-param">text</tt><tt class="py-op">,</tt> <tt class="py-param">substr</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_findall-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_findall-expanded"><a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">    <tt class="py-comment"># Also finds overlaps</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-name">sites</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">    <tt class="py-name">i</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">    <tt class="py-keyword">while</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">        <tt id="link-104" class="py-name" targets="Variable turbogears.i18n.sogettext.model.TG_Domain.j=turbogears.i18n.sogettext.model.TG_Domain-class.html#j,Variable turbogears.i18n.sogettext.model.TG_Message.j=turbogears.i18n.sogettext.model.TG_Message-class.html#j,Variable turbogears.identity.soprovider.TG_Group.j=turbogears.identity.soprovider.TG_Group-class.html#j,Variable turbogears.identity.soprovider.TG_Permission.j=turbogears.identity.soprovider.TG_Permission-class.html#j,Variable turbogears.identity.soprovider.TG_User.j=turbogears.identity.soprovider.TG_User-class.html#j,Variable turbogears.identity.soprovider.TG_VisitIdentity.j=turbogears.identity.soprovider.TG_VisitIdentity-class.html#j,Variable turbogears.visit.sovisit.TG_Visit.j=turbogears.visit.sovisit.TG_Visit-class.html#j"><a title="turbogears.i18n.sogettext.model.TG_Domain.j
+turbogears.i18n.sogettext.model.TG_Message.j
+turbogears.identity.soprovider.TG_Group.j
+turbogears.identity.soprovider.TG_Permission.j
+turbogears.identity.soprovider.TG_User.j
+turbogears.identity.soprovider.TG_VisitIdentity.j
+turbogears.visit.sovisit.TG_Visit.j" class="py-name" href="#" onclick="return doclink('link-104', 'j', 'link-104');">j</a></tt> <tt class="py-op">=</tt> <tt id="link-105" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Message.text=turbogears.i18n.sagettext.model.TG_Message-class.html#text,Variable turbogears.i18n.sogettext.model.TG_Message.text=turbogears.i18n.sogettext.model.TG_Message-class.html#text,Variable turbogears.widgets.big_widgets.URLLink.text=turbogears.widgets.big_widgets.URLLink-class.html#text"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-105', 'text', 'link-105');">text</a></tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-name">substr</tt><tt class="py-op">,</tt> <tt class="py-name">i</tt><tt class="py-op">)</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-106" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.j
+turbogears.i18n.sogettext.model.TG_Message.j
+turbogears.identity.soprovider.TG_Group.j
+turbogears.identity.soprovider.TG_Permission.j
+turbogears.identity.soprovider.TG_User.j
+turbogears.identity.soprovider.TG_VisitIdentity.j
+turbogears.visit.sovisit.TG_Visit.j" class="py-name" href="#" onclick="return doclink('link-106', 'j', 'link-104');">j</a></tt> <tt class="py-op">==</tt> <tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">            <tt class="py-keyword">break</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-name">sites</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-107" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.j
+turbogears.i18n.sogettext.model.TG_Message.j
+turbogears.identity.soprovider.TG_Group.j
+turbogears.identity.soprovider.TG_Permission.j
+turbogears.identity.soprovider.TG_User.j
+turbogears.identity.soprovider.TG_VisitIdentity.j
+turbogears.visit.sovisit.TG_Visit.j" class="py-name" href="#" onclick="return doclink('link-107', 'j', 'link-104');">j</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">        <tt class="py-name">i</tt> <tt class="py-op">=</tt> <tt id="link-108" class="py-name"><a title="turbogears.i18n.sogettext.model.TG_Domain.j
+turbogears.i18n.sogettext.model.TG_Message.j
+turbogears.identity.soprovider.TG_Group.j
+turbogears.identity.soprovider.TG_Permission.j
+turbogears.identity.soprovider.TG_User.j
+turbogears.identity.soprovider.TG_VisitIdentity.j
+turbogears.visit.sovisit.TG_Visit.j" class="py-name" href="#" onclick="return doclink('link-108', 'j', 'link-104');">j</a></tt><tt class="py-op">+</tt><tt class="py-number">1</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">sites</tt> </tt>
+</div><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt id="link-109" class="py-name" targets="Variable turbogears.validators._illegal_s=turbogears.validators-module.html#_illegal_s"><a title="turbogears.validators._illegal_s" class="py-name" href="#" onclick="return doclink('link-109', '_illegal_s', 'link-109');">_illegal_s</a></tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-string">r"((^|[^%])(%%)*%s)"</tt><tt class="py-op">)</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"> </tt>
+<a name="strftime_before1900"></a><div id="strftime_before1900-def"><a name="L248"></a><tt class="py-lineno">248</tt> <a class="py-toggle" href="#" id="strftime_before1900-toggle" onclick="return toggle('strftime_before1900');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.validators-module.html#strftime_before1900">strftime_before1900</a><tt class="py-op">(</tt><tt class="py-param">dt</tt><tt class="py-op">,</tt> <tt class="py-param">fmt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="strftime_before1900-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="strftime_before1900-expanded"><a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">    <tt class="py-docstring">"""strftime implementation supporting proleptic Gregorian dates before 1900.</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"><tt class="py-docstring">    @see: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/306860</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-110" class="py-name"><a title="turbogears.validators._illegal_s" class="py-name" href="#" onclick="return doclink('link-110', '_illegal_s', 'link-109');">_illegal_s</a></tt><tt class="py-op">.</tt><tt class="py-name">search</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"This strftime implementation does not handle %s"</tt><tt class="py-op">)</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">year</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1900</tt><tt class="py-op">:</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">)</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line"> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">    <tt class="py-name">year</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">year</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">    <tt class="py-comment"># For every non-leap year century, advance by</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">    <tt class="py-comment"># 6 years to get into the 28-year repeat cycle</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">    <tt class="py-name">delta</tt> <tt class="py-op">=</tt> <tt class="py-number">2000</tt> <tt class="py-op">-</tt> <tt class="py-name">year</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">    <tt class="py-name">off</tt> <tt class="py-op">=</tt> <tt class="py-number">6</tt><tt class="py-op">*</tt><tt class="py-op">(</tt><tt class="py-name">delta</tt> <tt class="py-op">//</tt> <tt class="py-number">100</tt> <tt class="py-op">+</tt> <tt class="py-name">delta</tt> <tt class="py-op">//</tt> <tt class="py-number">400</tt><tt class="py-op">)</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">    <tt class="py-name">year</tt> <tt class="py-op">+=</tt> <tt class="py-name">off</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">    <tt class="py-comment"># Move to around the year 2000</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">    <tt class="py-name">year</tt> <tt class="py-op">=</tt> <tt class="py-name">year</tt> <tt class="py-op">+</tt> <tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-number">2000</tt> <tt class="py-op">-</tt> <tt class="py-name">year</tt><tt class="py-op">)</tt><tt class="py-op">//</tt><tt class="py-number">28</tt><tt class="py-op">)</tt><tt class="py-op">*</tt><tt class="py-number">28</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">    <tt class="py-name">timetuple</tt> <tt class="py-op">=</tt> <tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">timetuple</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">    <tt class="py-name">s1</tt> <tt class="py-op">=</tt> <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">year</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">timetuple</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">    <tt class="py-name">sites1</tt> <tt class="py-op">=</tt> <tt class="py-name">_findall</tt><tt class="py-op">(</tt><tt class="py-name">s1</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">year</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">    <tt class="py-name">s2</tt> <tt class="py-op">=</tt> <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">strftime</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">,</tt> <tt class="py-op">(</tt><tt class="py-name">year</tt><tt class="py-op">+</tt><tt class="py-number">28</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">timetuple</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">    <tt class="py-name">sites2</tt> <tt class="py-op">=</tt> <tt class="py-name">_findall</tt><tt class="py-op">(</tt><tt class="py-name">s2</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt class="py-name">year</tt><tt class="py-op">+</tt><tt class="py-number">28</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">    <tt class="py-name">sites</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">site</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sites1</tt><tt class="py-op">:</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">site</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sites2</tt><tt class="py-op">:</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">            <tt class="py-name">sites</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">site</tt><tt class="py-op">)</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">    <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">s1</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">    <tt class="py-name">syear</tt> <tt class="py-op">=</tt> <tt class="py-string">"%4d"</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">dt</tt><tt class="py-op">.</tt><tt class="py-name">year</tt><tt class="py-op">,</tt><tt class="py-op">)</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">site</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sites</tt><tt class="py-op">:</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">s</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">site</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-name">syear</tt> <tt class="py-op">+</tt> <tt class="py-name">s</tt><tt class="py-op">[</tt><tt class="py-name">site</tt><tt class="py-op">+</tt><tt class="py-number">4</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div><a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:42 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

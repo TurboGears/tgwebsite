@@ -1,0 +1,52 @@
+.. index:: setuptools, entry points
+
+Using Entry Points
+==================
+
+Entry Points are a part of the ``setuptools`` module that is included with TurboGears. They make creating extensible applications very simple. TurboGears uses them to provide extension behavior for a number of its components. You can find a list of the entry point names used by TurboGears at :doc:`EntryPointList`.
+
+Defining an entry point
+-----------------------
+
+Since entry points are organized as names under which code is collected, creating one is as easy as finding a name that is not currently being used. It is usually a good idea to include your project's name as part of the beginning of the entry point. TurboGears does this, which is why all of its entry points have named similar to ``turbogears.command``.
+
+Working with entry points
+-------------------------
+
+The ``pkg_resources`` module provides a number of tools that are useful for inspecting entry points and loading the code that they provide. For a full set of documentation on this module see <http://peak.telecommunity.com/DevCenter/PkgResources> The following is a list of some of the more commonly used functions.
+
+``pkg_resources.iter_entry_points()``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This function provides an iterator over a single entry point name or list of entry point names. The following code is used to generate a list of all the available entry points defined for ``turbogears.command``::
+
+    import pkg_resources
+    for entrypoint in pkg_resources.iter_entry_points("turbogears.command"):
+        print entrypoint.name
+
+After you have found the entry point you are looking for it is easy to use the code. The following code demonstrates one way of getting access to a hypothetical "sample" extension to tg-admin::
+
+    import pkg_resources
+    samplecommand = None
+    for entrypoint in pkg_resources.iter_entry_points("turbogears.command"):
+        if entrypoint.name == 'sample':
+        samplecommand = entrypoint.load()
+
+After this code completes "samplecommand" will contain the Python objects referenced by that entry point. In the case of ``turbogears.command`` it is expected that this will be a class, but it is possible to create references to other Python constructs as well.
+
+Advertising entry points
+------------------------
+
+After you have finished creating the code that will be used at an entry point, you must define it in the system. This is done through the ``entry_points`` argument to the ``setup()`` function in ``setup.py``. Although there are several options for defining this, TurboGears has settled on the ini-style string. Here is a sample defining a new tg-admin command::
+
+    from setuptools import setup
+    setup(
+        name="samplecommand",
+    ...
+    entry_points = """
+    [turbogears.command]
+    sample = samplecommand.command:Sample
+    """
+        ...
+
+The name listed in brackets is used to specify the entry point name that this package is providing. In this case the entry point will be available to any queries for ``turbogears.command``. The name 'sample' on the left is used as the name for this entrypoint, and is available as ``entrypoint.name`` in the code. That is set to a dotted module list followed by a colon and the name of the class that should be used. ``setuptools`` will use the ``desc`` attribute of this class as the description of this entry point. That is the only requirement ``setuptools`` has on the structure of this class.

@@ -1,0 +1,201 @@
+.. index:: @paginate, paginate decorator, pagination
+
+@paginate()
+===========
+
+The ``@paginate()`` decorator transparently divides query results into subsets for easier or more useful display. The template of any controller method for which a paginate decorator is defined receives the query results and pagination-specific parameters. The controller just needs to do specify a dataset that shall be paginated, e.g. by passing an SQLObject/SQLAlchemy query. The paginate package also includes a DataGrid-based Widget (``PaginateDataGrid``) that extends the basic ``DataGrid`` widget template to use the pagination-specific parameters.
+
+Basic Usage
+-----------
+
+The following example (and all of the examples on this page) assume a database table named ``Person`` with the columns ``name`` and ``age``. These examples are taken from the pagedemo1 application :ref:`attached <attached>` to this page.
+
+Here is what the controller for a non-DataGrid based pagination implementation looks like::
+
+    @expose(template=".templates.paginate1")
+    @paginate('persons')
+    def paginate1(self):
+        persons = Person.select()
+        return dict(persons=persons)
+
+This assumes that you use the SQLObject ORM. For SQLAlchemy, simply replace ``Person.select()`` with ``Person.query()``. The ORM defers actually executing a query until a particular result is used. The controller code above defines a result set (``persons``) but doesn't actually use any of the results. This allows the paginate decorator to control which rows are fetched. Here, the ``@paginate()`` decorator examines the controller's return dictionary, finding the ``persons`` result set. The decorator modifies the ``persons`` object to return a limited number of results, sets a number of variables, and passes everything to the template.
+
+Here is the accompanying template code for this decorator::
+
+    <p><b py:for="page in tg.paginate.pages">
+        <a py:strip="page == tg.paginate.current_page"
+            href="${tg.paginate.get_href(page)}" py:content="page"/></b></p>
+    <table border="1">
+        <tr><th>Name</th><th>Age</th></tr>
+        <tr py:for="person in persons">
+            <td py:content="person.name"/><td py:content="person.age"/>
+        </tr>
+    </table>
+
+Aside from the code that uses ``tg.paginate``, this is exactly what you would expect to work with a query result. The ``tg.paginate`` object is automatically created by the paginate decorator and filled with the data relevant for this page. If you click the numeric links provided by this template, it will take you to the appropriate page in the query result. Let's take a look at the changes made to your page's URL that are used to handle pagination. Here is a sample taken from ``paginate1``:
+
+    http://localhost:8080/paginate1?tg_paginate_limit=10&tg_paginate_no=2&tg_paginate_order=
+
+* ``tg_paginate_limit`` tells the decorator how many results are displayed per page. It defaults to 10 items, and you can control if users are allowed to override it (by default overrides are disabled).
+* ``tg_paginate_no`` indicates the current page number. We are currently looking at page two of the entire set.
+* ``tg_paginate_order`` is used when query ordering is specified in the decorator. When available it can be used to reorder the results based on different columns.
+
+``tg.paginate`` in Detail
+-------------------------
+
+Before we spend any more time looking at the ``@paginate()`` decorator, it is probably a good idea to review what the ``tg.paginate`` object does. This is used to communicate pagination information to the template. It contains a number of useful variables and the method ``get_href``, which is used to build pagination-aware links. Here is a breakdown of what the member variables contain:
+
+* ``tg.paginate.pages`` - a list of the individual page numbers
+* ``tg.paginate.current_page`` - holds the page number of the current page
+* ``tg.paginate.href_next`` - a url that leads you to the next page in the sequence
+* ``tg.paginate.href_prev`` - ``href_next``'s expected cousin. Provides the previous page in the sequence
+* ``tg.paginate.href_last`` - Provides the last page in the sequence
+* ``tg.paginate.href_first`` - ``href_last``'s expected cousin. Provides the first page in the sequence
+* ``tg.paginate.page_count`` - the total number of pages in the result set
+* ``tg.paginate.limit`` - the number of query results shown per page
+* ``tg.paginate.order`` - the database column used to order query results, if one is provided
+* ``tg.paginate.reversed`` - a boolean value stating if the results determined by ``tg.paginate.order`` are displayed in normal or reversed order
+* ``tg.paginate.ordering`` - the database columns used to order query results, if other columns have been ordered before as well
+* ``tg.paginate.input_values`` - this is used internally by the pagination system, primarily to build links; you will probably not need to alter it
+
+``tg.paginate.get_href()``
+``````````````````````````
+
+The ``tg.paginate.get_href`` method builds a url pointing to the page number specified. It uses ``tg.paginate.input_values`` to do it's work, so ordering (and reversing) results by column will be maintained automatically unless you specify a new value. Here are the parameters for this method:
+
+* ``page`` (required) - the number of the page the link should point to
+* ``order`` (optional, default is ``None``) - the column in the query result that should be used to order results
+
+``@paginate()`` in Detail
+-------------------------
+
+The ``@paginate`` decorator examines the output of the controller function it is decorating, makes some modifications to the dataset it has been instructed to modify, adds a pagination-specific variable (``tg.paginate``) and sends the newly modified controller function result to the template. The dataset that is handled by ``@paginate`` can be an SQLObject SelectResult, an SQLAlchemy Query, a list of Python objects with data fields in (nested) attributes, or a list of Python dicts. Here are the arguments that the paginate decorator accepts:
+
+* ``var_name`` (required) - the name of the variable in the dictionary returned by the controller that specifies the dataset ``@paginate`` will be modifying
+* ``default_order`` (optional, default is an empty string) - This is the name of the column that will be used to order pagination results. You can also specify a list of column names for ordering in that sequence. If you prefix column names  with a '-', then these columns will be sorted in reversed order. Due to the way pagination is implemented, specifying a ``default_order`` will override any result ordering performend in the controller.
+* ``limit`` (optional, default is 10) - the number of results to return per page
+* ``max_limit`` (optional, default is 0) - the maximum number to which the imposed limit can be increased using the "var_name"_tgp_limit keyword argument in the URL. If this is set to 0 (the default), no dynamic change at all will be allowed; if it is set to None, any change will be allowed.
+* ``max_pages`` (optional, default is 5) - This is used to generate the ``tg.paginate.pages`` variable. If the page count is larger than ``max_pages``, ``tg.paginate.pages`` will only contain the page numbers surrounding the current page at a distance of 1/2 ``max_pages``. For example, if you have fifteen pages in your result, and are currently on page seven with ``max_pages`` set to five, ``tg.pageinate.pages`` will contain [5,6,7,8,9]
+* ``max_sort`` (optional, default is 1000) - the maximum number of records that will be sorted in memory if the data cannot be sorted using SQL. If set to 0, sorting in memory will never be performed; if set to None, no limit will be imposed.
+* ``dynamic_limit`` - If specified, this parameter must be the name of a key present in the dictionary returned by your decorated controller. The value found for this key will be used as the limit for our pagination and will override the other settings, the hard-coded one declared in the decorator itself AND the URL parameter one. This enables the programmer to store a limit settings inside the application preferences and then let the user manage it.
+
+Some of the variables in ``tg.paginate``, and thus some of the parameters in the URL will affect the behavior of the ``@paginate`` decorator. Those URL parameters and their effects are reviewed below:
+
+* ``tg_order`` - If ``default_order`` has been specified, the column given in this parameter is used to override the one defined in ``default_order``.
+* ``tg_paginate_limit`` - If ``max_limit`` is not set to 0, this value will be used instead of the ``limit`` argument given to ``@paginate``.
+
+``PaginateDataGrid``
+--------------------
+
+By itself the ``paginate`` decorator is already very useful. However, one of the most common uses for ``paginate`` is to limit the amount of data displayed in a table, and we already have a widget that takes care of most of the work for this: ``DataGrid``. The paginate system provides an extension to this widget that handles paged data: ``PaginateDataGrid``. The ``PaginateDataGrid`` widget does not change the functionality of ``DataGrid``, it simply adds pagination features to the template. To use ``PaginateDataGrid`` instead of a regular ``DataGrid``, you only need to add the ``paginate`` decorator to your controller.
+
+
+Using non SQL datasets
+----------------------
+
+Paginate works also with non SQL datasets such as a list of dictionaries::
+
+    @expose(template='.templates.paginate5')
+    @paginate('persons')
+    def paginate5(self):
+        return dict(persons=self.persons())
+
+    def persons(self):
+        return [dict(id=i, name='name%d'%i, age=100-i) for i in range(100)]
+
+Don't forget to change the template accordingly, because person.name and person['name'] are different in Python (and thus in Kid templates): Here is the critical part of the paginate5.kid template::
+
+        <tr py:for="person in persons">
+            <td py:content="person['name']"/><td py:content="person['age']"/>
+        </tr>
+
+If you use ``PaginateDataGrid``, then don't forget to change the getters for your datagrid columns accordingly.
+
+
+Include a link inside a datagrid
+--------------------------------
+
+To include a link inside a datagrid, just replace the string data by an ``ElementTree.Element``.
+
+Here is an example using non SQL data::
+
+    try:
+        from xml.etree import ElementTree
+    except ImportError:
+        from elementtree import ElementTree
+
+    class MakeLink:
+        """Generate the link inside the datagrid."""
+
+        def __init__(self, baseurl, id, title, action):
+            self.baseurl = baseurl
+            self.id = id
+            self.title = title
+            self.action = action
+
+        def __call__(self, obj):
+            url = controllers.url(self.baseurl,
+                dict(id=obj[self.id], action=self.action))
+            link = ElementTree.Element(
+                'a', href=url, style='text-decoration: underline')
+            link.text = obj[self.title]
+            return link
+
+    # to get this kind of link :  http://localhost:8080/person?action=edit&id=6
+    mylink = MakeLink('person', 'id', 'name', 'edit')
+
+    # just to get a element from a dictionary
+    def get(fieldname):
+        return lambda x: x.get(fieldname)
+
+    data_grid = PaginateDataGrid(
+        fields = [
+            PaginateDataGrid.Column(name='name', getter=mylink, title='Name',
+                options=dict(sortable=True)),
+            PaginateDataGrid.Column(name='age', getter=get('age'), title='Age',
+                options=dict(sortable=True, reverse_order=True)),
+        ])
+
+Instead of an ``ElementTree.Element``, you can also use a ``kid.Element``, or you can use the ``kid.XML`` function to pass the XHTML snippet for the link. Alternatively, you can also use a custom widget for creating the link.
+
+The controller is very simple and use some the code from above::
+
+    @expose(template='.templates.paginate2')
+    @paginate('persons', default_order='name')
+    def paginate4(self):
+        return dict(persons=self.persons(), list=data_grid)
+
+
+.. _attached:
+
+Demo applications using paginate
+--------------------------------
+
+Attached are two demo applications using ``paginate`` in various ways. The paginate demo application 1 (attached as :download:`pagedemo1.tar.gz <downloads/pagedemo1.tar.gz>` and :download:`pagedemo1.zip <downloads/pagedemo1.zip>`) contains the examples above, the paginate demo application 2 (attached as :download:`pagedemo2.tar.gz <downloads/pagedemo2.tar.gz>` and :download:`pagedemo2.zip <downloads/pagedemo2.zip>`) offers some more sophisticated examples.
+
+
+FAQ
+---
+
+Why does pagination not work when my controller returns a string?
+    Due to the way it is structured, Pagination only works on controller methods that return a dictionary.
+
+Can I paginate something besides SQLObject select results?
+    You can also use SQLAlchemy queries and all kinds of lists of dictionaries or objects with data in attributes.
+
+How can I reverse the ordering of some columns?
+    Prefix these column names with a '-' sign in the ``default_order`` parameter.
+
+Can I rename the parameters passed through the URL to something nicer?
+    As of the current implementation, paginate does not allow you to do this.
+
+Can I sort columns case-insensitively or change the nulls first/last behavior?
+    Unfortunately, you cannot do this using the standard paginate decorator.
+
+Paginate stops working on my production server! Why?
+    Chances are you have set ``tg.strict_parameters = False`` in your production configuration
+    (or it is unset, which amounts to the same). Unfortunately, this will strip the paginate
+    parameters from your URLs and breaks paginate. As a workaround, you should add ``**kwargs``
+    to your controller method parameters. For a detailed explanation, see `ticket 1889`_.
+
+.. _ticket 1889: http://trac.turbogears.org/ticket/1889

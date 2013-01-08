@@ -1,0 +1,67 @@
+.. index:: JSON
+
+JSON Output
+===========
+
+By returning a dictionary from your controller methods, you make it possible
+for TurboGears to dynamically decide how the data should be presented to the
+browser. Most often, you'll want to return HTML.
+
+When doing modern, interactive web applications (`"AJAX"`_), you often want to
+send data to the browser in a form that is readily usable by JavaScript. While
+modern browsers all have some level of support for XML, that support varies in
+its depth and speed.
+
+For this reason, the lightweight JSON_ format is a good one. The format is
+native to JavaScript, so it works in all browsers and is very fast for the
+browser to deal with.
+
+.. _"AJAX": http://en.wikipedia.org/wiki/AJAX
+.. _JSON: http://www.json.org
+
+TurboGears makes it easy to return JSON from your methods by converting the
+returned dictionary into the appropriate JSON. This means that your application
+can instantly get a usable API in addition to
+its browser-based interface!
+
+You might not want someone to get JSON for all your exposed methods, so
+TurboGears disallows JSON by default. To enable it you can:
+
+``@expose("json")`` on a particular method
+    This causes any call to the method to return JSON. This option
+    provides a pure JSON interface to your application.
+
+Set ``allow_json=True`` in your ``expose()`` decorator
+    If a request comes in with a parameter of ``tg_format=json``, TurboGears
+    will perform the JSON conversion. If the parameter is missing, your
+    templates will process as normal.
+
+    This is a good option for providing both a direct web interface and an
+    optional json interface on top. Good for those who like to "progressively
+    enhance" their web apps.
+
+Set ``tg.allow_json=True`` in your ``app.cfg``
+    This is the same behavior as the previous option but it allows the
+    ``tg_format=json`` on every method. You can selectively restrict this call
+    by adding ``allow_json=False`` as an argument to ``expose()``.
+
+In any event, to convert the JSON to a usable object, you simply ``eval()``
+this in the browser, you'll have a hash table of your data, ready to use!
+MochiKit provides a convenience function ``loadJSONDoc`` that sends an
+XMLHttpRequest to the server and returns the ``eval``'d object.
+
+If you use the hybrid approach with ``allow_json=True``, and you include
+TurboGears widgets in your returned dictionary so they can be used by a
+template, you may run into the problem that the widgets cannot (and need
+not) be JSONified when requesting JSON output. You can add the following
+to your ``json.py`` file to render all widgets as null values in JSON::
+
+    from turbogears.widgets.base import Widget
+
+    @jsonify.when("isinstance(obj, Widget)")
+    def jsonify_widgets(obj):
+        return None
+
+By the way, this workaround is only needed in TurboGears 1. In TurboGears 2,
+you would pass the widgets in ``tmpl_context`` instead, and return only the
+actual data in the dictionary.

@@ -1,0 +1,57 @@
+Using Alternate Templating Engines
+==================================
+
+Out of the box, TurboGears 1.0 supports Kid templates. TurboGears has tight
+integration for Kid, including an internationalization filter and the use of
+Kid for widgets.
+
+To make migrating to TurboGears easier, TurboGears provides some seamless
+support for using other template engines, and the project maintains the
+TurboCheetah plugin providing support for `Cheetah`_.  Additionally, TurboGears
+uses a template engine :doc:`plugin interface <TemplatePlugins>` that is shared with other tools,
+notably `Buffet`_ for CherryPy. This provides access to a broad range of
+pre-built template plugins.
+
+.. _Cheetah: http://cheetahtemplate.org
+.. _Buffet: http://projects.dowski.com/projects/buffet
+
+
+Using another template engine
+-----------------------------
+
+The plugins come in the form of Python Eggs. Once you've ``easy_install``'d the
+plugin, TurboGears will automatically have the ability to render the new
+templates. You can use the ``tg-admin info`` command to determine which template
+engines are currently supported by your TurboGears installation.
+
+Each template engine has a name or "scheme" to identify it. Kid templates use
+the ``"kid"`` scheme. Cheetah templates use the ``"cheetah"`` scheme. By default,
+TurboGears uses Kid templates, but you can easily use a Cheetah template for a
+specific method like this::
+
+        @turbogears.expose(template="cheetah:yourpackage.templates.filename")
+        def index(self):
+            return dict(someval=5)
+
+When rendering the output from this method, TurboGears will notice the template
+scheme in front and use the appropriate engine for that kind of template.
+
+Using an alternate template engine does not affect how JSON output is handled:
+you can still choose to output JSON if you've set the ``allow_json`` flag.
+
+You can also choose to use a specific engine for all of your application or for
+a specific path through the ``tg.defaultview`` config setting in ``config/app.cfg``.
+Just set ``tg.defaultview`` to the name of the template engine you want. The
+default is ``"kid"``, but you could also set it to ``"cheetah"``, for example:
+
+
+    # <mypackage>/config/app.cfg
+    [global]
+    ...
+    # VIEW
+
+    # which view (template engine) to use if one is not specified in the
+    # template name
+    tg.defaultview = "cheetah"
+    ...
+

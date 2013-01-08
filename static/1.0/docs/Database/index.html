@@ -1,0 +1,300 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Database Installation &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="SQLite Database" href="SQLite.html" />
+    <link rel="prev" title="Starting TurboGears Applications Using Init Scripts" href="../Install/InitScripts.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SQLite.html" title="SQLite Database"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Install/InitScripts.html" title="Starting TurboGears Applications Using Init Scripts"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Database Installation</a><ul>
+<li><a class="reference internal" href="#supported-database-backends">Supported Database Backends</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#linux">Linux</a><ul>
+<li><a class="reference internal" href="#mysql">MySQL</a></li>
+<li><a class="reference internal" href="#sqlite">SQLite</a></li>
+<li><a class="reference internal" href="#postgresql">PostgreSQL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#windows">Windows</a><ul>
+<li><a class="reference internal" href="#id1">MySQL</a></li>
+<li><a class="reference internal" href="#id2">SQLite</a></li>
+<li><a class="reference internal" href="#id3">PostgreSQL</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a><ul>
+<li><a class="reference internal" href="#id4">MySQL</a></li>
+<li><a class="reference internal" href="#id5">SQLite</a></li>
+<li><a class="reference internal" href="#id6">PostgreSQL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Install/InitScripts.html"
+                        title="previous chapter">Starting TurboGears Applications Using Init Scripts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SQLite.html"
+                        title="next chapter">SQLite Database</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="database-installation">
+<h1><a class="toc-backref" href="#id7">Database Installation</a><a class="headerlink" href="#database-installation" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#database-installation" id="id7">Database Installation</a><ul>
+<li><a class="reference internal" href="#supported-database-backends" id="id8">Supported Database Backends</a></li>
+<li><a class="reference internal" href="#linux" id="id9">Linux</a></li>
+<li><a class="reference internal" href="#windows" id="id10">Windows</a></li>
+<li><a class="reference internal" href="#mac-os-x" id="id11">Mac OS X</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This page is give some hints on the database back-ends supported by SQLObject
+and SQLAlchemy and how to install them on different operating systems.</p>
+<div class="section" id="supported-database-backends">
+<h2><a class="toc-backref" href="#id8">Supported Database Backends</a><a class="headerlink" href="#supported-database-backends" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://www.sqlobject.org/SQLObject.html#dbconnection-database-connections">SQLObject Supported Backends</a>:</p>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li><a class="reference internal" href="SQLite.html"><em>SQLite</em></a></li>
+<li><a class="reference internal" href="MySQL.html"><em>MySQL</em></a></li>
+<li><a class="reference internal" href="PostgreSQL.html"><em>PostgreSQL</em></a></li>
+<li><a class="reference internal" href="Firebird.html"><em>Firebird</em></a></li>
+<li>MS SQL Server</li>
+<li>Sybase</li>
+<li>MAX DB</li>
+</ul>
+<p><a class="reference external" href="http://www.sqlalchemy.org/trac/browser/sqlalchemy/trunk/lib/sqlalchemy/databases">SQLAlchemy Supported Backends</a>:</p>
+<ul class="simple">
+<li>SQLite</li>
+<li>MySQL</li>
+<li>Postgres</li>
+<li>Firebird</li>
+<li>MS SQL Server</li>
+<li>Oracle</li>
+</ul>
+<p>The process of installing a database system differs greatly from each database
+and each operating system to another and therefore we can only refer you to
+the documentation of the database system in question and give you some hints
+below.</p>
+<p>After you have installed a database system we need Python bindings for it,
+that is a library that lets Python programs interact with the database backend.</p>
+</div>
+<div class="section" id="linux">
+<h2><a class="toc-backref" href="#id9">Linux</a><a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<p>There are many ways to install software on Linux:</p>
+<ul class="simple">
+<li>Have a look whether there is a package in your distribution&#8217;s package
+collection.</li>
+<li>If not, you can make your own package for it.</li>
+<li>Or look if the Python package is available from the <a class="reference external" href="http://www.python.org/pypi">Cheeseshop</a> (PyPI)
+and <tt class="docutils literal"><span class="pre">easy_install</span></tt> it.</li>
+<li>As a last resort, build from source.</li>
+</ul>
+<p>Which way to go depends on your prefenrences and your expertise, although for
+most distributions it is prefered to manage all installed software through the
+package management. <tt class="docutils literal"><span class="pre">easy_install</span></tt> is probably the easiest way, when there is
+a binary egg for your system available.</p>
+<div class="section" id="mysql">
+<h3>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<p>You will need the <a class="reference external" href="http://sourceforge.net/projects/mysql-python">mysqldb</a> module, which may be called <tt class="docutils literal"><span class="pre">mysql-python</span></tt> in
+your distribution and it is also called like that in the PyPI.</p>
+<p>Best Approach:</p>
+<p>Use your package manager to install <tt class="docutils literal"><span class="pre">mysql-python</span></tt>. If that fails:</p>
+<ul class="simple">
+<li>Install development tools (gcc, make, etc.).</li>
+<li>Install MySQL development tools.</li>
+</ul>
+<div class="highlight-python"><pre>easy_install mysql-python</pre>
+</div>
+</div>
+<div class="section" id="sqlite">
+<h3>SQLite<a class="headerlink" href="#sqlite" title="Permalink to this headline">¶</a></h3>
+<p>You will need the <a class="reference external" href="http://initd.org/tracker/pysqlite">pysqlite</a> modul.</p>
+<p>Best Approach:</p>
+<p>Use your package manager to install <tt class="docutils literal"><span class="pre">pysqlite</span></tt>. If that fails:</p>
+<ul class="simple">
+<li>Install development tools (gcc, make, etc.).</li>
+<li>Install SQLite and the SQlite development files.</li>
+</ul>
+<div class="highlight-python"><pre>easy_install pysqlite</pre>
+</div>
+</div>
+<div class="section" id="postgresql">
+<h3>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h3>
+<p>You will need the <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwo">psycopg2</a> module if you&#8217;re going to use Unicode, otherwise
+either psycopg or psycopg2 will do it. We recommend using psycopg2 because of
+other features besides unicode.</p>
+<p>Best Approach:</p>
+<p>Use your package manager. If that fails:</p>
+<ul class="simple">
+<li>Look for binaries at <a class="reference external" href="http://initd.org/tracker/psycopg/wiki/PsycopgTwoInstall">the psycopg2 install page</a></li>
+<li>Build it yourself using the instructions on the above page.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="windows">
+<h2><a class="toc-backref" href="#id10">Windows</a><a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>On Windows there is basically one way to install packages, an exe file (aka
+installer), provided by the package author or users. Installing from source is a
+pain and should be your last resource. If you do choose to go this way you will
+need VisualStudio or equivalent tools.</p>
+<p><em>TODO add link to MC visual C compiler</em></p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Setting up the tools to compile Python C-extension on Windows is not for the
+faint of heart.</p>
+</div>
+<div class="section" id="id1">
+<h3>MySQL<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>You will need <a class="reference external" href="http://sourceforge.net/projects/mysql-python">mysqldb</a>, mysql-python is the name in in pypi.</p>
+<p>Best Approach:</p>
+<p>You can find an installer at in <a class="reference external" href="http://sourceforge.net/project/showfiles.php?group_id=22307">MySQL-python download section</a> on Sourceforge.
+Get the latest version and install it by double-clicking on the installer.</p>
+<p>If that fails:</p>
+<ul class="simple">
+<li><em>TODO (If you get this working, post it here)</em></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>SQLite<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>For Python versions &lt; 2.5, you will need <a class="reference external" href="http://initd.org/tracker/pysqlite">pysqlite</a>. In Python &gt;= 2.5, pysqlite
+is already integrated as <a class="reference external" href="http://docs.python.org/lib/module-sqlite3.html">sqlite3</a>, but maybe an older version than the current
+pysqlite. Make sure you have a recent version installed.</p>
+<p>Best Approach:</p>
+<ul class="simple">
+<li>easy_install pysqlite</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>PostgreSQL<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Download and install from <a class="reference external" href="http://www.stickpeople.com/projects/python/win-psycopg/index.html">here</a>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="mac-os-x">
+<h2><a class="toc-backref" href="#id11">Mac OS X</a><a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way of installed most of the common open source databases on OS X is
+to either use <a class="reference external" href="http://www.macports.org/">MacPorts</a> or <a class="reference external" href="http://fink.sourceforge.net/">Fink</a>.</p>
+<p>Both of these are package management systems that will install all the
+dependencies for you.</p>
+<p>To install Mac Ports, first install X11 and Xcode from Apple, and then install
+the dmg from <a class="reference external" href="http://www.macports.org/install.php">MacPorts installation page</a> and follow the instructions on
+the MacPorts site.</p>
+<div class="section" id="id4">
+<h3>MySQL<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports</p>
+<div class="highlight-python"><pre>$ sudo port install mysql4 +server</pre>
+</div>
+<p>or</p>
+<div class="highlight-python"><pre>$ sudo port install mysql5 +server</pre>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>SQLite<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports</p>
+<div class="highlight-python"><pre>$ sudo port install sqlite2</pre>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>PostgreSQL<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>For Darwin Ports</p>
+<div class="highlight-python"><pre>$ sudo port install postgresql8</pre>
+</div>
+<p>or</p>
+<div class="highlight-python"><pre>$ sudo port install portgresql7</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

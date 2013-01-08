@@ -1,0 +1,305 @@
+.. index:: MySQL
+
+Using a MySQL database
+======================
+
+.. contents::
+    :depth: 2
+
+
+MySQL installation
+------------------
+
+You will need the MySQLdb Python module. The main development site for this
+module is found at sourceforge_. There is also a cheeseshop_ page.
+
+.. _sourceforge: http://sourceforge.net/projects/mysql-python
+.. _cheeseshop: http://cheeseshop.python.org/pypi/MySQL-python
+
+
+Linux
+~~~~~
+
+Best Approach:
+
+- Use your package manager. The package may be called ``python-mysqldb``
+  (Debian/Ubuntu) or ``MySQL-python`` (Redhat).
+
+If that fails:
+
+- Install development tools (gcc,make,etc.).
+- Install mysql development tools (e.g. ``libmysqlclient15-dev`` on
+  Debian/Ubuntu).
+- Then install the module via ``easy_install`` from the cheeseshop_.
+
+::
+
+    $ easy_install MySQL-python
+
+
+Windows
+~~~~~~~
+
+You will need the `MySQLdb binary installer for Windows`_ (the file will be
+called something like ``MySQL-python-1.2.2.win32-py2.5.exe``).
+
+.. _MySQLdb binary installer for Windows:
+    http://sourceforge.net/project/showfiles.php?group_id=22307
+
+
+Mac OS X
+~~~~~~~~
+
+For Darwin Ports::
+
+    $ sudo port install mysql4 +server
+
+or::
+
+    $ sudo port install mysql5 +server
+
+Alternatively, you can just download the MySQL package format installer from
+the `MySQL site`_ (Mirror).
+
+There have been reports about problems when trying to install MySQLdb via
+``easy_install`` on Mac OS X, so you may be better of using one of the above
+alternatives.
+
+Another issue with installing mysql-python on OS X Leopard (and a work-around
+for it) is described in the article the `MySQLdb on Leopard`_. In short, before
+attempting to install, ensure that the MySQL ``bin`` directory is in your path,
+otherwise ``mysql_config`` will not be found.
+
+.. _mysql site: http://mirrors.sunsite.dk/mysql/downloads/mysql/5.0.html
+.. _mysqldb on leopard:
+    http://www.davidcramer.net/code/57/mysqldb-on-leopard.html
+
+
+Creating a database for TurboGears
+----------------------------------
+
+First set the database connection string in your project's deployment
+configuration (i.e. ``dev.cfg`` for a development environment, ``prod.cfg`` for
+a production environment)::
+
+    sqlobject.dburi="mysql://george@localhost/test"
+
+assuming ``george`` as the database user name, ``localhost`` as the hostname of
+the database server and ``test`` as the database name. See the `TurboGears
+Configuration`_ page for more information on TurboGears' configuration files.
+
+.. _turbogears configuration: Configuration
+
+Then we need to create database using the mysql shell (give the password for the
+*MySQL* ``root`` user when prompted for)::
+
+    $ mysql -h localhost -u root -p
+
+    mysql> CREATE DATABASE test;
+    Query OK, 1 row affected (0.03 sec)
+
+    mysql> GRANT ALL ON test.* TO 'george'@'localhost';
+    Query OK, 0 rows affected (0.11 sec)
+
+    mysql> [Press CTRL+D]
+    Bye
+
+
+Now we can test the DB connection as follows::
+
+    shell> mysql -h localhost -u george -p test
+    Enter password: ENTER
+
+Now it is everything prepared and we can create database structure using our
+model::
+
+    tg-admin sql create
+
+
+To transaction or not to transaction
+------------------------------------
+
+MySQL includes several storage engines (e.g. MyISAM and InnoDB). MyISAM is older
+and most sites only use this engine. MyISAM is somewhat faster than InnoDB but
+is not able to handle transactions (and you like to keep your data integrity,
+right? ;-).
+
+Note that transactions are not the only reason why using InnoDB is a good idea.
+InnoDB also enforces data integrity more strictly than MyISAM and also has many
+more features.
+
+Every table in MySQL can have its own engine. When creating a table, you can
+specify which engine to use. The default engine in MySQL is MyISAM.
+
+Unfortunately, SQLObject `does not allow`_ the specification of a storage engine
+as most databases only use one storage engine.
+
+.. _does not allow: http://wiki.sqlobject.org/sqlobjectdbconnection.html
+
+When the command ``tg-admin sql create`` is issued, the default table type is
+used.
+
+There are several ways to use InnoDB with MySQL:
+
+#. Create the tables by hand before TurboGears does it.
+#. Change the default storage engine for MySQL (requires MySQL administrator
+   privileges).
+#. Change the table types by hand after TurboGears created them:
+   "``ALTER TABLE mytable TYPE=INNODB``"
+
+By default TurboGears uses transactions. But there is a hook that allows you to
+disable transactions in TurboGears. If you do not want TurboGears to manage
+transactions put ``:doc:`/notrans``` in front of the ``dburi``, TurboGears will
+silently ignore all begin / commit / rollback / end instructions. Here is the
+above ``dburi`` string with transactions disabled::
+
+    sqlobject.dburi="notrans_mysql://george@localhost/test"
+
+
+Changing the default storage engine
+-----------------------------------
+
+To change the default storage engine of MySQL to InnoDB, you have to add the
+following line to the ``[mysqld]`` section of your ``my.ini`` / ``my.cnf``
+file::
+
+    default-storage-engine=INNODB
+
+This will have the effect that when you issue a ``CREATE TABLE`` statement,
+MySQL will create an InnoDB table by default.  Under Windows the file is
+usually found in the ``C:\Program Files\MySQL\MySQL Server X.Y`` directory and
+on Linux under the path name ``/etc/my.cnf`` or ``/etc/mysql/my.cnf``.
+
+If you have the MySQL Administrator GUI installed, you can also change this
+setting from within this program.
+
+#. Select "StartUp Variables" from the left pane
+#. Then choose the "General Parameters tab"
+
+   Down the bottom you'll see a "Default Storage" section.
+#. Choose "InnoDB" from the drop-down.
+
+For detailed information on this topic, see the `MySQL Reference Manual`_.
+
+.. _mysql reference manual:
+    http://dev.mysql.com/doc/refman/5.1/en/storage-engine-setting.html
+
+
+Using utf-8 encoding with MySQL
+-------------------------------
+
+If you want to store international characters in your database (and who doesn't
+want to?), there are several things your should take care of:
+
+#. Use an UTF-8 `encoding declaration`_ for all your Python source files by
+   writing the following on the first line of every ``.py`` file::
+
+        # -*- coding: utf-8 -*-
+
+   and make sure that you really save the files with UTF-8 encoding.
+
+#. In your deployment configuration file (i.e. ``dev.cfg`` for development,
+   ``prod.cfg`` for production), add the follwing suffix to the ``dburi``::
+
+        ?charset=utf8&sqlobject_encoding=utf8
+
+   For example, your ``dburi`` may now look like this (all on one line)::
+
+        sqlobject.dburi = \
+            "mysql://george:secret@localhost/mydb?charset=utf8&sqlobject_encoding=utf8"
+
+   .. note:: Please note, that the encoding name used here is ``utf8``
+        **not** ``utf-8``.
+
+#. In your application's configuration (``<yourpackage>/config/app.cfg``),
+   make sure that you have the following setting::
+
+        kid.encoding="utf-8"
+
+#. In your ``my.ini`` / ``my.cnf`` file, make sure that you have the following
+   setting in the ``[mysql]`` section::
+
+        default-character-set=utf8
+
+.. _encoding declaration: http://www.python.org/dev/peps/pep-0263/
+
+
+Now you can verify that everything is OK in the database. Open the MySQL command
+line client and try the following SQL statements::
+
+    mysql> SHOW VARIABLES LIKE '%character_set%';
+    +--------------------------+------------------------------+
+    | Variable_name            | Value                        |
+    +--------------------------+------------------------------+
+    | character_set_client     | utf8                         |
+    | character_set_connection | utf8                         |
+    | character_set_database   | utf8                         |
+    | character_set_filesystem | binary                       |
+    | character_set_results    | utf8                         |
+    | character_set_server     | utf8                         |
+    | character_set_system     | utf8                         |
+    | character_sets_dir       | <mysql home>\share\charsets\ |
+    +--------------------------+------------------------------+
+    8 rows in set (0.00 sec)
+
+    mysql> SHOW CREATE DATABASE my_db;
+    +----------+----------------------------------------------------------------+
+    | Database | Create Database                                                |
+    +----------+----------------------------------------------------------------+
+    | my_db    | CREATE DATABASE `my_db` /*!40100 DEFAULT CHARACTER SET utf8 */ |
+    +----------+----------------------------------------------------------------+
+    1 row in set (0.24 sec)
+
+To change the default character set of an existing database, execute the
+following SQL statement::
+
+    ALTER DATABASE data_base DEFAULT CHARACTER SET=utf8;
+
+Or to change the character set of a table::
+
+    ALTER TABLE table_name DEFAULT CHARACTER SET=utf8;
+
+
+MySQL on RHEL 4 (incompatible MySQLdb)
+--------------------------------------
+
+Your version of the MySQLdb module must be compatible with the database you want
+to connect to. Old versions of MySQLdb may not support newer MySQL versions as
+data formats may have changed or the underlying C libraries behave differently
+in certain situations (such as "Connection lost").
+
+If you experience problems because your MySQL server version is too new, the
+correct solution to this problem is to update your MySQLdb module.
+
+Unfortunately, Redhat ships incompatible versions of MySQLdb (version 1.0) and
+MySQL (version 4.1) in its Redhat Enterprise Linux 4 (Update 4). You may
+experience problems with that configuration if you have database fields with the
+MySQL type ``TIMESTAMP`` which changed its format from MySQL 4.0 to 4.1. If your
+SQLObject class is being autogenerated from the database, this error will be
+raised::
+
+    File "/usr/lib/python2.3/site-packages/MySQLdb/connections.py", line 33, in
+        defaulterrorhandler
+        raise errorclass, errorvalue
+    ValueError: invalid literal for int(): 1-
+
+Due to the popularity of this platform, a special workaround was added in
+TurboGears 1.0.1. This workaround consists of a custom converter for timestamp
+fields.
+
+You can enable this converter by adding this option to your configuration file::
+
+    turbogears.enable_mysql41_timestamp_workaround = True
+
+This option defaults to ``False``, and is only in effect if your version of
+MySQLdb is <= 1.0.
+
+Please note that this workaround is currently implemented for SQLObject only.
+However, you are welcome to submit a patch for SQLAlchemy, too.
+
+Further information:
+
+* `TurboGears Trac Ticket 1235 <http://trac.turbogears.org/ticket/1235>`_
+* `Redhat Bug 155341
+  <http://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=155341>`_
+* `MySQLdb Bug <http://sourceforge.net/tracker/index.php?func=detail&aid=1608916&group_id=22307&atid=374932>`_

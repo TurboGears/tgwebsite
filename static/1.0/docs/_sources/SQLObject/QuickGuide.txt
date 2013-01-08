@@ -1,0 +1,71 @@
+SQLObject Quick Guide
+=====================
+
+
+Declaring SQLObject classes for database tables
+-----------------------------------------------
+
+Example::
+
+    from datetime import datetime
+
+    class A(SQLObject):
+        members = IntCol()
+        name = StringCol(default="Annonimous", alternateID=True)
+        created = DateTimeCol(default=datetime.now)
+        friends = MultipleJoin("B")
+        owner = ForeignKey("C")
+
+    class B(SQLObject):
+        name = StringCol()
+
+    class C(SQLObject):
+        name = StringCol()
+
+
+Getting query results from the database
+---------------------------------------
+
+The simplest way of retrieve data from the db is as follows::
+
+    mySQLObjectClass.select()
+
+Note that SQLObject does not return lists or tuples, it returns ``SQLResult`` objects,
+which are iterators and can be turned into a sequence with the ``list()`` or ``tuple()``
+functions. For attributes declared with MultipleJoin or RelatedJoin it returns lists
+directly, unless you use ``SQLMultipleJoin``/``SQLRelatedJoin``.
+
+You can restrict a query using a where condition like this::
+
+    A.select(WHERE(A.q.members == 10))
+
+If the WHERE is left out, it will be silently assumed, so this would work as well::
+
+    A.select(A.q.members == 10)
+
+This returns an iterator for all result objects that fit the where condition.
+If you want to order the results by creation, you can do it like this::
+
+    A.select(A.q.members == 10, orderBy=A.q.created)
+
+Note that the result will come sorted from older to newer. If you want it sorted
+from newer to older, do this::
+
+    temp = A.select(A.q.members == 10, orderBy=-A.q.created)
+
+And for a limited result, the recommended way is this::
+
+    temp = A.select(A.q.members == 10, orderBy=-A.q.created)[:10]
+
+If you pay attention, you'll see that the slice is done to the query result.
+It happens because the slicing operator is overwritten and will work just like
+a limit statement in your query.
+
+If you want to retrieve a single result object through its ID, just do this::
+
+    A.get(myClassId)
+
+To retrieve the result object by its primary key, do this::
+
+    # this may throw a SQLObjectNotFound exception
+    A.byName(primaryKey)

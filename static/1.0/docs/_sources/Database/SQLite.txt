@@ -1,0 +1,84 @@
+.. index:: SQLite
+
+SQLite Database
+===============
+
+.. contents::
+    :depth: 2
+
+
+Database info
+-------------
+
+SQLite_ is a small C library that implements a self-contained, embeddable, zero-configuration SQL database engine.
+
+.. _sqlite: http://sqlite.org/
+
+
+SQLite installation
+-------------------
+
+For Python versions < 2.5, you will need the third-party `pysqlite`_ module. In Python >= 2.5,
+pysqlite is already integrated in the standard library as `sqlite3`_, but it may be an older
+version than the current pysqlite. Make sure you have a recent version installed.
+
+.. _pysqlite: http://initd.org/tracker/pysqlite
+.. _sqlite3: http://docs.python.org/lib/module-sqlite3.html
+
+
+Linux
+~~~~~
+
+Pre-requisites:
+
+- You will need the `sqlite`_ C library version 3 installed. For example, on Debian/Ubuntu,
+  install the ``libsqlite3`` and ``libsqlite3-dev`` package.
+
+Installation options:
+
+#. Use your package manager
+
+#. Use ``easy_install``::
+
+    easy_install pysqlite
+
+
+Windows
+~~~~~~~
+
+Installation options:
+
+#. Use a `windows binary installer`_ from the pysqlite_ homepage.
+
+#. Use ``easy_install``::
+
+    easy_install pysqlite
+
+.. _windows binary installer:
+    http://initd.org/tracker/pysqlite/wiki/pysqlite#Downloads
+
+
+Mac
+~~~
+
+For Darwin Ports::
+
+    $ sudo port install sqlite2
+
+
+Known Issues
+------------
+
+* For multiuser applications with heavy load you should use use :doc:`MySQL <MySQL>` or :doc:`PostgreSQL <PostgreSQL>` instead,
+  otherwise you'll probably often get the error "database locked", because concurrent
+  threads are trying to access the database for writing at the same time.
+
+* If you are getting this error::
+
+      exceptions.AttributeError: "'pysqlite2.dbapi2.Connection' object has no attribute 'autocommit'"
+
+  Please See `#763`_ and this `googlegroup discussion`_
+
+.. _#763: http://trac.turbogears.org/ticket/763
+.. _googlegroup discussion: http://groups.google.com/group/turbogears/browse_frm/thread/aab1217f3294c4e5/ae5da1830d10a2e4?q=turbogears+763&rnum=1#ae5da1830d10a2e4>
+

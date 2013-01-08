@@ -1,0 +1,55 @@
+Auto-updating an attribute with SQLObject
+-----------------------------------------
+
+SQLObject 0.8 (which is currently still in SVN) will add a feature for capturing events. But those of us using the current release (0.7.1) will need to do a little hack to do something I find fairly common.
+
+An example: a comment system, where user's can edit their comments later on. You want to track when the comment was last modified, so you create a Modified field in your Comment class/table: ::
+
+    class Comment(SQLObject):
+        User = ForeignKey('TG_User')
+        Created = DateTimeCol(notNone=True, default=datetime.now())
+        Modified = DateTimeCol(notNone=True, default=datetime.now())
+        Subject = StringCol(length=200)
+        Body = StringCol()
+
+Obviously this is a very simple example, and you could just do ``c.Modified = datetime.now()`` on the target of your Edit Comment form. But, think about a case where there are many more fields, and several different places where your record could get modified (not just the Edit Comment form). Then it would be nice to have the Modified field updated automatically every time the record is changed.
+
+Take the following: ::
+
+    class Comment(SQLObject):
+        User = ForeignKey('TG_User')
+        Created = DateTimeCol(notNone=True, default=datetime.now())
+        Modified = DateTimeCol(notNone=True, default=datetime.now())
+        Subject = StringCol(length=200)
+        Body = StringCol()
+
+        def __setattr__( self, name, value ):
+            super( Comment, self ).__setattr__( name, value )
+            if name in self.sqlmeta.columns.keys():
+                super( Comment, self ).__setattr__( 'Modified', datetime.now() )
+
+This will update the Modified field every time an assignment is made on any of the other fields (actually, including the Modified field, but doing that would be silly). In place of ``self.sqlmeta.columns.keys()``, you could use a list of the field names you want to catch and update the Modified field for.
+
+*-Sean Jamieson (AcidReign)*
+
+This is a good recipe, exactly what I needed... but I had to modify is a bit to get it to work properly.  I don't know if this is because of changes to SQLObject or what.  What I found was that, in the case of the example above, when ``__setattr__`` is called, for example, for the 'Body' column, what is actually passed as the name to ``__setattr__`` is ``'_SO_val_Body'``.  However, what's in the list of keys is 'Body'.  So my fix was as follows: ::
+
+    def __setattr__( self, name, value ):
+        super( Comment, self ).__setattr__( name, value )
+        if name.startswith("_SO_val_"):
+            if name[8:] in self.sqlmeta.columns.keys():
+                super( Comment, self ).__setattr__( '_SO_val_Modified', datetime.now() )
+
+*Mike Kent*
+
+Careful though, this won't be atomic.
+
+*Danny W. Adair*
+
+Can someone expand on the problem with atomicity?  Could this kind of thing be made atomic (at least as far as the DB is concerned) by turning off autocommits in SQLObject?  What might some problems be with this technique not being atomic?  Is there an alternative technique which might solve those problems?
+
+*Kevin Horn*
+
+Yes, it could be made atomic by turning off autocommits. The problem is that, when autocommits are on, you have a chance for the system to go down after a field is updated in the database but before the "date modified" attribute can also be changed, which would leave the data out of sync. The alternative would be to run the entire update in a transaction to make sure that it either is fully committed or is not written at all.
+
+*Adam Jones*

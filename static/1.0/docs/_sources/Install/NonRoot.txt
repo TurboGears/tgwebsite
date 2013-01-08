@@ -1,0 +1,238 @@
+.. index:: non-root installation
+
+How to Install TurboGears Without ``root`` Privileges
+=====================================================
+
+.. contents::
+    :depth: 2
+
+
+When you install TurboGears on a Unix-like system (including Mac OS X),
+using the :doc:`standard procedure <index>` with ``tgsetup.py``, you will
+need root privileges to install the Python packages to the system-wide Python
+``site-packages`` directory and scripts to ``/usr/local/bin``. This may not
+be desirable or possible for everybody.
+
+It's easy to tell ``tgsetup.py`` to install TurboGears below your home directory
+instead, so you don't need to be root or use ``sudo``. There are several methods
+to achieve this. Two of them are explained on this page.
+
+
+Method One: Using virtualenv (Recommended)
+------------------------------------------
+
+virtualenv_ is a tool to create isolated Python environments. An environment
+has its own installation directories and doesn't share libraries with other
+virtualenv environments (and optionally doesn't use the globally installed
+libraries either). We can employ this to create a TurboGears environment and
+tell ``tgsetup.py`` to use this as the install location with only a few commands:
+
+.. note:: **Note**: the ``$`` at the start of the command line examples given
+   below denotes the shell prompt. You don't need to enter this.
+
+#. Install ``virtualenv`` from the Cheeseshop:
+
+   Now, here we have a little chicken & egg problem, because to install
+   ``virtualenv``, you either need root access, or you need to install it
+   below your home directory and make Python find it. The good thing is, you
+   don't need to install ``virtualenv`` to use it, you can just run the
+   the script directly from the directory where you unpacked the distriution.
+
+   If you want to install ``virtualenv`` and can live with gaining root
+   privileges just once for this occasion, then do::
+
+        $ sudo easy_install virtualenv
+
+   If you can't or don't want to install it, follow these steps:
+
+        #. Download ``virtualenv-X.Y.tar.gz`` from the virtualenv_ Cheesehop
+           page.
+        #. Unpack the tarball.
+        #. In step two below, substitute "``virtualenv``" with the full path
+           to the ``virtualenv.py`` script located in the directory you just
+           unpacked.
+
+#. Create & activate a new environment::
+
+        $ virtualenv --no-site-packages </path/to/new/environment>
+        $ source </path/to/new/environment>/bin/activate
+
+   .. note:: The ``--no-site-packages`` option to virtualenv specifies that
+       in your environment there is no access to the modules installed in the
+       system-wide Python ``site-packages`` directorie(s). This is normally
+       recommended, since this prevents problems due to dependency interferences
+       with packages installed there. But if you need access to some packages
+       there, e.g. a system-wide installation of a Python database module, you
+       may need to leave this option out. For more information see the
+       `virtualenv documentation`_.
+
+#. Install TurboGears by downloading [1]_ and running `tgsetup.py`_::
+
+        $ wget http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+        $ python tgsetup.py --script-dir=</path/to/new/environment>/bin/
+
+.. _virtualenv documentation:
+.. _virtualenv: http://cheeseshop.python.org/pypi/virtualenv
+.. _tgsetup.py: http://turbogears.org/download/tgsetup.py
+.. [1] On Mac OS X, ``wget`` is not installed by default, so use this command
+    to download ``tgsetup.py`` instead::
+
+         curl -O http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+Now, every time you open a new terminal session to work with the new
+environment, you need to activate it by running the ``source`` command given
+above. You can create as many virtual environments as you like and install
+different versions of TurboGears or other Python packages in them and they
+won't affect each other.
+
+.. tip:: If you want, you can write a little shell wrapper for your
+    project's start script, that activates the appropriate environment and
+    then starts the server. Here is an example script, that you can adapt to
+    your needs::
+
+        #!/bin/bash
+
+        VIRTUALENV="/path/to/turbogears/environment"
+        PROJECT="/path/to/my/MyProject"
+        PACKAGE="mypackage"
+
+        # activate environment
+        source "$VIRTUALENV/bin/activate"
+
+        if which start-$PACKAGE 2>/dev/null; then
+            exec start-$PACKAGE "$@"
+        else
+            cd "$PROJECT"
+            exec python start-$PACKAGE.py "$@"
+        fi
+
+
+Method Two: Using ``pydistutils.cfg``
+-------------------------------------
+
+.. warning:: **Warning:** Setting up things as explained in this section
+   will affect all future installations of Python packages through
+   ``distutils`` or ``easy_install``, i.e. they will be installed under your
+   home directory as well. If you don't want this, remove or rename the
+   ``.pydistutils.cfg`` file after installing TurboGears.
+
+
+Setting up Installation Locations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When you install Python packages either with ``easy_install`` or by running
+"``python setup.py install``" from the package distribution, the procedure
+will look for a per-user configuration file under the path
+``~/.pydistutils.cfg`` (the path is different on Windows, but that does not
+concern us here).
+
+You may specify several options in this configuration file, which will affect
+the install locations. You can use these to point to a Python library directory
+below your home directory. We recommend the following locations:
+
+Mac OS X
+    +------------+----------------------------------+
+    | Packages:  | ``~/Library/Python/X.Y/lib``     |
+    +------------+----------------------------------+
+    | Scripts:   | ``~/bin``                        |
+    +------------+----------------------------------+
+    | Data:      | ``~/Library/Python/X.Y/lib``     |
+    +------------+----------------------------------+
+    | C Headers: | ``~/Library/Python/X.Y/include`` |
+    +------------+----------------------------------+
+
+Unix/Linux
+    +------------+-------------------------+
+    | Packages:  | ``~/lib/pythonX.Y``     |
+    +------------+-------------------------+
+    | Scripts:   | ``~/bin``               |
+    +------------+-------------------------+
+    | Data:      | ``~/lib/pythonX.Y``     |
+    +------------+-------------------------+
+    | C Headers: | ``~/include/pythonX.Y`` |
+    +------------+-------------------------+
+
+Here is an example for the contents of a ``.pydistutils.cfg`` file for a Linux
+system::
+
+    [install]
+    install_lib = ~/lib/python$py_version_short/
+    install_data = ~/lib/python$py_version_short/
+    install_headers = ~/include/python$py_version_short/
+    install_scripts = ~/bin
+
+The ``$py_version_short`` placeholder will get replaced with the version
+of the Python interpreter, which you use to run the installation command
+(omitting anything behind the minor version number, e.g. ``2.5``). Make sure
+you **create all installation directories** before proceeding.
+
+You can find out the complete list of options for any ``distutils`` command or
+``easy_install`` using the --help option, e.g.::
+
+    $ python setup.py <command> --help
+
+or::
+
+    $ easy_install --help
+
+Also, see "References" below for a link to the ``distutils`` documentation.
+
+
+Setting ``PYTHONPATH``
+~~~~~~~~~~~~~~~~~~~~~~
+
+Next, you must make sure, that the Python interpreter will find the packages
+in your library directory. To check the current Python module search path, do::
+
+    $ python -c "import sys; print sys.path"
+
+If your library directory is not included in the output, you have to set the
+``PYTHONPATH`` environment variable, for example::
+
+    $ export PYTHONPATH="$HOME/lib/python2.5"
+
+(Substitute ``2.5`` with the appropriate version number for your Python
+installation.)
+
+To make this setting permanent, add the line above (without the leading ``$``)
+to your ``~/.profile`` or ``~/.bash_profile`` file. Please also check your
+system documentation on how to make environment variable settings permanent.
+
+
+Setting ``PATH``
+~~~~~~~~~~~~~~~~
+
+Make sure that the install location for Python scripts is on your command search
+path, by adding it to the ``PATH`` environment variable::
+
+    $ export PATH="$HOME/bin:$PATH"
+
+Make this setting permanent the same way you did for the ``PYTHONPATH``
+variable.
+
+
+Installing TurboGears
+~~~~~~~~~~~~~~~~~~~~~
+
+Finally, install TurboGears as usual by downloading [1]_ & running tgsetup.py_::
+
+    $ wget http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+    $ python tgsetup.py --script-dir=$HOME/bin
+
+
+References
+----------
+
+* `Installing Python Modules`_ from the standard Python documentation, has a
+  section about `Alternate Installation`_ and `Distutils configuration files`_.
+
+* The `easy_install documentation`_ explains simple ways to get ``easy_install``
+  to install in a variety of locations.
+
+.. _installing python modules: http://docs.python.org/inst/inst.html
+.. _alternate installation:
+    http://docs.python.org/inst/alt-install-windows.html
+.. _distutils configuration files:
+    http://docs.python.org/inst/config-syntax.html
+.. _easy_install documentation:
+    http://peak.telecommunity.com/DevCenter/EasyInstall#custom-installation-locations

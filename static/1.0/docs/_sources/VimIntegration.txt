@@ -1,0 +1,15 @@
+.. index:: Vim
+
+Vim Editor Integration
+======================
+
+Syntax, Filetype Plugins, etc.
+------------------------------
+
+ * `Kid <http://vim.sourceforge.net/scripts/script.php?script_id=1482>`_
+ * `Genshi <http://www.vim.org/scripts/script.php?script_id=1869>`_
+ * `Django <http://www.vim.org/scripts/script.php?script_id=1487>`_
+ * `ClearSilver <http://www.vim.org/scripts/script.php?script_id=1100>`_
+ * `Jinja <http://www.vim.org/scripts/script.php?script_id=1856>`_
+ * `Myghty <http://www.vim.org/scripts/script.php?script_id=1587>`_
+ * `XSLT <http://www.vim.org/scripts/script_search_results.php?keywords=xslt&order_by=rating&direction=descending>`_

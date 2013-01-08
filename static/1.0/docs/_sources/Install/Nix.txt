@@ -1,0 +1,230 @@
+.. index:: Unix
+
+TurboGears installation on Unix-like Systems
+============================================
+
+.. contents::
+  :depth: 2
+
+
+General Installation
+--------------------
+
+Most unices come with Python installed, but you'll want Python >= 2.4 installed
+in order to take advantage of the decorator syntax. You'll be using a *lot* of
+decorators when writing TurboGears controller code.
+
+In order to run tgsetup.py you need Python header files installed on your system.
+
+The basic steps for installation are:
+
+1. Get Python >= 2.4
+2. Download `tgsetup.py`_ and run (if Python >= 2.4 or is not the default, use
+   ``python2.5`` or ``python2.4`` there.)
+
+  ::
+
+    sudo python tgsetup.py
+
+3. Make sure your installation succeeded by running ``tg-admin info``.
+4. (optional) Get a DB-API compliant :doc:`database driver </Database/index>`.
+
+These steps tend to work for the majority of people, but if they aren't working
+for you, check the :doc:`installation troubleshooting <Troubleshooting>`
+page and feel free to ask for help on the mailing list.
+We're always happy to help people work through their problems and you might have
+something to share with us.
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+
+
+
+Installing Without root Access
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you can see from the use of the ``sudo`` command, the standard installation
+procedure described above, requires root privileges to install TurboGears
+system-wide. You can also install TurboGears below your home directory.
+This setup is described on the page :doc:`How to Install TurboGears Without root Privileges <NonRoot>`.
+
+
+Distribution specific instructions
+----------------------------------
+
+CentOS/RHEL
+~~~~~~~~~~~
+
+These instructions work for both CentOS_ and `Red Hat Enterprise Linux`_ (RHEL).
+
+TurboGears packages are available via EPEL (Extra Packages for Enterprise Linux).
+See http://fedoraproject.org/wiki/EPEL/FAQ for more information about the EPEL
+package repository. If you are not already set up to use the EPEL package
+repository, do::
+
+    # On CentOS/RHEL 5
+    rpm -ivh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-2.noarch.rpm
+
+    # On CentOS/RHEL 4
+    rpm -ivh http://download.fedora.redhat.com/pub/epel/4/i386/epel-release-4-6.noarch.rpm
+
+Once configured to use EPEL installing on CentOS/RHEL 5 is easy::
+
+    yum install TurboGears
+
+For CentOS/RHEL 4 it's a bit harder due to TurboGears being in the testing repository::
+
+    yum install --enablerepo epel-testing TurboGears
+
+Please note that CentOS/RHEL 4 is in the testing repository because it hasn't seen much use by the packagers.  If you run into bugs please report them in the `Red Hat bugzilla` instance, product "Fedora EPEL", component "TurboGears" so they can fix the problems with the packages.  Also note that CentOS/RHEL 4 ships with Python version 2.3 so using TurboGears on this platform will require you to use the non-decorator syntax.
+
+Finally, due to EPEL's update policy, the repository for EPEL 4 & 5 will remain on 1.0.x versions of TurboGears even when newer versions are available.
+
+.. _CentOS: http://www.centos.org
+.. _Red Hat Enterprise Linux: http://www.redhat.com
+.. _red hat bugzilla: https://bugzilla.redhat.com
+
+
+Debian
+~~~~~~
+
+::
+
+    apt-get update
+    apt-get install python-turbogears
+    apt-get install sqlite
+    apt-get install python-sqlite
+
+This will install TurboGears and all its subpackages including sqlalchemy, sqlobject etc.
+It will install SQLAlchemy as the default ORM. You should be able to repeat this
+process for testing and unstable.
+
+If you want to install using ``tgsetup.py`` you must first install the **python-dev** or
+package matching your Python version.
+
+There's also an external documentation about installing TurboGears on Debian at
+`Lukasz Szybalski's web site`_.
+
+.. _Lukasz Szybalski's web site:
+  http://lucasmanual.com/mywiki/TurboGears#head-4ad4feb059fef51881feeac6cbc5c31aaed5c4fb
+
+
+Fedora
+~~~~~~
+
+If you are using the latest version of Fedora, you can just enter::
+
+    yum install TurboGears
+
+Make sure to get the capitalization of TurboGears correct, otherwise yum will not find the package.
+
+In Fedora 9, python-cherrypy contains CherryPy 3 which is not compatible for TurboGears 1.0.x. Fedora ships a compatible version named python-cherrypy2. In order to run TurboGears 1.0.x on Fedora 9, you have to change your start scripts as described in the `TurboGears section of the Fedora 9 Release notes`_. `README.fedora`_ in the python-cherrypy2 package contains more detailed information about the issues that can arise.
+
+.. _TurboGears section of the Fedora 9 Release notes:
+  http://docs.fedoraproject.org/release-notes/f9/en_US/sn-WebServers.html#sn-turbogears-apps
+.. _README.fedora:
+  http://cvs.fedoraproject.org/viewcvs/rpms/python-cherrypy2/F-9/README.fedora?view=markup
+
+Fedora 6 and earlier are past their end-of-life date so they are unsupported and the outdated TurboGears package in the Fedora 6 repository will never be updated.  You are better off upgrading to a newer version of Fedora (preferred) or following the generic installation instructions at the top of this page to get a newer version of TurboGears.
+
+FreeBSD
+~~~~~~~
+
+If not using the port, the first line of ``tgsetup.py`` should be changed from::
+
+    #!/bin/env python
+
+to::
+
+    #!/usr/bin/env python
+
+And if several versions of Python are installed (e.g. 2.5 in addition to 2.4), give the correct version::
+
+    sudo python2.4 tgsetup.py
+
+
+Gentoo
+~~~~~~
+
+Installing TurboGears on Gentoo is much easier now, thanks to
+efforts of Rob "pythonhead" Cakebread, Lukasz "lucass" Strzygowski
+and community. There is now an ebuild available for ~amd64 and ~86.
+
+If you are running ~amd64 or ~86::
+
+    $ emerge turbogears
+
+The ebuild will pull down in all the required dependencies you need
+to get started with TurboGears. This method will allow portage to
+manage the packages installed and make updating TurboGears on your
+Gentoo system quite easy. Please note that if you use this method to
+install TurboGears and you plan to follow the most excellent
+20-Minute Wiki you do not need to execute the steps
+``easy_install docutils`` and ``easy_install pysqlite``. The ebuild
+will take care of these for you.
+
+If you mistakenly do both the emerge and easy_install steps,
+you will simply have an extra copy of ``tg-admin`` and
+``sqlobject-admin`` in ``/usr/local/bin``. You can safely remove
+these since the ebuild places them in ``/usr/bin`` as well.
+
+If you are running amd64 or 86, there are a bunch of masked packages.
+Unmask all the packages::
+
+    $ echo "dev-python/turbogears" >> /etc/portage/package.keywords
+    $ echo "dev-python/setuptools" >> /etc/portage/package.keywords
+    ...(keep trying 'emerge -av turbogears' and unmasking packages
+        until emerge gives you no more warnings...)
+    $ emerge -av turbogears
+
+It is recommended that you choose either the ebuild method or the
+setuptools method (which ever you prefer) but do not mix and match
+them.
+
+To follow the setuptools method, unmask setuptools::
+
+    $ echo "dev-python/setuptools" >> /etc/portage/package.keywords
+    $ emerge -av setuptools
+
+then either run ``tgsetup.py`` or ``easy_install TurboGears``.
+
+Please note that portage will not manage any of the packages installed
+this way. Which may bring some conflict if some portage package
+upgrades a package TG depends on.
+
+
+openSUSE
+~~~~~~~~
+
+There are TurboGears RPM packages available for openSUSE. Up-to-date
+information about the openSUSE TurboGears packages can be found
+through the `openSUSE Build Service`_.
+
+For openSUSE 10.3 and up, you can use this `1-click install link`_.
+This allows installation directly from the web browser.
+
+The openSUSE TurboGears packages contain a couple of modifications for better
+integration with openSUSE. In order to support CherryPy 2.x and 3.x on the
+same system, the CherryPy 2.x module was renamed to cherrypy2. This
+required changing 'import cherrypy' to 'import cherrypy2 as cherrypy'
+throughout the TG code. Also, for older stable distributions that shipped with
+Python 2.4. (SUSE Linux Enterprise 10, specifically), the runtime dependency
+checks  had to be removed. Basically, pkg_resources assumes that anything
+without an egg file isn't installed, even when it is. In an RPM environment
+the package manager handles dependencies, so it's not actually necessary for
+the program perform it's own checks.
+
+Please note that bugs for any of these packages should be directed to
+bugzilla.novell.com.
+
+.. _opensuse build service:
+    http://software.opensuse.org/search?baseproject=openSUSE%3A10.3&p=1&q=turbogears
+.. _1-click install link:
+    http://software.opensuse.org/ymp/devel:languages:python/openSUSE_10.3/python-turbogears.ymp
+.. _bugzilla.novell.com: http://bugzilla.novell.com
+
+
+Ubuntu Linux
+~~~~~~~~~~~~
+
+Please see :doc:`Installation on Ubuntu <Ubuntu>` for an installation guide on the
+different versions of Ubuntu (and Kubuntu, Xubuntu, Edubuntu et al.).

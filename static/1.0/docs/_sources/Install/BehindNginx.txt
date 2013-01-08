@@ -1,0 +1,82 @@
+.. index:: Nginx
+
+Running TurboGears behind Nginx
+===============================
+
+.. contents::
+    :depth: 2
+
+
+Nginx_ is a fast and light HTTP server, reverse proxy, load balancer (and more).
+
+.. _nginx: http://nginx.net/
+
+
+Using Nginx as a Reverse Proxy
+------------------------------
+
+It's pretty simple to get TurboGears set up behind a Nginx server so that
+it proxies requests to the CherryPy server. Here is a sample configuration that
+not only proxies to your TurboGears application, but serves static content with
+Nginx and load balances between two TurboGears application instances as well.
+
+::
+
+    http {
+        # boilerplate nginx config ...
+
+        upstream mycluster {
+            server 127.0.0.1:8000;
+            server 127.0.0.1:8001;
+        }
+
+        server {
+            listen 80;
+
+            # static files
+            location ^~ /static/  {
+                root /path/to/YourProject/package;
+            }
+            location = /favicon.ico  {
+                root /path/to/YourProject/package/static/images;
+            }
+
+            # proxy to turbogears app
+            location / {
+                proxy_pass          http://mycluster;
+                proxy_redirect      off;
+                proxy_set_header    Host $host;
+                proxy_set_header    X-Real-IP $remote_addr;
+                proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+        }
+    }
+
+Next you need to setup a couple TurboGears backends that will comprise the cluster:
+
+Edit your production configuration (e.g. ``prod.cfg``) and add/change the
+following lines::
+
+    server.socket_host="127.0.0.1"
+    server.socket_port=8000
+
+Copy ``prod.cfg`` to ``prod2.cfg`` and change the ``server.socket_port`` option::
+
+    server.socket_host="127.0.0.1"
+    server.socket_port=8001
+
+Start both instances of your app::
+
+    $ python start-myproject.py prod.cfg &
+    $ python start-myproject.py prod2.cfg &
+
+*That's it!* Nginx should now be passing requests across both backends transparently.
+
+
+References
+----------
+
+You can find more information and recipes for setting up Nginx on the
+`Nginx wiki`_.
+
+.. _nginx wiki: http://wiki.nginx.org/Main

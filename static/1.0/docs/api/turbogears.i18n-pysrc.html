@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.i18n</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Package&nbsp;i18n
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.i18n-module.html" onclick="show_private();">Package turbogears.i18n</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">"""TurboGears internationalization/localization module.</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module turbogears.command.i18n=turbogears.command.i18n-module.html,Package turbogears.i18n=turbogears.i18n-module.html,Module turbogears.widgets.i18n=turbogears.widgets.i18n-module.html"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-1', 'i18n', 'link-1');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module turbogears.i18n.tg_gettext=turbogears.i18n.tg_gettext-module.html,Function turbogears.i18n.tg_gettext.tg_gettext()=turbogears.i18n.tg_gettext-module.html#tg_gettext"><a title="turbogears.i18n.tg_gettext
+turbogears.i18n.tg_gettext.tg_gettext" class="py-name" href="#" onclick="return doclink('link-2', 'tg_gettext', 'link-2');">tg_gettext</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-3" class="py-name" targets="Function turbogears.i18n.tg_gettext.gettext()=turbogears.i18n.tg_gettext-module.html#gettext"><a title="turbogears.i18n.tg_gettext.gettext" class="py-name" href="#" onclick="return doclink('link-3', 'gettext', 'link-3');">gettext</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Function turbogears.i18n.tg_gettext.ngettext()=turbogears.i18n.tg_gettext-module.html#ngettext"><a title="turbogears.i18n.tg_gettext.ngettext" class="py-name" href="#" onclick="return doclink('link-4', 'ngettext', 'link-4');">ngettext</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Function turbogears.i18n.tg_gettext.install()=turbogears.i18n.tg_gettext-module.html#install"><a title="turbogears.i18n.tg_gettext.install" class="py-name" href="#" onclick="return doclink('link-5', 'install', 'link-5');">install</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line">    <tt id="link-6" class="py-name" targets="Function turbogears.i18n.tg_gettext.is_locale_supported()=turbogears.i18n.tg_gettext-module.html#is_locale_supported"><a title="turbogears.i18n.tg_gettext.is_locale_supported" class="py-name" href="#" onclick="return doclink('link-6', 'is_locale_supported', 'link-6');">is_locale_supported</a></tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name" targets="Function turbogears.i18n.tg_gettext.lazy_gettext()=turbogears.i18n.tg_gettext-module.html#lazy_gettext"><a title="turbogears.i18n.tg_gettext.lazy_gettext" class="py-name" href="#" onclick="return doclink('link-7', 'lazy_gettext', 'link-7');">lazy_gettext</a></tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name" targets="Function turbogears.i18n.tg_gettext.lazy_ngettext()=turbogears.i18n.tg_gettext-module.html#lazy_ngettext"><a title="turbogears.i18n.tg_gettext.lazy_ngettext" class="py-name" href="#" onclick="return doclink('link-8', 'lazy_ngettext', 'link-8');">lazy_ngettext</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name" targets="Function turbogears.i18n.tg_gettext.plain_gettext()=turbogears.i18n.tg_gettext-module.html#plain_gettext"><a title="turbogears.i18n.tg_gettext.plain_gettext" class="py-name" href="#" onclick="return doclink('link-9', 'plain_gettext', 'link-9');">plain_gettext</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-10" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-10', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-11', 'i18n', 'link-1');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Module turbogears.i18n.utils=turbogears.i18n.utils-module.html"><a title="turbogears.i18n.utils" class="py-name" href="#" onclick="return doclink('link-12', 'utils', 'link-12');">utils</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-13" class="py-name" targets="Function turbogears.i18n.utils.get_locale()=turbogears.i18n.utils-module.html#get_locale"><a title="turbogears.i18n.utils.get_locale" class="py-name" href="#" onclick="return doclink('link-13', 'get_locale', 'link-13');">get_locale</a></tt><tt class="py-op">,</tt> <tt id="link-14" class="py-name" targets="Function turbogears.i18n.utils.get_accept_languages()=turbogears.i18n.utils-module.html#get_accept_languages"><a title="turbogears.i18n.utils.get_accept_languages" class="py-name" href="#" onclick="return doclink('link-14', 'get_accept_languages', 'link-14');">get_accept_languages</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Function turbogears.i18n.utils.set_session_locale()=turbogears.i18n.utils-module.html#set_session_locale"><a title="turbogears.i18n.utils.set_session_locale" class="py-name" href="#" onclick="return doclink('link-15', 'set_session_locale', 'link-15');">set_session_locale</a></tt><tt class="py-op">,</tt> <tt id="link-16" class="py-name" targets="Function turbogears.i18n.utils.google_translate()=turbogears.i18n.utils-module.html#google_translate,Method turbogears.toolbox.admi18n.Internationalization.google_translate()=turbogears.toolbox.admi18n.Internationalization-class.html#google_translate"><a title="turbogears.i18n.utils.google_translate
+turbogears.toolbox.admi18n.Internationalization.google_translate" class="py-name" href="#" onclick="return doclink('link-16', 'google_translate', 'link-16');">google_translate</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-17" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-17', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-18', 'i18n', 'link-1');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Module turbogears.i18n.format=turbogears.i18n.format-module.html,Variable turbogears.validators.DateTimeConverter.format=turbogears.validators.DateTimeConverter-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDatePicker.format=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#format,Variable turbogears.widgets.big_widgets.CalendarDateTimePicker.format=turbogears.widgets.big_widgets.CalendarDateTimePicker-class.html#format"><a title="turbogears.i18n.format
+turbogears.validators.DateTimeConverter.format
+turbogears.widgets.big_widgets.CalendarDatePicker.format
+turbogears.widgets.big_widgets.CalendarDateTimePicker.format" class="py-name" href="#" onclick="return doclink('link-19', 'format', 'link-19');">format</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt id="link-20" class="py-name" targets="Function turbogears.i18n.format.get_countries()=turbogears.i18n.format-module.html#get_countries"><a title="turbogears.i18n.format.get_countries" class="py-name" href="#" onclick="return doclink('link-20', 'get_countries', 'link-20');">get_countries</a></tt><tt class="py-op">,</tt> <tt id="link-21" class="py-name" targets="Function turbogears.i18n.format.get_country()=turbogears.i18n.format-module.html#get_country"><a title="turbogears.i18n.format.get_country" class="py-name" href="#" onclick="return doclink('link-21', 'get_country', 'link-21');">get_country</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt id="link-22" class="py-name" targets="Function turbogears.i18n.format.get_month_names()=turbogears.i18n.format-module.html#get_month_names"><a title="turbogears.i18n.format.get_month_names" class="py-name" href="#" onclick="return doclink('link-22', 'get_month_names', 'link-22');">get_month_names</a></tt><tt class="py-op">,</tt> <tt id="link-23" class="py-name" targets="Function turbogears.i18n.format.get_abbr_month_names()=turbogears.i18n.format-module.html#get_abbr_month_names"><a title="turbogears.i18n.format.get_abbr_month_names" class="py-name" href="#" onclick="return doclink('link-23', 'get_abbr_month_names', 'link-23');">get_abbr_month_names</a></tt><tt class="py-op">,</tt> <tt id="link-24" class="py-name" targets="Function turbogears.i18n.format.get_weekday_names()=turbogears.i18n.format-module.html#get_weekday_names"><a title="turbogears.i18n.format.get_weekday_names" class="py-name" href="#" onclick="return doclink('link-24', 'get_weekday_names', 'link-24');">get_weekday_names</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">    <tt id="link-25" class="py-name" targets="Function turbogears.i18n.format.get_abbr_weekday_names()=turbogears.i18n.format-module.html#get_abbr_weekday_names"><a title="turbogears.i18n.format.get_abbr_weekday_names" class="py-name" href="#" onclick="return doclink('link-25', 'get_abbr_weekday_names', 'link-25');">get_abbr_weekday_names</a></tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name" targets="Function turbogears.i18n.format.get_languages()=turbogears.i18n.format-module.html#get_languages,Method turbogears.toolbox.admi18n.Internationalization.get_languages()=turbogears.toolbox.admi18n.Internationalization-class.html#get_languages"><a title="turbogears.i18n.format.get_languages
+turbogears.toolbox.admi18n.Internationalization.get_languages" class="py-name" href="#" onclick="return doclink('link-26', 'get_languages', 'link-26');">get_languages</a></tt><tt class="py-op">,</tt> <tt id="link-27" class="py-name" targets="Function turbogears.i18n.format.format_date()=turbogears.i18n.format-module.html#format_date"><a title="turbogears.i18n.format.format_date" class="py-name" href="#" onclick="return doclink('link-27', 'format_date', 'link-27');">format_date</a></tt><tt class="py-op">,</tt> <tt id="link-28" class="py-name" targets="Function turbogears.i18n.format.format_number()=turbogears.i18n.format-module.html#format_number"><a title="turbogears.i18n.format.format_number" class="py-name" href="#" onclick="return doclink('link-28', 'format_number', 'link-28');">format_number</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line">    <tt id="link-29" class="py-name" targets="Function turbogears.i18n.format.format_decimal()=turbogears.i18n.format-module.html#format_decimal"><a title="turbogears.i18n.format.format_decimal" class="py-name" href="#" onclick="return doclink('link-29', 'format_decimal', 'link-29');">format_decimal</a></tt><tt class="py-op">,</tt> <tt id="link-30" class="py-name" targets="Function turbogears.i18n.format.format_currency()=turbogears.i18n.format-module.html#format_currency"><a title="turbogears.i18n.format.format_currency" class="py-name" href="#" onclick="return doclink('link-30', 'format_currency', 'link-30');">format_currency</a></tt><tt class="py-op">,</tt> <tt id="link-31" class="py-name" targets="Function turbogears.i18n.format.parse_number()=turbogears.i18n.format-module.html#parse_number"><a title="turbogears.i18n.format.parse_number" class="py-name" href="#" onclick="return doclink('link-31', 'parse_number', 'link-31');">parse_number</a></tt><tt class="py-op">,</tt> <tt id="link-32" class="py-name" targets="Function turbogears.i18n.format.parse_decimal()=turbogears.i18n.format-module.html#parse_decimal"><a title="turbogears.i18n.format.parse_decimal" class="py-name" href="#" onclick="return doclink('link-32', 'parse_decimal', 'link-32');">parse_decimal</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:39 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

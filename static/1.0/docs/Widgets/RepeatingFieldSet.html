@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>RepeatingFieldSet Tips &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="CalendarDatePicker Widget" href="CalendarDatePicker.html" />
+    <link rel="prev" title="Implementing and using CompoundWidgets" href="CompoundWidgets.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CalendarDatePicker.html" title="CalendarDatePicker Widget"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="CompoundWidgets.html" title="Implementing and using CompoundWidgets"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="CompoundWidgets.html"
+                        title="previous chapter">Implementing and using CompoundWidgets</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="CalendarDatePicker.html"
+                        title="next chapter">CalendarDatePicker Widget</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="repeatingfieldset-tips">
+<span id="index-0"></span><h1>RepeatingFieldSet Tips<a class="headerlink" href="#repeatingfieldset-tips" title="Permalink to this headline">¶</a></h1>
+<p>The code in this article is abstracted from my working code, but I don&#8217;t
+have time to test this version (which is not 100% complete, as you
+will see).  Since it took me a while to figure this out and I didn&#8217;t
+find any docs on it I thought I&#8217;d at least put down what I learned to
+give the next person a leg up on figuring it out.</p>
+<p>My goal was to create an edit page for an SQLObject, where I wanted
+a list of sub-objects to be edited along with the main object.
+RepeatingFieldSet turned out to be perfect for this.</p>
+<p>So suppose you have a model like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Foo</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">()</span>
+    <span class="n">bars</span> <span class="o">=</span> <span class="n">RelatedJoin</span><span class="p">(</span><span class="s">&#39;Bar&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Bar</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We can edit a Foo and all its Bars in one go with the following
+set of widgets:</p>
+<div class="highlight-python"><pre>form = TableForm(fields=[
+    TextField(name='name',label='Name'),
+    RepeatingFieldSet(
+        name='bars',
+        label='Bars',
+        fields=[
+            TextField(name='name',label='Name'),
+            TextField(name='description', label='Description')
+        ]
+    )</pre>
+</div>
+<p>Note that the name of the RepeatingFieldSet is bars, which means it will
+pick up its list of values from the &#8216;bars&#8217; field of our Foo.  Automagic
+niceness.</p>
+<p>Here&#8217;s the controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;.templates.editform&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">edit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tg_errors</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">tg_errors</span><span class="p">:</span> <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Fix your errors and resubmit&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">foo</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
+        <span class="n">parms</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">action</span><span class="o">=</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;save&#39;</span><span class="p">),</span>
+            <span class="n">submit_text</span><span class="o">=</span><span class="s">&quot;save&quot;</span><span class="p">,</span>
+            <span class="n">repetitions</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">bars</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bars</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>This gives us one repeat of the fieldset for each Bar in Foo, and one
+more besides (so the user can add a new bar in the same form).</p>
+<p>The callout for the form in editform.kid looks like this:</p>
+<div class="highlight-python"><pre>${form.display(data, **parms)}</pre>
+</div>
+<p>The trickiest bit to figure out was how to modify the template for
+the RepeatingFieldSet widget.  I didn&#8217;t actually want a repeating
+FieldSet, what I wanted was a table.  This is what I came up with:</p>
+<div class="highlight-python"><pre>&lt;div xmlns:py="http://purl.org/kid/ns#"&gt;
+&lt;table&gt;
+  &lt;tr&gt;
+      &lt;th py:for="field in fields"&gt;
+        &lt;label class="fieldlabel" for="${field.field_id}" py:content="field.label" /&gt;
+      &lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr py:for="repetition in repetitions" class="${field_class}" id="${field_id}_${repetition}"&gt;
+    &lt;legend py:if="legend" py:content="legend" /&gt;
+    &lt;div py:for="field in hidden_fields"
+        py:replace="field.display(value_for(field), **params_for(field))"
+    /&gt;
+    &lt;td py:for="field in fields"&gt;
+        &lt;span py:content="field.display(value_for(field), **params_for(field))" /&gt;
+        &lt;span py:if="error_for(field)" class="fielderror" py:content="error_for(field)" /&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>The &#8216;repetition in repetitions&#8217; does some black mojo behind the scenes
+so that when we have reached repetition N in the loop, the various
+functions of each &#8216;field&#8217; in &#8216;fields&#8217; will pull data from the Nth
+element of the list of bars.  But fields is just the widget list of the
+RepeatingFieldSet, so we can access the attributes of the widgets that do
+not relate to values, such as the label, at any point.  That enables us
+to set the titles for the table columns before starting the values loop.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

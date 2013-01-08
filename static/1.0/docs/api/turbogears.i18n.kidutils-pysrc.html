@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.i18n.kidutils</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.i18n-module.html" onclick="show_private();">Package&nbsp;i18n</a> ::
+        Module&nbsp;kidutils
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.i18n.kidutils-module.html">Module turbogears.i18n.kidutils</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Functions supporting translation of strings in Kid templates</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">kid</tt><tt class="py-op">.</tt><tt class="py-name">parser</tt> <tt class="py-keyword">import</tt> <tt class="py-name">START</tt><tt class="py-op">,</tt> <tt class="py-name">TEXT</tt><tt class="py-op">,</tt> <tt class="py-name">END</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-0', 'turbogears', 'link-0');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.config=turbogears.command.i18n.InternationalizationTool-class.html#config,Module turbogears.config=turbogears.config-module.html,Variable turbogears.testutil.TGTest.config=turbogears.testutil.TGTest-class.html#config"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-1', 'config', 'link-1');">config</a></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># use plain_gettext because Kid's template strings are always evaluated</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># immediately</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-2', 'turbogears', 'link-0');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Module turbogears.command.i18n=turbogears.command.i18n-module.html,Package turbogears.i18n=turbogears.i18n-module.html,Module turbogears.widgets.i18n=turbogears.widgets.i18n-module.html"><a title="turbogears.command.i18n
+turbogears.i18n
+turbogears.widgets.i18n" class="py-name" href="#" onclick="return doclink('link-3', 'i18n', 'link-3');">i18n</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Module turbogears.i18n.tg_gettext=turbogears.i18n.tg_gettext-module.html,Function turbogears.i18n.tg_gettext.tg_gettext()=turbogears.i18n.tg_gettext-module.html#tg_gettext"><a title="turbogears.i18n.tg_gettext
+turbogears.i18n.tg_gettext.tg_gettext" class="py-name" href="#" onclick="return doclink('link-4', 'tg_gettext', 'link-4');">tg_gettext</a></tt> <tt class="py-keyword">import</tt> <tt id="link-5" class="py-name" targets="Function turbogears.i18n.tg_gettext.plain_gettext()=turbogears.i18n.tg_gettext-module.html#plain_gettext"><a title="turbogears.i18n.tg_gettext.plain_gettext" class="py-name" href="#" onclick="return doclink('link-5', 'plain_gettext', 'link-5');">plain_gettext</a></tt> <tt class="py-keyword">as</tt> <tt id="link-6" class="py-name" targets="Function turbogears.i18n.tg_gettext.gettext()=turbogears.i18n.tg_gettext-module.html#gettext"><a title="turbogears.i18n.tg_gettext.gettext" class="py-name" href="#" onclick="return doclink('link-6', 'gettext', 'link-6');">gettext</a></tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="translate"></a><div id="translate-def"><a name="L11"></a><tt class="py-lineno"> 11</tt> <a class="py-toggle" href="#" id="translate-toggle" onclick="return toggle('translate');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.kidutils-module.html#translate">translate</a><tt class="py-op">(</tt><tt class="py-param">item</tt><tt class="py-op">,</tt> <tt class="py-param">attr</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="translate-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="translate-expanded"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-docstring">"""Translates the text of element plus the text of all child elements.</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">    If 'attr' is present this is used to provide the locale name; if not then the</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">    value provided by 'get_locale' is used. For example::</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        &lt;div lang=""&gt;</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">            this is a test</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">            &lt;a href="de"&gt;testing&lt;/a&gt;</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">        &lt;/div&gt;</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">    The string 'this is a test' is rendered by the locale provided by</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-docstring">    'get_locale', the string 'testing' by the German locale.</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-docstring">    Possible use in Kid template::</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-docstring">        &lt;?python</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-docstring">        from turbogears.i18n import translate</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-docstring">        ?&gt;</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-docstring">        &lt;translate xmlns:py="http://purl.org/kid/ns#"</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-docstring">            py:match="'lang' in item.attrib"</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring">            py:replace="translate(item)" /&gt;</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">        &lt;h1 lang=""&gt;Welcome!&lt;/h1&gt;</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">    @param item: element to be translated</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring">    @type item: ElementTree element</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-docstring">    @param attr: attribute name used to store locale, if any</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-docstring">    @type attr: str</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">attr</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">attr</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-7', 'config', 'link-1');">config</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-8', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"i18n.templateLocaleAttribute"</tt><tt class="py-op">,</tt> <tt class="py-string">"lang"</tt><tt class="py-op">)</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt id="link-9" class="py-name" targets="Function turbogears.i18n.kidutils.translate_all()=turbogears.i18n.kidutils-module.html#translate_all"><a title="turbogears.i18n.kidutils.translate_all" class="py-name" href="#" onclick="return doclink('link-9', 'translate_all', 'link-9');">translate_all</a></tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">,</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-10', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">attr</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">attr</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">item</tt> </tt>
+</div><a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"> </tt>
+<a name="__translate_text"></a><div id="__translate_text-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="__translate_text-toggle" onclick="return toggle('__translate_text');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.kidutils-module.html#__translate_text">__translate_text</a><tt class="py-op">(</tt><tt class="py-param">text</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="__translate_text-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="__translate_text-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-name">prefix</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-name">postfix</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Message.text=turbogears.i18n.sagettext.model.TG_Message-class.html#text,Variable turbogears.i18n.sogettext.model.TG_Message.text=turbogears.i18n.sogettext.model.TG_Message-class.html#text,Variable turbogears.widgets.big_widgets.URLLink.text=turbogears.widgets.big_widgets.URLLink-class.html#text"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-11', 'text', 'link-11');">text</a></tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> <tt id="link-12" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-12', 'text', 'link-11');">text</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">isspace</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">        <tt class="py-name">prefix</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-13', 'text', 'link-11');">text</a></tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt id="link-14" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-14', 'text', 'link-11');">text</a></tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1</tt> <tt class="py-keyword">and</tt> <tt id="link-15" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-15', 'text', 'link-11');">text</a></tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">isspace</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">        <tt class="py-name">postfix</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-16', 'text', 'link-11');">text</a></tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">prefix</tt> <tt class="py-op">+</tt> <tt id="link-17" class="py-name"><a title="turbogears.i18n.tg_gettext.gettext" class="py-name" href="#" onclick="return doclink('link-17', 'gettext', 'link-6');">gettext</a></tt><tt class="py-op">(</tt><tt id="link-18" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-18', 'text', 'link-11');">text</a></tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-name">postfix</tt> </tt>
+</div><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="translate_all"></a><div id="translate_all-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="translate_all-toggle" onclick="return toggle('translate_all');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.kidutils-module.html#translate_all">translate_all</a><tt class="py-op">(</tt><tt class="py-param">tree</tt><tt class="py-op">,</tt> <tt class="py-param">lang</tt><tt class="py-op">,</tt> <tt class="py-param">attr</tt><tt class="py-op">,</tt> <tt class="py-param">inroot</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="translate_all-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="translate_all-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-docstring">"""Recursive function to translate all text in child elements.</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    @param tree: parent ElementTree element</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring">    @param lang: language setting</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">    @param attr: attribute name used to store locale</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">tree</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-19', 'text', 'link-11');">text</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-name">tree</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-20', 'text', 'link-11');">text</a></tt> <tt class="py-op">=</tt> <tt class="py-name">__translate_text</tt><tt class="py-op">(</tt><tt class="py-name">tree</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-21', 'text', 'link-11');">text</a></tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">tree</tt><tt class="py-op">.</tt><tt class="py-name">tail</tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt class="py-name">inroot</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-comment"># Don't translate tail of root. It is beyond the scope of the lang attr</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-name">tree</tt><tt class="py-op">.</tt><tt class="py-name">tail</tt> <tt class="py-op">=</tt> <tt class="py-name">__translate_text</tt><tt class="py-op">(</tt><tt class="py-name">tree</tt><tt class="py-op">.</tt><tt class="py-name">tail</tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">element</tt> <tt class="py-keyword">in</tt> <tt class="py-name">tree</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-comment"># check overriding lang attribute</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">element</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-22', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">attr</tt><tt class="py-op">)</tt><tt class="py-op">:</tt><tt class="py-name">lang</tt> <tt class="py-op">=</tt> <tt class="py-name">element</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-23', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">attr</tt><tt class="py-op">)</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt id="link-24" class="py-name"><a title="turbogears.i18n.kidutils.translate_all" class="py-name" href="#" onclick="return doclink('link-24', 'translate_all', 'link-9');">translate_all</a></tt><tt class="py-op">(</tt><tt class="py-name">element</tt><tt class="py-op">,</tt> <tt class="py-name">lang</tt><tt class="py-op">,</tt> <tt class="py-name">attr</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="i18n_filter"></a><div id="i18n_filter-def"><a name="L79"></a><tt class="py-lineno"> 79</tt> <a class="py-toggle" href="#" id="i18n_filter-toggle" onclick="return toggle('i18n_filter');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.i18n.kidutils-module.html#i18n_filter">i18n_filter</a><tt class="py-op">(</tt><tt class="py-param">stream</tt><tt class="py-op">,</tt> <tt class="py-param">template</tt><tt class="py-op">,</tt> <tt class="py-param">locale</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="i18n_filter-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="i18n_filter-expanded"><a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">    <tt class="py-docstring">"""Kid template filter translating all elements matching lang attribute.</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    The name of of the attribute is set in the configuration as</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">    'i18n.templateLocaleAttribute' and defaults to 'lang'.</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-name">lang_attr</tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-25', 'config', 'link-1');">config</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-26', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"i18n.templateLocaleAttribute"</tt><tt class="py-op">,</tt> <tt class="py-string">"lang"</tt><tt class="py-op">)</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-name">locales</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt id="link-27" class="py-name" targets="Variable turbogears.i18n.sagettext.model.TG_Message.locale=turbogears.i18n.sagettext.model.TG_Message-class.html#locale,Variable turbogears.i18n.sogettext.model.TG_Message.locale=turbogears.i18n.sogettext.model.TG_Message-class.html#locale"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-27', 'locale', 'link-27');">locale</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">ev</tt><tt class="py-op">,</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">stream</tt><tt class="py-op">:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">ev</tt> <tt class="py-op">==</tt> <tt class="py-name">START</tt><tt class="py-op">:</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">            <tt class="py-name">l</tt> <tt class="py-op">=</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-28', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">lang_attr</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">l</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                <tt id="link-29" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-29', 'locale', 'link-27');">locale</a></tt> <tt class="py-op">=</tt> <tt class="py-name">l</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                <tt class="py-name">locales</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">l</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">ev</tt> <tt class="py-op">==</tt> <tt class="py-name">TEXT</tt><tt class="py-op">:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-name">prefix</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">            <tt class="py-name">postfix</tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> <tt class="py-name">item</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">' '</tt><tt class="py-op">:</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">                <tt class="py-name">prefix</tt> <tt class="py-op">=</tt> <tt class="py-string">' '</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">item</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">1</tt> <tt class="py-keyword">and</tt> <tt class="py-name">item</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-string">' '</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">                <tt class="py-name">postfix</tt> <tt class="py-op">=</tt> <tt class="py-string">' '</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">            <tt id="link-30" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-30', 'text', 'link-11');">text</a></tt> <tt class="py-op">=</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt id="link-31" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-31', 'text', 'link-11');">text</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">                <tt class="py-name">item</tt> <tt class="py-op">=</tt> <tt id="link-32" class="py-name"><a title="turbogears.i18n.tg_gettext.gettext" class="py-name" href="#" onclick="return doclink('link-32', 'gettext', 'link-6');">gettext</a></tt><tt class="py-op">(</tt><tt id="link-33" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.text
+turbogears.i18n.sogettext.model.TG_Message.text
+turbogears.widgets.big_widgets.URLLink.text" class="py-name" href="#" onclick="return doclink('link-33', 'text', 'link-11');">text</a></tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-34', 'locale', 'link-27');">locale</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">                <tt class="py-name">item</tt> <tt class="py-op">=</tt> <tt class="py-name">prefix</tt> <tt class="py-op">+</tt> <tt class="py-name">item</tt> <tt class="py-op">+</tt> <tt class="py-name">postfix</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-keyword">elif</tt> <tt class="py-name">ev</tt> <tt class="py-op">==</tt> <tt class="py-name">END</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">item</tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-35', 'get', 'link-8');">get</a></tt><tt class="py-op">(</tt><tt class="py-name">lang_attr</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">                <tt class="py-name">locales</tt><tt class="py-op">.</tt><tt class="py-name">pop</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">                <tt id="link-36" class="py-name"><a title="turbogears.i18n.sagettext.model.TG_Message.locale
+turbogears.i18n.sogettext.model.TG_Message.locale" class="py-name" href="#" onclick="return doclink('link-36', 'locale', 'link-27');">locale</a></tt> <tt class="py-op">=</tt> <tt class="py-name">locales</tt><tt class="py-op">[</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-keyword">yield</tt> <tt class="py-op">(</tt><tt class="py-name">ev</tt><tt class="py-op">,</tt> <tt class="py-name">item</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:40 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

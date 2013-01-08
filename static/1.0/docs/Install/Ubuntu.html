@@ -1,0 +1,295 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears Installation on Ubuntu Linux &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installing TurboGears on FreeBSD" href="FreeBSD.html" />
+    <link rel="prev" title="Installing TurboGears on Debian" href="Debian.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="FreeBSD.html" title="Installing TurboGears on FreeBSD"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Debian.html" title="Installing TurboGears on Debian"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TurboGears Installation on Ubuntu Linux</a><ul>
+<li><a class="reference internal" href="#ubuntu-7-04-feisty-fawn-and-8-04-gutsy-gibbon">Ubuntu 7.04 &#8220;Feisty Fawn&#8221; and 8.04 &#8220;Gutsy Gibbon&#8221;</a></li>
+<li><a class="reference internal" href="#ubuntu-6-10-edgy-eft">Ubuntu 6.10 &#8220;Edgy Eft&#8221;</a></li>
+<li><a class="reference internal" href="#ubuntu-6-06-lts-dapper-drake-and-older">Ubuntu 6.06 LTS &#8220;Dapper Drake&#8221; and Older</a></li>
+<li><a class="reference internal" href="#additional-optional-packages-all-versions">Additional (Optional) Packages (All Versions)</a><ul>
+<li><a class="reference internal" href="#docutils">Docutils</a></li>
+<li><a class="reference internal" href="#sqlalchemy">SQLAlchemy</a></li>
+<li><a class="reference internal" href="#genshi">Genshi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Debian.html"
+                        title="previous chapter">Installing TurboGears on Debian</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FreeBSD.html"
+                        title="next chapter">Installing TurboGears on FreeBSD</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-installation-on-ubuntu-linux">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">TurboGears Installation on Ubuntu Linux</a><a class="headerlink" href="#turbogears-installation-on-ubuntu-linux" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-installation-on-ubuntu-linux" id="id2">TurboGears Installation on Ubuntu Linux</a></li>
+</ul>
+</div>
+<div class="section" id="ubuntu-7-04-feisty-fawn-and-8-04-gutsy-gibbon">
+<h2>Ubuntu 7.04 &#8220;Feisty Fawn&#8221; and 8.04 &#8220;Gutsy Gibbon&#8221;<a class="headerlink" href="#ubuntu-7-04-feisty-fawn-and-8-04-gutsy-gibbon" title="Permalink to this headline">¶</a></h2>
+<p>Since the release of version 1.0.2.2 TurboGears supports Python 2.5, which is the default Python version on
+Ubuntu &gt;= 7.04, which makes installation much easier.</p>
+<p>To get started with TurboGears, you need to do following:</p>
+<ol class="arabic">
+<li><p class="first">Open up a command line prompt (<em>Applications -&gt; Accessories -&gt; Terminal</em>)</p>
+</li>
+<li><p class="first">Install essential packages to compile python modules:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools python-profiler</pre>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>On a clean installed Ubuntu, <strong>gcc</strong>, <strong>libc6-dev</strong>, <strong>build-essential</strong>, <strong>python-dev</strong> packages are
+required for compiling Python C-extension packages. We provide binary eggs for Linux for all C-extensions
+used, but when a new version of a C-extension is released, having the compiler chain installed
+ensures that your install won&#8217;t break.</p>
+<p><strong>python-profiler</strong> (located in multiverse) is recomended. See <a class="reference internal" href="../Optimization.html"><em>Optimization</em></a>
+for more infomation.</p>
+<p><strong>python-setuptools</strong> allows you to use the <tt class="docutils literal"><span class="pre">easy_install</span></tt> command to fetch and install
+Python modules (including TurboGears extensions) from the <a class="reference external" href="http://python.org/pypi/">Cheeseshop</a> (aka Python Package index).</p>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p class="first"><strong>Download</strong>  and run <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> to install TurboGears:</p>
+<div class="highlight-python"><pre>$ sudo python tgsetup.py</pre>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>Make sure that the <tt class="docutils literal"><span class="pre">python</span></tt> command points to the version 2.5 of the Python interpreter.
+Run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">-V</span></tt> to check.</p>
+<p>Alternatively, use <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>$ sudo easy_install --prefix /usr/local \
+    -f http://www.turbogears.org/download/index.html \
+    "TurboGears[standard]==1.0.X"</pre>
+</div>
+<p>(Replace <tt class="docutils literal"><span class="pre">X</span></tt> with the minor version number of the TurboGears release you want to install.)</p>
+<p>Also here, you should check that the <tt class="docutils literal"><span class="pre">easy_install</span></tt> command is using Python 2.5. You can replace
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> with <tt class="docutils literal"><span class="pre">easy_install-2.5</span></tt> to make sure.</p>
+</div></blockquote>
+<ol class="arabic" start="4">
+<li><p class="first">Test that your installation works by running <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt>:</p>
+<div class="highlight-python"><pre>$ tg-admin info</pre>
+</div>
+</li>
+<li><p class="first">Database support</p>
+</li>
+</ol>
+<blockquote>
+<div><p>To use TurboGears properly, you&#8217;ll also need a database to use with your model. Python 2.5 already
+includes an interface to the SQLite 3 library (the <tt class="docutils literal"><span class="pre">sqlite3</span></tt> module), which works well with TurboGears.
+Depending on which other databases you want to use, you can install one or more of the following packages:</p>
+<ul class="simple">
+<li><strong>python-psycopg2</strong> &#8211; for using TurboGears with PostgreSQL (universe repository)</li>
+<li><strong>python-mysqldb</strong> &#8211; for using TurboGears with MySQL</li>
+<li><strong>python-kinterbasdb</strong> &#8211; for using TurboGears with Firebird / Interbase (universe repository)</li>
+</ul>
+<p>Other databases (Microsoft SQL Server, Oracle, Microsoft Access) can probably be used with the
+<strong>python-adodb</strong> package from Universe. For more information on that subject, see the
+<a class="reference external" href="http://phplens.com/lens/adodb/adodb-py-docs.htm">ADOdb for Python homepage</a>.</p>
+</div></blockquote>
+<ol class="arabic simple" start="6">
+<li>Install additional, optional packages (see below)</li>
+</ol>
+</div>
+<div class="section" id="ubuntu-6-10-edgy-eft">
+<h2>Ubuntu 6.10 &#8220;Edgy Eft&#8221;<a class="headerlink" href="#ubuntu-6-10-edgy-eft" title="Permalink to this headline">¶</a></h2>
+<p>To get started with TurboGears, you need to do following:</p>
+<ol class="arabic">
+<li><p class="first">Open up a command line prompt (<em>Applications -&gt; Accessories -&gt; Terminal</em>)</p>
+</li>
+<li><p class="first">Install essential packages to compile python modules:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools python-profiler</pre>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>On a clean installed Ubuntu, <strong>gcc</strong>, <strong>libc6-dev</strong>, <strong>build-essential</strong>, <strong>python-dev</strong> packages are
+required for compiling Python C-extension packages. We provide binary eggs for Linux for all C-extensions
+used, but when a new version of a C-extension is released, having the compiler chain installed
+ensures that your install won&#8217;t break.</p>
+<p><strong>python-profiler</strong> (located in multiverse) is recomended.  See <a class="reference internal" href="../Optimization.html"><em>Optimization</em></a>
+for more infomation. If you install this package, some Python 2.5 packages will be installed as well.
+This should be safe, since Python 2.4 will remain the default version on &#8220;Edgy&#8221;.</p>
+<p><strong>python-setuptools</strong> allows you to use the <tt class="docutils literal"><span class="pre">easy_install</span></tt> command to fetch and install
+Python modules (including TurboGears extensions) from the <a class="reference external" href="http://python.org/pypi/">Cheeseshop</a> (aka Python Package index).</p>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p class="first"><strong>Download</strong>  and run <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> to install TurboGears:</p>
+<div class="highlight-python"><pre>$ sudo python tgsetup.py</pre>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>or, alternatively, use <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>$ sudo easy_install --prefix /usr/local \
+    -i http://www.turbogears.org/1.0/downloads/1.0.X/index \
+    "TurboGears[standard]==1.0.X"</pre>
+</div>
+<p>(Replace <tt class="docutils literal"><span class="pre">X</span></tt> with the minor version number of the TurboGears release you want to install.)</p>
+</div></blockquote>
+<ol class="arabic" start="4">
+<li><p class="first">Test that your installation works by running <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">info</span></tt>:</p>
+<div class="highlight-python"><pre>$tg-admin info</pre>
+</div>
+</li>
+<li><p class="first">Database support</p>
+</li>
+</ol>
+<blockquote>
+<div><p>To use TurboGears properly, you&#8217;ll also need a database to use with your model.
+Depending on what database you want to use, you should install:</p>
+<ul class="simple">
+<li><strong>python-pysqlite2</strong> for SQLite 3 support (recommended)</li>
+<li><strong>python-psycopg2</strong> &#8211; for using TurboGears with PostgreSQL (universe repository)</li>
+<li><strong>python-mysqldb</strong> &#8211; for using TurboGears with MySQL</li>
+<li><strong>python-kinterbasdb</strong> &#8211; for using TurboGears with Firebird / Interbase (universe repository)</li>
+</ul>
+<p>Other databases (Microsoft SQL Server, Oracle, Microsoft Access) can probably be used with the
+<strong>python-adodb</strong> package from Universe. For more information on that subject, see the
+<a class="reference external" href="http://phplens.com/lens/adodb/adodb-py-docs.htm">ADOdb for Python homepage</a>.</p>
+</div></blockquote>
+<ol class="arabic simple" start="6">
+<li>Install additional, optional packages (see below)</li>
+</ol>
+</div>
+<div class="section" id="ubuntu-6-06-lts-dapper-drake-and-older">
+<h2>Ubuntu 6.06 LTS &#8220;Dapper Drake&#8221; and Older<a class="headerlink" href="#ubuntu-6-06-lts-dapper-drake-and-older" title="Permalink to this headline">¶</a></h2>
+<p>As normal for a Debian-based system, you&#8217;ll need to install all the dev packages. The included setuptools is out of date, but using it to update itself it easier than  downloading <tt class="docutils literal"><span class="pre">ez_setup.py</span></tt> and installing it manually.</p>
+<div class="highlight-python"><pre>$ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools
+# update setuptools
+$ sudo easy_install -U --script-dir /usr/local/bin setuptools
+$ sudo easy_install --prefix /usr/local \
+    -f http://www.turbogears.org/download/index.html \
+    "TurboGears[standard]==1.0.X"
+# for sqlite
+$ sudo apt-get install sqlite3 libsqlite3-dev
+$ sudo easy_install pysqlite</pre>
+</div>
+<p>(Replace <tt class="docutils literal"><span class="pre">X</span></tt> with the minor version number of the TurboGears release you want to install.)</p>
+</div>
+<div class="section" id="additional-optional-packages-all-versions">
+<h2>Additional (Optional) Packages (All Versions)<a class="headerlink" href="#additional-optional-packages-all-versions" title="Permalink to this headline">¶</a></h2>
+<p>There are many other packages available for use with TurboGears. To install them on Ubuntu, just run:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install "package-name"</pre>
+</div>
+<p>where &#8220;package-name&#8221; is the name of the package you want to install and is usually of the form <tt class="docutils literal"><span class="pre">python-&lt;projectname&gt;</span></tt>. Alternatively, if you can&#8217;t find a package for your distribution or want
+the newest version of the software, you should use <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<div class="highlight-python"><pre>$ sudo easy_install --prefix /usr/local "package"</pre>
+</div>
+<p>where &#8220;package&#8221; is the name of the software as listed on the <a class="reference external" href="http://python.org/pypi/">Cheeseshop</a>.</p>
+<p>Here are some additional packages you might be interested in.</p>
+<div class="section" id="docutils">
+<h3>Docutils<a class="headerlink" href="#docutils" title="Permalink to this headline">¶</a></h3>
+<p>You should probably get <a class="reference external" href="http://docutils.sourceforge.net/">Docutils</a>, since it is used in some of the tutorials, and its support for ReStructuredText should be handy in whatever application you&#8217;re going to build.</p>
+</div>
+<div class="section" id="sqlalchemy">
+<h3>SQLAlchemy<a class="headerlink" href="#sqlalchemy" title="Permalink to this headline">¶</a></h3>
+<p>Another database object mapper, slated to become default in future versions of TurboGears.
+You can get it from the universe repository, or via <tt class="docutils literal"><span class="pre">easy_install</span></tt>. See
+<a class="reference internal" href="../SQLAlchemy/index.html"><em>SQLAlchemy</em></a> for more information.</p>
+</div>
+<div class="section" id="genshi">
+<h3>Genshi<a class="headerlink" href="#genshi" title="Permalink to this headline">¶</a></h3>
+<p>Genshi is another template language, slated to become default in future versions of TurboGears.
+For &#8220;Feisty&#8221; you can get it from the universe repository, for &#8220;Edgy&#8221; and &#8220;Dapper&#8221; use <tt class="docutils literal"><span class="pre">easy_install</span></tt>.
+See <a class="reference internal" href="../GenshiTemplating.html"><em>GenshiTemplating</em></a> for more information.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

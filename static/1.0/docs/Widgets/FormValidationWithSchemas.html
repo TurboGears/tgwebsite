@@ -1,0 +1,371 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Widget Form Validation with Schemas &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Changing Widget Defaults at Run Time" href="ModifyDefaults.html" />
+    <link rel="prev" title="Simple Widget Form Tutorial" href="SimpleForm.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ModifyDefaults.html" title="Changing Widget Defaults at Run Time"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="SimpleForm.html" title="Simple Widget Form Tutorial"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Widget Form Validation with Schemas</a><ul>
+<li><a class="reference internal" href="#simple-validation-schemas">Simple Validation Schemas</a></li>
+<li><a class="reference internal" href="#compound-validators">Compound Validators</a></li>
+<li><a class="reference internal" href="#chained-validators">Chained Validators</a></li>
+<li><a class="reference internal" href="#using-custom-validators-in-schemas">Using Custom Validators in Schemas</a></li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-project">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="SimpleForm.html"
+                        title="previous chapter">Simple Widget Form Tutorial</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ModifyDefaults.html"
+                        title="next chapter">Changing Widget Defaults at Run Time</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="widget-form-validation-with-schemas">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Widget Form Validation with Schemas</a><a class="headerlink" href="#widget-form-validation-with-schemas" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#widget-form-validation-with-schemas" id="id1">Widget Form Validation with Schemas</a><ul>
+<li><a class="reference internal" href="#simple-validation-schemas" id="id2">Simple Validation Schemas</a></li>
+<li><a class="reference internal" href="#compound-validators" id="id3">Compound Validators</a></li>
+<li><a class="reference internal" href="#chained-validators" id="id4">Chained Validators</a></li>
+<li><a class="reference internal" href="#using-custom-validators-in-schemas" id="id5">Using Custom Validators in Schemas</a></li>
+<li><a class="reference internal" href="#conclusion" id="id6">Conclusion</a></li>
+<li><a class="reference internal" href="#download-the-example-project" id="id7">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In the <a class="reference internal" href="SimpleForm.html"><em>simple form widget tutorial</em></a> you saw how to create a simple form with
+widgets and how to validate the input to the fields of the form by attaching a
+validator instance to each form field when it was instantiated.</p>
+<p>This is fine as long as the successful validation of a field only depends only
+on the value of the field itself. There are, however, situations where this is
+not enough. Examples:</p>
+<ul class="simple">
+<li>You want to make certain that the user has filled in at least two (or three,
+four, etc.) fields within a group of fields, but you don&#8217;t care which.</li>
+<li>You want to check that the values of two related fields match, e.g. a
+password entry with a confirmation field.</li>
+<li>You want to do some consistency or plausibility checks on the submitted data
+as a whole, e.g. when the user entered an address, you could check that the
+city he entered actually exists in the country he also specified, or you could
+check the validity of credit card information (credit card number, expiry date
+and security code).</li>
+</ul>
+<p>For problems like these, validation schemas are the answer. A validation schema
+is a collection of validators, both simple and <em>compound</em> combined into a
+<tt class="docutils literal"><span class="pre">validators.Schema</span></tt>. A <a class="reference external" href="http://formencode.org/Validator.html#compound-validators">compound validator</a> consists of several field
+validators &#8211; the same ones you used in the previous tutorial &#8211; that work
+together. Technically, field validators are sub-classes of
+<tt class="docutils literal"><span class="pre">validators.FancyValidator</span></tt> (<tt class="docutils literal"><span class="pre">validator.NotEmpty</span></tt>,
+<tt class="docutils literal"><span class="pre">validator.UnicodeString</span></tt>, etc.) while compound validators inherit from
+<tt class="docutils literal"><span class="pre">validators.CompoundValidator</span></tt>. Conveniently <tt class="docutils literal"><span class="pre">Schema</span></tt> itself is a
+compound validator, which allows schemas to be nested.</p>
+<p>The FormEncode site has <a class="reference external" href="http://formencode.org/Validator.html#compound-validators">some basic documentation</a> about schemas and what you
+can do with them, but when referring to it, bear one caveat in mind: TurboGears
+defines a few extra validators and overrides the behavior of some of the
+<tt class="docutils literal"><span class="pre">FormEncode</span></tt> classes. So, when you use validators in TurboGears, instead of
+importing from <tt class="docutils literal"><span class="pre">formencode</span></tt>, always use the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">validators</span>
+</pre></div>
+</div>
+<div class="section" id="simple-validation-schemas">
+<h2><a class="toc-backref" href="#id2">Simple Validation Schemas</a><a class="headerlink" href="#simple-validation-schemas" title="Permalink to this headline">¶</a></h2>
+<p>Now that we&#8217;ve seen what validation schemas are, we&#8217;ll walk through a few
+examples to show how they&#8217;re used. Let&#8217;s start simple:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormSchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Int</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">UnicodeString</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Email</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">255</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This schema validates a simple dataset that should consist of an integer ID, a
+Unicode string and another string with a (syntactically) valid email address.
+Let&#8217;s build a simple form widget that can submit a matching dataset:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormFields</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">HiddenField</span><span class="p">(</span><span class="s">&#39;id&#39;</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Name&#39;</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxlength</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+      <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Your name. Required&#39;</span><span class="p">))</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Email&#39;</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxlength</span><span class="o">=</span><span class="mi">255</span><span class="p">),</span>
+      <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Your email address. Required&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Note that the names of the form field widgets (i.e. the first argument to the
+widget constructor) are the same as the attribute names of the matching
+validators in the schema. As a convenience, you can leave this argument out if
+the name is the same as the matching attribute in the <tt class="docutils literal"><span class="pre">WidgetsList</span></tt>. It&#8217;s
+included here because we&#8217;re being pedantic. Now we need to pack the widgets
+into a form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">email_form</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TableForm</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">&quot;emailform&quot;</span><span class="p">,</span>
+    <span class="n">fields</span><span class="o">=</span><span class="n">EmailFormFields</span><span class="p">(),</span>
+    <span class="n">validator</span><span class="o">=</span><span class="n">EmailFormSchema</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>If you compare this to the <a class="reference external" href="1.0/SimpleWidgetForm#defining-the-form">example in the simple form widget tutorial</a>,
+you&#8217;ll see that we only add the <tt class="docutils literal"><span class="pre">validator</span></tt> argument to the form constructor,
+passing a reference to an instance of the validation schema.</p>
+<p>The usage of the form in your controller is exactly the same as if you attached
+the validators directly to the form field widgets. In fact, the validators you
+attach to the individual fields are turned into a schema behind the scenes by
+TurboGears:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="nd">@validate</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">email_form</span><span class="p">)</span>
+<span class="nd">@error_handler</span><span class="p">(</span><span class="n">show_form</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="c"># save data here</span>
+    <span class="c"># id, name and email will be guaranteed to be present</span>
+    <span class="c"># and contain values of the right type</span>
+    <span class="c"># if not, the error_handler method (&#39;show_form&#39; here) will be called</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+<p>So what have we gained by using a schema so far? Admittedly not much, but we
+have separated the definition of the form fields from that of the validators,
+which some (including this author) prefer. In the next sections we will use
+schemas to do more clever things.</p>
+</div>
+<div class="section" id="compound-validators">
+<h2><a class="toc-backref" href="#id3">Compound Validators</a><a class="headerlink" href="#compound-validators" title="Permalink to this headline">¶</a></h2>
+<p>Before we examine how to use schemas to check several fields in combination,
+we&#8217;ll have a look at a simpler, but also very useful way to combine validators:
+the <em>compound validators</em> <a class="reference external" href="http://formencode.org/class-formencode.compound.All.html">validators.All</a> and <a class="reference external" href="http://formencode.org/class-formencode.compound.Any.html">validators.Any</a>.</p>
+<p>These two validator classes allow you to apply several validators to <em>the same</em>
+field at the same time, acting similar to the <tt class="docutils literal"><span class="pre">AND</span></tt> resp. <tt class="docutils literal"><span class="pre">OR</span></tt> operator in
+boolean logic. As an example, let&#8217;s say that we would like to allow the user to
+enter <em>either</em> an email address <em>or</em> a URL (i.e. his homepage address):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormSchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="n">email</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Any</span><span class="p">(</span>
+      <span class="n">validators</span><span class="o">.</span><span class="n">Email</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">validators</span><span class="o">.</span><span class="n">URL</span><span class="p">(</span><span class="n">add_http</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>That was simple, huh? Let&#8217;s try <tt class="docutils literal"><span class="pre">validators.All</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormSchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">All</span><span class="p">(</span>
+      <span class="n">validators</span><span class="o">.</span><span class="n">UnicodeString</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+      <span class="n">validators</span><span class="o">.</span><span class="n">Regex</span><span class="p">(</span><span class="s">r&#39;^\w+\s+\w+$&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>This would require that the name is a string (which will be converted to
+unicode) no longer than 50 characters and that it is of the form <em>word,
+whitespace, word</em>, e.g. a first and lastname like &#8220;John Meyer&#8221;, but not just
+&#8220;John&#8221; or &#8220;John D. Smith&#8221;.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>You can also use compound validators when attaching a validator to a
+widget with the <tt class="docutils literal"><span class="pre">validator</span></tt> keyword argument to its constructor:</p>
+<div class="last highlight-python"><pre>email = widgets.TextEntry('email'
+    validator=validators.Any(
+      validators.Email(strip=True),
+      validators.URL(add_http=True)
+    )
+)</pre>
+</div>
+</div>
+</div>
+<div class="section" id="chained-validators">
+<h2><a class="toc-backref" href="#id4">Chained Validators</a><a class="headerlink" href="#chained-validators" title="Permalink to this headline">¶</a></h2>
+<p>A big advantage of validation schemas is that they allow you to validate the
+whole of the form data after the values of the each form fields have been
+validated by themselves. This feature is called <em>chained validators</em>. Let&#8217;s
+extend our example form with two password entry fields. The user must enter the
+same password into both fields for the validation to be successfull. First we
+define the new form field widgets:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormFields</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">WidgetsList</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="n">password</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">PasswordField</span><span class="p">(</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Password&#39;</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxlength</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+      <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Specify your password.&#39;</span><span class="p">))</span>
+    <span class="n">password_confirm</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">PasswordField</span><span class="p">(</span>
+      <span class="n">label</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Confirm&#39;</span><span class="p">),</span>
+      <span class="n">attrs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">maxlength</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span>
+      <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Enter the password again to confirm.&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>And now we extend the validation schema:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailFormSchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="n">password</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">UnicodeString</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">password_confirm</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">UnicodeString</span><span class="p">(</span><span class="nb">max</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">chained_validators</span> <span class="o">=</span> <span class="p">[</span>
+      <span class="n">validators</span><span class="o">.</span><span class="n">FieldsMatch</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">,</span> <span class="s">&#39;password_confirm&#39;</span><span class="p">)</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>And that&#8217;s it. The <tt class="docutils literal"><span class="pre">FieldsMatch</span></tt> validator checks that the value of the two
+fields are the same (i.e., that the password matches the confirmation). If they
+don&#8217;t, the form will be rediplayed with the error message  &#8220;Fields do not
+match&#8221; (or similar) next to the password and confirmation fields.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>If you&#8217;re using using fields with <tt class="docutils literal"><span class="pre">validator</span></tt> arguments rather than
+explicit schemas, you can still make use of <tt class="docutils literal"><span class="pre">chained_validators</span></tt>.
+Simply create a Schema containing only <tt class="docutils literal"><span class="pre">chained_validators</span></tt> and pass
+that as the Form&#8217;s validator:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailForm</span><span class="p">(</span><span class="n">ListForm</span><span class="p">):</span>
+    <span class="n">validator</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">(</span>
+        <span class="n">chained_validators</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">validators</span><span class="o">.</span><span class="n">FieldsMatch</span><span class="p">(</span><span class="s">&#39;password&#39;</span><span class="p">,</span><span class="s">&#39;password_confirm&#39;</span><span class="p">)</span>
+        <span class="p">])</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">EmailFormFieldsWithValidators</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-custom-validators-in-schemas">
+<h2><a class="toc-backref" href="#id5">Using Custom Validators in Schemas</a><a class="headerlink" href="#using-custom-validators-in-schemas" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">FormEncode</span></tt> allows you to <a class="reference external" href="http://formencode.org/Validator.html#writing-your-own-validator">define your own custom validators</a> rather easily
+by subclassing the <tt class="docutils literal"><span class="pre">validators.FancyValidator</span></tt> class. This example will check
+that email addresses entered in our form have to conform to
+<tt class="docutils literal"><span class="pre">&lt;name&gt;&#64;somedomain.tld</span></tt>, where <tt class="docutils literal"><span class="pre">&lt;name&gt;</span></tt> is the name entered in the &#8220;Name&#8221;
+field with spaces replaced by dots, i.e. if the user entered <tt class="docutils literal"><span class="pre">&quot;Joe</span> <span class="pre">Doe&quot;</span></tt> as
+the name, the email will have to match something like
+<tt class="docutils literal"><span class="pre">&quot;Joe.Doe&#64;somedomain.tld&quot;</span></tt>. Here&#8217;s our custom validator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">EmailMatchesName</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">FancyValidator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;.&#39;</span><span class="p">)</span>
+        <span class="n">email_prefix</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">email_prefix</span> <span class="o">!=</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">validators</span><span class="o">.</span><span class="n">Invalid</span><span class="p">(</span>
+                <span class="s">&#39;Email does not conform to naming rules.&#39;</span><span class="p">,</span>
+                <span class="n">value</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+</div>
+<p>The custom validator defines the method <tt class="docutils literal"><span class="pre">_to_python</span></tt>, which receives a
+<tt class="docutils literal"><span class="pre">value</span></tt> and a <tt class="docutils literal"><span class="pre">state</span></tt> argument. The latter is not important for our purpose
+now, we are only interested in the contents of the <tt class="docutils literal"><span class="pre">value</span></tt> argument. When
+using this validator as a chained validator, <tt class="docutils literal"><span class="pre">value</span></tt> will be a dictionary
+with the data from the whole form after all fields have been validated on their
+own. We can pick the values for the fields we&#8217;re interested in from this
+dictionary and, if our validation condition fails, raise a
+<tt class="docutils literal"><span class="pre">validators.Invalid</span></tt> exception instance with an appropriate message.</p>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id6">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>Validation schemas are a powerful tool to define complex behavior for widget
+forms. In basic usage they only provide separation of form field declarations
+from their matching validators.</p>
+<p>When combining the chained validators feature with custom validators, you can
+use schemas to check interdependencies between form fields or implement dynamic
+validation rules where the requirements for some fields depend on external
+resources or events.</p>
+</div>
+<div class="section" id="download-the-example-project">
+<h2><a class="toc-backref" href="#id7">Download the Example Project</a><a class="headerlink" href="#download-the-example-project" title="Permalink to this headline">¶</a></h2>
+<p>To run the example project, which shows a simple form with two password fields,
+validated by a chained validator, download the tarball, extract, change into
+the <tt class="docutils literal"><span class="pre">FormsValidationTutorial-1.0</span></tt> directory and run:</p>
+<div class="highlight-python"><pre>./start-formvaltut.py</pre>
+</div>
+<p><a class="reference download internal" href="../_downloads/FormValidationTutorial-1.0.tar.gz"><tt class="xref download docutils literal"><span class="pre">FormValidationTutorial-1.0.tar.gz</span></tt></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

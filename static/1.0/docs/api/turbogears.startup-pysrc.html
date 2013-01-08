@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.startup</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;startup
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="turbogears.startup-module.html" onclick="show_private();">Module turbogears.startup</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-docstring">"""Things to do when the TurboGears server is started."""</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line">    <tt class="py-string">'call_on_startup'</tt><tt class="py-op">,</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line">    <tt class="py-string">'call_on_shutdown'</tt><tt class="py-op">,</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line">    <tt class="py-string">'reloader_thread'</tt><tt class="py-op">,</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line">    <tt class="py-string">'start_bonjour'</tt><tt class="py-op">,</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line">    <tt class="py-string">'stop_bonjour'</tt><tt class="py-op">,</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-string">'start_server'</tt><tt class="py-op">,</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line">    <tt class="py-string">'startTurboGears'</tt><tt class="py-op">,</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">    <tt class="py-string">'stopTurboGears'</tt><tt class="py-op">,</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-string">'webpath'</tt><tt class="py-op">,</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-op">]</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">atexit</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">errno</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">logging</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">signal</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">time</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Variable turbogears.widgets.forms.InputWidget.path=turbogears.widgets.forms.InputWidget-class.html#path"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-0', 'path', 'link-0');">path</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">abspath</tt><tt class="py-op">,</tt> <tt class="py-name">exists</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">pkg_resources</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">cherrypy</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt> <tt class="py-keyword">import</tt> <tt class="py-name">_cputil</tt><tt class="py-op">,</tt> <tt class="py-name">request</tt><tt class="py-op">,</tt> <tt class="py-name">server</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt class="py-name">_cpwsgi</tt> <tt class="py-keyword">import</tt> <tt class="py-name">wsgiApp</tt><tt class="py-op">,</tt> <tt class="py-name">CPHTTPRequest</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt class="py-name">_cpwsgiserver</tt> <tt class="py-keyword">import</tt> <tt class="py-name">CherryPyWSGIServer</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Function turbogears.identity.conditions.require()=turbogears.identity.conditions-module.html#require"><a title="turbogears.identity.conditions.require" class="py-name" href="#" onclick="return doclink('link-1', 'require', 'link-1');">require</a></tt><tt class="py-op">(</tt><tt class="py-string">"TurboGears"</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package turbogears=turbogears-module.html"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-2', 'turbogears', 'link-2');">turbogears</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.config=turbogears.command.i18n.InternationalizationTool-class.html#config,Module turbogears.config=turbogears.config-module.html,Variable turbogears.testutil.TGTest.config=turbogears.testutil.TGTest-class.html#config"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-3', 'config', 'link-3');">config</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Module turbogears.database=turbogears.database-module.html"><a title="turbogears.database" class="py-name" href="#" onclick="return doclink('link-4', 'database', 'link-4');">database</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Module turbogears.scheduler=turbogears.scheduler-module.html"><a title="turbogears.scheduler" class="py-name" href="#" onclick="return doclink('link-5', 'scheduler', 'link-5');">scheduler</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Package turbogears.view=turbogears.view-module.html"><a title="turbogears.view" class="py-name" href="#" onclick="return doclink('link-6', 'view', 'link-6');">view</a></tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-7" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-7', 'turbogears', 'link-2');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="turbogears.database" class="py-name" href="#" onclick="return doclink('link-8', 'database', 'link-4');">database</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Variable turbogears.database.hub_registry=turbogears.database-module.html#hub_registry"><a title="turbogears.database.hub_registry" class="py-name" href="#" onclick="return doclink('link-9', 'hub_registry', 'link-9');">hub_registry</a></tt><tt class="py-op">,</tt> <tt id="link-10" class="py-name" targets="Class turbogears.database.EndTransactionsFilter=turbogears.database.EndTransactionsFilter-class.html"><a title="turbogears.database.EndTransactionsFilter" class="py-name" href="#" onclick="return doclink('link-10', 'EndTransactionsFilter', 'link-10');">EndTransactionsFilter</a></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-11" class="py-name"><a title="turbogears" class="py-name" href="#" onclick="return doclink('link-11', 'turbogears', 'link-2');">turbogears</a></tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Package turbogears.filters=turbogears.filters-module.html"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-12', 'filters', 'link-12');">filters</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">(</tt><tt class="py-name">MonkeyDecodingFilter</tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name" targets="Class turbogears.filters.base.NestedVariablesFilter=turbogears.filters.base.NestedVariablesFilter-class.html"><a title="turbogears.filters.base.NestedVariablesFilter" class="py-name" href="#" onclick="return doclink('link-13', 'NestedVariablesFilter', 'link-13');">NestedVariablesFilter</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt id="link-14" class="py-name" targets="Class turbogears.filters.safemultipart.SafeMultipartFilter=turbogears.filters.safemultipart.SafeMultipartFilter-class.html"><a title="turbogears.filters.safemultipart.SafeMultipartFilter" class="py-name" href="#" onclick="return doclink('link-14', 'SafeMultipartFilter', 'link-14');">SafeMultipartFilter</a></tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Class turbogears.filters.base.VirtualPathFilter=turbogears.filters.base.VirtualPathFilter-class.html"><a title="turbogears.filters.base.VirtualPathFilter" class="py-name" href="#" onclick="return doclink('link-15', 'VirtualPathFilter', 'link-15');">VirtualPathFilter</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-comment"># module globals</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt id="link-16" class="py-name" targets="Variable turbogears.startup.DNS_SD_PID=turbogears.startup-module.html#DNS_SD_PID"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-16', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt id="link-17" class="py-name" targets="Variable turbogears.startup.call_on_startup=turbogears.startup-module.html#call_on_startup"><a title="turbogears.startup.call_on_startup" class="py-name" href="#" onclick="return doclink('link-17', 'call_on_startup', 'link-17');">call_on_startup</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt id="link-18" class="py-name" targets="Variable turbogears.startup.call_on_shutdown=turbogears.startup-module.html#call_on_shutdown"><a title="turbogears.startup.call_on_shutdown" class="py-name" href="#" onclick="return doclink('link-18', 'call_on_shutdown', 'link-18');">call_on_shutdown</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt id="link-19" class="py-name" targets="Variable turbogears.startup.webpath=turbogears.startup-module.html#webpath"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-19', 'webpath', 'link-19');">webpath</a></tt> <tt class="py-op">=</tt> <tt class="py-string">''</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt id="link-20" class="py-name" targets="Variable turbogears.controllers.log=turbogears.controllers-module.html#log,Variable turbogears.database.log=turbogears.database-module.html#log,Variable turbogears.filters.base.log=turbogears.filters.base-module.html#log,Variable turbogears.filters.safemultipart.log=turbogears.filters.safemultipart-module.html#log,Variable turbogears.i18n.tg_gettext.log=turbogears.i18n.tg_gettext-module.html#log,Variable turbogears.identity.base.log=turbogears.identity.base-module.html#log,Variable turbogears.identity.saprovider.log=turbogears.identity.saprovider-module.html#log,Variable turbogears.identity.soprovider.log=turbogears.identity.soprovider-module.html#log,Variable turbogears.identity.visitor.log=turbogears.identity.visitor-module.html#log,Variable turbogears.paginate'.log=turbogears.paginate%27-module.html#log,Variable turbogears.scheduler.log=turbogears.scheduler-module.html#log,Variable turbogears.startup.log=turbogears.startup-module.html#log,Variable turbogears.toolbox.shell.log=turbogears.toolbox.shell-module.html#log,Variable turbogears.view.base.log=turbogears.view.base-module.html#log,Variable turbogears.visit.api.log=turbogears.visit.api-module.html#log,Variable turbogears.visit.savisit.log=turbogears.visit.savisit-module.html#log,Variable turbogears.visit.sovisit.log=turbogears.visit.sovisit-module.html#log"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-20', 'log', 'link-20');">log</a></tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">"turbogears.startup"</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-comment"># module private functions</tt> </tt>
+<a name="reloader_thread"></a><div id="reloader_thread-def"><a name="L48"></a><tt class="py-lineno"> 48</tt> <a class="py-toggle" href="#" id="reloader_thread-toggle" onclick="return toggle('reloader_thread');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#reloader_thread">reloader_thread</a><tt class="py-op">(</tt><tt class="py-param">freq</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="reloader_thread-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="reloader_thread-expanded"><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-docstring">"""Monkeypatch for the reloader provided by CherryPy.</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-docstring">    This reloader is designed to reload a single package. This is</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-docstring">    more efficient and, more important, compatible with zipped</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">    libraries that may not provide access to the individual files."""</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">archive_selector</tt><tt class="py-op">(</tt><tt class="py-param">module</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">module</tt><tt class="py-op">,</tt> <tt class="py-string">'__loader__'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">module</tt><tt class="py-op">.</tt><tt class="py-name">__loader__</tt><tt class="py-op">,</tt> <tt class="py-string">'archive'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">module</tt><tt class="py-op">.</tt><tt class="py-name">__loader__</tt><tt class="py-op">.</tt><tt class="py-name">archive</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">module</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-name">mtimes</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt id="link-21" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.package=turbogears.command.i18n.InternationalizationTool-class.html#package,Variable turbogears.command.quickstart.quickstart.package=turbogears.command.quickstart.quickstart-class.html#package"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-21', 'package', 'link-21');">package</a></tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-22', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Function turbogears.config.get()=turbogears.config-module.html#get,Function turbogears.i18n.format.get()=turbogears.i18n.format-module.html#get"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-23', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"autoreload.package"</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-24" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-24', 'package', 'link-21');">package</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-op">(</tt><tt class="py-string">"TurboGears requires autoreload.package to be set. "</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            <tt class="py-string">"It can be an empty value, which will use CherryPy's default "</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">            <tt class="py-string">"behavior which is to check every module. Setting an actual "</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-string">"package makes the check much faster."</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">    <tt class="py-keyword">while</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt class="py-name">lib</tt><tt class="py-op">.</tt><tt class="py-name">autoreload</tt><tt class="py-op">.</tt><tt class="py-name">RUN_RELOADER</tt><tt class="py-op">:</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-25" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-25', 'package', 'link-21');">package</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">            <tt class="py-name">modnames</tt> <tt class="py-op">=</tt> <tt class="py-name">filter</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">modname</tt><tt class="py-op">:</tt> <tt class="py-name">modname</tt><tt class="py-op">.</tt><tt class="py-name">startswith</tt><tt class="py-op">(</tt><tt id="link-26" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-26', 'package', 'link-21');">package</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt class="py-name">modlist</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-name">modname</tt><tt class="py-op">]</tt> <tt class="py-keyword">for</tt> <tt class="py-name">modname</tt> <tt class="py-keyword">in</tt> <tt class="py-name">modnames</tt><tt class="py-op">]</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt class="py-name">modlist</tt> <tt class="py-op">=</tt> <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-name">archive_selector</tt><tt class="py-op">,</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">.</tt><tt class="py-name">values</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">filename</tt> <tt class="py-keyword">in</tt> <tt class="py-name">filter</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">v</tt><tt class="py-op">:</tt> <tt class="py-name">v</tt><tt class="py-op">,</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                <tt class="py-name">map</tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">m</tt><tt class="py-op">:</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-string">"__file__"</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">modlist</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">filename</tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">".kid"</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">filename</tt> <tt class="py-op">==</tt> <tt class="py-string">"&lt;string&gt;"</tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">                <tt class="py-keyword">continue</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">            <tt class="py-name">orig_filename</tt> <tt class="py-op">=</tt> <tt class="py-name">filename</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">filename</tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">".pyc"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                <tt class="py-name">filename</tt> <tt class="py-op">=</tt> <tt class="py-name">filename</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">-</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">                <tt class="py-name">mtime</tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">stat</tt><tt class="py-op">(</tt><tt class="py-name">filename</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">st_mtime</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">OSError</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">orig_filename</tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">'.pyc'</tt><tt class="py-op">)</tt> <tt class="py-keyword">and</tt> <tt class="py-name">e</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">==</tt> <tt class="py-name">errno</tt><tt class="py-op">.</tt><tt class="py-name">ENOENT</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                    <tt class="py-comment"># This prevents us from endlessly restarting</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                    <tt class="py-comment"># if there is an old .pyc lying around</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                    <tt class="py-comment"># after a .py file has been deleted</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">unlink</tt><tt class="py-op">(</tt><tt class="py-name">orig_filename</tt><tt class="py-op">)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                    <tt class="py-keyword">except</tt><tt class="py-op">:</tt> <tt class="py-keyword">pass</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> <tt class="py-comment"># force reload</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">filename</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mtimes</tt><tt class="py-op">:</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                <tt class="py-name">mtimes</tt><tt class="py-op">[</tt><tt class="py-name">filename</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">mtime</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">                <tt class="py-keyword">continue</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">mtime</tt> <tt class="py-op">&gt;</tt> <tt class="py-name">mtimes</tt><tt class="py-op">[</tt><tt class="py-name">filename</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">                <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">exit</tt><tt class="py-op">(</tt><tt class="py-number">3</tt><tt class="py-op">)</tt> <tt class="py-comment"># force reload</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">        <tt class="py-name">time</tt><tt class="py-op">.</tt><tt class="py-name">sleep</tt><tt class="py-op">(</tt><tt class="py-name">freq</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt class="py-name">lib</tt><tt class="py-op">.</tt><tt class="py-name">autoreload</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Function turbogears.startup.reloader_thread()=turbogears.startup-module.html#reloader_thread"><a title="turbogears.startup.reloader_thread" class="py-name" href="#" onclick="return doclink('link-27', 'reloader_thread', 'link-27');">reloader_thread</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="turbogears.startup.reloader_thread" class="py-name" href="#" onclick="return doclink('link-28', 'reloader_thread', 'link-27');">reloader_thread</a></tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-name">old_object_trail</tt> <tt class="py-op">=</tt> <tt class="py-name">_cputil</tt><tt class="py-op">.</tt><tt class="py-name">get_object_trail</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-comment"># hang on to object trail to use it to find an app root if need be</tt> </tt>
+<a name="get_object_trail"></a><div id="get_object_trail-def"><a name="L105"></a><tt class="py-lineno">105</tt> <a class="py-toggle" href="#" id="get_object_trail-toggle" onclick="return toggle('get_object_trail');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#get_object_trail">get_object_trail</a><tt class="py-op">(</tt><tt class="py-param">object_path</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_object_trail-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_object_trail-expanded"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-name">trail</tt> <tt class="py-op">=</tt> <tt class="py-name">old_object_trail</tt><tt class="py-op">(</tt><tt class="py-name">object_path</tt><tt class="py-op">)</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">object_trail</tt> <tt class="py-op">=</tt> <tt class="py-name">trail</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">AttributeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">trail</tt> </tt>
+</div><a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-name">_cputil</tt><tt class="py-op">.</tt><tt class="py-name">get_object_trail</tt> <tt class="py-op">=</tt> <tt class="py-name">get_object_trail</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-comment"># module public functions</tt> </tt>
+<a name="start_bonjour"></a><div id="start_bonjour-def"><a name="L117"></a><tt class="py-lineno">117</tt> <a class="py-toggle" href="#" id="start_bonjour-toggle" onclick="return toggle('start_bonjour');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#start_bonjour">start_bonjour</a><tt class="py-op">(</tt><tt class="py-param">package</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="start_bonjour-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="start_bonjour-expanded"><a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">    <tt class="py-docstring">"""Register the TurboGears server with the Bonjour framework.</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">    Currently only Unix-like systems are supported where either the 'avahi'</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-docstring">    daemon (Linux etc.) is available or the 'dns-sd' program (Mac OS X).</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-29" class="py-name"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-29', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-30" class="py-name"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-30', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">cherrypy</tt><tt class="py-op">,</tt> <tt class="py-string">'root'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-31" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-31', 'package', 'link-21');">package</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt id="link-32" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-32', 'package', 'link-21');">package</a></tt> <tt class="py-op">=</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-33" class="py-name" targets="Variable turbogears.testutil.TGTest.root=turbogears.testutil.TGTest-class.html#root"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-33', 'root', 'link-33');">root</a></tt><tt class="py-op">.</tt><tt class="py-name">__module__</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">        <tt id="link-34" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-34', 'package', 'link-21');">package</a></tt> <tt class="py-op">=</tt> <tt id="link-35" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-35', 'package', 'link-21');">package</a></tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt id="link-36" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-36', 'package', 'link-21');">package</a></tt><tt class="py-op">.</tt><tt class="py-name">find</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-name">host</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-37', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-38', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'server.socket_host'</tt><tt class="py-op">,</tt> <tt class="py-string">''</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-name">port</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-39" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-39', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-40', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'server.socket_port'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-name">env</tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-41', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-42', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'server.environment'</tt><tt class="py-op">)</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt id="link-43" class="py-name" targets="Variable turbogears.command.i18n.InternationalizationTool.name=turbogears.command.i18n.InternationalizationTool-class.html#name,Variable turbogears.command.quickstart.quickstart.name=turbogears.command.quickstart.quickstart-class.html#name,Variable turbogears.command.quickstart.update.name=turbogears.command.quickstart.update-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Domain.name=turbogears.i18n.sagettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sagettext.model.TG_Message.name=turbogears.i18n.sagettext.model.TG_Message-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Domain.name=turbogears.i18n.sogettext.model.TG_Domain-class.html#name,Variable turbogears.i18n.sogettext.model.TG_Message.name=turbogears.i18n.sogettext.model.TG_Message-class.html#name,Variable turbogears.widgets.base.Widget.name=turbogears.widgets.base.Widget-class.html#name,Variable turbogears.widgets.base.WidgetDescription.name=turbogears.widgets.base.WidgetDescription-class.html#name,Variable turbogears.widgets.forms.Form.name=turbogears.widgets.forms.Form-class.html#name,Variable turbogears.widgets.forms.FormField.name=turbogears.widgets.forms.FormField-class.html#name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-43', 'name', 'link-43');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-44" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.package
+turbogears.command.quickstart.quickstart.package" class="py-name" href="#" onclick="return doclink('link-44', 'package', 'link-21');">package</a></tt> <tt class="py-op">+</tt> <tt class="py-string">": "</tt> <tt class="py-op">+</tt> <tt class="py-name">env</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-name">type</tt> <tt class="py-op">=</tt> <tt class="py-string">"_http._tcp"</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-name">cmds</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">[</tt><tt class="py-string">'/usr/bin/avahi-publish-service'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-string">"-H"</tt><tt class="py-op">,</tt> <tt class="py-name">host</tt><tt class="py-op">,</tt> <tt id="link-45" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-45', 'name', 'link-43');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">,</tt> <tt class="py-name">port</tt><tt class="py-op">]</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">            <tt class="py-op">[</tt><tt class="py-string">'/usr/bin/dns-sd'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-string">'-R'</tt><tt class="py-op">,</tt> <tt id="link-46" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.name
+turbogears.command.quickstart.quickstart.name
+turbogears.command.quickstart.update.name
+turbogears.i18n.sagettext.model.TG_Domain.name
+turbogears.i18n.sagettext.model.TG_Message.name
+turbogears.i18n.sogettext.model.TG_Domain.name
+turbogears.i18n.sogettext.model.TG_Message.name
+turbogears.widgets.base.Widget.name
+turbogears.widgets.base.WidgetDescription.name
+turbogears.widgets.forms.Form.name
+turbogears.widgets.forms.FormField.name" class="py-name" href="#" onclick="return doclink('link-46', 'name', 'link-43');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">type</tt><tt class="py-op">,</tt> <tt class="py-string">"."</tt><tt class="py-op">+</tt><tt class="py-name">host</tt><tt class="py-op">,</tt> <tt class="py-name">port</tt><tt class="py-op">,</tt> <tt class="py-string">"path=/"</tt><tt class="py-op">]</tt><tt class="py-op">]</tt><tt class="py-op">]</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">cmd</tt><tt class="py-op">,</tt> <tt id="link-47" class="py-name" targets="Variable turbogears.identity.exceptions.IdentityConfigurationException.args=turbogears.identity.exceptions.IdentityConfigurationException-class.html#args"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-47', 'args', 'link-47');">args</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">cmds</tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">        <tt class="py-comment"># TODO:. This check is flawed.  If one has both services installed and</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">        <tt class="py-comment"># avahi isn't the one running, then this won't work.  We should either</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">        <tt class="py-comment"># try registering with both or checking what service is running and use</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">        <tt class="py-comment"># that.  Program availability on the filesystem was never enough...</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">exists</tt><tt class="py-op">(</tt><tt class="py-name">cmd</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">            <tt id="link-48" class="py-name"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-48', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt> <tt class="py-op">=</tt> <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">spawnv</tt><tt class="py-op">(</tt><tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">P_NOWAIT</tt><tt class="py-op">,</tt> <tt class="py-name">cmd</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-name">cmd</tt><tt class="py-op">]</tt><tt class="py-op">+</tt><tt id="link-49" class="py-name"><a title="turbogears.identity.exceptions.IdentityConfigurationException.args" class="py-name" href="#" onclick="return doclink('link-49', 'args', 'link-47');">args</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line">            <tt class="py-name">atexit</tt><tt class="py-op">.</tt><tt class="py-name">register</tt><tt class="py-op">(</tt><tt id="link-50" class="py-name" targets="Function turbogears.startup.stop_bonjour()=turbogears.startup-module.html#stop_bonjour"><a title="turbogears.startup.stop_bonjour" class="py-name" href="#" onclick="return doclink('link-50', 'stop_bonjour', 'link-50');">stop_bonjour</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">            <tt class="py-keyword">break</tt> </tt>
+</div><a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="stop_bonjour"></a><div id="stop_bonjour-def"><a name="L152"></a><tt class="py-lineno">152</tt> <a class="py-toggle" href="#" id="stop_bonjour-toggle" onclick="return toggle('stop_bonjour');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#stop_bonjour">stop_bonjour</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="stop_bonjour-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="stop_bonjour-expanded"><a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-docstring">"""Stop the bonjour publishing daemon if it is running."""</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-51" class="py-name"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-51', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">kill</tt><tt class="py-op">(</tt><tt id="link-52" class="py-name"><a title="turbogears.startup.DNS_SD_PID" class="py-name" href="#" onclick="return doclink('link-52', 'DNS_SD_PID', 'link-16');">DNS_SD_PID</a></tt><tt class="py-op">,</tt> <tt class="py-name">signal</tt><tt class="py-op">.</tt><tt class="py-name">SIGTERM</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">OSError</tt><tt class="py-op">:</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="startTurboGears"></a><div id="startTurboGears-def"><a name="L161"></a><tt class="py-lineno">161</tt> <a class="py-toggle" href="#" id="startTurboGears-toggle" onclick="return toggle('startTurboGears');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#startTurboGears">startTurboGears</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="startTurboGears-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="startTurboGears-expanded"><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">    <tt class="py-docstring">"""Handles TurboGears tasks when the CherryPy server starts.</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">    This performs the following initialization tasks (in given order):</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-docstring">    * Turns off CherryPy's logging filter when in development mode</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"><tt class="py-docstring">    * If logging is not already set up, turns on old-style stdlib logging.</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt class="py-docstring">    * Adds a static filter for TurboGears's static files (URL '/tg_static').</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt class="py-docstring">    * Adds a static filter for TurboGears's JavaScript files (URL '/tg_js').</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt class="py-docstring">    * Loads the template engines and the base templates.</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt class="py-docstring">    * Adds the CherryPy request filters to the root controller.</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt class="py-docstring">    * Adds the decoding filter to the root URL ('/') if enabled in the</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt class="py-docstring">      configuration.</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt class="py-docstring">    * Registers the server with the Bonjour framework, if available.</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt class="py-docstring">    * Calls 'turbogears.database.bind_metadata' when using SQLAlchemy.</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-docstring">    * Loads all turbogears.extensions entry points and calls their</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt class="py-docstring">      'start_extension' method.</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt class="py-docstring">    * Calls the callables registered in 'turbogears.call_on_startup'.</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt class="py-docstring">    * Starts the TurboGears scheduler.</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">    <tt class="py-keyword">global</tt> <tt id="link-53" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-53', 'webpath', 'link-19');">webpath</a></tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">    <tt class="py-name">conf</tt> <tt class="py-op">=</tt> <tt id="link-54" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-54', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-55" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-55', 'get', 'link-23');">get</a></tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">    <tt class="py-name">rfn</tt> <tt class="py-op">=</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">resource_filename</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">    <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-56" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-56', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt class="py-name">environments</tt><tt class="py-op">[</tt><tt class="py-string">'development'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line">        <tt class="py-string">'log_debug_info_filter.on'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt class="py-comment"># XXX: obsolete --&gt; to be removed</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">    <tt class="py-comment"># Set up old-style logging</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'tg.new_style_logging'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.log_to_screen'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt><tt class="py-op">.</tt><tt class="py-name">setLevel</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">DEBUG</tt><tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">            <tt class="py-name">fmt</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">Formatter</tt><tt class="py-op">(</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">                <tt class="py-string">"%(asctime)s %(name)s %(levelname)s %(message)s"</tt><tt class="py-op">)</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">            <tt class="py-name">handler</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">StreamHandler</tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">)</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt class="py-name">handler</tt><tt class="py-op">.</tt><tt class="py-name">setLevel</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">DEBUG</tt><tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">            <tt class="py-name">handler</tt><tt class="py-op">.</tt><tt class="py-name">setFormatter</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">)</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt><tt class="py-op">.</tt><tt class="py-name">addHandler</tt><tt class="py-op">(</tt><tt class="py-name">handler</tt><tt class="py-op">)</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line">        <tt class="py-name">logfile</tt> <tt class="py-op">=</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.log_file'</tt><tt class="py-op">)</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">logfile</tt><tt class="py-op">:</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">getLogger</tt><tt class="py-op">(</tt><tt class="py-string">'turbogears.access'</tt><tt class="py-op">)</tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt><tt class="py-op">.</tt><tt class="py-name">propagate</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">            <tt class="py-name">fmt</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">Formatter</tt><tt class="py-op">(</tt><tt class="py-string">"%(message)s"</tt><tt class="py-op">)</tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">            <tt class="py-name">handler</tt> <tt class="py-op">=</tt> <tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">FileHandler</tt><tt class="py-op">(</tt><tt class="py-name">logfile</tt><tt class="py-op">)</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">            <tt class="py-name">handler</tt><tt class="py-op">.</tt><tt class="py-name">setLevel</tt><tt class="py-op">(</tt><tt class="py-name">logging</tt><tt class="py-op">.</tt><tt class="py-name">INFO</tt><tt class="py-op">)</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">            <tt class="py-name">handler</tt><tt class="py-op">.</tt><tt class="py-name">setFormatter</tt><tt class="py-op">(</tt><tt class="py-name">fmt</tt><tt class="py-op">)</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">            <tt class="py-name">setuplog</tt><tt class="py-op">.</tt><tt class="py-name">addHandler</tt><tt class="py-op">(</tt><tt class="py-name">handler</tt><tt class="py-op">)</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line"> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">    <tt class="py-comment"># Add static filters</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">    <tt id="link-57" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-57', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-58" class="py-name" targets="Class turbogears.command.quickstart.update=turbogears.command.quickstart.update-class.html,Function turbogears.config.update()=turbogears.config-module.html#update,Function turbogears.i18n.pygettext.catalog.update()=turbogears.i18n.pygettext.catalog-module.html#update,Method turbogears.toolbox.catwalk.CatWalk.update()=turbogears.toolbox.catwalk.CatWalk-class.html#update,Variable turbogears.widgets.rpc.RPC.update=turbogears.widgets.rpc.RPC-class.html#update"><a title="turbogears.command.quickstart.update
+turbogears.config.update
+turbogears.i18n.pygettext.catalog.update
+turbogears.toolbox.catwalk.CatWalk.update
+turbogears.widgets.rpc.RPC.update" class="py-name" href="#" onclick="return doclink('link-58', 'update', 'link-58');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'/tg_static'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-string">'static_filter.on'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-string">'static_filter.dir'</tt><tt class="py-op">:</tt> <tt class="py-name">abspath</tt><tt class="py-op">(</tt><tt class="py-name">rfn</tt><tt class="py-op">(</tt><tt class="py-name">__name__</tt><tt class="py-op">,</tt> <tt class="py-string">'static'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">        <tt class="py-string">'log_debug_info_filter.on'</tt><tt class="py-op">:</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">    <tt class="py-op">}</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">    <tt id="link-59" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-59', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-60" class="py-name"><a title="turbogears.command.quickstart.update
+turbogears.config.update
+turbogears.i18n.pygettext.catalog.update
+turbogears.toolbox.catwalk.CatWalk.update
+turbogears.widgets.rpc.RPC.update" class="py-name" href="#" onclick="return doclink('link-60', 'update', 'link-58');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'/tg_js'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">        <tt class="py-string">'static_filter.on'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">        <tt class="py-string">'static_filter.dir'</tt><tt class="py-op">:</tt> <tt class="py-name">abspath</tt><tt class="py-op">(</tt><tt class="py-name">rfn</tt><tt class="py-op">(</tt><tt class="py-name">__name__</tt><tt class="py-op">,</tt> <tt class="py-string">'static/js'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-string">'log_debug_info_filter.on'</tt><tt class="py-op">:</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">    <tt class="py-op">}</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">    <tt class="py-comment"># Add decoding filter</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'decoding_filter.on'</tt><tt class="py-op">,</tt> <tt id="link-61" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-61', 'path', 'link-0');">path</a></tt><tt class="py-op">=</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt id="link-62" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-62', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-63" class="py-name"><a title="turbogears.command.quickstart.update
+turbogears.config.update
+turbogears.i18n.pygettext.catalog.update
+turbogears.toolbox.catwalk.CatWalk.update
+turbogears.widgets.rpc.RPC.update" class="py-name" href="#" onclick="return doclink('link-63', 'update', 'link-58');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'/'</tt><tt class="py-op">:</tt> <tt class="py-op">{</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">            <tt class="py-string">'decoding_filter.on'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">            <tt class="py-string">'decoding_filter.encoding'</tt><tt class="py-op">:</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'kid.encoding'</tt><tt class="py-op">,</tt> <tt class="py-string">'utf8'</tt><tt class="py-op">)</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">        <tt class="py-op">}</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line"> </tt>
+<a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">    <tt class="py-comment"># Initialize template engines and load base templates</tt> </tt>
+<a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line">    <tt id="link-64" class="py-name"><a title="turbogears.view" class="py-name" href="#" onclick="return doclink('link-64', 'view', 'link-6');">view</a></tt><tt class="py-op">.</tt><tt id="link-65" class="py-name" targets="Function turbogears.view.base.load_engines()=turbogears.view.base-module.html#load_engines"><a title="turbogears.view.base.load_engines" class="py-name" href="#" onclick="return doclink('link-65', 'load_engines', 'link-65');">load_engines</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L232"></a><tt class="py-lineno">232</tt>  <tt class="py-line">    <tt id="link-66" class="py-name"><a title="turbogears.view" class="py-name" href="#" onclick="return doclink('link-66', 'view', 'link-6');">view</a></tt><tt class="py-op">.</tt><tt id="link-67" class="py-name" targets="Function turbogears.view.base.loadBaseTemplates()=turbogears.view.base-module.html#loadBaseTemplates"><a title="turbogears.view.base.loadBaseTemplates" class="py-name" href="#" onclick="return doclink('link-67', 'loadBaseTemplates', 'link-67');">loadBaseTemplates</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line"> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line">    <tt class="py-comment"># Add request filters</tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line">    <tt id="link-68" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-68', 'webpath', 'link-19');">webpath</a></tt> <tt class="py-op">=</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.webpath'</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-string">''</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line"> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">getattr</tt><tt class="py-op">(</tt><tt class="py-name">cherrypy</tt><tt class="py-op">,</tt> <tt class="py-string">'root'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-69" class="py-name"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-69', 'root', 'link-33');">root</a></tt><tt class="py-op">,</tt> <tt class="py-string">'_cp_filters'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">            <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-70" class="py-name"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-70', 'root', 'link-33');">root</a></tt><tt class="py-op">.</tt><tt class="py-name">_cp_filters</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-name">extra_filters</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">            <tt id="link-71" class="py-name"><a title="turbogears.filters.base.VirtualPathFilter" class="py-name" href="#" onclick="return doclink('link-71', 'VirtualPathFilter', 'link-15');">VirtualPathFilter</a></tt><tt class="py-op">(</tt><tt id="link-72" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-72', 'webpath', 'link-19');">webpath</a></tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">            <tt id="link-73" class="py-name"><a title="turbogears.database.EndTransactionsFilter" class="py-name" href="#" onclick="return doclink('link-73', 'EndTransactionsFilter', 'link-10');">EndTransactionsFilter</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">            <tt id="link-74" class="py-name"><a title="turbogears.filters.base.NestedVariablesFilter" class="py-name" href="#" onclick="return doclink('link-74', 'NestedVariablesFilter', 'link-13');">NestedVariablesFilter</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">            <tt id="link-75" class="py-name"><a title="turbogears.filters.safemultipart.SafeMultipartFilter" class="py-name" href="#" onclick="return doclink('link-75', 'SafeMultipartFilter', 'link-14');">SafeMultipartFilter</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">        <tt class="py-op">]</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line">        <tt class="py-comment"># Do not add filters twice which are already present</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">cp_filter</tt> <tt class="py-keyword">in</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-76" class="py-name"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-76', 'root', 'link-33');">root</a></tt><tt class="py-op">.</tt><tt class="py-name">_cp_filters</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">            <tt class="py-keyword">for</tt> <tt class="py-name">candidate</tt> <tt class="py-keyword">in</tt> <tt class="py-name">extra_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">candidate</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt> <tt class="py-keyword">is</tt> <tt class="py-name">cp_filter</tt><tt class="py-op">.</tt><tt class="py-name">__class__</tt><tt class="py-op">:</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">                    <tt class="py-name">extra_filters</tt><tt class="py-op">.</tt><tt id="link-77" class="py-name" targets="Method turbogears.toolbox.catwalk.CatWalk.remove()=turbogears.toolbox.catwalk.CatWalk-class.html#remove"><a title="turbogears.toolbox.catwalk.CatWalk.remove" class="py-name" href="#" onclick="return doclink('link-77', 'remove', 'link-77');">remove</a></tt><tt class="py-op">(</tt><tt class="py-name">candidate</tt><tt class="py-op">)</tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">                    <tt class="py-keyword">break</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">        <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-78" class="py-name"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-78', 'root', 'link-33');">root</a></tt><tt class="py-op">.</tt><tt class="py-name">_cp_filters</tt><tt class="py-op">.</tt><tt class="py-name">extend</tt><tt class="py-op">(</tt><tt class="py-name">extra_filters</tt><tt class="py-op">)</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">    <tt class="py-comment"># Monkey patch CherryPy Decoding filter: injects our replacement filter</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">    <tt class="py-comment"># MonkeyDecodingFilter into the CherryPy filter chain</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">    <tt class="py-name">decoding_filter</tt> <tt class="py-op">=</tt> <tt class="py-name">MonkeyDecodingFilter</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-79" class="py-name" targets="Method turbogears.feed.feed.FeedController.index()=turbogears.feed.feed.FeedController-class.html#index,Method turbogears.toolbox.admi18n.Internationalization.index()=turbogears.toolbox.admi18n.Internationalization-class.html#index,Method turbogears.toolbox.base.Info.index()=turbogears.toolbox.base.Info-class.html#index,Method turbogears.toolbox.base.Toolbox.index()=turbogears.toolbox.base.Toolbox-class.html#index,Method turbogears.toolbox.base.WidgetBrowser.index()=turbogears.toolbox.base.WidgetBrowser-class.html#index,Method turbogears.toolbox.catwalk.CatWalk.index()=turbogears.toolbox.catwalk.CatWalk-class.html#index,Method turbogears.toolbox.catwalk.browse.Browse.index()=turbogears.toolbox.catwalk.browse.Browse-class.html#index,Method turbogears.toolbox.designer.Designer.index()=turbogears.toolbox.designer.Designer-class.html#index,Method turbogears.toolbox.shell.WebConsole.index()=turbogears.toolbox.shell.WebConsole-class.html#index"><a title="turbogears.feed.feed.FeedController.index
+turbogears.toolbox.admi18n.Internationalization.index
+turbogears.toolbox.base.Info.index
+turbogears.toolbox.base.Toolbox.index
+turbogears.toolbox.base.WidgetBrowser.index
+turbogears.toolbox.catwalk.CatWalk.index
+turbogears.toolbox.catwalk.browse.Browse.index
+turbogears.toolbox.designer.Designer.index
+turbogears.toolbox.shell.WebConsole.index" class="py-name" href="#" onclick="return doclink('link-79', 'index', 'link-79');">index</a></tt><tt class="py-op">,</tt> <tt class="py-name">active_filter</tt> <tt class="py-keyword">in</tt> <tt class="py-name">enumerate</tt><tt class="py-op">(</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">            <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-80" class="py-name"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-80', 'filters', 'link-12');">filters</a></tt><tt class="py-op">.</tt><tt class="py-name">_filterhooks</tt><tt class="py-op">.</tt><tt id="link-81" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-81', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'before_main'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">active_filter</tt><tt class="py-op">.</tt><tt class="py-name">im_class</tt> <tt class="py-keyword">is</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">                <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-82" class="py-name"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-82', 'filters', 'link-12');">filters</a></tt><tt class="py-op">.</tt><tt class="py-name">decodingfilter</tt><tt class="py-op">.</tt><tt class="py-name">DecodingFilter</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">            <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-83" class="py-name"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-83', 'filters', 'link-12');">filters</a></tt><tt class="py-op">.</tt><tt class="py-name">_filterhooks</tt><tt class="py-op">[</tt><tt class="py-string">'before_main'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">pop</tt><tt class="py-op">(</tt><tt id="link-84" class="py-name"><a title="turbogears.feed.feed.FeedController.index
+turbogears.toolbox.admi18n.Internationalization.index
+turbogears.toolbox.base.Info.index
+turbogears.toolbox.base.Toolbox.index
+turbogears.toolbox.base.WidgetBrowser.index
+turbogears.toolbox.catwalk.CatWalk.index
+turbogears.toolbox.catwalk.browse.Browse.index
+turbogears.toolbox.designer.Designer.index
+turbogears.toolbox.shell.WebConsole.index" class="py-name" href="#" onclick="return doclink('link-84', 'index', 'link-79');">index</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'decoding_filter.on'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">,</tt> <tt id="link-85" class="py-name"><a title="turbogears.widgets.forms.InputWidget.path" class="py-name" href="#" onclick="return doclink('link-85', 'path', 'link-0');">path</a></tt><tt class="py-op">=</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">                <tt id="link-86" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-86', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt id="link-87" class="py-name" targets="Module turbogears.command.info=turbogears.command.info-module.html"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-87', 'info', 'link-87');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">"Request decoding filter activated."</tt><tt class="py-op">)</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">                <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-88" class="py-name"><a title="turbogears.filters" class="py-name" href="#" onclick="return doclink('link-88', 'filters', 'link-12');">filters</a></tt><tt class="py-op">.</tt><tt class="py-name">_filterhooks</tt><tt class="py-op">[</tt><tt class="py-string">'before_main'</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">insert</tt><tt class="py-op">(</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">                        <tt id="link-89" class="py-name"><a title="turbogears.feed.feed.FeedController.index
+turbogears.toolbox.admi18n.Internationalization.index
+turbogears.toolbox.base.Info.index
+turbogears.toolbox.base.Toolbox.index
+turbogears.toolbox.base.WidgetBrowser.index
+turbogears.toolbox.catwalk.CatWalk.index
+turbogears.toolbox.catwalk.browse.Browse.index
+turbogears.toolbox.designer.Designer.index
+turbogears.toolbox.shell.WebConsole.index" class="py-name" href="#" onclick="return doclink('link-89', 'index', 'link-79');">index</a></tt><tt class="py-op">,</tt> <tt class="py-name">decoding_filter</tt><tt class="py-op">.</tt><tt id="link-90" class="py-name" targets="Method turbogears.filters.base.NestedVariablesFilter.before_main()=turbogears.filters.base.NestedVariablesFilter-class.html#before_main,Method turbogears.visit.api.VisitFilter.before_main()=turbogears.visit.api.VisitFilter-class.html#before_main"><a title="turbogears.filters.base.NestedVariablesFilter.before_main
+turbogears.visit.api.VisitFilter.before_main" class="py-name" href="#" onclick="return doclink('link-90', 'before_main', 'link-90');">before_main</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line"> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line"> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">    <tt id="link-91" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-91', 'webpath', 'link-19');">webpath</a></tt> <tt class="py-op">=</tt> <tt id="link-92" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-92', 'webpath', 'link-19');">webpath</a></tt><tt class="py-op">.</tt><tt class="py-name">lstrip</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-93" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-93', 'webpath', 'link-19');">webpath</a></tt> <tt class="py-keyword">and</tt> <tt class="py-keyword">not</tt> <tt id="link-94" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-94', 'webpath', 'link-19');">webpath</a></tt><tt class="py-op">.</tt><tt class="py-name">endswith</tt><tt class="py-op">(</tt><tt class="py-string">'/'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt id="link-95" class="py-name"><a title="turbogears.startup.webpath" class="py-name" href="#" onclick="return doclink('link-95', 'webpath', 'link-19');">webpath</a></tt> <tt class="py-op">+=</tt> <tt class="py-string">'/'</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">    <tt class="py-comment"># Register server with Bonjour framework</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">    <tt class="py-name">bonjoursetting</tt> <tt class="py-op">=</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'tg.bonjour'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">bonjoursetting</tt> <tt class="py-keyword">or</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.environment'</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">'development'</tt><tt class="py-op">:</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">        <tt id="link-96" class="py-name" targets="Function turbogears.startup.start_bonjour()=turbogears.startup-module.html#start_bonjour"><a title="turbogears.startup.start_bonjour" class="py-name" href="#" onclick="return doclink('link-96', 'start_bonjour', 'link-96');">start_bonjour</a></tt><tt class="py-op">(</tt><tt class="py-name">bonjoursetting</tt><tt class="py-op">)</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">    <tt class="py-comment"># Bind metadata for SQLAlchemy</tt> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'sqlalchemy.dburi'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line">        <tt id="link-97" class="py-name"><a title="turbogears.database" class="py-name" href="#" onclick="return doclink('link-97', 'database', 'link-4');">database</a></tt><tt class="py-op">.</tt><tt id="link-98" class="py-name" targets="Function turbogears.database.bind_metadata()=turbogears.database-module.html#bind_metadata"><a title="turbogears.database.bind_metadata" class="py-name" href="#" onclick="return doclink('link-98', 'bind_metadata', 'link-98');">bind_metadata</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">    <tt class="py-comment"># Start all TurboGears extensions</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">    <tt id="link-99" class="py-name" targets="Variable turbogears.command.kid2genshi.Kid2Genshi.extensions=turbogears.command.kid2genshi.Kid2Genshi-class.html#extensions,Variable turbogears.extensions=turbogears-module.html#extensions"><a title="turbogears.command.kid2genshi.Kid2Genshi.extensions
+turbogears.extensions" class="py-name" href="#" onclick="return doclink('link-99', 'extensions', 'link-99');">extensions</a></tt> <tt class="py-op">=</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">iter_entry_points</tt><tt class="py-op">(</tt><tt class="py-string">'turbogears.extensions'</tt><tt class="py-op">)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-100" class="py-name" targets="Variable turbogears.entrypoint=turbogears-module.html#entrypoint"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-100', 'entrypoint', 'link-100');">entrypoint</a></tt> <tt class="py-keyword">in</tt> <tt id="link-101" class="py-name"><a title="turbogears.command.kid2genshi.Kid2Genshi.extensions
+turbogears.extensions" class="py-name" href="#" onclick="return doclink('link-101', 'extensions', 'link-99');">extensions</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-comment"># We try to load the extension and run its 'start_extension'</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">        <tt class="py-comment"># method ,if present. If either fails, we simply log the exception and</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">        <tt class="py-comment"># continue, because a) when the autoreloader is active, unhandled</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-comment"># exceptions in the startup phase will not stop the server and</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">        <tt class="py-comment"># b) faulty extensions (which may be from a different package)</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">        <tt class="py-comment"># should not crash the server.</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">            <tt class="py-name">ext</tt> <tt class="py-op">=</tt> <tt id="link-102" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-102', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">.</tt><tt class="py-name">load</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line">            <tt id="link-103" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-103', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">exception</tt><tt class="py-op">(</tt><tt class="py-string">"Error loading TurboGears extension plugin '%s': %s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">                <tt id="link-104" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-104', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">)</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">ext</tt><tt class="py-op">,</tt> <tt class="py-string">'start_extension'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">                <tt class="py-name">ext</tt><tt class="py-op">.</tt><tt id="link-105" class="py-name" targets="Function turbogears.identity.visitor.start_extension()=turbogears.identity.visitor-module.html#start_extension,Function turbogears.visit.api.start_extension()=turbogears.visit.api-module.html#start_extension"><a title="turbogears.identity.visitor.start_extension
+turbogears.visit.api.start_extension" class="py-name" href="#" onclick="return doclink('link-105', 'start_extension', 'link-105');">start_extension</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">                <tt id="link-106" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-106', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">exception</tt><tt class="py-op">(</tt><tt class="py-string">"Error starting TurboGears extension '%s': %s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">                    <tt id="link-107" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-107', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">)</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line"> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">    <tt class="py-comment"># Call registered startup functions</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt id="link-108" class="py-name"><a title="turbogears.startup.call_on_startup" class="py-name" href="#" onclick="return doclink('link-108', 'call_on_startup', 'link-17');">call_on_startup</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">        <tt class="py-name">item</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">    <tt class="py-comment"># Start the scheduler</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'tg.scheduler'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">        <tt id="link-109" class="py-name"><a title="turbogears.scheduler" class="py-name" href="#" onclick="return doclink('link-109', 'scheduler', 'link-5');">scheduler</a></tt><tt class="py-op">.</tt><tt class="py-name">_start_scheduler</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">        <tt id="link-110" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-110', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt id="link-111" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-111', 'info', 'link-87');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">"Scheduler started"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line"> </tt>
+<a name="stopTurboGears"></a><div id="stopTurboGears-def"><a name="L312"></a><tt class="py-lineno">312</tt> <a class="py-toggle" href="#" id="stopTurboGears-toggle" onclick="return toggle('stopTurboGears');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#stopTurboGears">stopTurboGears</a><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="stopTurboGears-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="stopTurboGears-expanded"><a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">    <tt class="py-docstring">"""Handles TurboGears tasks when the CherryPy server stops.</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"><tt class="py-docstring">    Ends all open database transactions, shuts down all extensions, calls user</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line"><tt class="py-docstring">    provided shutdown functions and stops the scheduler.</tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">    <tt class="py-comment"># end all transactions and clear out the hubs to</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">    <tt class="py-comment"># help ensure proper reloading in autoreload situations</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-112" class="py-name" targets="Variable turbogears.i18n.sogettext.model.hub=turbogears.i18n.sogettext.model-module.html#hub,Variable turbogears.identity.soprovider.hub=turbogears.identity.soprovider-module.html#hub,Variable turbogears.visit.sovisit.hub=turbogears.visit.sovisit-module.html#hub"><a title="turbogears.i18n.sogettext.model.hub
+turbogears.identity.soprovider.hub
+turbogears.visit.sovisit.hub" class="py-name" href="#" onclick="return doclink('link-112', 'hub', 'link-112');">hub</a></tt> <tt class="py-keyword">in</tt> <tt id="link-113" class="py-name"><a title="turbogears.database.hub_registry" class="py-name" href="#" onclick="return doclink('link-113', 'hub_registry', 'link-9');">hub_registry</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">        <tt id="link-114" class="py-name"><a title="turbogears.i18n.sogettext.model.hub
+turbogears.identity.soprovider.hub
+turbogears.visit.sovisit.hub" class="py-name" href="#" onclick="return doclink('link-114', 'hub', 'link-112');">hub</a></tt><tt class="py-op">.</tt><tt id="link-115" class="py-name" targets="Method turbogears.database.AutoConnectHub.end()=turbogears.database.AutoConnectHub-class.html#end"><a title="turbogears.database.AutoConnectHub.end" class="py-name" href="#" onclick="return doclink('link-115', 'end', 'link-115');">end</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">    <tt id="link-116" class="py-name"><a title="turbogears.database.hub_registry" class="py-name" href="#" onclick="return doclink('link-116', 'hub_registry', 'link-9');">hub_registry</a></tt><tt class="py-op">.</tt><tt class="py-name">clear</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line"> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">    <tt id="link-117" class="py-name"><a title="turbogears.startup.stop_bonjour" class="py-name" href="#" onclick="return doclink('link-117', 'stop_bonjour', 'link-50');">stop_bonjour</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">    <tt class="py-comment"># Shut down all TurboGears extensions</tt> </tt>
+<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">    <tt id="link-118" class="py-name"><a title="turbogears.command.kid2genshi.Kid2Genshi.extensions
+turbogears.extensions" class="py-name" href="#" onclick="return doclink('link-118', 'extensions', 'link-99');">extensions</a></tt><tt class="py-op">=</tt> <tt class="py-name">pkg_resources</tt><tt class="py-op">.</tt><tt class="py-name">iter_entry_points</tt><tt class="py-op">(</tt> <tt class="py-string">"turbogears.extensions"</tt> <tt class="py-op">)</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt id="link-119" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-119', 'entrypoint', 'link-100');">entrypoint</a></tt> <tt class="py-keyword">in</tt> <tt id="link-120" class="py-name"><a title="turbogears.command.kid2genshi.Kid2Genshi.extensions
+turbogears.extensions" class="py-name" href="#" onclick="return doclink('link-120', 'extensions', 'link-99');">extensions</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">            <tt class="py-name">ext</tt> <tt class="py-op">=</tt> <tt id="link-121" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-121', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">.</tt><tt class="py-name">load</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">            <tt id="link-122" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-122', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">exception</tt><tt class="py-op">(</tt><tt class="py-string">"Error loading TurboGears extension plugin '%s': %s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line">                <tt id="link-123" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-123', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">)</tt> </tt>
+<a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">ext</tt><tt class="py-op">,</tt> <tt class="py-string">"shutdown_extension"</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">                <tt class="py-name">ext</tt><tt class="py-op">.</tt><tt id="link-124" class="py-name" targets="Function turbogears.identity.visitor.shutdown_extension()=turbogears.identity.visitor-module.html#shutdown_extension,Function turbogears.visit.api.shutdown_extension()=turbogears.visit.api-module.html#shutdown_extension"><a title="turbogears.identity.visitor.shutdown_extension
+turbogears.visit.api.shutdown_extension" class="py-name" href="#" onclick="return doclink('link-124', 'shutdown_extension', 'link-124');">shutdown_extension</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">:</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">                <tt id="link-125" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-125', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt class="py-name">exception</tt><tt class="py-op">(</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">                    <tt class="py-string">"Error shutting down TurboGears extension '%s': %s"</tt><tt class="py-op">,</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">                    <tt id="link-126" class="py-name"><a title="turbogears.entrypoint" class="py-name" href="#" onclick="return doclink('link-126', 'entrypoint', 'link-100');">entrypoint</a></tt><tt class="py-op">,</tt> <tt class="py-name">e</tt><tt class="py-op">)</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line"> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">item</tt> <tt class="py-keyword">in</tt> <tt id="link-127" class="py-name"><a title="turbogears.startup.call_on_shutdown" class="py-name" href="#" onclick="return doclink('link-127', 'call_on_shutdown', 'link-18');">call_on_shutdown</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L345"></a><tt class="py-lineno">345</tt>  <tt class="py-line">        <tt class="py-name">item</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line"> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-128" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-128', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-129" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-129', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">"tg.scheduler"</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line">        <tt id="link-130" class="py-name"><a title="turbogears.scheduler" class="py-name" href="#" onclick="return doclink('link-130', 'scheduler', 'link-5');">scheduler</a></tt><tt class="py-op">.</tt><tt class="py-name">_stop_scheduler</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">        <tt id="link-131" class="py-name"><a title="turbogears.controllers.log
+turbogears.database.log
+turbogears.filters.base.log
+turbogears.filters.safemultipart.log
+turbogears.i18n.tg_gettext.log
+turbogears.identity.base.log
+turbogears.identity.saprovider.log
+turbogears.identity.soprovider.log
+turbogears.identity.visitor.log
+turbogears.paginate'.log
+turbogears.scheduler.log
+turbogears.startup.log
+turbogears.toolbox.shell.log
+turbogears.view.base.log
+turbogears.visit.api.log
+turbogears.visit.savisit.log
+turbogears.visit.sovisit.log" class="py-name" href="#" onclick="return doclink('link-131', 'log', 'link-20');">log</a></tt><tt class="py-op">.</tt><tt id="link-132" class="py-name"><a title="turbogears.command.info" class="py-name" href="#" onclick="return doclink('link-132', 'info', 'link-87');">info</a></tt><tt class="py-op">(</tt><tt class="py-string">"Scheduler stopped"</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line"> </tt>
+<a name="start_server"></a><div id="start_server-def"><a name="L351"></a><tt class="py-lineno">351</tt> <a class="py-toggle" href="#" id="start_server-toggle" onclick="return toggle('start_server');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup-module.html#start_server">start_server</a><tt class="py-op">(</tt><tt class="py-param">root</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="start_server-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="start_server-expanded"><a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">    <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt class="py-name">tree</tt><tt class="py-op">.</tt><tt id="link-133" class="py-name" targets="Function turbogears.testutil.mount()=turbogears.testutil-module.html#mount"><a title="turbogears.testutil.mount" class="py-name" href="#" onclick="return doclink('link-133', 'mount', 'link-133');">mount</a></tt><tt class="py-op">(</tt><tt id="link-134" class="py-name"><a title="turbogears.testutil.TGTest.root" class="py-name" href="#" onclick="return doclink('link-134', 'root', 'link-33');">root</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-135" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-135', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-136" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-136', 'get', 'link-23');">get</a></tt><tt class="py-op">(</tt><tt class="py-string">'tg.fancy_exception'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-137" class="py-name" targets="Method turbogears.scheduler.ForkedScheduler.start()=turbogears.scheduler.ForkedScheduler-class.html#start,Method turbogears.scheduler.Scheduler.start()=turbogears.scheduler.Scheduler-class.html#start,Method turbogears.scheduler.ThreadedScheduler.start()=turbogears.scheduler.ThreadedScheduler-class.html#start"><a title="turbogears.scheduler.ForkedScheduler.start
+turbogears.scheduler.Scheduler.start
+turbogears.scheduler.ThreadedScheduler.start" class="py-name" href="#" onclick="return doclink('link-137', 'start', 'link-137');">start</a></tt><tt class="py-op">(</tt><tt class="py-name">server</tt><tt class="py-op">=</tt><tt class="py-name">SimpleWSGIServer</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line">        <tt class="py-name">server</tt><tt class="py-op">.</tt><tt id="link-138" class="py-name"><a title="turbogears.scheduler.ForkedScheduler.start
+turbogears.scheduler.Scheduler.start
+turbogears.scheduler.ThreadedScheduler.start" class="py-name" href="#" onclick="return doclink('link-138', 'start', 'link-137');">start</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line"> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line"><tt class="py-comment"># module classes</tt> </tt>
+<a name="SimpleWSGIServer"></a><div id="SimpleWSGIServer-def"><a name="L359"></a><tt class="py-lineno">359</tt> <a class="py-toggle" href="#" id="SimpleWSGIServer-toggle" onclick="return toggle('SimpleWSGIServer');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="turbogears.startup.SimpleWSGIServer-class.html">SimpleWSGIServer</a><tt class="py-op">(</tt><tt class="py-base-class">CherryPyWSGIServer</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SimpleWSGIServer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SimpleWSGIServer-expanded"><a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">    <tt class="py-docstring">"""A WSGI server that accepts a WSGI application as a parameter."""</tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">    <tt class="py-name">RequestHandlerClass</tt> <tt class="py-op">=</tt> <tt class="py-name">CPHTTPRequest</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line"> </tt>
+<a name="SimpleWSGIServer.__init__"></a><div id="SimpleWSGIServer.__init__-def"><a name="L363"></a><tt class="py-lineno">363</tt> <a class="py-toggle" href="#" id="SimpleWSGIServer.__init__-toggle" onclick="return toggle('SimpleWSGIServer.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="turbogears.startup.SimpleWSGIServer-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SimpleWSGIServer.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SimpleWSGIServer.__init__-expanded"><a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">        <tt class="py-name">conf</tt> <tt class="py-op">=</tt> <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-139" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-139', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-140" class="py-name"><a title="turbogears.config.get
+turbogears.i18n.format.get" class="py-name" href="#" onclick="return doclink('link-140', 'get', 'link-23');">get</a></tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">        <tt class="py-name">wsgi_app</tt> <tt class="py-op">=</tt> <tt class="py-name">wsgiApp</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.environment'</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-string">'development'</tt><tt class="py-op">:</tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">            <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">                <tt class="py-keyword">from</tt> <tt class="py-name">paste</tt><tt class="py-op">.</tt><tt class="py-name">evalexception</tt><tt class="py-op">.</tt><tt class="py-name">middleware</tt> <tt class="py-keyword">import</tt> <tt class="py-name">EvalException</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">            <tt class="py-keyword">except</tt> <tt class="py-name">ImportError</tt><tt class="py-op">:</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">                <tt class="py-keyword">pass</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">                <tt class="py-name">wsgi_app</tt> <tt class="py-op">=</tt> <tt class="py-name">EvalException</tt><tt class="py-op">(</tt><tt class="py-name">wsgi_app</tt><tt class="py-op">,</tt> <tt class="py-name">global_conf</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line">                <tt class="py-name">cherrypy</tt><tt class="py-op">.</tt><tt id="link-141" class="py-name"><a title="turbogears.command.i18n.InternationalizationTool.config
+turbogears.config
+turbogears.testutil.TGTest.config" class="py-name" href="#" onclick="return doclink('link-141', 'config', 'link-3');">config</a></tt><tt class="py-op">.</tt><tt id="link-142" class="py-name"><a title="turbogears.command.quickstart.update
+turbogears.config.update
+turbogears.i18n.pygettext.catalog.update
+turbogears.toolbox.catwalk.CatWalk.update
+turbogears.widgets.rpc.RPC.update" class="py-name" href="#" onclick="return doclink('link-142', 'update', 'link-58');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">{</tt><tt class="py-string">'server.throw_errors'</tt><tt class="py-op">:</tt><tt class="py-name">True</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">        <tt class="py-name">bind_addr</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.socket_host'</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">'server.socket_port'</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line">        <tt class="py-name">CherryPyWSGIServer</tt><tt class="py-op">.</tt><tt id="link-143" class="py-name" targets="Method turbogears.command.i18n.InternationalizationTool.__init__()=turbogears.command.i18n.InternationalizationTool-class.html#__init__,Method turbogears.command.info.InfoCommand.__init__()=turbogears.command.info.InfoCommand-class.html#__init__,Method turbogears.command.kid2genshi.Kid2Genshi.__init__()=turbogears.command.kid2genshi.Kid2Genshi-class.html#__init__,Method turbogears.command.quickstart.quickstart.__init__()=turbogears.command.quickstart.quickstart-class.html#__init__,Method turbogears.command.quickstart.update.__init__()=turbogears.command.quickstart.update-class.html#__init__,Method turbogears.database.AutoConnectHub.__init__()=turbogears.database.AutoConnectHub-class.html#__init__,Method turbogears.database.PackageHub.__init__()=turbogears.database.PackageHub-class.html#__init__,Method turbogears.feed.feed.FeedController.__init__()=turbogears.feed.feed.FeedController-class.html#__init__,Method turbogears.filters.base.VirtualPathFilter.__init__()=turbogears.filters.base.VirtualPathFilter-class.html#__init__,Method turbogears.filters.safemultipart.MultipartWrapper.__init__()=turbogears.filters.safemultipart.MultipartWrapper-class.html#__init__,Method turbogears.i18n.pygettext.pygettext.TokenEater.__init__()=turbogears.i18n.pygettext.pygettext.TokenEater-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Domain.__init__()=turbogears.i18n.sagettext.model.TG_Domain-class.html#__init__,Method turbogears.i18n.sagettext.model.TG_Message.__init__()=turbogears.i18n.sagettext.model.TG_Message-class.html#__init__,Method turbogears.i18n.tg_gettext.lazystring.__init__()=turbogears.i18n.tg_gettext.lazystring-class.html#__init__,Method turbogears.identity.conditions.CompoundPredicate.__init__()=turbogears.identity.conditions.CompoundPredicate-class.html#__init__,Method turbogears.identity.conditions.SecureObject.__init__()=turbogears.identity.conditions.SecureObject-class.html#__init__,Method turbogears.identity.conditions.from_any_host.__init__()=turbogears.identity.conditions.from_any_host-class.html#__init__,Method turbogears.identity.conditions.from_host.__init__()=turbogears.identity.conditions.from_host-class.html#__init__,Method turbogears.identity.conditions.has_all_permissions.__init__()=turbogears.identity.conditions.has_all_permissions-class.html#__init__,Method turbogears.identity.conditions.has_any_permission.__init__()=turbogears.identity.conditions.has_any_permission-class.html#__init__,Method turbogears.identity.conditions.has_permission.__init__()=turbogears.identity.conditions.has_permission-class.html#__init__,Method turbogears.identity.conditions.in_all_groups.__init__()=turbogears.identity.conditions.in_all_groups-class.html#__init__,Method turbogears.identity.conditions.in_any_group.__init__()=turbogears.identity.conditions.in_any_group-class.html#__init__,Method turbogears.identity.conditions.in_group.__init__()=turbogears.identity.conditions.in_group-class.html#__init__,Method turbogears.identity.exceptions.IdentityFailure.__init__()=turbogears.identity.exceptions.IdentityFailure-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentity.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentity-class.html#__init__,Method turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__()=turbogears.identity.saprovider.SqlAlchemyIdentityProvider-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentity.__init__()=turbogears.identity.soprovider.SqlObjectIdentity-class.html#__init__,Method turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__()=turbogears.identity.soprovider.SqlObjectIdentityProvider-class.html#__init__,Method turbogears.identity.visitor.IdentityVisitPlugin.__init__()=turbogears.identity.visitor.IdentityVisitPlugin-class.html#__init__,Method turbogears.paginate'.Paginate.__init__()=turbogears.paginate%27.Paginate-class.html#__init__,Method turbogears.paginate'.attrwrapper.__init__()=turbogears.paginate%27.attrwrapper-class.html#__init__,Method turbogears.paginate'.itemwrapper.__init__()=turbogears.paginate%27.itemwrapper-class.html#__init__,Method turbogears.scheduler.IntervalTask.__init__()=turbogears.scheduler.IntervalTask-class.html#__init__,Method turbogears.scheduler.MonthdayTask.__init__()=turbogears.scheduler.MonthdayTask-class.html#__init__,Method turbogears.scheduler.Scheduler.__init__()=turbogears.scheduler.Scheduler-class.html#__init__,Method turbogears.scheduler.Task.__init__()=turbogears.scheduler.Task-class.html#__init__,Method turbogears.scheduler.ThreadedScheduler.__init__()=turbogears.scheduler.ThreadedScheduler-class.html#__init__,Method turbogears.scheduler.WeekdayTask.__init__()=turbogears.scheduler.WeekdayTask-class.html#__init__,Method turbogears.testutil.BrowsingSession.__init__()=turbogears.testutil.BrowsingSession-class.html#__init__,Method turbogears.toolbox.admi18n.Internationalization.__init__()=turbogears.toolbox.admi18n.Internationalization-class.html#__init__,Method turbogears.toolbox.base.Toolbox.__init__()=turbogears.toolbox.base.Toolbox-class.html#__init__,Method turbogears.toolbox.base.WidgetBrowser.__init__()=turbogears.toolbox.base.WidgetBrowser-class.html#__init__,Method turbogears.toolbox.catwalk.CatWalk.__init__()=turbogears.toolbox.catwalk.CatWalk-class.html#__init__,Method turbogears.toolbox.designer.Designer.__init__()=turbogears.toolbox.designer.Designer-class.html#__init__,Method turbogears.toolbox.shell.WebConsole.__init__()=turbogears.toolbox.shell.WebConsole-class.html#__init__,Method turbogears.util.DictObj.__init__()=turbogears.util.DictObj-class.html#__init__,Method turbogears.view.base.UserAgent.__init__()=turbogears.view.base.UserAgent-class.html#__init__,Method turbogears.view.base.cycle.__init__()=turbogears.view.base.cycle-class.html#__init__,Method turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__()=turbogears.view.genshisupport.TGGenshiTemplatePlugin-class.html#__init__,Method turbogears.visit.api.BaseVisitManager.__init__()=turbogears.visit.api.BaseVisitManager-class.html#__init__,Method turbogears.visit.api.Visit.__init__()=turbogears.visit.api.Visit-class.html#__init__,Method turbogears.visit.api.VisitFilter.__init__()=turbogears.visit.api.VisitFilter-class.html#__init__,Method turbogears.visit.savisit.SqlAlchemyVisitManager.__init__()=turbogears.visit.savisit.SqlAlchemyVisitManager-class.html#__init__,Method turbogears.visit.sovisit.SqlObjectVisitManager.__init__()=turbogears.visit.sovisit.SqlObjectVisitManager-class.html#__init__,Method turbogears.widgets.base.CompoundWidget.__init__()=turbogears.widgets.base.CompoundWidget-class.html#__init__,Method turbogears.widgets.base.JSLink.__init__()=turbogears.widgets.base.JSLink-class.html#__init__,Method turbogears.widgets.base.JSSource.__init__()=turbogears.widgets.base.JSSource-class.html#__init__,Method turbogears.widgets.base.Link.__init__()=turbogears.widgets.base.Link-class.html#__init__,Method turbogears.widgets.base.MetaDescription.__init__()=turbogears.widgets.base.MetaDescription-class.html#__init__,Method turbogears.widgets.base.Source.__init__()=turbogears.widgets.base.Source-class.html#__init__,Method turbogears.widgets.base.Widget.__init__()=turbogears.widgets.base.Widget-class.html#__init__,Method turbogears.widgets.base.WidgetsList.__init__()=turbogears.widgets.base.WidgetsList-class.html#__init__,Method turbogears.widgets.big_widgets.AjaxGrid.__init__()=turbogears.widgets.big_widgets.AjaxGrid-class.html#__init__,Method turbogears.widgets.big_widgets.CalendarDatePicker.__init__()=turbogears.widgets.big_widgets.CalendarDatePicker-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.Column.__init__()=turbogears.widgets.datagrid.DataGrid.Column-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.__init__()=turbogears.widgets.datagrid.DataGrid-class.html#__init__,Method turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__()=turbogears.widgets.datagrid.DataGrid.attrwrapper-class.html#__init__,Method turbogears.widgets.forms.CheckBox.__init__()=turbogears.widgets.forms.CheckBox-class.html#__init__,Method turbogears.widgets.forms.FormField.__init__()=turbogears.widgets.forms.FormField-class.html#__init__,Method turbogears.widgets.forms.InputWidget.__init__()=turbogears.widgets.forms.InputWidget-class.html#__init__,Method turbogears.widgets.forms.SelectionField.__init__()=turbogears.widgets.forms.SelectionField-class.html#__init__,Method turbogears.widgets.links.SyntaxHighlighter.__init__()=turbogears.widgets.links.SyntaxHighlighter-class.html#__init__,Method turbogears.widgets.links.Tabber.__init__()=turbogears.widgets.links.Tabber-class.html#__init__,Method turbogears.widgets.meta.MetaWidget.__init__()=turbogears.widgets.meta.MetaWidget-class.html#__init__"><a title="turbogears.command.i18n.InternationalizationTool.__init__
+turbogears.command.info.InfoCommand.__init__
+turbogears.command.kid2genshi.Kid2Genshi.__init__
+turbogears.command.quickstart.quickstart.__init__
+turbogears.command.quickstart.update.__init__
+turbogears.database.AutoConnectHub.__init__
+turbogears.database.PackageHub.__init__
+turbogears.feed.feed.FeedController.__init__
+turbogears.filters.base.VirtualPathFilter.__init__
+turbogears.filters.safemultipart.MultipartWrapper.__init__
+turbogears.i18n.pygettext.pygettext.TokenEater.__init__
+turbogears.i18n.sagettext.model.TG_Domain.__init__
+turbogears.i18n.sagettext.model.TG_Message.__init__
+turbogears.i18n.tg_gettext.lazystring.__init__
+turbogears.identity.conditions.CompoundPredicate.__init__
+turbogears.identity.conditions.SecureObject.__init__
+turbogears.identity.conditions.from_any_host.__init__
+turbogears.identity.conditions.from_host.__init__
+turbogears.identity.conditions.has_all_permissions.__init__
+turbogears.identity.conditions.has_any_permission.__init__
+turbogears.identity.conditions.has_permission.__init__
+turbogears.identity.conditions.in_all_groups.__init__
+turbogears.identity.conditions.in_any_group.__init__
+turbogears.identity.conditions.in_group.__init__
+turbogears.identity.exceptions.IdentityFailure.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentity.__init__
+turbogears.identity.saprovider.SqlAlchemyIdentityProvider.__init__
+turbogears.identity.soprovider.SqlObjectIdentity.__init__
+turbogears.identity.soprovider.SqlObjectIdentityProvider.__init__
+turbogears.identity.visitor.IdentityVisitPlugin.__init__
+turbogears.paginate'.Paginate.__init__
+turbogears.paginate'.attrwrapper.__init__
+turbogears.paginate'.itemwrapper.__init__
+turbogears.scheduler.IntervalTask.__init__
+turbogears.scheduler.MonthdayTask.__init__
+turbogears.scheduler.Scheduler.__init__
+turbogears.scheduler.Task.__init__
+turbogears.scheduler.ThreadedScheduler.__init__
+turbogears.scheduler.WeekdayTask.__init__
+turbogears.testutil.BrowsingSession.__init__
+turbogears.toolbox.admi18n.Internationalization.__init__
+turbogears.toolbox.base.Toolbox.__init__
+turbogears.toolbox.base.WidgetBrowser.__init__
+turbogears.toolbox.catwalk.CatWalk.__init__
+turbogears.toolbox.designer.Designer.__init__
+turbogears.toolbox.shell.WebConsole.__init__
+turbogears.util.DictObj.__init__
+turbogears.view.base.UserAgent.__init__
+turbogears.view.base.cycle.__init__
+turbogears.view.genshisupport.TGGenshiTemplatePlugin.__init__
+turbogears.visit.api.BaseVisitManager.__init__
+turbogears.visit.api.Visit.__init__
+turbogears.visit.api.VisitFilter.__init__
+turbogears.visit.savisit.SqlAlchemyVisitManager.__init__
+turbogears.visit.sovisit.SqlObjectVisitManager.__init__
+turbogears.widgets.base.CompoundWidget.__init__
+turbogears.widgets.base.JSLink.__init__
+turbogears.widgets.base.JSSource.__init__
+turbogears.widgets.base.Link.__init__
+turbogears.widgets.base.MetaDescription.__init__
+turbogears.widgets.base.Source.__init__
+turbogears.widgets.base.Widget.__init__
+turbogears.widgets.base.WidgetsList.__init__
+turbogears.widgets.big_widgets.AjaxGrid.__init__
+turbogears.widgets.big_widgets.CalendarDatePicker.__init__
+turbogears.widgets.datagrid.DataGrid.Column.__init__
+turbogears.widgets.datagrid.DataGrid.__init__
+turbogears.widgets.datagrid.DataGrid.attrwrapper.__init__
+turbogears.widgets.forms.CheckBox.__init__
+turbogears.widgets.forms.FormField.__init__
+turbogears.widgets.forms.InputWidget.__init__
+turbogears.widgets.forms.SelectionField.__init__
+turbogears.widgets.links.SyntaxHighlighter.__init__
+turbogears.widgets.links.Tabber.__init__
+turbogears.widgets.meta.MetaWidget.__init__" class="py-name" href="#" onclick="return doclink('link-143', '__init__', 'link-143');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">bind_addr</tt><tt class="py-op">,</tt> <tt class="py-name">wsgi_app</tt><tt class="py-op">,</tt> </tt>
+<a name="L376"></a><tt class="py-lineno">376</tt>  <tt class="py-line">            <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">"server.thread_pool"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">"server.socket_host"</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L377"></a><tt class="py-lineno">377</tt>  <tt class="py-line">            <tt class="py-name">request_queue_size</tt> <tt class="py-op">=</tt> <tt class="py-name">conf</tt><tt class="py-op">(</tt><tt class="py-string">"server.socket_queue_size"</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L378"></a><tt class="py-lineno">378</tt>  <tt class="py-line"> </tt>
+<a name="L379"></a><tt class="py-lineno">379</tt>  <tt class="py-line"> </tt>
+<a name="L380"></a><tt class="py-lineno">380</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-144" class="py-name" targets="Function turbogears.startup.startTurboGears()=turbogears.startup-module.html#startTurboGears"><a title="turbogears.startup.startTurboGears" class="py-name" href="#" onclick="return doclink('link-144', 'startTurboGears', 'link-144');">startTurboGears</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">server</tt><tt class="py-op">.</tt><tt class="py-name">on_start_server_list</tt><tt class="py-op">:</tt> </tt>
+<a name="L381"></a><tt class="py-lineno">381</tt>  <tt class="py-line">    <tt class="py-name">server</tt><tt class="py-op">.</tt><tt class="py-name">on_start_server_list</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-145" class="py-name"><a title="turbogears.startup.startTurboGears" class="py-name" href="#" onclick="return doclink('link-145', 'startTurboGears', 'link-144');">startTurboGears</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L382"></a><tt class="py-lineno">382</tt>  <tt class="py-line"> </tt>
+<a name="L383"></a><tt class="py-lineno">383</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt id="link-146" class="py-name" targets="Function turbogears.startup.stopTurboGears()=turbogears.startup-module.html#stopTurboGears"><a title="turbogears.startup.stopTurboGears" class="py-name" href="#" onclick="return doclink('link-146', 'stopTurboGears', 'link-146');">stopTurboGears</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">server</tt><tt class="py-op">.</tt><tt class="py-name">on_stop_server_list</tt><tt class="py-op">:</tt> </tt>
+<a name="L384"></a><tt class="py-lineno">384</tt>  <tt class="py-line">    <tt class="py-name">server</tt><tt class="py-op">.</tt><tt class="py-name">on_stop_server_list</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-147" class="py-name"><a title="turbogears.startup.stopTurboGears" class="py-name" href="#" onclick="return doclink('link-147', 'stopTurboGears', 'link-146');">stopTurboGears</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L385"></a><tt class="py-lineno">385</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:42 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

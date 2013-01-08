@@ -1,0 +1,105 @@
+20 Minute Wiki Page 5
+=====================
+
+Adding a page list
+------------------
+
+Our wiki is functional, but we'll add a few more features to make it nicer and
+because we have more TurboGears features to demo.
+
+Most wikis have a feature that lets you view an index of the pages. We can add
+that to our wiki easily, so let's do it!
+
+We'll start with a new template, ``pagelist.kid``. Again, we'll start with ``page.kid`` so that we don't have to write the boilerplate.
+
+::
+
+    cd wiki20/templates
+    cp page.kid pagelist.kid
+    cd ../..
+
+Our ``pagelist.kid`` will look like:
+
+.. parsed-literal::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml/DTD/xhtml-transitional.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:py="http://purl.org/kid/ns#"
+          py:extends="'master.kid'">
+    <head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"
+          py:replace="''"/>
+    <title> **Page Listing** - 20 Minute Wiki</title>
+    </head>
+    <body>
+        <div id="main_content">
+            **<h1>All Of Your Pages</h1>**
+            **<ul>**
+                **<li py:for="pagename in pages">**
+                **<a href="${tg.url('/' + pagename)}"**
+                    **py:content="pagename">Page Name Here.</a>**
+                **</li>**
+            **</ul>**
+        </div>
+    </body>
+    </html>
+
+
+Feel free to add "`Are Belong To Us`_" to the heading, if you feel you must.
+
+.. _Are Belong To Us: http://en.wikipedia.org/wiki/All_your_base_are_belong_to_us
+
+Just as with the other templates, you can open ``pagelist.kid`` directly in a
+browser. You can see that we'll get a bulleted list of links to the pages. This
+is our first use of ``py:for``, and you can see it's straightforward. The li
+element will be repeated for each iteration of the for loop, and the for loop
+is specified just as it is in Python.
+
+Let's add a link at the bottom of the ``master.kid`` template so that we'll get our page listing link at the bottom of every page:
+
+.. parsed-literal::
+
+    <!-- End of main_content -->
+    <div id="footer">
+    **<p>View the <a href="${tg.url('/pagelist')}">complete list of pages.</a></p>**
+    <img src="/static/images/under_the_hood_blue.png" />
+      <p>TurboGears is a open source front-to-back web development
+        framework written in Python</p>
+      <p>Copyright &copy; 2006 Kevin Dangoor</p>
+    </div>
+
+Since we're referring to a ``pagelist`` method, we should probably create it:
+
+.. parsed-literal::
+
+    @expose(template="wiki20.templates.edit")
+    def edit(self, pagename):
+        page = Page.byPagename(pagename)
+        return dict(page=page)
+
+    **@expose("wiki20.templates.pagelist")**
+    **def pagelist(self):**
+        **pages = [page.pagename for page in Page.select(orderBy=Page.q.pagename)]**
+        **return dict(pages=pages)**
+
+    @expose()
+    def save(self, pagename, data, submit):
+        #...
+
+Now you see that this page listing is just a contrived reason to introduce you to SQLObject's querying facilities (tricky aren't we). This particular use of ``Page.select()`` isn't particularly fancy. We're selecting all of the Page objects from the database, and ordering them by pagename. ``Page.select`` returns an iterable ``SelectResults`` object, which allows us to snag the titles via list comprehension.
+
+The ``Page.q.pagename`` represents the ``pagename`` field of the underlying
+table rather than any particlar ``Page`` object's pagename attributes. The
+underlying fields are only used doing queries, so the ``.q`` is a mnemonic for
+"query".
+
+The ``select`` method attached to your object classes provides methods to
+construct almost any query you'd like to run on them. Check the `sqlobject
+docs`_ for more details.
+
+.. _sqlobject docs: http://sqlobject.org/SQLObject.html#selecting-multiple-objects
+
+You can see your pagelist by clicking the link at the bottom of your pages or going directly to http://localhost:8080/pagelist.
+
+:doc:`Go back to Page 4 <Page4>` | :doc:`Continue on to page 6 <Page6>`

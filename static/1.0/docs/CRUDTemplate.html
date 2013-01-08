@@ -1,0 +1,879 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CRUD Template &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="RESTful URLs with TurboGears" href="RESTfulPath.html" />
+    <link rel="prev" title="Startup Hook" href="StartupHook.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="RESTfulPath.html" title="RESTful URLs with TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="StartupHook.html" title="Startup Hook"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">CRUD Template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#proposed-usage-scheme">Proposed usage scheme</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sqlalchemy-support">SQLAlchemy Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#relational-joins">Relational Joins</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#one-to-one-relationships">One-to-one Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#one-to-many-relationships">One-to-many Relationships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#many-to-many-relationships">Many-to-many Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#extensions-for-the-basic-skeleton">Extensions for the basic skeleton</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#secure-your-crud-interface-with-identity">Secure your CRUD interface with identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paginate-your-lists">Paginate your lists</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#building-the-crud-interface-manually">Building the CRUD interface manually</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#importing-the-crud-controller">Importing the CRUD controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-controllers-py-source">The <tt class="docutils literal"><span class="pre">controllers.py</span></tt> source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-templates-source">The Templates source</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="crud-template">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">CRUD Template</a><a class="headerlink" href="#crud-template" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#crud-template" id="id1">CRUD Template</a><ul>
+<li><a class="reference internal" href="#features" id="id2">Features</a></li>
+<li><a class="reference internal" href="#install" id="id3">Install</a></li>
+<li><a class="reference internal" href="#preparation" id="id4">Preparation</a></li>
+<li><a class="reference internal" href="#proposed-usage-scheme" id="id5">Proposed usage scheme</a></li>
+<li><a class="reference internal" href="#sqlalchemy-support" id="id6">SQLAlchemy Support</a></li>
+<li><a class="reference internal" href="#relational-joins" id="id7">Relational Joins</a></li>
+<li><a class="reference internal" href="#extensions-for-the-basic-skeleton" id="id8">Extensions for the basic skeleton</a></li>
+<li><a class="reference internal" href="#building-the-crud-interface-manually" id="id9">Building the CRUD interface manually</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Basic model admin interfaces (create, read, update, delete, a.k.a, CRUD) are frequently used in creating web applications.</p>
+<p>Here&#8217;s the <strong>tgcrud</strong> basic template generator which helps you to create an admin interface (the create, read, update and delete functions).</p>
+<div class="section" id="features">
+<h2><a class="toc-backref" href="#id2">Features</a><a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>Fully customizable admin interface (the create, read, update, delete functions) with easy to extend(form validation, identity, paginate) templates.</p>
+<p>No Magic</p>
+<blockquote>
+<div><ul class="simple">
+<li>The generated codes are normal TG source.</li>
+<li>No extra magic encapsulation. No need to rewrite the interface when you need extra flexibility (not the same as Rails&#8217;scaffold)</li>
+<li>Separate Form definition from Model (not the same as  Django admin)</li>
+<li>Use standard TurboGears syntax and code organization.</li>
+<li>It&#8217;s a good crud implementation reference by TG.</li>
+</ul>
+</div></blockquote>
+<p>TurboGears</p>
+<blockquote>
+<div><ul class="simple">
+<li>Bundles a TurboGears &#8220;tg-admin crud&#8221; command.</li>
+<li>Support SQLObject and SQLAlchemy models</li>
+<li>tgcrud kid interface works for you no matter whatever template engine you currently choose for your project.</li>
+<li>You could customize the model relationship by widgets(or do it in your way)</li>
+<li>Takes advantage of TurboGears form widgets and validation. you&#8217;d hardly need to modify the HTML.</li>
+</ul>
+</div></blockquote>
+</div>
+<hr class="docutils" />
+<div class="section" id="install">
+<h2><a class="toc-backref" href="#id3">Install</a><a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>tgcrud</strong> command extension is available from the <a class="reference external" href="http://cheeseshop.python.org/pypi/tgcrud/">Python CheeseShop</a> and the TurboGears Subversion repository. You can use setuptools to install tgcrud with following command:</p>
+<div class="highlight-python"><pre>$ easy_install tgcrud</pre>
+</div>
+<p>or download the source code and install it manually. Or, just copy the code from this page into your project (see below).</p>
+</div>
+<div class="section" id="preparation">
+<h2><a class="toc-backref" href="#id4">Preparation</a><a class="headerlink" href="#preparation" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Start a TurboGears project with <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt>. We&#8217;ll name our example &#8220;<em>project</em>&#8221;.</li>
+<li>Define the model in <tt class="docutils literal"><span class="pre">model.py</span></tt>. We&#8217;ll name our data class <tt class="docutils literal"><span class="pre">BookMark</span></tt>.</li>
+<li>Create a database with the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt> command.</li>
+<li><strong>Now</strong> we can start to create the admin interface.</li>
+</ol>
+</div>
+<div class="section" id="proposed-usage-scheme">
+<h2><a class="toc-backref" href="#id5">Proposed usage scheme</a><a class="headerlink" href="#proposed-usage-scheme" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Once you&#8217;ve defined your model, you can use the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">crud</span></tt> command to generate the <tt class="docutils literal"><span class="pre">crud</span></tt> package. The syntax is:</p>
+<div class="highlight-python"><pre>$ tg-admin crud [model class name] [package name]</pre>
+</div>
+</li>
+</ol>
+<blockquote>
+<div><p>for example, if the model name is <tt class="docutils literal"><span class="pre">BookMark</span></tt> and the package name is <tt class="docutils literal"><span class="pre">BookMarkController</span></tt>, the command is:</p>
+<div class="highlight-python"><pre>$ tg-admin crud BookMark BookMarkController</pre>
+</div>
+<p>Then the <tt class="docutils literal"><span class="pre">BookMarkController</span></tt> package (folder) is generated. You just need to take a few minutes to customize the widget <tt class="docutils literal"><span class="pre">formfield</span></tt> to have a proper crud interface.</p>
+<p>tgcrud generates plain TurboGears code, so you can do whatever you want on these package.</p>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Customize the form field in <tt class="docutils literal"><span class="pre">BookMarkController/controllers.py</span></tt>.</li>
+</ol>
+<blockquote>
+<div><p>First, you have to customize the widget fields:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">bookmark.model</span> <span class="kn">import</span> <span class="n">BookMark</span>
+<span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">widgets</span>
+
+<span class="k">class</span> <span class="nc">BookMarkFields</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="c"># if we have a SQLObject model with 4 fields: name, url, excerpt, memo</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Name&quot;</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;URL&quot;</span><span class="p">)</span>
+    <span class="n">excerpt</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Excerpt&quot;</span><span class="p">)</span>
+    <span class="n">memo</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">&quot;Leave Memo&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are not familiar with widgets yet, check out the <a class="reference internal" href="Widgets/Overview.html"><em>Widgets Overview</em></a> page.</p>
+</div>
+<p>All available form widgets are listed in the
+<a class="reference internal" href="Widgets/Browser.html"><em>WidgetBrowser</em></a> (<tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">toolbox</span></tt>).</p>
+<p>And you may want to add a schema for form validation as well (optional):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">BookMarkSchema</span><span class="p">(</span><span class="n">validators</span><span class="o">.</span><span class="n">Schema</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="n">not_empty</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">validators</span><span class="o">.</span><span class="n">URL</span><span class="p">(</span><span class="n">add_http</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">check_exists</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="c"># append the following validators</span>
+</pre></div>
+</div>
+<p>For a referene of available validators, refer to the
+<a class="reference external" href="http://formencode.org/module-formencode.validators.html">FormEncode documentation</a>.</p>
+</div></blockquote>
+<blockquote>
+<div><p>You see that you can even use the existing schemas without pain. You don&#8217;t really need to customize the form validation schema, but it&#8217;s good to know that you have the option.</p>
+<p>Read the <a class="reference internal" href="Widgets/FormValidationWithSchemas.html"><em>widgets documentation</em></a> for detailed information on validator
+usage.</p>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p class="first">To use the admin interface, you need import the package to your <tt class="docutils literal"><span class="pre">controllers.py</span></tt> with a line like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">BookMarkController</span> <span class="kn">import</span> <span class="n">BookMarkController</span>
+</pre></div>
+</div>
+<p>and add a sub-controller to your <tt class="docutils literal"><span class="pre">Root</span></tt> controller class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">foo</span> <span class="o">=</span> <span class="n">BookMarkController</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This way, the class <tt class="docutils literal"><span class="pre">BookMarkController</span></tt> will be mounted to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller.</p>
+</li>
+<li><p class="first">Start the server and open the URL <tt class="docutils literal"><span class="pre">http://localhost:8080/foo</span></tt> to use the customizable interface.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="sqlalchemy-support">
+<h2><a class="toc-backref" href="#id6">SQLAlchemy Support</a><a class="headerlink" href="#sqlalchemy-support" title="Permalink to this headline">¶</a></h2>
+<p>tgcrud 1.0 supports both SQLObject and SQLAlchemy models, By default tgcrud will detect the proper ORM for you. In cases you can specify the <tt class="docutils literal"><span class="pre">-s</span></tt> option to the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">crud</span></tt> command for SQLAlchemy support, similar to the <tt class="docutils literal"><span class="pre">-s</span></tt> option of the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> command. Example:</p>
+<div class="highlight-python"><pre>$ tg-admin crud -s BookMark BookMarkController</pre>
+</div>
+<p>The generated templates will use &#8216;id&#8217; as the default primary key. While SQLObject use &#8216;id&#8217; as it&#8217;s primary key, it works well with SQLObject models. But if we take SQLAlchemy models into consideration, SQLAlchemy provide the flexibility to use variety names as primary keys. Thus tgcrud allows you to specify the &#8220;-i(id)&#8221; option, which is denoting to your model&#8217;s primary key, to the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">crud</span></tt> command. Example:</p>
+<div class="highlight-python"><pre>$ tg-admin crud -i user_id User usermin</pre>
+</div>
+</div>
+<div class="section" id="relational-joins">
+<h2><a class="toc-backref" href="#id7">Relational Joins</a><a class="headerlink" href="#relational-joins" title="Permalink to this headline">¶</a></h2>
+<p>tgcrud generates &#8216;no-magic&#8217;, plain TurboGears code. It is not an automatic admin tool such as Catwalk in TurboGears or the admin interface in Django. tgcrud&#8217;s aim is to save you time for basic CRUD interface design decisions (in TurboGears) and generate the skeleton code for production. You have to handle the advanced model relationships by your self. Fortunately we can provide a strategy guide for using relational joins.</p>
+<p>Before doing Relational Joins, you should open the tg-admin shell(or use Catwalk if you
+are using SQLObject) and make sure you can do the basic operations around your USER -Group models.</p>
+<p>Then, apply the same operation on the (hand made/generated by tgcrud)
+interface. That would be:</p>
+<div class="section" id="one-to-one-relationships">
+<h3>One-to-one Relationships<a class="headerlink" href="#one-to-one-relationships" title="Permalink to this headline">¶</a></h3>
+<p>For relation joins you&#8217;d assign &#8216;object&#8217; instead of plain parameters.</p>
+<p>My approach is using <tt class="docutils literal"><span class="pre">SelectField</span></tt> in the widget form and overwrite the
+parameters in the <tt class="docutils literal"><span class="pre">save</span></tt> method.</p>
+<p>For example, in <tt class="docutils literal"><span class="pre">widgets.py</span></tt>:</p>
+<div class="highlight-python"><pre>....
++ book = widgets.SingleSelectField(label="book",
++         options=[(entry.id, entry.title) for entry in book]
++ )</pre>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><pre>def save(self, id=None, **kw):
+
+    #update kw
++   if kw['book']:
++       kw['book'] = Book.get(int(kw['book']))
+
+    #update
+    ....
+    #create
+    ....</pre>
+</div>
+<p>It&#8217;s an interesting Python trick, we overwrite the <tt class="docutils literal"><span class="pre">kw['book']</span></tt> value in the <tt class="docutils literal"><span class="pre">kw</span></tt> dictionary with the object with the id referred to by the value.</p>
+<p>If you don&#8217;t like it, you can customize the joins in a normal way.</p>
+</div>
+<div class="section" id="one-to-many-relationships">
+<h3>One-to-many Relationships<a class="headerlink" href="#one-to-many-relationships" title="Permalink to this headline">¶</a></h3>
+<p>Try <tt class="docutils literal"><span class="pre">CheckBoxList</span></tt>, <tt class="docutils literal"><span class="pre">MultipleSelectField</span></tt> or the <tt class="docutils literal"><span class="pre">SelectCheck</span></tt> widget plugin.</p>
+<p>Take User-Group relationship generated by identity for example. You have two steps to do:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Form the selected groups to a group check list (or something else)</li>
+<li>process the select group</li>
+</ol>
+</div></blockquote>
+<p>My approach is using <tt class="docutils literal"><span class="pre">CheckBoxList</span></tt> in the widget form and overwrite the
+parameters in the <tt class="docutils literal"><span class="pre">save</span></tt> method.</p>
+<p>For example, in <tt class="docutils literal"><span class="pre">controllers.py</span></tt> (step 1):</p>
+<div class="highlight-python"><pre>def show(....):
+....
+    record = User.get(int(id))
+    check= widgets.CheckBoxList(label = "Groups", name= "user_groups",
+          options=[(entry.id, entry.group_name) for entry in groups],
+          default=[entry.group_id for entry in record.groups]
+    )</pre>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">controllers.py</span></tt> (step 2):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+
+    <span class="c">#update kw</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;user_groups&#39;</span><span class="p">])</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">hub</span><span class="o">.</span><span class="n">begin</span><span class="p">()</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">removeGroup</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">group_id</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">addGroup</span><span class="p">(</span><span class="n">Group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">group_id</span><span class="p">)))</span>
+    <span class="n">hub</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+    <span class="o">....</span>
+</pre></div>
+</div>
+<p>BTW, the example is suited for many-to-many relationships too.</p>
+</div>
+<div class="section" id="many-to-many-relationships">
+<h3>Many-to-many Relationships<a class="headerlink" href="#many-to-many-relationships" title="Permalink to this headline">¶</a></h3>
+<p>You can try the <tt class="docutils literal"><span class="pre">SelectShuttle</span></tt> widget plugin to generate a selection form for many-to-many relationships. But in this example I&#8217;ll be using SelectField instead.</p>
+<p>In <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+
+    <span class="c">#update kw</span>
+    <span class="k">if</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;authors&#39;</span><span class="p">]:</span>
+        <span class="c"># assume there&#39;s only one author</span>
+        <span class="n">obj_id</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">kw</span><span class="p">[</span><span class="s">&#39;authors&#39;</span><span class="p">]))</span>
+        <span class="k">del</span> <span class="n">kw</span><span class="p">[</span><span class="s">&#39;authors&#39;</span><span class="p">]</span>
+
+    <span class="c">#update</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">Book</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">id</span><span class="p">))</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">addUser</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
+        <span class="o">....</span>
+    <span class="c">#create</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">id</span><span class="p">:</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="n">Book</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">addUser</span><span class="p">(</span><span class="n">obj_id</span><span class="p">)</span>
+        <span class="o">....</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="extensions-for-the-basic-skeleton">
+<h2><a class="toc-backref" href="#id8">Extensions for the basic skeleton</a><a class="headerlink" href="#extensions-for-the-basic-skeleton" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="secure-your-crud-interface-with-identity">
+<h3>Secure your CRUD interface with identity<a class="headerlink" href="#secure-your-crud-interface-with-identity" title="Permalink to this headline">¶</a></h3>
+<p>You can protect whole of your CRUD interface with one line of code.
+Just append a line in the main project&#8217;s <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><pre>  foo = BookMarkController()
++ foo = identity.SecureObject(foo,identity.has_permission('admin'))</pre>
+</div>
+<p>Now only users with permission <tt class="docutils literal"><span class="pre">admin</span></tt> can access the foo CRUD interface.</p>
+<p>Or you can protect specific methods with a <tt class="docutils literal"><span class="pre">&#64;identity.require()</span></tt> decorator:</p>
+<div class="highlight-python"><pre>....
+@expose()
+@identity.require(identity.in_group("admin"))
+def method.....</pre>
+</div>
+<p>Check the TurboGears documentation about <a class="reference internal" href="Identity/index.html"><em>identity</em></a> for details.</p>
+</div>
+<div class="section" id="paginate-your-lists">
+<h3>Paginate your lists<a class="headerlink" href="#paginate-your-lists" title="Permalink to this headline">¶</a></h3>
+<p>Search for &#8216;paginate&#8217; in <tt class="docutils literal"><span class="pre">controllers.py</span></tt>. The pagination support code appears in the import section and just above the <tt class="docutils literal"><span class="pre">list</span></tt> method.</p>
+<p>Uncomment the two lines. That&#8217;s all you need to do for pagination support in <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><pre>from turbogears import paginate
+....
+@expose(template='kid:dnidoc.manage.templates.list')
+@paginate('records')
+def list(self, **kw):
+....</pre>
+</div>
+<p>then check <tt class="docutils literal"><span class="pre">template/list.kid</span></tt>, there&#8217;s a commented paginate panel:</p>
+<div class="highlight-python"><pre>&lt;span py:for="page in tg.paginate.pages"&gt;
+    &lt;a py:if="page != tg.paginate.current_page"
+        href="${tg.paginate.get_href(page)}"&gt;${page}&lt;/a&gt;
+    &lt;b py:if="page == tg.paginate.current_page"&gt;${page}&lt;/b&gt;
+&lt;/span&gt;</pre>
+</div>
+<p>Now you have solid pagination support for your list pages.</p>
+<p>Check the TurboGears documentation about the <a class="reference internal" href="PaginateDecorator.html"><em>paginate decorator</em></a> for details.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>tgcrud skeleton uses <tt class="docutils literal"><span class="pre">id</span></tt> as the default primary key in templates, but SQLAlchemy can use variable key names. So if you are using SQLAlchemy, you may need to change the <tt class="docutils literal"><span class="pre">id</span></tt> parameter manually. Luckily there&#8217;re just 3 templates need to deal with:</p>
+<ul class="simple">
+<li>list</li>
+<li>form</li>
+<li>show</li>
+</ul>
+<p class="last">For example, if you want a crud interface of the <tt class="docutils literal"><span class="pre">User</span></tt> model class, all you need to do is to replace <tt class="docutils literal"><span class="pre">id</span></tt> with <tt class="docutils literal"><span class="pre">user_id</span></tt> in these pages.</p>
+</div>
+</div>
+</div>
+<div class="section" id="building-the-crud-interface-manually">
+<h2><a class="toc-backref" href="#id9">Building the CRUD interface manually</a><a class="headerlink" href="#building-the-crud-interface-manually" title="Permalink to this headline">¶</a></h2>
+<p>If you don&#8217;t want to use the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">crud</span></tt> command , you can also integrate the CRUD code manually.</p>
+<p>The latest template is available here:</p>
+<p><a class="reference external" href="http://trac.turbogears.org/browser/projects/tgcrud/trunk/tgcrud/templates/">http://trac.turbogears.org/browser/projects/tgcrud/trunk/tgcrud/templates/</a></p>
+<p>This has also optional support for identity, paginate..., etc.</p>
+<p>The following is the basic skeleton of the admin interface.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Create a folder to contain the code. We take <tt class="docutils literal"><span class="pre">BookmarkController</span></tt> as an example.</li>
+<li>The structure is the following</li>
+</ul>
+</div></blockquote>
+<div class="highlight-python"><pre>#project/BookmarkController/
+__init__.py
+controllers.py
+templates/__init__.py
+          master.kid
+          list.kid
+          form.kid
+          show.kid</pre>
+</div>
+<p>When you first enter the interface, it will list all info in <tt class="docutils literal"><span class="pre">list</span></tt> page. You can create a new record by clicking the &#8216;New BookMark&#8217; link. This will lead you to the <tt class="docutils literal"><span class="pre">new</span></tt> page. Similarly, when you click &#8216;edit&#8217; or &#8216;show&#8217;, this  will lead you to the &#8216;edit&#8217; or &#8216;show&#8217; page. Since the differences between &#8216;new&#8217; and &#8216;edit&#8217; pages are wrapped in widgets, these two pages share the same &#8216;form&#8217; template. The basic operations of tgcrud are a full clone of the scaffold implementation in Ruby on Rails.</p>
+<img alt="_images/tgcrud.jpg" src="_images/tgcrud.jpg" />
+<div class="section" id="importing-the-crud-controller">
+<h3>Importing the CRUD controller<a class="headerlink" href="#importing-the-crud-controller" title="Permalink to this headline">¶</a></h3>
+<p>Add the following lines in your project&#8217;s <tt class="docutils literal"><span class="pre">controllers.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">BookmarkController</span> <span class="kn">import</span> <span class="n">BookMarkController</span>
+
+<span class="o">....</span>
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+    <span class="n">main</span><span class="o">=</span> <span class="n">BookMarkController</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Here&#8217;s a Python sub-directory importing trick from tgcrud&#8217;s
+<tt class="docutils literal"><span class="pre">__init__.py</span></tt>. Check out <a class="reference external" href="http://trac.turbogears.org/browser/projects/tgcrud/trunk/tgcrud/templates/crud/%2Bmodelpackage%2B/__init__.py_tmpl">__init__.py_tmpl</a>.</p>
+</div>
+</div>
+<div class="section" id="the-controllers-py-source">
+<h3>The <tt class="docutils literal"><span class="pre">controllers.py</span></tt> source<a class="headerlink" href="#the-controllers-py-source" title="Permalink to this headline">¶</a></h3>
+<p>The full controller code is here:</p>
+<div class="highlight-python"><pre>from turbogears import controllers, expose, redirect
+from turbogears import validate, flash, error_handler
+from bookmark.model import BookMark
+from turbogears import widgets, validators
+
+class BookMarkFields(widgets.WidgetsList):
+    """fields definitions. Replace to your Fields"""
+    # take name and url field for short example
+    name = widgets.TextField(label="Name")
+    url = widgets.TextField(label="URL")
+
+class BookMarkSchema(validators.Schema):
+    """
+    define validation schema that involves
+    field dependency or logical operators
+    """
+    name = validators.String(not_empty=True, max=30)
+    url = validators.URL(add_http=True, check_exists=True)
+
+class BookMarkForm(widgets.TableForm):
+    """form builder"""
+    #name="BookMark"
+    fields = BookMarkFields()
+    #validator = BookMarkSchema() # define schema outside of BookMarkFields
+    #method="post"
+    #submit_text = "Create"
+
+model_form = BookMarkForm()
+
+class BookMarkController(controllers.Controller):
+    """Basic model admin interface"""
+    modelname="BookMark"
+
+    @expose()
+    def default(self, tg_errors=None):
+        """handle non exist urls"""
+        raise redirect("list")
+
+    @expose()
+    def index(self):
+        """handle front page"""
+        raise redirect("list")
+
+    @expose(template='bookmark.BookmarkController.templates.list')
+    def list(self, **kw):
+        """List records in model"""
+        records = BookMark.select()
+        return dict(records = records, modelname=self.modelname)
+
+
+    @expose(template='bookmark.BookmarkController.templates.show')
+    def show(self,id, **kw):
+        """show record in model"""
+        record = BookMark.get(int(id))
+        return dict(record = record)
+
+    @expose(template='bookmark.BookmarkController.templates.form')
+    def new(self, **kw):
+        """Create new records in model"""
+        return dict(modelname = self.modelname, form = model_form, page='new')
+
+    @expose(template='bookmark.BookmarkController.templates.form')
+    def edit(self, id, **kw):
+        """Edit record in model"""
+        try:
+            record = BookMark.get(int(id))
+        except:
+            flash = "Not valid edit"
+        return dict(modelname = self.modelname, page='edit'
+                    record = record)
+
+    @validate(model_form)
+    @error_handler(new)
+    @expose()
+    def save(self, id=None, **kw):
+        """Save or create record to model"""
+        #update kw
+        if id:
+            #update
+            """
+            record = BookMark.get(int(id))
+            record.set(name = self.name, url = self.url)
+
+            or
+
+            for attr in kw:
+                setattr(record, attr, kw[attr])
+            """
+            for attr in kw:
+                setattr(record, attr, kw[attr])
+            flash("Bookmark was successfully updated.")
+            raise redirect("../list")
+        else:
+            #create
+            """
+            assign the attrs one by one:
+            self.name = kw['name']
+            self.url = kw['url']
+
+            or
+
+            for attr in kw:
+                setattr(self, attr, kw[attr])
+            """
+            #BookMark(name = self.name, url = self.url)
+            BookMark(**kw)
+
+    @expose()
+    def destroy(self, id):
+        record = BookMark.get(int(id))
+        record.destroySelf()
+        flash("${modelname} was successfully destroyed.")
+        raise redirect("../list")</pre>
+</div>
+<p>You need to customize the following for your project:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The <tt class="docutils literal"><span class="pre">BookMarkFields</span></tt> class</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="the-templates-source">
+<h3>The Templates source<a class="headerlink" href="#the-templates-source" title="Permalink to this headline">¶</a></h3>
+<p><tt class="docutils literal"><span class="pre">list.kid</span></tt>:</p>
+<pre class="literal-block">
+&lt;body&gt;
+
+&lt;h1&gt;Listing ${modelname}&lt;/h1&gt;
+
+<strong>&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt; name &lt;/th&gt;
+        &lt;th&gt; url &lt;/th&gt;
+        &lt;th&gt; excerpt &lt;/th&gt;
+        &lt;th&gt; memo &lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr py:for=&quot;record in records&quot;&gt;
+        &lt;td&gt;${record.name}&lt;/td&gt;
+        &lt;td&gt;${record.url}&lt;/td&gt;
+        &lt;td&gt;${record.excerpt}&lt;/td&gt;
+        &lt;td&gt;${record.memo}&lt;/td&gt;</strong>
+        &lt;td&gt;&lt;a href=&quot;show/${record. <strong>id</strong>}&quot;&gt;Show&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a href=&quot;edit/${record. <strong>id</strong>}&quot;&gt;Edit&lt;/a&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;a href=&quot;destroy/${record. <strong>id</strong>}&quot; onclick=&quot;if (confirm('Are you sure?')) { var f = document.createElement('form'); this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href; f.submit(); };return false;&quot;&gt;Destroy&lt;/a&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+
+
+&lt;br/&gt;
+&lt;a href=&quot;new&quot;&gt;New ${modelname}&lt;/a&gt;
+
+&lt;/body&gt;
+</pre>
+<p>You need to customize the following for your project:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Column cells and labels</li>
+</ul>
+</div></blockquote>
+<p><tt class="docutils literal"><span class="pre">form.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;body&gt;
+&lt;h1&gt;Editing ${modelname}&lt;/h1&gt;
+&lt;div py:if="page=='new'"&gt;
+${form(action='save', submit_text = "Create")}
+&lt;/div&gt;
+&lt;div py:if="page=='edit'"&gt;
+${form(value=record, action=tg.url('../save/%s'%str(record.id)), submit_text = "Edit")}
+&lt;/div&gt;
+&lt;br/&gt;
+&lt;div id="footbar" class="footbar" py:if="page=='edit'"&gt;
+&lt;a href="${tg.url('../show/%s'%record.id)}"&gt;Show&lt;/a&gt; | &lt;a href="${tg.url('../list')}"&gt;Back&lt;/a&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>You need to customize the following for your project:</p>
+<ul class="simple">
+<li>None</li>
+</ul>
+<p><tt class="docutils literal"><span class="pre">show.kid</span></tt>:</p>
+<pre class="literal-block">
+&lt;body&gt;
+
+<strong>&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt; name: &lt;/th&gt;
+        &lt;td&gt;${record.name}&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt; url: &lt;/th&gt;
+        &lt;td&gt;${record.url}&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt; excerpt: &lt;/th&gt;
+        &lt;td&gt;${record.excerpt}&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;th&gt; memo: &lt;/th&gt;
+        &lt;td&gt;${record.memo}&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</strong>
+
+
+&lt;br/&gt;
+&lt;a href=&quot;../edit/${record. <strong>id</strong>}&quot;&gt;Edit&lt;/a&gt; | &lt;a href=&quot;../list&quot;&gt;Back&lt;/a&gt;
+
+&lt;/body&gt;
+</pre>
+<p>You need to customize the following for your project:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Column cells and labels</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

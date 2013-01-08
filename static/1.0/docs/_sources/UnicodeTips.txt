@@ -1,0 +1,102 @@
+.. index:: unicode
+
+Tips for Using Non-ASCII Characters in TurboGears
+=================================================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+Hi all, I'm from China and have recently been studying TurboGears.
+I hope this will help people from countries where languages other
+than English are spoken.
+
+
+Tip 1: File Encoding
+--------------------
+
+If you want to use strings with foreign characters (non-ASCII) in your Python
+source file (e.g. error messages etc.), you have to add an encoding declaration
+``#coding=utf-8`` or ``# -*- coding: utf-8 -*-`` at the top of your Python
+source file. Let's take `controller.py` for example::
+
+    + #coding=utf-8
+    from turbogears import controllers, expose
+    ...
+
+You should also encode all Kid template files in UTF-8.
+
+
+Tip 2: Database Encoding
+------------------------
+
+SQLObject:
+
+If a column might contain non UTF-8 characters, define it like this in model.py::
+
+    UnicodeCol(dbEncoding='gb2312')
+
+This is not necessary with SQLite.
+
+
+Tip 3: Widgets
+--------------
+
+If you want to use standard widgets but you find it doesn't work with Chinese,
+Then you should:
+
+ 1. Add an encoding declaration at the top of your Python source file: ``#coding=utf-8``
+ 2. Convert your Python source files to UTF-8.
+ 3. Add a ``u`` before any string that contains a Chinese character.
+
+
+Tip 4: 20-Minute Wiki
+---------------------
+
+Something interesting:
+
+Try the 20 minutes wiki tutorial, run it and type something like this in your
+browser's address bar.::
+
+   http://localhost:8080/一些中文字符
+
+Press Enter. As the page does not exist, you will reach the Edit page.
+Input some text and then save.
+
+Oops! Something wrong happened, but if you check the database you will see a
+new page has been added. In a serious application, watch out for such things.
+
+
+Tip 5: MySQL
+------------
+
+If you are using MySQL on Windows, use `MySQL-python.exe-1.2.2b1.win32-py2.4.exe`_
+or newer, or you will encounter big problems when you want to execute some SQL
+containing Unicode.
+
+.. _MySQL-python.exe-1.2.2b1.win32-py2.4.exe: http://sourceforge.net/project/showfiles.php?group_id=22307
+
+
+Tip 6: MySQL Database URI
+-------------------------
+
+If you are using MySQL, change your dburi to this form::
+
+    sqlobject.dburi="mysql://username:password@hostname:port/databasename?charset=utf8
+
+The charset parameter tells MySQLdb what charset MySQL should use.
+Note that the ``sqlobject_encoding`` paramter is deprecated and should not be used any more.
+
+
+Tip 7: More on MySQL
+--------------------
+
+Remarks on Tip 6:
+
+When you're using MySQL, you may need to use ``byXXX`` functions like this::
+
+    user = User.byName(u'UserName'.encode('gb2312'))
+
+Unicode strings are not accepted. That's why you need to include SQLObject in your dburi.
+
+That's definitely a bug of SQLObject, but it has been fixed in later versions.

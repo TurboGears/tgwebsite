@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.view.base</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        <a href="turbogears.view-module.html">Package&nbsp;view</a> ::
+        Module&nbsp;base
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module base</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears.view.base-pysrc.html">source&nbsp;code</a></span></p>
+<p>Template processing for TurboGears view layer.</p>
+  <p>The template engines are configured and loaded here and this module 
+  provides the generic template rendering function &quot;render&quot;, 
+  which selects the template engine to use and the appropriate output 
+  format, headers and encoding based on the given arguments and the 
+  application configuration.</p>
+  <p>Also defines the functions and variables that will be available in the
+  template scope and provides a hook for adding additional template 
+  variables.</p>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.view.base.cycle-class.html" class="summary-name">cycle</a><br />
+      Loops forever over an iterator.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.view.base.UserAgent-class.html" class="summary-name">UserAgent</a><br />
+      Representation of the user's browser.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#render" class="summary-sig-name">render</a>(<span class="summary-sig-arg">info</span>,
+        <span class="summary-sig-arg">template</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">format</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">headers</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">fragment</span>=<span class="summary-sig-default">False</span>,
+        <span class="summary-sig-arg">**options</span>)</span><br />
+      Renders data in the desired format.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#render">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="transform"></a><span class="summary-sig-name">transform</span>(<span class="summary-sig-arg">info</span>,
+        <span class="summary-sig-arg">template</span>)</span><br />
+      Create ElementTree representation of the output.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#transform">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#loadBaseTemplates" class="summary-sig-name">loadBaseTemplates</a>()</span><br />
+      Load base templates for use by other templates.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#loadBaseTemplates">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#selector" class="summary-sig-name">selector</a>(<span class="summary-sig-arg">expression</span>)</span><br />
+      If the expression is true, return the string 'selected'.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#selector">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#checker" class="summary-sig-name">checker</a>(<span class="summary-sig-arg">expression</span>)</span><br />
+      If the expression is true, return the string &quot;checked&quot;.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#checker">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#ipeek" class="summary-sig-name">ipeek</a>(<span class="summary-sig-arg">iterable</span>)</span><br />
+      Lets you look at the first item in an iterator.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#ipeek">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#genshi_et" class="summary-sig-name">genshi_et</a>(<span class="summary-sig-arg">element</span>)</span><br />
+      If this is an ElementTree element, convert it to a markup stream.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#genshi_et">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#stdvars" class="summary-sig-name">stdvars</a>()</span><br />
+      Create a Bunch of variables that should be available in all templates.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#stdvars">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.view.base-module.html#load_engines" class="summary-sig-name">load_engines</a>()</span><br />
+      Load and initialize all templating engines.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.view.base-pysrc.html#load_engines">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="log"></a><span class="summary-name">log</span> = <code title="logging.getLogger(&quot;turbogears.view&quot;)">logging.getLogger(&quot;turbogears.view&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="baseTemplates"></a><span class="summary-name">baseTemplates</span> = <code title="[]"><code class="variable-group">[</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="variable_providers"></a><span class="summary-name">variable_providers</span> = <code title="[]">[]</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="root_variable_providers"></a><span class="summary-name">root_variable_providers</span> = <code title="[]"><code class="variable-group">[</code><code class="variable-group">]</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="engines"></a><span class="summary-name">engines</span> = <code title="{}"><code class="variable-group">{</code><code class="variable-group">}</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="__package__"></a><span class="summary-name">__package__</span> = <code title="'turbogears.view'"><code class="variable-quote">'</code><code class="variable-string">turbogears.view</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="render"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">render</span>(<span class="sig-arg">info</span>,
+        <span class="sig-arg">template</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">format</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">headers</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">fragment</span>=<span class="sig-default">False</span>,
+        <span class="sig-arg">**options</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#render">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Renders data in the desired format.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>info</code></strong> (dict) - the data itself</li>
+        <li><strong class="pname"><code>template</code></strong> (string) - name of the template to use</li>
+        <li><strong class="pname"><code>format</code></strong> (string) - &quot;html&quot;, &quot;xml&quot;, &quot;text&quot; or 
+          &quot;json&quot;</li>
+        <li><strong class="pname"><code>headers</code></strong> (dict) - for response headers, primarily the content type</li>
+        <li><strong class="pname"><code>fragment</code></strong> (bool
+          <p>All additional keyword arguments are passed as keyword args to
+          the render method of the template engine.</p>) - passed through to tell the template if only a fragment of a page 
+          is desired. This is a way to allow xml template engines to 
+          generate non valid html/xml because you warn them to not bother 
+          about it.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="loadBaseTemplates"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">loadBaseTemplates</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#loadBaseTemplates">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Load base templates for use by other templates.</p>
+  <p>By listing templates in turbogears.view.baseTemplates, these templates
+  will automatically be loaded so that the &quot;import&quot; statement in 
+  a template will work.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="selector"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">selector</span>(<span class="sig-arg">expression</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#selector">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If the expression is true, return the string 'selected'.</p>
+  <p>Useful for HTML &lt;option&gt;s.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="checker"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">checker</span>(<span class="sig-arg">expression</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#checker">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If the expression is true, return the string &quot;checked&quot;.</p>
+  <p>This is useful for checkbox inputs.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="ipeek"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">ipeek</span>(<span class="sig-arg">iterable</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#ipeek">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Lets you look at the first item in an iterator.</p>
+  <p>This is a good way to verify that the iterator actually contains 
+  something. This is useful for cases where you will choose not to display 
+  a list or table if there is no data present.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="genshi_et"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">genshi_et</span>(<span class="sig-arg">element</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#genshi_et">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>If this is an ElementTree element, convert it to a markup stream.</p>
+  <p>If this is a list, apply this function recursively and chain 
+  everything.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="stdvars"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">stdvars</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#stdvars">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Create a Bunch of variables that should be available in all templates.
+
+These variables are:
+
+checker
+    the checker function
+config
+    the cherrypy config get function
+cycle
+    cycle through a set of values
+errors
+    validation errors
+identity
+    the current visitor's identity information
+inputs
+    input values from a form
+ipeek
+    the ipeek function
+locale
+    the default locale
+quote_plus
+    the urllib quote_plus function
+request
+    the cherrypy request
+selector
+    the selector function
+session
+    the current cherrypy.session if the session_filter.on it set
+    in the app.cfg configuration file. If it is not set then session
+    will be None.
+tg_js
+    the url path to the JavaScript libraries
+tg_static
+    the url path to the TurboGears static files
+tg_toolbox
+    the url path to the TurboGears toolbox files
+tg_version
+    the version number of the running TurboGears instance
+url
+    the turbogears.url function for creating flexible URLs
+useragent
+    a UserAgent object with information about the browser
+
+Additionally, you can add a callable to turbogears.view.variable_providers
+that can add more variables to this list. The callable will be called with
+the vars Bunch after these standard variables have been set up.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="load_engines"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">load_engines</span>()</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.view.base-pysrc.html#load_engines">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Load and initialize all templating engines.</p>
+  <p>This is called during startup after the configuration has been loaded.
+  You can call this earlier if you need the engines before startup; the 
+  engines will then be reloaded with the custom configuration later.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:36 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

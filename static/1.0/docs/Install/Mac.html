@@ -1,0 +1,293 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears Installation on Mac OS X &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Installing TurboGears on Debian" href="Debian.html" />
+    <link rel="prev" title="TurboGears Installation on Windows" href="Windows.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Debian.html" title="Installing TurboGears on Debian"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Windows.html" title="TurboGears Installation on Windows"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">TurboGears Installation on Mac OS X</a><ul>
+<li><a class="reference internal" href="#getting-python">Getting Python</a></li>
+<li><a class="reference internal" href="#installing-turbogears">Installing TurboGears</a><ul>
+<li><a class="reference internal" href="#installing-without-root-access">Installing Without root Access</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#database-driver">Database Driver</a></li>
+<li><a class="reference internal" href="#how-do-i-change-my-path-on-mac-os-x">How Do I Change my Path on Mac OS X?</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Windows.html"
+                        title="previous chapter">TurboGears Installation on Windows</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Debian.html"
+                        title="next chapter">Installing TurboGears on Debian</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-installation-on-mac-os-x">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">TurboGears Installation on Mac OS X</a><a class="headerlink" href="#turbogears-installation-on-mac-os-x" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-installation-on-mac-os-x" id="id1">TurboGears Installation on Mac OS X</a><ul>
+<li><a class="reference internal" href="#getting-python" id="id2">Getting Python</a></li>
+<li><a class="reference internal" href="#installing-turbogears" id="id3">Installing TurboGears</a></li>
+<li><a class="reference internal" href="#database-driver" id="id4">Database Driver</a></li>
+<li><a class="reference internal" href="#how-do-i-change-my-path-on-mac-os-x" id="id5">How Do I Change my Path on Mac OS X?</a></li>
+<li><a class="reference internal" href="#troubleshooting" id="id6">Troubleshooting</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-python">
+<h2><a class="toc-backref" href="#id2">Getting Python</a><a class="headerlink" href="#getting-python" title="Permalink to this headline">¶</a></h2>
+<p>Your Mac comes with Python built into the system. The latest release of Mac OS
+X, version 10.5 (&#8220;Leopard&#8221;) even comes with Python 2.5. Mac OS X 10.4 (&#8220;Tiger&#8221;)
+only has Python 2.3 pre-installed. While TurboGears 1.0 works with Python 2.3,
+it is strongly recommended that you upgrade to Python 2.5. The decorator syntax
+supported by Python 2.4 and higher will make your life much more pleasant and
+you&#8217;ll be using a <em>lot</em> of decorators in TurboGears.</p>
+<p>So, if you are on OS X 10.4, here&#8217;s how to upgrade Python:</p>
+<ol class="arabic simple">
+<li>Download <a class="reference external" href="http://www.python.org/download/mac/">Python 2.5 for the Mac</a>. Follow the link that says &#8220;installer for
+the latest version&#8221;.</li>
+<li>Run the installer.</li>
+<li>Open the Terminal application (under &#8220;Applications/Utilities&#8221;).</li>
+<li>Run the command <tt class="docutils literal"><span class="pre">echo</span> <span class="pre">$PATH</span></tt> and make sure that <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> appears
+before <tt class="docutils literal"><span class="pre">/usr/bin</span></tt> in your path! If it&#8217;s not there, check the section
+&#8220;How Do I Change my Path on Mac OS X?&#8221; below for tips on changing it.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The recommended Python version to use with TurboGears 1.0.x
+currently is <strong>2.5.x</strong>, but we still support <strong>Python 2.4.x</strong> and (<a class="reference external" href="Python2.3Support">with
+some restrictions</a>) <strong>Python 2.3.x</strong>. Python 2.5.x is supported from
+TurboGears version <strong>1.0.2</strong> onwards.</p>
+</div>
+</div>
+<div class="section" id="installing-turbogears">
+<h2><a class="toc-backref" href="#id3">Installing TurboGears</a><a class="headerlink" href="#installing-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>For most people, the following works without a hitch, but if you have problems,
+check the &#8220;Troubleshooting&#8221; section below.</p>
+<p>Following these instructions will install TurboGears and all required packages
+under the installation directory of your Python installation, so you need
+to use <tt class="docutils literal"><span class="pre">sudo</span></tt> to be able to write files there and in <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong>Note</strong>: the <tt class="docutils literal"><span class="pre">$</span></tt> at the start of the command line examples given
+below denotes the shell prompt. You don&#8217;t need to enter this.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Open the Terminal application (under &#8220;Applications/Utilities&#8221;).</p>
+</li>
+<li><p class="first">Make sure you have at least Python 2.4, or better 2.5:</p>
+<div class="highlight-python"><pre>$ python -V</pre>
+</div>
+<p>If not, please upgrade your Python installation (see above).</p>
+</li>
+<li><p class="first">Download <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> and run:</p>
+<div class="highlight-python"><pre>$ curl -OL http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+$ sudo python tgsetup.py</pre>
+</div>
+</li>
+</ol>
+<ol class="arabic" start="4">
+<li><p class="first">Make sure you have <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> on your path (see below)
+and then check that everything went well by running:</p>
+<div class="highlight-python"><pre>$ tg-admin info</pre>
+</div>
+</li>
+</ol>
+<p>Once you&#8217;ve gotten TurboGears and a database driver installed, jump over to the
+<a class="reference external" href="Wiki20/Page1">20 minute wiki</a> tutorial to get your feet wet.</p>
+<p>Also consider signing up for the mailing list. We&#8217;re always happy to help
+people work through their problems and you might have something to share with us.</p>
+<div class="section" id="installing-without-root-access">
+<h3>Installing Without root Access<a class="headerlink" href="#installing-without-root-access" title="Permalink to this headline">¶</a></h3>
+<p>As you can see from the use of the <tt class="docutils literal"><span class="pre">sudo</span></tt> command, the standard installation
+procedure described above, requires root privileges to install TurboGears
+system-wide. You can also install TurboGears below your home directory.
+This setup is described on the page <a class="reference internal" href="NonRoot.html"><em>How to Install TurboGears Without root Privileges</em></a>.</p>
+</div>
+</div>
+<div class="section" id="database-driver">
+<h2><a class="toc-backref" href="#id4">Database Driver</a><a class="headerlink" href="#database-driver" title="Permalink to this headline">¶</a></h2>
+<p>If you plan to use a database with TurboGears, you will need to install the
+appropriate driver. You can either download it from the <a class="reference external" href="http://pythonmac.org/packages/">PythonMac packages
+page</a> or use <tt class="docutils literal"><span class="pre">easy_install</span></tt>. Below is a list of databases and their drivers
+available from this page:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../Database/MySQL.html"><em>MySQL</em></a> - MySQL_python (formerly known as MySQLdb)</li>
+<li><a class="reference internal" href="../Database/PostgreSQL.html"><em>PostgreSQL</em></a>- psycopg2</li>
+<li><a class="reference internal" href="../Database/SQLite.html"><em>SQLite</em></a> - pysqlite2</li>
+<li><a class="reference internal" href="../Database/index.html"><em>Others</em></a>, as supported by SQLObject or SQLAlchemy</li>
+</ul>
+<p>To install a database module with <tt class="docutils literal"><span class="pre">easy_install</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Open the Terminal application (under &#8220;Applications/Utilities&#8221;) and
+check whether you already have <tt class="docutils literal"><span class="pre">easy_install</span></tt>, by running the command:</p>
+<div class="highlight-python"><pre>$ which easy_install</pre>
+</div>
+<p>If you get no output, you don&#8217;t have it on your system.</p>
+</li>
+<li><p class="first">If you don&#8217;t have <tt class="docutils literal"><span class="pre">easy_install</span></tt>, either perform the TurboGears
+installation, as described above, first (which also installs
+<tt class="docutils literal"><span class="pre">easy_install</span></tt> for you) <strong>or</strong> download the <a class="reference external" href="http://peak.telecommunity.com/dist/ez_setup.py">ez_setup.py</a> script
+and run:</p>
+<div class="highlight-python"><pre>$ curl -O http://peak.telecommunity.com/dist/ez_setup.py
+$ sudo python ez_setup.py</pre>
+</div>
+</li>
+<li><p class="first">Then install your preferred database module with:</p>
+<pre class="literal-block">
+$ sudo easy_install <em>package-name</em>
+</pre>
+<p>e.g:</p>
+<div class="highlight-python"><pre>$ sudo easy_install pysqlite</pre>
+</div>
+</li>
+</ol>
+<p>You only need one driver, but if you choose MySQL or PostgreSQL, it&#8217;s nice to have
+SQLite for testing and initial development. If you are using Python 2.5, SQLite
+is supported out of the box and you don&#8217;t need to install pysqlite.</p>
+</div>
+<div class="section" id="how-do-i-change-my-path-on-mac-os-x">
+<h2><a class="toc-backref" href="#id5">How Do I Change my Path on Mac OS X?</a><a class="headerlink" href="#how-do-i-change-my-path-on-mac-os-x" title="Permalink to this headline">¶</a></h2>
+<p>Mac OS X is Unix-like under the hood. There are many ways to accomplish just
+about anything, including setting your path.</p>
+<p>If you haven&#8217;t already, run <tt class="docutils literal"><span class="pre">echo</span> <span class="pre">$PATH</span></tt> and check to see that
+<tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> is there and that it appears before <tt class="docutils literal"><span class="pre">/usr/bin/</span></tt>. If not,
+you&#8217;ll need to add it to either your own profile or to the system profile.
+First, you&#8217;ll need to see which shell you&#8217;re using:</p>
+<div class="highlight-python"><pre>echo $SHELL</pre>
+</div>
+<p>If the output is <tt class="docutils literal"><span class="pre">/bin/tcsh</span></tt>:</p>
+<div class="highlight-python"><pre>echo 'set path = (/usr/local/bin $path)' &gt;&gt; ~/.cshrc
+source ~/.cshrc</pre>
+</div>
+<p>If the output is <tt class="docutils literal"><span class="pre">/bin/bash/</span></tt>:</p>
+<div class="highlight-python"><pre>echo 'PATH=/usr/local/bin:$PATH; export PATH' &gt;&gt; ~/.bash_profile
+source ~/.bash_profile</pre>
+</div>
+<p>This will apply to your current user only. To set it system wide, you&#8217;ll have to
+edit <tt class="docutils literal"><span class="pre">/etc/profile</span></tt>, but that&#8217;s beyond the scope of this tutorial.</p>
+</div>
+<div class="section" id="troubleshooting">
+<h2><a class="toc-backref" href="#id6">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Problem</dt>
+<dd>The installation fails with an error message containing &#8220;<tt class="docutils literal"><span class="pre">gcc</span> <span class="pre">failed</span></tt>&#8221;.</dd>
+<dt>Diagnosis</dt>
+<dd>The installation procedure tried to install a required package that contains
+a C-extension and could not find a pre-compiled binary egg for your operating
+system and/or architecture. It then tried to compile the extension on your
+system and failed, because no compiler could be found.</dd>
+<dt>Solution</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Install the <a class="reference external" href="http://developer.apple.com/tools/xcode/">Xcode</a> developer tools and try again.</li>
+<li>Post a request to the mailing list asking for someone to upload a
+matching binary egg for your system/architecture to <tt class="docutils literal"><span class="pre">turbogears.org</span></tt>.</li>
+</ol>
+</dd>
+<dt>Problem</dt>
+<dd>When I try to run <tt class="docutils literal"><span class="pre">tg-admin</span></tt> command after the installation, I get the
+message <tt class="docutils literal"><span class="pre">bash:</span> <span class="pre">tg-admin:</span> <span class="pre">command</span> <span class="pre">not</span> <span class="pre">found</span></tt>.</dd>
+<dt>Diagnosis</dt>
+<dd>Did you check that <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> is on the command search path?</dd>
+<dt>Solution</dt>
+<dd>Prepend <tt class="docutils literal"><span class="pre">/usr/local/bin</span></tt> to the PATH environment variable (see above).</dd>
+</dl>
+<p>Please also check the <a class="reference internal" href="Troubleshooting.html"><em>installation troubleshooting</em></a>
+page for common problems not specific to Mac installation and if you are still
+stuck feel free to ask for help on the mailing list.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

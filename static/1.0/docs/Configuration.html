@@ -1,0 +1,736 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears Configuration &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Creating Big Applications" href="CreatingBigApplications.html" />
+    <link rel="prev" title="Starting Up The Server" href="GettingStarted/Server.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="CreatingBigApplications.html" title="Creating Big Applications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GettingStarted/Server.html" title="Starting Up The Server"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">TurboGears Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-layout">Configuration Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-syntax-and-sections">Configuration Syntax and Sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#retrieving-config-variables-from-your-application">Retrieving Config Variables From Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-config-variables-within-the-template">Accessing Config Variables Within the Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cherrypy-configuration-reference">CherryPy Configuration Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#turbogears-dev-cfg-and-prod-cfg-configuration-reference">TurboGears <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> Configuration Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#turbogears-app-cfg-configuration-reference">Turbogears <tt class="docutils literal"><span class="pre">app.cfg</span></tt> Configuration Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visit-and-identity-configuration-reference">Visit and Identity Configuration Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#visit">Visit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#identity">Identity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#provider">Provider</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-configuration">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id3">TurboGears Configuration</a><a class="headerlink" href="#turbogears-configuration" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-configuration" id="id3">TurboGears Configuration</a><ul>
+<li><a class="reference internal" href="#configuration-layout" id="id4">Configuration Layout</a></li>
+<li><a class="reference internal" href="#configuration-syntax-and-sections" id="id5">Configuration Syntax and Sections</a></li>
+<li><a class="reference internal" href="#retrieving-config-variables-from-your-application" id="id6">Retrieving Config Variables From Your Application</a></li>
+<li><a class="reference internal" href="#accessing-config-variables-within-the-template" id="id7">Accessing Config Variables Within the Template</a></li>
+<li><a class="reference internal" href="#cherrypy-configuration-reference" id="id8">CherryPy Configuration Reference</a></li>
+<li><a class="reference internal" href="#turbogears-dev-cfg-and-prod-cfg-configuration-reference" id="id9">TurboGears <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> Configuration Reference</a></li>
+<li><a class="reference internal" href="#turbogears-app-cfg-configuration-reference" id="id10">Turbogears <tt class="docutils literal"><span class="pre">app.cfg</span></tt> Configuration Reference</a></li>
+<li><a class="reference internal" href="#visit-and-identity-configuration-reference" id="id11">Visit and Identity Configuration Reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>TurboGears is designed to get running with a minimum of trouble and very little
+external configuration. For many applications, the only thing that will need to
+change from the basic <tt class="docutils literal"><span class="pre">tg</span> <span class="pre">quickstart</span></tt> configuration is the location of the
+database.</p>
+<div class="section" id="configuration-layout">
+<h2><a class="toc-backref" href="#id4">Configuration Layout</a><a class="headerlink" href="#configuration-layout" title="Permalink to this headline">¶</a></h2>
+<p>A quickstarted application comes with five configuration files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">dev.cfg</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">sample-prod.cfg</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">test.cfg</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&lt;package_name&gt;/config/app.cfg</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">&lt;package_name&gt;/config/log.cfg</span></tt></li>
+</ul>
+</div></blockquote>
+<p>The <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> file is the deployment configuration used while you are
+developing your application.</p>
+<p>The <tt class="docutils literal"><span class="pre">sample-prod.cfg</span></tt> contains appropriate settings for a &#8220;real&#8221; deployment.
+We recommend that you rename this file to <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> and tweak the settings
+before deploying an application.</p>
+<p>The <tt class="docutils literal"><span class="pre">test.cfg</span></tt> file is used when you run the test suite of your project.
+See <a class="reference internal" href="Testing.html"><em>Testing Your Application</em></a> for more information about test suites.</p>
+<p>Of these three files, only one will be used at a time, depending on how you
+<a class="reference internal" href="GettingStarted/Server.html"><em>start the server</em></a>, that&#8217;s why they are located
+in the top-directory and not in your application&#8217;s package.</p>
+<p>The <tt class="docutils literal"><span class="pre">app.cfg</span></tt> holds options that are always the same regardless of the
+environment your program runs in. While <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> are mostly
+concerned with database config strings, ports, and auto-reloading, <tt class="docutils literal"><span class="pre">app.cfg</span></tt>
+contains encoding, output, and identity settings.</p>
+<p>The <tt class="docutils literal"><span class="pre">log.cfg</span></tt> holds logging configuration that is independent of of the environment
+your program runs in, e.g. different log handlers and log formatting profiles.
+Environment-specific logging configuration should go into <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> or <tt class="docutils literal"><span class="pre">prod.cfg</span></tt>.
+See the <a class="reference internal" href="LoggingSystem.html"><em>logging documentation</em></a> for more information on how logging works.</p>
+<p>Running the server using <tt class="docutils literal"><span class="pre">start-*appname*.py</span></tt> will use the <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> config
+file by default. You can change this by passing the path to another config file
+as a command line parameter:</p>
+<div class="highlight-python"><pre>python start-*appname*.py prod.cfg</pre>
+</div>
+</div>
+<div class="section" id="configuration-syntax-and-sections">
+<h2><a class="toc-backref" href="#id5">Configuration Syntax and Sections</a><a class="headerlink" href="#configuration-syntax-and-sections" title="Permalink to this headline">¶</a></h2>
+<p>The syntax is an extended version of the standard INI/ConfigParser format.
+The main extensions are an increased importance of sections and the addition
+some pre-defined variables for string interpolation, to reduce the number of
+hard coded file paths. If want to know more about this format, you can
+refer to the <a class="reference external" href="http://www.voidspace.org.uk/python/configobj.html">ConfigObj</a> documentation.</p>
+<p>The <tt class="docutils literal"><span class="pre">[global]</span></tt> section of the config file is intended for settings that apply
+server-wide and at start-up time. CherryPy also uses path-based config sections
+that are for setting filters and settings that apply only to one part of your
+site. The example below, will set <tt class="docutils literal"><span class="pre">tg.allow_json</span></tt> <em>only</em> for the
+<tt class="docutils literal"><span class="pre">/admin</span></tt> part of the site.</p>
+<div class="highlight-python"><pre>[/admin]
+tg.allow_json = True</pre>
+</div>
+<p>Like with the ConfigParser format, you can also use string interpolation, to refer
+to values of one configuration setting in the value of another setting within the
+config file. See the ConfigObj documentation on <a class="reference external" href="http://www.voidspace.org.uk/python/configobj.html#string-interpolation">string interpolation</a> for more
+information on this.</p>
+<p>There are three pre-defined variables for string interpolation. The first is
+<tt class="docutils literal"><span class="pre">current_dir_uri</span></tt>, which is the absolute file system path to the current working
+directory.  This is primarily used in the default sqlite&#8217;s dburi but can be used
+elsewhere:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&quot;sqlite://</span><span class="si">%(current_dir_uri)s</span><span class="s">/devdata.sqlite&quot;</span>
+</pre></div>
+</div>
+<p>The second is <tt class="docutils literal"><span class="pre">package_dir</span></tt>, the absolute file system path to the package containing
+the configuration of your application (the location of the <tt class="docutils literal"><span class="pre">config</span></tt> directory and
+the <tt class="docutils literal"><span class="pre">controllers.py</span></tt> module in a quickstarted project). It is used primarily in
+<tt class="docutils literal"><span class="pre">app.cfg</span></tt> to get a working filepath to the static content when the project is moved
+to a different server. Then there is also <tt class="docutils literal"><span class="pre">top_level_dir</span></tt> which is the directory of
+the top level package of your application (which is usually the same as <tt class="docutils literal"><span class="pre">package_dir</span></tt>
+unless your application is a subpackage of a larger package).</p>
+</div>
+<div class="section" id="retrieving-config-variables-from-your-application">
+<h2><a class="toc-backref" href="#id6">Retrieving Config Variables From Your Application</a><a class="headerlink" href="#retrieving-config-variables-from-your-application" title="Permalink to this headline">¶</a></h2>
+<p>Retrieving values is done using the <tt class="docutils literal"><span class="pre">turbogears.config.get('key'[,default])</span></tt> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">config</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;sqlobject.dburi&#39;</span><span class="p">,</span><span class="s">&#39;sqlite:///:memory:&#39;</span><span class="p">)</span> <span class="c">#second value is optional default value</span>
+<span class="go">&#39;sqlite:///:memory:&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-config-variables-within-the-template">
+<h2><a class="toc-backref" href="#id7">Accessing Config Variables Within the Template</a><a class="headerlink" href="#accessing-config-variables-within-the-template" title="Permalink to this headline">¶</a></h2>
+<p>In your templates the <tt class="docutils literal"><span class="pre">turbogears.config.get</span></tt> function is available as <tt class="docutils literal"><span class="pre">tg-config</span></tt>,
+so you can do something like this:</p>
+<div class="highlight-python"><pre>${tg.config('myproject.mysetting', 'default')}</pre>
+</div>
+<p>Alternatively, you can pass the <tt class="docutils literal"><span class="pre">config</span></tt> object as part of your template dictionary:</p>
+<div class="highlight-python"><pre>from turbogears import config
+
+    #...
+    def ...(self, ...)
+        return dict(config=config)</pre>
+</div>
+<p>Or, if you prefer, you can import <tt class="docutils literal"><span class="pre">config</span></tt> in your Kid template:</p>
+<div class="highlight-python"><pre>&lt;?python from turbogears import config ?&gt;</pre>
+</div>
+<p>In both cases, the syntax for retrieving configuration settings is the same as in your
+controller code.</p>
+</div>
+<div class="section" id="cherrypy-configuration-reference">
+<h2><a class="toc-backref" href="#id8">CherryPy Configuration Reference</a><a class="headerlink" href="#cherrypy-configuration-reference" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears uses CherryPy&#8217;s configuration system. This document doesn&#8217;t cover
+the CherryPy settings and conventions in detail, but here is a short list of
+the most common options.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">autoreload.package</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;*packagename*&quot;</span></tt></dt>
+<dd>The Cherrypy&#8217;s autoreload functionality takes care of restarting the server
+if <em>any</em> of the modules that have been imported changes. This is very handy
+for development but could cause huge resources usage in production since it
+requires checking quite a few files and is not compatible with zipped Egg
+files. TurboGears adds this config parameter to specify one your appplication
+base package.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.environment</span></tt></dt>
+<dd>Can be either <tt class="docutils literal"><span class="pre">&quot;development&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;production</span></tt>. The <tt class="docutils literal"><span class="pre">development</span></tt>
+option enables a variety of error reporting tools as well as auto-reloading
+while <tt class="docutils literal"><span class="pre">production</span></tt> turns them all off in the interest of performance. See
+See item <a class="reference external" href="http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3471036">1.3.2.1. server.environment</a> in the CherryPy docs for details.</dd>
+</dl>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">server.log_file</span></tt></dt>
+<dd>Path to the log file, if this is empty, no logging to disk takes place.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.log_to_screen</span></tt></dt>
+<dd>Sends the server log to screen. Keep it off in production for improved
+performance.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.socket_file</span></tt>  - <tt class="docutils literal"><span class="pre">&quot;&quot;</span></tt></dt>
+<dd>For when you&#8217;re proxying CherryPy locally and want to listen on a named pipe.
+If you use this, you <strong>must</strong> also set <tt class="docutils literal"><span class="pre">server.socket_port</span></tt> to <tt class="docutils literal"><span class="pre">None</span></tt>,
+leaving <tt class="docutils literal"><span class="pre">server.socket_port</span></tt> unset will not work.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.socket_host</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;&quot;</span></tt></dt>
+<dd>This setting binds CherryPy to a particular ip address. This isn&#8217;t usually
+necessary, as CherryPy will listen for any incoming connections by default.
+The exception is when your application is running on a system which has both
+a IPv4 and IPv6 network stack. By default the CherryPy server will only listen
+on the IPv6 interfaces. Normally, to listen on all IPv4 interfaces, you would
+set <tt class="docutils literal"><span class="pre">server.socket_host</span> <span class="pre">=</span> <span class="pre">'0.0.0.0'</span></tt> but unfortunately, due to a bug in
+CherryPy &lt;= 3.0, this causes an error on some systems. The workaround is to
+set <tt class="docutils literal"><span class="pre">server.socket_host</span></tt> to a specific interface address and run your
+application behind a reverse proxy that listens on all interfaces and forwards
+requests to your application.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.socket_port</span></tt> &#8211; <tt class="docutils literal"><span class="pre">8080</span></tt></dt>
+<dd>CherryPy listens on this port for incoming HTTP connections.</dd>
+<dt><tt class="docutils literal"><span class="pre">server.webpath</span></tt></dt>
+<dd><p class="first">Specifies the root of the site for use when generating URLs. Use this if your
+whole TurboGears instance is not at the root of your webserver. So if your
+application was located at <tt class="docutils literal"><span class="pre">/turbogears/my_app</span></tt> rather than <tt class="docutils literal"><span class="pre">/my_app</span></tt>,
+you would set <tt class="docutils literal"><span class="pre">server.webpath</span> <span class="pre">=</span> <span class="pre">&quot;/turbogears/&quot;</span></tt>.</p>
+<p class="last"><strong>Note</strong>: Despite the name, this option is a TurboGears extension to CherryPy
+and is used with the <a class="reference internal" href="GettingStarted/URLs.html"><em>tg.url() function</em></a>.</p>
+</dd>
+</dl>
+<p>For a more complete treatment of CherryPy options, we defer you to the CherryPy
+site, specifically section 1.3 <a class="reference external" href="http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3467720">an overview of the configuration system</a> and
+section 1.3.2 <a class="reference external" href="http://www.cherrypy.org/chrome/common/2.2/docs/book/chunk/ch03.html#id3440093">reference of some configuration options</a>.</p>
+</div>
+<div class="section" id="turbogears-dev-cfg-and-prod-cfg-configuration-reference">
+<h2><a class="toc-backref" href="#id9">TurboGears <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and <tt class="docutils literal"><span class="pre">prod.cfg</span></tt> Configuration Reference</a><a class="headerlink" href="#turbogears-dev-cfg-and-prod-cfg-configuration-reference" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">sqlobject.dburi</span></tt></dt>
+<dd><p class="first">The SQLObject URI that identifies the database to use for this application.
+The general form of the URI is
+<tt class="docutils literal"><span class="pre">databasetype://username:password&#64;hostname:port/databasename</span></tt>.</p>
+<p>If you put <tt class="docutils literal"><span class="pre">:doc:`/notrans`</span></tt> in front of the URI, the automatic database
+transactions will be turned off.</p>
+<p>Note that for <strong>sqlite</strong>, the format is more like that of a <tt class="docutils literal"><span class="pre">file://</span> <span class="pre">URL:</span>
+<span class="pre">sqlite:///absolute_path_to_file</span></tt>.</p>
+<p>Also note that on Windows systems, sqlite used | instead of : As of
+Turbogears 0.9a6, it is smart enough to undestand both ways. For example:
+<tt class="docutils literal"><span class="pre">sqlite:///d|databases/foo.db</span></tt> and <tt class="docutils literal"><span class="pre">sqlite:///d:databases/foo.db</span></tt> are
+both valid points to <tt class="docutils literal"><span class="pre">D:\databases\foo.db</span></tt>.</p>
+<p class="last">Note to <strong>MySQL</strong> users: If you use a different socket than
+<tt class="docutils literal"><span class="pre">/tmp/mysql.sock</span></tt>, you may specify which socket to use by adding a
+<tt class="docutils literal"><span class="pre">unix_socket</span></tt> argument to the dburi. i.e.,
+<tt class="docutils literal"><span class="pre">mysql://user:pass&#64;host:port/db?unix_socket=/path/to/mysql.sock</span></tt>.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.bonjour</span></tt></dt>
+<dd>This setting enables/disables <a class="reference internal" href="ZeroConfSupport.html"><em>Zeroconf</em></a> (aka Bonjour)
+support for the server. You can set this to the name under which your application
+should appear in the Zeroconf service list or to a boolean false value (empty
+string, <tt class="docutils literal"><span class="pre">None</span></tt>, <tt class="docutils literal"><span class="pre">False</span></tt>, <tt class="docutils literal"><span class="pre">0</span></tt>) to disable registering the TurboGears
+server with zeroconf on startup. If it is not set, the server will be
+registered with Zeroconf only if <tt class="docutils literal"><span class="pre">server.environment</span></tt> is set to
+<tt class="docutils literal"><span class="pre">&quot;development&quot;</span></tt> and the name will be your application&#8217;s top-level
+package name.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.fancy_exception</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>When <tt class="docutils literal"><span class="pre">True</span></tt>, exceptions will present an extended traceback with both
+<tt class="docutils literal"><span class="pre">locals()</span></tt> and an <tt class="docutils literal"><span class="pre">eval()</span></tt> input provided for each level of the stack. This
+is disabled by default because it allows the person viewing the trace to
+<strong>remotely evaluate arbitrary code</strong> on your server. Enable with due care.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.strict_parameters</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>When <tt class="docutils literal"><span class="pre">True</span></tt>, TurboGears raises an error when a controller is passed an
+unexpected parameter. This is useful because it helps you catch typos in your
+code. In a production environment, mistyping a url or passing a bad parameter
+in a query string returns a 404 or 200, respectively.</dd>
+</dl>
+</div>
+<div class="section" id="turbogears-app-cfg-configuration-reference">
+<h2><a class="toc-backref" href="#id10">Turbogears <tt class="docutils literal"><span class="pre">app.cfg</span></tt> Configuration Reference</a><a class="headerlink" href="#turbogears-app-cfg-configuration-reference" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">kid.outputformat</span></tt></dt>
+<dd>Sets the default output format used when rendering Kid templates. By default,
+TurboGears will tell Kid to produce HTML files, which is optimum for most web
+applications. If your application needs to output XHTML or XML, you can set
+that here. There is <a class="reference external" href="http://kid-templating.org/guide.html#common-output-methods">more information about the available output methods</a>.</dd>
+</dl>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">kid.encoding</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;utf-8&quot;</span></tt></dt>
+<dd>Sets the output encoding for kid templates.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.allow_json</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>When this is set to <tt class="docutils literal"><span class="pre">False</span></tt>, calling a function with <tt class="docutils literal"><span class="pre">?tg_format=json</span></tt>
+will not work by it&#8217;s own. You need to set <tt class="docutils literal"><span class="pre">allow_json</span></tt> to <tt class="docutils literal"><span class="pre">True</span></tt> in the
+<tt class="docutils literal"><span class="pre">expose()</span></tt> decorator or set the <tt class="docutils literal"><span class="pre">default_format='json'</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.content_type</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;text/html&quot;</span></tt></dt>
+<dd>This is the IETF mime-type of the template output. The most common reason to
+change this is to add an encoding, e.g.
+<tt class="docutils literal"><span class="pre">tg.content_type</span> <span class="pre">=</span> <span class="pre">&quot;text/html;</span> <span class="pre">encoding=utf-8&quot;</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.defaultview</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;kid&quot;</span></tt></dt>
+<dd><p class="first">Determines which template engine to use by default. If this is not set, Kid
+will be used to render the templates you specify in your controller. The
+template engine is identified by the file extension used.</p>
+<p class="last">See the <a class="reference internal" href="AlternativeTemplating.html"><em>alternative templating</em></a> section for an
+overview of non-Kid options.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.ignore_parameters</span></tt> &#8211; <tt class="docutils literal"><span class="pre">[]</span></tt></dt>
+<dd>List of names of parameters which shall not be passed to the controllers
+when <tt class="docutils literal"><span class="pre">tg.strict_parameters</span></tt> is set (besides <tt class="docutils literal"><span class="pre">tg_random</span></tt>, <tt class="docutils literal"><span class="pre">tg_format</span></tt>
+which are never passed anyway). For instance, since the <tt class="docutils literal"><span class="pre">ext.js</span></tt> JavaScript
+library uses the parameter name <tt class="docutils literal"><span class="pre">_dc</span></tt> (&#8220;don&#8217;t care&#8221;) to avoid caching problems,
+similar to how <tt class="docutils literal"><span class="pre">tg_random</span></tt> is used, you could set this to <tt class="docutils literal"><span class="pre">['_dc']</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.include_widgets</span></tt> &#8211; <tt class="docutils literal"><span class="pre">[]</span></tt></dt>
+<dd><p class="first">This option automatically includes the listed widgets in all pages on the
+site. This is primarily useful for javascript libraries that have been
+packaged as widgets, such as the <tt class="docutils literal"><span class="pre">tg.mochikit</span></tt>.</p>
+<p class="last"><strong>Note:</strong> This option has replaced the <tt class="docutils literal"><span class="pre">tg.mochikit_all</span></tt> option from older
+TurboGears releases. To achieve the same effect, you&#8217;ll want to set
+<tt class="docutils literal"><span class="pre">tg.include_widgets</span> <span class="pre">=</span> <span class="pre">['turbogears.mochikit']</span></tt>.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.mochikit_suppress</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>Setting this to <tt class="docutils literal"><span class="pre">True</span></tt> will prevent the inclusion of the MochiKit version
+1.3.1, that comes shipped with TurboGears, in the (X)HTML template output.
+This allows to include your own custom mochikit versions.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.scheduler</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>The TurboGears <a class="reference internal" href="Scheduler.html"><em>Scheduler</em></a> thread/process will be started at server startup
+if this is set to <tt class="docutils literal"><span class="pre">True</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">tg.sitetemplate</span></tt></dt>
+<dd>TurboGears applications that are intended to be reused should make sure that
+every page template ultimately extends sitetemplate. This config variable
+lets you set which template is used as the sitetemplate. The value should be
+of the form <tt class="docutils literal"><span class="pre">*packagename*.templates.templatename</span></tt>, including the quotes.</dd>
+</dl>
+</div>
+<div class="section" id="visit-and-identity-configuration-reference">
+<h2><a class="toc-backref" href="#id11">Visit and Identity Configuration Reference</a><a class="headerlink" href="#visit-and-identity-configuration-reference" title="Permalink to this headline">¶</a></h2>
+<p>Answering &#8220;yes&#8221; to the identity prompt during <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">quickstart</span></tt> will fill
+in your model with a number of tables and will add the following options to
+your <tt class="docutils literal"><span class="pre">app.cfg</span></tt>:</p>
+<div class="section" id="visit">
+<h3>Visit<a class="headerlink" href="#visit" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.domain</span></tt> &#8211; <tt class="docutils literal"><span class="pre">None</span></tt></dt>
+<dd><p class="first">Domain name to specify when setting the cookie (must begin with a <cite>.</cite> (dot)
+according to RFC 2109). This is useful when your computer is at
+<tt class="docutils literal"><span class="pre">spam.eggs.foo.com</span></tt> and you want to set a cookie for your whole <tt class="docutils literal"><span class="pre">foo.com</span></tt>
+domain for use in other applications.</p>
+<p class="last">The default (None) should work for most cases and will default to the machine
+to which the request was made. <strong>Note:</strong> <tt class="docutils literal"><span class="pre">localhost</span></tt> is NEVER a valid value
+and will <strong>NOT</strong> work.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.name</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;tg-visit&quot;</span></tt></dt>
+<dd>The name of the cookie with the visit key to transmit to the visitor&#8217;s browser.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.path</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;/&quot;</span></tt></dt>
+<dd>Specific path for the cookie, the default puts your cookie in scope for the
+entire site.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.cookie.permanent</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>Set to true if the visit cookie shall be a permanent cookie with a <tt class="docutils literal"><span class="pre">max-age</span></tt>
+attribute calculated from <tt class="docutils literal"><span class="pre">visit.timeout</span></tt>. Otherwise, <tt class="docutils literal"><span class="pre">max-age</span></tt> will not be
+set, resulting in a session cookie that will be discarded when the browser is closed.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.form.name</span></tt> &#8211; <tt class="docutils literal"><span class="pre">tg_visit</span></tt></dt>
+<dd>The name of the request parameter from which the visit key may be retrieved
+when <tt class="docutils literal"><span class="pre">visit.source</span></tt> includes <tt class="docutils literal"><span class="pre">'form'</span></tt>). The name MUST NOT contain dashes
+or dots or it will break the request parameters decoding by the
+<tt class="docutils literal"><span class="pre">NestedVariablesFilter</span></tt>. New in 1.0.6.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.manager</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;sqlobject&quot;</span></tt></dt>
+<dd>The name of the VisitManager plugin to use for visitor tracking.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.on</span></tt> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt></dt>
+<dd>Enables visit tracking. This means that each visit to your application will
+be assigned a unique visit ID tracked via a cookie sent to the visitor&#8217;s
+browser.</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.soprovider.model</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;*appname*.model.Visit&quot;</span></tt></dt>
+<dd>Database class to use for visit tracking</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.source</span></tt> &#8211; <tt class="docutils literal"><span class="pre">cookie</span></tt></dt>
+<dd><p class="first">Where to look for the key of an existing visit in the request.</p>
+<p class="last">This should be a comma-separated list of the possible values:
+<tt class="docutils literal"><span class="pre">'cookie'</span></tt>, <tt class="docutils literal"><span class="pre">'form'</span></tt>. The given methods will be tried one-after-another
+in the given order until a valid visit key is found or the list is exhausted.
+By default only use the visit key found in a session cookie.  New in 1.0.6.</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">visit.timeout</span></tt> &#8211; <tt class="docutils literal"><span class="pre">20</span></tt></dt>
+<dd>Number of minutes a visit may be idle before it expires.</dd>
+</dl>
+</div>
+<div class="section" id="identity">
+<span id="id1"></span><h3>Identity<a class="headerlink" href="#identity" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">identity.failure_url</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;/login&quot;</span></tt></dt>
+<dd>URL to which CherryPy will internally redirect when an access control check
+fails. If Identity management is turned on, a value for this option <strong>must</strong>
+be specified. The value for this setting normally is a string with a URL but
+it can also be set to a callable which should accept one positional argument
+(a list of identity errors) and return the URL to redirect to as a string.
+See the <a class="reference internal" href="Identity/Recipes.html"><em>identity recipes</em></a> page for more information
+on using this feature.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.force_external_redirect</span></tt> &#8211; <tt class="docutils literal"><span class="pre">False</span></tt></dt>
+<dd>If this is set to True, the identity framework will do an external redirect,
+when an <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt> exception occurs, instead of an internal one,
+i.e. it will redirect the browser to the URL given by <tt class="docutils literal"><span class="pre">identity.failure_url</span></tt>.
+This is useful if the failure URL is set to an <tt class="docutils literal"><span class="pre">https://</span></tt> URL (for example
+to handle logins over an HTTPS connection, but keep the rest of the site on
+plain HTTP), since an internal redirect would not work in this case.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.form.user_name</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;user_name&quot;</span></tt></dt>
+<dd>See below.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.form.password</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;password&quot;</span></tt></dt>
+<dd>See below.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.form.submit</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;login&quot;</span></tt></dt>
+<dd>The names of the fields on the login form containing the visitor&#8217;s user name
+and password (as recorded in the applications&#8217; data model object set by the
+<tt class="docutils literal"><span class="pre">identity.*provider.model.user</span></tt> setting explained below under <a class="reference internal" href="#provider"><em>Provider</em></a>).
+In addition, the name of the submit button is specified simply so its value
+may be stripped out from the request data prior to passing it to the target
+controller method.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.on</span></tt> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt></dt>
+<dd>Enables usage of the <tt class="docutils literal"><span class="pre">turbogears.identity</span></tt> module.</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.source</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;form,http_auth,visit&quot;</span></tt></dt>
+<dd><p class="first">Comma-separated list of sources the identity should provider consider
+when determining the identity associated with a request.
+The given methods will be tried one-after-another in the given order
+until a valid identity is found or the list is exhausted.</p>
+<p>Available options:</p>
+<ul class="last simple">
+<li><tt class="docutils literal"><span class="pre">form</span></tt> - Inspect the form variables passed in the request data to pull
+out identity information. The request data must have fields for
+<tt class="docutils literal"><span class="pre">user_name</span></tt>, <tt class="docutils literal"><span class="pre">password</span></tt>, and a <tt class="docutils literal"><span class="pre">login</span></tt> submit button.</li>
+<li><tt class="docutils literal"><span class="pre">http_auth</span></tt> - Tries to get the identity information from the HTTP
+<tt class="docutils literal"><span class="pre">Authorization</span></tt> header. Only Basic Auth is handled at the moment.</li>
+<li><tt class="docutils literal"><span class="pre">visit</span></tt> - Loads the identity from the visit records.</li>
+</ul>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.custom_encryption</span></tt> &#8211; <tt class="docutils literal"><span class="pre">None</span></tt></dt>
+<dd><p class="first">When <tt class="docutils literal"><span class="pre">identity.*provider.encryption_algorithm</span></tt> (see below under <a class="reference internal" href="#provider"><em>Provider</em></a>)
+is set to <tt class="docutils literal"><span class="pre">&quot;custom&quot;</span></tt> you can provide a custom password encryption function
+through this setting. The value should be the full name of the callable
+(including the module (and possibly class) name) in dotted-path notation. The
+callable should accept the password to be encrypted as a string (utf-8 encoded)
+and return a unicode string with the encrypted password. Example:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">identity</span><span class="o">.</span><span class="n">custom_encryption</span> <span class="o">=</span> <span class="s">&#39;mypkg.utils.encrypt_password&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="provider">
+<span id="id2"></span><h3>Provider<a class="headerlink" href="#provider" title="Permalink to this headline">¶</a></h3>
+<p>These options are only applicable when using one of the default identity
+provider plugins. TurboGears supplies both a SQLObject and a SQLAlchemy
+identity provider, they are named <tt class="docutils literal"><span class="pre">soprovider</span></tt> and <tt class="docutils literal"><span class="pre">saprovider</span></tt>
+respectively and take the same options.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">identity.*provider.encryption_algorithm</span></tt> &#8211; <tt class="docutils literal"><span class="pre">None</span></tt></dt>
+<dd><p class="first">The password encryption algorithm used when comparing passwords against
+what&#8217;s stored in the database. Valid values are <tt class="docutils literal"><span class="pre">md5</span></tt> or <tt class="docutils literal"><span class="pre">sha1</span></tt> or <tt class="docutils literal"><span class="pre">custom</span></tt>.</p>
+<p>If you do not specify an encryption algorithm, passwords are expected to be clear
+text. If the value is <tt class="docutils literal"><span class="pre">custom</span></tt> you must also set the the
+<tt class="docutils literal"><span class="pre">identity.custom.encryption</span></tt> setting (see above under <a class="reference internal" href="#identity"><em>Identity</em></a>) to the name
+of an appropriate callable in dotted-path notation.</p>
+<p class="last">If this is set to a valid encryption algorithm the TurboGears identity provider
+will encrypt passwords supplied as part of your login form. If you set the password
+through the password property, like <tt class="docutils literal"><span class="pre">my_user.password</span> <span class="pre">=</span> <span class="pre">'secret'</span></tt> the password
+will be saved in encrypted form in the database, provided identity is up and running,
+or you have loaded the configuration specifying what encryption to use (the latter may
+be necessary in situations where identity may not yet be running, like tests).</p>
+</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.*provider.model.group</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;*appname*.model.Group&quot;</span></tt></dt>
+<dd>Database class for the provider&#8217;s group model</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.*provider.model.permission</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;*appname*.model.Permission&quot;</span></tt></dt>
+<dd>Database class for the provider&#8217;s permission model</dd>
+<dt><tt class="docutils literal"><span class="pre">identity.*provider.model.user</span></tt> &#8211; <tt class="docutils literal"><span class="pre">&quot;*appname*.model.User&quot;</span></tt></dt>
+<dd>Database class for the provider&#8217;s user model</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+SQLObject Debugging
+===================
+
+SQLObject has a debug mode
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In your config file where you have your database connection string add
+``?debug=True`` to it and in the shell you will see the SQL flow, for example::
+
+    mysql://host/database?debug=True
+
+Add database parameters
+-----------------------
+
+Parameters are::
+
+    debug (default: False)
+    debugOutput (default: False)
+    cache (default: True)
+    autoCommit (default: True)
+    debugThreading (default: False)
+    logger (default: None)
+    loglevel (default: None)
+
+If you set ``debugOutput`` then you will also see the return values of the
+queries. If you set ``debugThreading`` then the name of the thread that is
+executing the query will also be shown.

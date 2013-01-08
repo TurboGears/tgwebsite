@@ -1,0 +1,73 @@
+.. index:: Django
+
+Lots of people use Django templates as part of the Django Web Framework. You can use Django templates as part of your TurboGears project with this step by step guide:
+
+Step 0. Install TurboDjango By SetupTools
+-----------------------------------------
+
+TurboDjango Template Plugin
+============================
+
+TurboDjango is the TurboGears "Django template" plugin which is developed by Fred Lin, the project is hosted at SourceForge_.
+
+.. _SourceForge: http://sourceforge.net/projects/tgwidgets
+
+To get Django templates to work with TurboGears, first install the plugin by running this command on your console::
+
+    $ easy_install TurboDjango
+
+And be sure that you already have Django installed.
+
+Alternative:TurboJinja Template Plugin
+======================================
+
+You can use the alternative TurboJinja plugin, which allows you to use "Django template"-like syntax without having to install Django. This project is hosted at SourceForge_ as well.
+
+Install the plugin by running this command on your console::
+
+    $ easy_install TurboJinja
+
+The Jinja templating plugin will be installed automatically.
+
+The following guide works for both Template Plugins.
+
+
+Step 1. Quickstart
+------------------
+
+Use the ``tg-admin`` command to create a new project ('``turbodj``' in this example)::
+
+    $ tg-admin quickstart turbodj
+
+
+Step 2. Edit Controller
+-----------------------
+
+Enter your ``turbodj`` project directory, edit ''``/turbodj/controller.py``'', and add the following method to the "Root" class::
+
+   @expose(template = "django:turbodj.templates.djpage")
+   def page(self):
+       return dict(name="TurboGears")
+
+In the expose decorator we use the ``django:`` template scheme, with "djpage" as the django template filename (under the templates directory).
+
+Step 3. Edit Template
+---------------------
+
+Edit ``/turbodj/templates/djpage.html``::
+
+      <h1>Hello, {{name}}</h1>
+
+The template has an "html" file suffix.
+
+Step 4. Test if it works
+------------------------
+
+In turbodj directory, start the development server by running ''start-turbodj'' script::
+
+     $ start-turbodj
+
+Open the browser and enter the url: http://localhost:8080/page. You'll see:
+
+    **Hello, TurboGears**
+

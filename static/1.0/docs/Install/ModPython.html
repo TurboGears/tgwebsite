@@ -1,0 +1,330 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deployment behind Apache 2 + mod_python &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Deploying TurboGears" href="Deployment.html" />
+    <link rel="next" title="Deploying TurboGears on LightTPD" href="LightTPD.html" />
+    <link rel="prev" title="Running TurboGears behind Nginx" href="BehindNginx.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="LightTPD.html" title="Deploying TurboGears on LightTPD"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="BehindNginx.html" title="Running TurboGears behind Nginx"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Deployment.html" accesskey="U">Deploying TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deployment behind Apache 2 + mod_python</a><ul>
+<li><a class="reference internal" href="#the-gateway-script">The Gateway Script</a></li>
+<li><a class="reference internal" href="#the-launcher-script">The Launcher Script</a></li>
+<li><a class="reference internal" href="#install-your-application">Install Your Application</a></li>
+<li><a class="reference internal" href="#apache-configuration">Apache Configuration</a></li>
+<li><a class="reference internal" href="#configuring-file-locations">Configuring File Locations</a><ul>
+<li><a class="reference internal" href="#windows-specific-info">Windows Specific Info</a></li>
+<li><a class="reference internal" href="#setting-the-egg-cache-directory">Setting the Egg Cache Directory</a></li>
+<li><a class="reference internal" href="#setting-the-application-log-file-paths">Setting the Application Log File Paths</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="BehindNginx.html"
+                        title="previous chapter">Running TurboGears behind Nginx</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="LightTPD.html"
+                        title="next chapter">Deploying TurboGears on LightTPD</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="deployment-behind-apache-2-mod-python">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Deployment behind Apache 2 + mod_python</a><a class="headerlink" href="#deployment-behind-apache-2-mod-python" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#deployment-behind-apache-2-mod-python" id="id1">Deployment behind Apache 2 + mod_python</a><ul>
+<li><a class="reference internal" href="#the-gateway-script" id="id2">The Gateway Script</a></li>
+<li><a class="reference internal" href="#the-launcher-script" id="id3">The Launcher Script</a></li>
+<li><a class="reference internal" href="#install-your-application" id="id4">Install Your Application</a></li>
+<li><a class="reference internal" href="#apache-configuration" id="id5">Apache Configuration</a></li>
+<li><a class="reference internal" href="#configuring-file-locations" id="id6">Configuring File Locations</a></li>
+<li><a class="reference internal" href="#conclusion" id="id7">Conclusion</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>A small note: It is reported that due to a bug in mod_python, version 3.2.7 or higher should be used with TurboGears.</p>
+<div class="section" id="the-gateway-script">
+<h2><a class="toc-backref" href="#id2">The Gateway Script</a><a class="headerlink" href="#the-gateway-script" title="Permalink to this headline">¶</a></h2>
+<p>First download the <a class="reference external" href="http://projects.amor.org/misc/svn/modpython_gateway.py">mod_python gateway</a> and move it to the <tt class="docutils literal"><span class="pre">&lt;Python_Root&gt;/site-packages</span></tt> directory.</p>
+<p>If the original site is down you can get a copy from here: <a class="reference download internal" href="../_downloads/modpython_gateway.py"><tt class="xref download docutils literal"><span class="pre">modpython_gateway.py</span></tt></a></p>
+</div>
+<div class="section" id="the-launcher-script">
+<h2><a class="toc-backref" href="#id3">The Launcher Script</a><a class="headerlink" href="#the-launcher-script" title="Permalink to this headline">¶</a></h2>
+<p>For an application named <em>myapp</em>, create a <tt class="docutils literal"><span class="pre">myapp_modpython.py</span></tt> script inside <tt class="docutils literal"><span class="pre">&lt;Python_Root&gt;/site-packages</span></tt> containing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="n">pkg_resources</span><span class="o">.</span><span class="n">require</span><span class="p">(</span><span class="s">&quot;TurboGears&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">cherrypy</span>
+<span class="kn">import</span> <span class="nn">turbogears</span>
+
+<span class="n">turbogears</span><span class="o">.</span><span class="n">update_config</span><span class="p">(</span><span class="n">modulename</span><span class="o">=</span><span class="s">&quot;myapp.config&quot;</span><span class="p">)</span>
+<span class="n">turbogears</span><span class="o">.</span><span class="n">update_config</span><span class="p">(</span><span class="n">configfile</span><span class="o">=</span><span class="s">&quot;/home/PUB/www/myserverorg/myapp/myapp.cfg&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">myapp.controllers</span> <span class="kn">import</span> <span class="n">Root</span>
+
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Root</span><span class="p">()</span>
+<span class="n">cherrypy</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">initOnly</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">serverClass</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">fixuphandler</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-your-application">
+<h2><a class="toc-backref" href="#id4">Install Your Application</a><a class="headerlink" href="#install-your-application" title="Permalink to this headline">¶</a></h2>
+<p>The application myapp needs to be installed in the python path for apache to be able to find it. It means that you need to do:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p>in your application root directory. For testing purposes you could also use &#8220;python setup.py develop&#8221; but this is really <em>NOT</em> the recommended way for production use.</p>
+<p>To know if your application is correctly installed on the machine you can fire-up a python shell and try the following statement:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">myapp</span>
+</pre></div>
+</div>
+<p>if it does not work, then your application is not in the python path and will not be visible to Apache. You MUST have you application importable this way in order to continue further.</p>
+<p>This script makes references to the production <tt class="docutils literal"><span class="pre">myapp.cfg</span></tt> file that as been put in a special directory for this purpose. This is because we want to control were apache can read/write files so we copied the sample-prod.cfg into this new path/name.</p>
+<p>Make <em>sure</em> autoreload is set to off in this configuration file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">autoreload</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+</div>
+<p>Apache needs to be aware of the new location we want it to serve.</p>
+<p>For this you need to have mod_python installed and loaded correctly into apache and then to amend the config file to add a &lt;Location&gt; directive:</p>
+</div>
+<div class="section" id="apache-configuration">
+<h2><a class="toc-backref" href="#id5">Apache Configuration</a><a class="headerlink" href="#apache-configuration" title="Permalink to this headline">¶</a></h2>
+<p>First we need to make apache aware of the new mod_python so we add theses lines in the LoadModule part of the apache.conf file:</p>
+<div class="highlight-python"><pre>LoadModule python_module modules/mod_python.so
+PythonOption mod_python.mutex_directory "logs/"
+PythonOption mod_python.mutex_locks 32</pre>
+</div>
+<p>At least on OpenBSD if you do not specify the last line (mutex_locks) you will get weird errors and the server will crash upon startup.</p>
+<p>Next, you&#8217;ll need to modify your <tt class="docutils literal"><span class="pre">apache.conf</span></tt> to take advantage of this launcher script:</p>
+<div class="highlight-python"><pre>&lt;Location /myapp&gt;
+    SetHandler python-program
+    PythonHandler modpython_gateway::handler
+    PythonOption wsgi.application cherrypy._cpwsgi::wsgiApp
+    PythonFixupHandler myapp_modpython
+    PythonDebug on
+&lt;/Location&gt;</pre>
+</div>
+<p>The PythonHandler directive refers to the script you downloaded into site-packages (modpython_gateway.py), and the PythonFixupHandler directive corresponds to the file you created in site-packages (myapp_modpython.py).</p>
+<p>Restart Apache and visit <tt class="docutils literal"><span class="pre">/myapp</span></tt> in a browser.</p>
+<p>Please note that since you use this special location you will have to make your app aware of this using:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">baseUrlFilter</span><span class="o">.</span><span class="n">on</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-file-locations">
+<h2><a class="toc-backref" href="#id6">Configuring File Locations</a><a class="headerlink" href="#configuring-file-locations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="windows-specific-info">
+<h3>Windows Specific Info<a class="headerlink" href="#windows-specific-info" title="Permalink to this headline">¶</a></h3>
+<p>If you are a Windows user you can skip this part because most of the time apache will have full write access to the directory it needs. If your are on any nix flavor you must read this part.</p>
+<p>For serious Windows administrators you should ensure that the apache daemon which is exposed to the world does not have read/write access every directory (and shared drives!) on your system.</p>
+<p>If you begin to lock down the apache process as you MUST do on a production machine then you should definitely follow these indications.</p>
+</div>
+<div class="section" id="setting-the-egg-cache-directory">
+<h3>Setting the Egg Cache Directory<a class="headerlink" href="#setting-the-egg-cache-directory" title="Permalink to this headline">¶</a></h3>
+<p>If you try to start apache right now you will receive an error like this one:</p>
+<div class="highlight-python"><pre>ExtractionError: Can't extract file(s) to egg cache
+
+The following error occurred while trying to extract file(s) to the
+Python egg cache:
+
+[Errno 13] Permission denied: '/var/www/.python-eggs'
+
+The Python egg cache directory is currently set to:
+
+  /var/www/.python-eggs
+
+Perhaps your account does not have write access to this directory?
+You can change the cache directory by setting the PYTHON_EGG_CACHE
+environment variable to point to an accessible directory.</pre>
+</div>
+<p>The problem comes from the fact that mod_python needs to unzip the required eggs before your application can use them, but for this the user under which apache runs needs to have write access to the specified directory.</p>
+<p>There are diverse solutions to solve this problem.</p>
+<ol class="arabic simple">
+<li>The first would be to give write access to the apache user to this /var/www/.python-eggs directory but this    REALLY is not a good idea.</li>
+<li>The second way is to install all eggs unzipped to avoid the need to have a directory writable by apache.</li>
+<li>The third way is to specify before running apache were the apache user should unzip the eggs.</li>
+</ol>
+<p>We won&#8217;t talk about the first solution because it is NOT an option in a production environment.</p>
+<p>The second option to install all TurboGears dependency by specifying that you want them unzipped can be realised doing so:</p>
+<div class="highlight-python"><pre>easy_install -UZ kid</pre>
+</div>
+<p>to make sure that kid is installed unzipped intead of inside a zipped egg. Then repeat the operation for each egg that you see in the <tt class="docutils literal"><span class="pre">&lt;Python_Root&gt;/site-packages</span></tt> directory that is used by TurboGears.</p>
+<p>The third option is a bit different since you will set an environment variable to be picked up by apache:</p>
+<div class="highlight-python"><pre>mkdir -p /tmp/turbogears-eggcache 2&gt;&amp;1 &gt;/dev/null
+export PYTHON_EGG_CACHE="/tmp/turbogears-eggcache"
+apachectl start</pre>
+</div>
+<p>it is your responsibility to correctly secure this /tmp/turbogears-eggcache directory to avoid any security holes.</p>
+<p>I have seen informations about using a PythonOption to set the PYTHON_EGG_CACHE but I have never been able to make it work. If someone succeeds in using a PythonOption directive inside the apache.conf file to set this variable I&#8217;ll be delighted to hear about it.</p>
+</div>
+<div class="section" id="setting-the-application-log-file-paths">
+<h3>Setting the Application Log File Paths<a class="headerlink" href="#setting-the-application-log-file-paths" title="Permalink to this headline">¶</a></h3>
+<p>The config file was also edited to add all the relevant logging directives that could not be loaded from the external <tt class="docutils literal"><span class="pre">log.cfg</span></tt> file the resulting config file is:</p>
+<div class="highlight-python"><pre>[global]
+sqlalchemy.dburi="mysql://tg:tg@localhost:3306/tg"
+sqlalchemy.echo = 0
+
+server.environment="production"
+#server.environment="development"
+autoreload.on = False
+
+server.thread_pool = 30
+
+server.webpath="/myapp"
+tg.strict_parameters = False
+
+# Set the following to True if you are deploying your app using mod_proxy,
+# mod_rewrite or any other mechanism that forwards requests to your app.
+base_url_filter.on = True
+#base_url_filter.use_x_forwarded_host = False
+
+[logging]
+
+[[handlers]]
+
+[[[access_out]]]
+# set the filename as the first argument below
+args="('/usr/local/apache2/logs/myapp.log',)"
+class='FileHandler'
+level='INFO'
+formatter='message_only'
+
+[[[debug_out]]]
+class='StreamHandler'
+level='DEBUG'
+args='(sys.stdout,)'
+formatter='full_content'
+
+[[[error_out]]]
+class='StreamHandler'
+level='ERROR'
+args='(sys.stdout,)'
+
+[[loggers]]
+[[[psfeed]]]
+level='ERROR'
+qualname='psfeed'
+handlers=['error_out']
+
+[[[access]]]
+level='INFO'
+qualname='turbogears.access'
+handlers=['access_out']
+propagate=0
+
+[[formatters]]
+[[[message_only]]]
+format='*(message)s'
+
+[[[full_content]]]
+format='*(asctime)s *(name)s *(levelname)s *(message)s'</pre>
+</div>
+<p>As you can see the log file was set to some directory were Apache can write easily.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id7">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>All this was tested on OpenBSD 4.0 using a self compiled apache 2.2.3 with mod_python-3.3.0b. It was not tested intensively since I use mod_proxy but at least was confirmed to basically _work_. I cannot comment about the database caching issues that some people seem to have encountered as I have not used this setup long enough.</p>
+<p>I have amended this document at the same time I used it to perform a &#8216;from-scratch&#8217; installation on Windows for rewriting this document. It works for me. For the record mod_python for windows can be downloaded from here: <a class="reference external" href="http://apache.fastorama.com/dist/httpd/modpython/win/3.3.0b/">mod_pythonwindows</a></p>
+<p>There have been reports about <a class="reference external" href="http://phirate.exorsus.net/wiki/doku.php?id=101_practical_turbogears_tips">problems with using SQLObject and mod_python together</a> in the past.
+I could not verify if the problem reported on that page still persists.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Please note that I do <strong>not</strong> use this setup on any machine because of performance issues.
+I have long since switched to mod_proxy for deployment. If someone has any idea why there is such a
+performance impact when running on mod_python, please add some information here.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

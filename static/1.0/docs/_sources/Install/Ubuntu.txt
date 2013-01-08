@@ -1,0 +1,191 @@
+.. index:: Ubuntu
+
+TurboGears Installation on Ubuntu Linux
+=======================================
+
+.. contents::
+    :depth: 1
+
+
+Ubuntu 7.04 "Feisty Fawn" and 8.04 "Gutsy Gibbon"
+-------------------------------------------------
+
+Since the release of version 1.0.2.2 TurboGears supports Python 2.5, which is the default Python version on
+Ubuntu >= 7.04, which makes installation much easier.
+
+To get started with TurboGears, you need to do following:
+
+1. Open up a command line prompt (*Applications -> Accessories -> Terminal*)
+2. Install essential packages to compile python modules::
+
+       $ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools python-profiler
+
+  On a clean installed Ubuntu, **gcc**, **libc6-dev**, **build-essential**, **python-dev** packages are
+  required for compiling Python C-extension packages. We provide binary eggs for Linux for all C-extensions
+  used, but when a new version of a C-extension is released, having the compiler chain installed
+  ensures that your install won't break.
+
+  **python-profiler** (located in multiverse) is recomended. See :doc:`Optimization </Optimization>`
+  for more infomation.
+
+  **python-setuptools** allows you to use the ``easy_install`` command to fetch and install
+  Python modules (including TurboGears extensions) from the Cheeseshop_ (aka Python Package index).
+
+3. **Download**  and run `tgsetup.py`_ to install TurboGears::
+
+    $ sudo python tgsetup.py
+
+  Make sure that the ``python`` command points to the version 2.5 of the Python interpreter.
+  Run ``python -V`` to check.
+
+  Alternatively, use ``easy_install``::
+
+    $ sudo easy_install --prefix /usr/local \
+        -f http://www.turbogears.org/download/index.html \
+        "TurboGears[standard]==1.0.X"
+
+  (Replace ``X`` with the minor version number of the TurboGears release you want to install.)
+
+  Also here, you should check that the ``easy_install`` command is using Python 2.5. You can replace
+  ``easy_install`` with ``easy_install-2.5`` to make sure.
+
+4. Test that your installation works by running ``tg-admin info``::
+
+   $ tg-admin info
+
+5. Database support
+
+  To use TurboGears properly, you'll also need a database to use with your model. Python 2.5 already
+  includes an interface to the SQLite 3 library (the ``sqlite3`` module), which works well with TurboGears.
+  Depending on which other databases you want to use, you can install one or more of the following packages:
+
+  * **python-psycopg2** -- for using TurboGears with PostgreSQL (universe repository)
+  * **python-mysqldb** -- for using TurboGears with MySQL
+  * **python-kinterbasdb** -- for using TurboGears with Firebird / Interbase (universe repository)
+
+  Other databases (Microsoft SQL Server, Oracle, Microsoft Access) can probably be used with the
+  **python-adodb** package from Universe. For more information on that subject, see the
+  `ADOdb for Python homepage`_.
+
+6. Install additional, optional packages (see below)
+
+
+Ubuntu 6.10 "Edgy Eft"
+----------------------
+
+To get started with TurboGears, you need to do following:
+
+1. Open up a command line prompt (*Applications -> Accessories -> Terminal*)
+2. Install essential packages to compile python modules::
+
+       $ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools python-profiler
+
+  On a clean installed Ubuntu, **gcc**, **libc6-dev**, **build-essential**, **python-dev** packages are
+  required for compiling Python C-extension packages. We provide binary eggs for Linux for all C-extensions
+  used, but when a new version of a C-extension is released, having the compiler chain installed
+  ensures that your install won't break.
+
+  **python-profiler** (located in multiverse) is recomended.  See :doc:`Optimization </Optimization>`
+  for more infomation. If you install this package, some Python 2.5 packages will be installed as well.
+  This should be safe, since Python 2.4 will remain the default version on "Edgy".
+
+  **python-setuptools** allows you to use the ``easy_install`` command to fetch and install
+  Python modules (including TurboGears extensions) from the Cheeseshop_ (aka Python Package index).
+
+3. **Download**  and run `tgsetup.py`_ to install TurboGears::
+
+    $ sudo python tgsetup.py
+
+  or, alternatively, use ``easy_install``::
+
+    $ sudo easy_install --prefix /usr/local \
+        -i http://www.turbogears.org/1.0/downloads/1.0.X/index \
+        "TurboGears[standard]==1.0.X"
+
+  (Replace ``X`` with the minor version number of the TurboGears release you want to install.)
+
+4. Test that your installation works by running ``tg-admin info``::
+
+   $tg-admin info
+
+5. Database support
+
+  To use TurboGears properly, you'll also need a database to use with your model.
+  Depending on what database you want to use, you should install:
+
+  * **python-pysqlite2** for SQLite 3 support (recommended)
+  * **python-psycopg2** -- for using TurboGears with PostgreSQL (universe repository)
+  * **python-mysqldb** -- for using TurboGears with MySQL
+  * **python-kinterbasdb** -- for using TurboGears with Firebird / Interbase (universe repository)
+
+  Other databases (Microsoft SQL Server, Oracle, Microsoft Access) can probably be used with the
+  **python-adodb** package from Universe. For more information on that subject, see the
+  `ADOdb for Python homepage`_.
+
+6. Install additional, optional packages (see below)
+
+
+Ubuntu 6.06 LTS "Dapper Drake" and Older
+----------------------------------------
+
+As normal for a Debian-based system, you'll need to install all the dev packages. The included setuptools is out of date, but using it to update itself it easier than  downloading ``ez_setup.py`` and installing it manually.
+
+::
+
+    $ sudo apt-get install gcc libc6-dev build-essential python-dev python-setuptools
+    # update setuptools
+    $ sudo easy_install -U --script-dir /usr/local/bin setuptools
+    $ sudo easy_install --prefix /usr/local \
+        -f http://www.turbogears.org/download/index.html \
+        "TurboGears[standard]==1.0.X"
+    # for sqlite
+    $ sudo apt-get install sqlite3 libsqlite3-dev
+    $ sudo easy_install pysqlite
+
+(Replace ``X`` with the minor version number of the TurboGears release you want to install.)
+
+
+Additional (Optional) Packages (All Versions)
+---------------------------------------------
+
+There are many other packages available for use with TurboGears. To install them on Ubuntu, just run::
+
+    $ sudo apt-get install "package-name"
+
+where "package-name" is the name of the package you want to install and is usually of the form ``python-<projectname>``. Alternatively, if you can't find a package for your distribution or want
+the newest version of the software, you should use ``easy_install``::
+
+    $ sudo easy_install --prefix /usr/local "package"
+
+
+where "package" is the name of the software as listed on the Cheeseshop_.
+
+Here are some additional packages you might be interested in.
+
+
+Docutils
+~~~~~~~~
+
+You should probably get Docutils_, since it is used in some of the tutorials, and its support for ReStructuredText should be handy in whatever application you're going to build.
+
+
+SQLAlchemy
+~~~~~~~~~~
+
+Another database object mapper, slated to become default in future versions of TurboGears.
+You can get it from the universe repository, or via ``easy_install``. See
+:doc:`SQLAlchemy </SQLAlchemy/index>` for more information.
+
+
+Genshi
+~~~~~~
+
+Genshi is another template language, slated to become default in future versions of TurboGears.
+For "Feisty" you can get it from the universe repository, for "Edgy" and "Dapper" use ``easy_install``.
+See :doc:`GenshiTemplating </GenshiTemplating>` for more information.
+
+
+.. _tgsetup.py: http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py
+.. _Cheeseshop: http://python.org/pypi/
+.. _ADOdb for Python homepage: http://phplens.com/lens/adodb/adodb-py-docs.htm
+.. _Docutils: http://docutils.sourceforge.net/

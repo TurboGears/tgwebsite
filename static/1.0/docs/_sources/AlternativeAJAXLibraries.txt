@@ -1,0 +1,35 @@
+.. index:: JavaScript, AJAX
+
+Using Alternative JavaScript/Ajax Libraries
+===========================================
+
+You can use any of your favourite JavaScript/Ajax libraries with TurboGears.
+
+
+Include JavaScript Manually
+---------------------------
+
+Just put them in the ``static/javascript`` directory in your project's package directory, like you
+would do with your own custom JavaScript code.
+
+In your templates, you can include them like this::
+
+    <script src="${tg.url('/static/javascript/mylib.js')}" type="text/javascript" />
+
+
+Use Pre-packaged Libraries
+--------------------------
+
+Some popular JavaScript libraries have been wrapped as TurboGears :doc:`Widgets <Widgets/index>`
+and can be found in the CogBin_ or downloaded through the Cheeseshop_.
+
+To use them, you just have to include the name of the widget object (including the name of the
+package that contains it) in the list of widgets in the ``tg.include_widgets`` setting in
+``app.cfg``, e.g.
+
+::
+
+    tg.include_widgets = ['jquery.jquery']
+
+.. _cogbin: http://www.turbogears.org/cogbin/
+.. _cheeseshop: http://pypi.python.org/pypi/

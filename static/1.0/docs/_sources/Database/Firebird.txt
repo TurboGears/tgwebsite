@@ -1,0 +1,39 @@
+.. index:: Firebird
+
+Firebird
+========
+
+Starting a new project first create a firebird database using any of the available tools (flamerobin,isql etc.)
+
+Firebird Installation
+---------------------
+
+Linux
+~~~~~
+TODO
+
+Windows
+~~~~~~~
+TODO
+
+Mac
+~~~
+TODO
+
+Connection String
+-----------------
+TODO
+
+Warning Default Model won't work!
+---------------------------------
+
+password is a reserved keyword in firebird.  SLQObject's 'dbName' will fix this.
+
+Just set password to any not reserved word and then do
+::
+
+  password = UnicodeCol(length=40, dbName='pwd')
+
+in your model.py file. then proceed as usual.
+
+Tested with TG 1.0 , Firebird 2.0 SS 64 on Suse10.1 64

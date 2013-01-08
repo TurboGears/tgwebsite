@@ -1,0 +1,45 @@
+Cookie Default
+==============
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+Sometimes you will want certain page parameters to be saved in a cookie. I've
+found this particularly useful for storing filter settings, and I'm sure there
+are other uses too.
+
+
+Usage
+-----
+
+The ``cookie_default`` module provides a decorator of the same name for your
+controller methods, which can be used like this::
+
+    import cookie_default as cd
+
+    ...
+
+    @tg.expose()
+    @cd.cookie_default(areas='All', colors='All', status='Open')
+    def mymethod(self, areas, colors, status):
+        ...
+
+When the controller method is accessed, if any of the parameters are present in
+GET or POST data, their values will be taken from these (and from the defaults
+otherwise) and also stored in a cookie. If no parameters are present, they will
+be taken from the cookie if present, or the defaults otherwise.
+
+This is a fairly common requirement for me and this module saves me a bit of
+typing.
+
+
+Download
+--------
+
+You can download the code for the ``cookie_default`` module here:
+
+:download:`cookie_default.py <downloads/cookie_default.py>`

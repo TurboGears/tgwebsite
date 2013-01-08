@@ -1,0 +1,152 @@
+.. index:: permanent login
+
+Permanent Login
+===============
+
+Many web sites provide some kind of "remember me" feature which allows users
+to stay logged in after they closed and reopened browser. Usually, this is
+achieved by setting a permanent cookie, if requested on login.
+
+TurboGears ships with an extensible identity and visit tracking framework which
+can be used to add such functionality to your application. This page explains
+how to do this in an example TurboGears application.
+
+
+Creating a new project
+----------------------
+
+In order to get started, create a new project named ``PermLogin`` with
+Identity and Visit enabled
+(see :doc:`Getting Started With Identity </Identity/GettingStarted>`)
+but don't create the tables yet::
+
+     $ tg-admin quickstart --identity PermLogin
+
+
+Updating the model
+------------------
+
+Now you need to customize the model class responsible for representing
+site visit in your application. We will add a new attribute to the
+``permlogin.model.Visit`` class::
+
+    class Visit(SQLObject):
+        """A visit to our site."""
+        class sqlmeta:
+            table = 'visit'
+
+        visit_key = StringCol(length=40, alternateID=True,
+                              alternateMethodName='by_visit_key')
+        created = DateTimeCol(default=datetime.now)
+        expiry = DateTimeCol()
+
+        permanent = BoolCol(default=False) # new field
+
+        ... # keep the rest of the class definition
+
+We added the `permanent` boolean column which needs to be explicitly
+set to True if a permanent visit is desired.
+After that the database tables can be created::
+
+    $ tg-admin sql create
+
+
+Updating the controller
+-----------------------
+
+At this point you need to add some logic for setting the newly added field.
+In our example we will be using the ``remember_me`` argument to instruct the
+``login`` controller method that current visit is requested to be permanent::
+
+    @expose(template='permlogin.templates.login')
+    def login(self, forward_url=None, previous_url=None,
+              remember_me=None, *args, **kw):
+        if (not identity.current.anonymous and identity.was_login_attempted()
+                and not identity.get_identity_errors()):
+            tg_visit = tg.visit.current()
+            if remember_me == 'on' and tg_visit:
+                visit = model.Visit.lookup_visit(tg_visit.key)
+                if visit:
+                    visit.permanent = True
+            raise redirect(tg.url(forward_url or previous_url or '/', kw))
+
+         ... # keep the rest of the function definition
+
+The above snippet assumes that you have added a checkbox input named
+`remember_me` on your login.kid template.
+
+Next, you need to clear the ``permanent`` field on user logout::
+
+    @expose()
+    def logout(self):
+        identity.current.logout()
+        tg_visit = tg.visit.current()
+        if tg_visit:
+            visit = model.Visit.lookup_visit(tg_visit.key)
+            if visit:
+                visit.permanent = False
+        raise redirect('/')
+
+
+Creating the Visit plugin
+-------------------------
+
+Now you need to create a Visit plugin which will be sending your permanent
+visit cookie. The Visit framework expects plugins to implement the
+``record_visit(visit)`` method. The ``visit`` object passed to this method
+is stores the key which can be used to retrieve the persistent visit object
+from the database.
+
+The plugin module (let's call it ``permlogin.visit``) shown bellow sends a
+permanent cookie using the settings from config if the visit is set permanent::
+
+    import turbogears as tg
+    import cherrypy as cp
+    import time
+
+    from permlogin import model
+
+    def load():
+        tg.visit.enable_visit_plugin(PermanentLoginPlugin())
+
+    class PermanentLoginPlugin(object):
+        def record_request(self, visit):
+            model_visit = model.Visit.lookup_visit(visit.key)
+            log.debug('model_visit: %s', model_visit)
+
+            if not model_visit:
+                return
+            if not model_visit.permanent:
+                return
+
+            cookies = cp.response.simple_cookie
+            cookie_name = tg.config.get('visit.cookie.name', 'tg-visit')
+            max_age = int(tg.config.get('visit.timeout', '20')) * 60 or None
+            if cookie_name in cookies:
+                # use 'expires' because MSIE ignores 'max-age'
+                cookies[cookie_name]['expires'] = time.strftime(
+                     '%a, %d-%b-%Y %H:%M:%S GMT',
+                     time.gmtime(time.time() + max_age))
+                # 'max-age' takes precedence on standard conformant browsers
+                # (this is better because there of no time sync issues here)
+                cookies[cookie_name]['max-age'] = max_age
+
+    tg.startup.call_on_startup.append(load)
+
+After you import the permlogin.visit module into your controller,
+the plugin will be loaded on application startup. Optionally, you
+can introduce a special config variable to enable or disable it.
+
+
+Populating the database
+-----------------------
+
+Use ``tg-admin shell`` to create a new user as explained in
+:ref:`setup_users_using_the_shell`. For example::
+
+    >>> user = User(user_name='guest',
+    ... email_address='guest@localhost', display_name=None, password='')
+
+Once this is done, you can start your application and try to login with the
+``remember_me`` checkbox activated. If everything works fine you should see
+the `tg-visit` cookie in your browser with expiration time set (20 minutes by default).

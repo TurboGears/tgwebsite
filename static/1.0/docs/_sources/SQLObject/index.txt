@@ -1,0 +1,89 @@
+.. index:: SQLObject
+
+SQLObject Overview
+==================
+
+.. contents::
+    :depth: 2
+
+
+SQLObject Concept
+-----------------
+
+From the SQLObject web site:
+
+    *SQLObject is a popular Object Relational Manager for providing an object interface to your database,
+    with tables as classes, rows as instances, and columns as attributes.*
+
+    *SQLObject includes a Python-object-based query language that makes SQL more abstract, and provides
+    substantial database independence for applications.*
+
+SQLObject provides three "groups" of interfaces. Based on how much SQL is "hidden" from the user.
+
+
+Fully Hidden
+~~~~~~~~~~~~
+
+This is the normal and preferred use of SQLObject. in this method instances are plain Python objects.
+It is the one is explained in the :doc:`TGGuide </GettingStarted/DefineDatabase>`
+and `the SQLObject site <http://www.sqlobject.org/SQLObject.html>`_
+
+
+Semi Hidden
+~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   QuickGuide
+
+SQLObject provides `sqlbuilder <http://www.sqlobject.org/SQLBuilder.html>`_,
+which is a pythonic SQL-like query engine is the suggested for those complex
+queries that join multiple tables, or cases where more advanced SQL is need
+for example LIKE constrains or calling database built-in functions. The basic
+usage is also explained in our :doc:`quick guide <QuickGuide>`.
+
+
+Fully Exposed
+~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   DirectSQL
+
+When you need to embrace the full power of SQL, you'll need ``queryAll()``. Remember this will
+bypass SQLObject and go directly to the DB2.0 api driver, so you will need to take care of
+writing SQL that works across all databases yourself, or make it very clear your app only works
+only on your chosen SQL engine. :doc:`Check out a working sample <DirectSQL>`.
+
+
+Common Problems
+---------------
+
+.. toctree::
+   :hidden:
+
+   ForeignKeys
+   Debug
+   Gotchas
+
+**How can I work with foreign keys?**
+
+A :doc:`code example <ForeignKeys>` will probably make this clearer.
+
+**How do I select some fields from a table?**
+
+SQLObject is not a query wrapper. Try to get used to the *object oriented* way.
+
+**I really need to see what's going on, show me the SQL!**
+
+:doc:`Turn on <Debug>` debugging and see the SQL flow.
+
+**What other things do I need to account for?**
+
+See the list of :doc:`SQLObject "gotcha's" <Gotchas>`.
+
+**I don't like the SQL queries SQLObject generates, they could be optimized doing <insert here>...**
+
+Then you will probably want to hop over to :doc:`SQLAlchemy </SQLAlchemy/index>` which lets you get dirty on the SQL.

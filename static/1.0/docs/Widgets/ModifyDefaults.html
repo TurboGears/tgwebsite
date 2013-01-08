@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Changing Widget Defaults at Run Time &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Dynamically Modifying a Form’s Widgets With Ajax" href="DynamicForm.html" />
+    <link rel="prev" title="Widget Form Validation with Schemas" href="FormValidationWithSchemas.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="DynamicForm.html" title="Dynamically Modifying a Form’s Widgets With Ajax"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FormValidationWithSchemas.html" title="Widget Form Validation with Schemas"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="FormValidationWithSchemas.html"
+                        title="previous chapter">Widget Form Validation with Schemas</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="DynamicForm.html"
+                        title="next chapter">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="changing-widget-defaults-at-run-time">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">Changing Widget Defaults at Run Time</a><a class="headerlink" href="#changing-widget-defaults-at-run-time" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#changing-widget-defaults-at-run-time" id="id1">Changing Widget Defaults at Run Time</a></li>
+</ul>
+</div>
+<p>In order to modify a widget during run time one should use some special care.
+This document takes a <tt class="docutils literal"><span class="pre">SingleSelectField</span></tt> as an example to describe how some
+parameters can be changed in a widget at run time.</p>
+<p>An archive containing a fully functional project is available for those who
+want to play directly with it :)</p>
+<p><a class="reference download internal" href="../_downloads/ssfdemo.zip"><tt class="xref download docutils literal"><span class="pre">ssfdemo.zip</span></tt></a></p>
+<p>First quickstart a new project and call it &#8220;ssfdemo&#8221;, then edit
+<tt class="docutils literal"><span class="pre">ssfdemo/ssfdemo/controllers.py</span></tt> and add the following imports at the top in
+order to be able to use them during this example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">turbogears</span> <span class="kn">as</span> <span class="nn">tg</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">SingleSelectField</span><span class="p">,</span> <span class="n">TableForm</span><span class="p">,</span> <span class="n">WidgetsList</span>
+</pre></div>
+</div>
+<p>Then create a field list containing our <tt class="docutils literal"><span class="pre">SingleSelectField</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">FormFields</span><span class="p">(</span><span class="n">WidgetsList</span><span class="p">):</span>
+    <span class="n">single_select</span> <span class="o">=</span> <span class="n">SingleSelectField</span><span class="p">(</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Preferred Framework&#39;</span><span class="p">),</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;pref&#39;</span><span class="p">,</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">&#39;The obscure one in Ruby&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">&#39;TurboGears&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">&#39;The one with that guitar player name&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">&#39;Pylons&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s">&#39;Web.py&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s">&#39;Zope3&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s">&#39;Zope2&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s">&#39;Twisted+Nevow&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s">&#39;Something super secret&#39;</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note the name we have assigned to the <tt class="docutils literal"><span class="pre">SingleSelectField</span></tt>:
+<tt class="docutils literal"><span class="pre">pref</span></tt>. Now we will use this field list. Ok, this list may be overkill
+because there is only one element, but in real life your forms will generally
+contain more than one field.</p>
+<p>Next, we just have to use this list of widgets into our container widget:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">form</span> <span class="o">=</span> <span class="n">TableForm</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;form&#39;</span><span class="p">,</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="n">FormFields</span><span class="p">(),</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">tg</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="s">&#39;post_handler&#39;</span><span class="p">),</span>
+    <span class="n">submit_text</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Vote&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>We declared a form of name &#8220;form&#8221;, which uses our list of previously declared
+fields. Now amend the index method so it looks like this:</p>
+<div class="highlight-python"><pre>def index(self):
+    pref = random.randint(0, 8)
+    return dict(form=form, pref=pref}</pre>
+</div>
+<p>The only thing we do here is to send our form <em>and</em> some contextual data, in that
+case a randomly choosen id. This data will be the one used to set the default
+value of our <tt class="docutils literal"><span class="pre">SingleSelectField</span></tt>.</p>
+<p>But first we need to declare our <tt class="docutils literal"><span class="pre">post_handler</span></tt> because we made a reference
+to it in our form declaration. Here is a really simple form handler that will
+only print out the id that has been selected:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">post_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pref</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;You have chosen: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">pref</span>
+</pre></div>
+</div>
+<p>Note that the second argument of this method is the same as the name attribute
+of our <tt class="docutils literal"><span class="pre">SingleSelectField</span></tt>.</p>
+<p>Now you can save the controllers.py file and edit the
+<tt class="docutils literal"><span class="pre">ssfdemo/ssfdemo/templates/welcome.kid</span></tt> file. The easiest way to achieve our
+goal is to remove nearly everything from this <tt class="docutils literal"><span class="pre">welcome.kid</span></tt> file and make it
+look like this:</p>
+<div class="highlight-python"><pre>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:py="http://purl.org/kid/ns#"
+  py:extends="'master.kid'"&gt;
+&lt;head&gt;
+&lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type"
+  py:replace="''"/&gt;
+&lt;title&gt;Welcome to SingleSelectFieldDemo&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div id="getting_started"&gt;
+    ${form.display(value=dict(pref=pref))}
+  &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div>
+<p>The important part here is:</p>
+<div class="highlight-python"><pre>${form.display(value=dict(pref=pref))}</pre>
+</div>
+<p>With this line we display the form but with amended values. It says: change the
+attribute named <tt class="docutils literal"><span class="pre">value</span></tt> on the sub-widget named <tt class="docutils literal"><span class="pre">pref</span></tt> by applying the
+content of <tt class="docutils literal"><span class="pre">pref</span></tt> to it. <tt class="docutils literal"><span class="pre">pref</span></tt> is the integer we randomly generated.</p>
+<p>Save the file and test the result. Make sure to Shift-Reload the page in order
+to really update it.</p>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

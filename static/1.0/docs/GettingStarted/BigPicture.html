@@ -1,0 +1,282 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Big Picture &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Data Model Overview" href="UseDatabase.html" />
+    <link rel="prev" title="Firebird" href="../Database/Firebird.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="UseDatabase.html" title="Data Model Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../Database/Firebird.html" title="Firebird"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The Big Picture</a><ul>
+<li><a class="reference internal" href="#the-model-view-controller-pattern">The Model-View-Controller Pattern</a><ul>
+<li><a class="reference internal" href="#model">Model</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#controller">Controller</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#view">View</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#wrap-up">Wrap-up</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-project-structure">The Project Structure</a><ul>
+<li><a class="reference internal" href="#deployment">Deployment</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#development">Development</a></li>
+<li><a class="reference internal" href="#testing">Testing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../Database/Firebird.html"
+                        title="previous chapter">Firebird</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="UseDatabase.html"
+                        title="next chapter">Data Model Overview</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="the-big-picture">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id2">The Big Picture</a><a class="headerlink" href="#the-big-picture" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#the-big-picture" id="id2">The Big Picture</a><ul>
+<li><a class="reference internal" href="#the-model-view-controller-pattern" id="id3">The Model-View-Controller Pattern</a></li>
+<li><a class="reference internal" href="#the-project-structure" id="id4">The Project Structure</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<img alt="Diagram showing how TurboGears components interact" src="../_images/howitallfits.jpg" />
+<div class="section" id="the-model-view-controller-pattern">
+<h2><a class="toc-backref" href="#id3">The Model-View-Controller Pattern</a><a class="headerlink" href="#the-model-view-controller-pattern" title="Permalink to this headline">¶</a></h2>
+<p>This diagram is not as bad as it may seem. It shows the core parts that make up
+a TurboGears application.</p>
+<p>TurboGears follows the MVC (Model, View, Controller) design pattern, which
+separates the web application design into three different domains, which is
+also reflected in the structure of a default quickstarted project.</p>
+<p>A great deal of the boilerplate code is contained in the the TurboGears package
+itself. Your application consists of the parts in the light purple boxes. Let&#8217;s
+look at each part.</p>
+<div class="section" id="model">
+<h3>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li>Your <a class="reference internal" href="UseDatabase.html"><em>model</em></a> objects represent the data that your application is working
+with.</li>
+</ul>
+</div>
+<div class="section" id="controller">
+<h3>Controller<a class="headerlink" href="#controller" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li>The <a class="reference internal" href="Controller.html"><em>controller&#8217;s</em></a> responsibility is to map URLs to actual functionalities.</li>
+<li>Those functionalities are able to call the model&#8217;s API to retrieve and/or
+update the data in the database or other object.</li>
+<li>The controller is able to choose some sort of templating engine to provide the
+user&#8217;s view of the data.</li>
+</ul>
+</div>
+<div class="section" id="view">
+<h3>View<a class="headerlink" href="#view" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<ul class="simple">
+<li>In TurboGears, your view is in <a class="reference internal" href="Kid.html"><em>templates</em></a> that present the
+information that is provided by the controller.</li>
+</ul>
+</div>
+<div class="section" id="wrap-up">
+<h3>Wrap-up<a class="headerlink" href="#wrap-up" title="Permalink to this headline">¶</a></h3>
+<div class="toctree-wrapper compound">
+</div>
+<p>The controller is the basis of the framework, and the view and the model can be
+created in other ways. This means that TurboGears offers you the flexibility
+to &#8216;not use the MVC design as well. Thus you can port existing web software to
+TurboGears without an immediate complete revision to all of the code.</p>
+<p>So, you have these three areas to populate with code in order to build your
+application. TurboGears provides help at each point.</p>
+<ul class="simple">
+<li><a class="reference external" href="Controller">CherryPy</a> makes it easy for your controller to get information from the web
+and string together all of the pieces that comprise your website.</li>
+<li><a class="reference internal" href="../SQLObject/index.html"><em>SQLObject</em></a> makes it easy to define and work with your model.</li>
+<li><a class="reference internal" href="Kid.html"><em>Kid</em></a> makes it easy to generate good HTML for the browser.</li>
+<li>Additionally, the combination of <a class="reference internal" href="MochiKit.html"><em>MochiKit</em></a> and <a class="reference internal" href="../JSON.html"><em>JSON</em></a>
+make it easy to implement complex in-the-browser behavior and can even be used to
+format output in <a class="reference external" href="http://en.wikipedia.org/wiki/AJAX">AJAX</a> requests that skip over Kid.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="the-project-structure">
+<h2><a class="toc-backref" href="#id4">The Project Structure</a><a class="headerlink" href="#the-project-structure" title="Permalink to this headline">¶</a></h2>
+<p>While entering the quickstart template folder, you&#8217;ll see the project skeleton
+laid there. Those files can be categorized for 4 purposes. Note that with
+TurboGears you&#8217;ll spend most of time on the files printed in <strong>bold</strong> below.
+We will cover all the important files that make up a fresh quickstarted project
+in the following sections categorized by purpose.</p>
+<div class="section" id="deployment">
+<h3>Deployment<a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">README.txt</span></tt></p>
+<p>To Write anything you like about your project.</p>
+</li>
+<li><p class="first"><strong>setup.py</strong></p>
+<p>Packaging, distribution and installation related settings.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">start-&lt;yourprojectname&gt;.py</span></tt></p>
+<p>To start your web application</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/release.py</span></tt></p>
+<p>To provide application related infomation.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourprojectname&gt;.egg-info/</span></tt></p>
+<p>Auto-generated packaging meta-data from <tt class="docutils literal"><span class="pre">setup.py</span></tt>.</p>
+</li>
+</ul>
+<p>You an publish your project to the Python <a class="reference external" href="http://cheeseshop.python.org/pypi/">Cheeseshop</a> in minutes by changing
+only a few lines in the above files.</p>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><strong>dev.cfg</strong></p>
+<p>For deployment-specific configuration settings in development mode</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">sample-prod.cfg</span></tt></p>
+<p>A template for deployment-specific configuration settings in production mode</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;your</span> <span class="pre">project</span> <span class="pre">name&gt;/config/*.cfg</span></tt></p>
+<p>For deployment-independent configuration settings of your application</p>
+</li>
+</ul>
+<p>You do most of configurations for your project in those files. See the
+<a class="reference internal" href="../Configuration.html"><em>configuration reference</em></a> for more information.</p>
+<p>It is possible to deploy TurboGears applications behind a separate web server
+or let them use a database that is not located on the same server. The same
+web server can be placed in front of multiple applications, which can have
+the same database or different databases as backends.</p>
+</div>
+<div class="section" id="development">
+<h3>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/</span></tt> <strong>controllers.py</strong></p>
+<p>Write your controllers (main program) here.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/</span></tt> <strong>model.py</strong></p>
+<p>Write your data model (ORM/database access) here.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/</span></tt> <strong>templates</strong></p>
+<p>Write your view (templates) here.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/json.py</span></tt></p>
+<p>Alternative view for AJAX applications (optional)</p>
+</li>
+</ul>
+</div>
+<div class="section" id="testing">
+<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;yourpackagename&gt;/tests/*</span></tt></p>
+<p>Place your unit test code in this directory. <a class="reference internal" href="../Testing.html"><em>Test your web application</em></a>
+model, view, and controllers by writing a <tt class="docutils literal"><span class="pre">:doc:`/test`*.py</span></tt> file for each and
+run them trough <tt class="docutils literal"><span class="pre">nosetest</span></tt>.</p>
+</li>
+</ul>
+<hr class="docutils" />
+<p><a class="reference internal" href="Server.html"><em>Previous: Starting Up the Server</em></a> :
+<a class="reference internal" href="../Configuration.html"><em>Next: Basic Configuration</em></a></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

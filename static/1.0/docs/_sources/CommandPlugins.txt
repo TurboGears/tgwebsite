@@ -1,0 +1,193 @@
+``tg-admin`` Command Plugins
+============================
+
+.. contents::
+    :depth: 2
+
+
+This page details how you can create your own plugins for the command line tool
+``tg-admin``. This allows you to create command-line tools that are tailored to
+your site, or make something general enough to put up on PyPI so anyone can
+install it. The command plugin system is actually not as daunting as it seems
+at first, it just requires a little bit of familiarity with ``setuptools``.
+For a more thorough explanation of the ``setuptools`` concepts used here, see
+:doc:`UsingEntryPoints`
+
+
+A basic command plugin
+----------------------
+
+To illustrate how the command plugin system works, let's build a very basic
+command plugin named ``testcommand``. This plugin will do nothing but print
+"This is a test", when run from the command line. (using
+``tg-admin testcommand``)
+
+
+The file structure
+~~~~~~~~~~~~~~~~~~
+
+Our test plugin only needs two files in a few directories to get started. Here
+is what you will need::
+
+    testcommand/setup.py
+    testcommand/testcommand/__init__.py
+    testcommand/testcommand/testcommand.py
+
+The file ``setup.py`` defines the package. ``testcommand.py`` is where the class
+implementing ``testcommand`` will go.  ``__init__.py`` can be empty;
+``find_packages`` needs it to detect the package.
+
+
+``setup.py``
+~~~~~~~~~~~~
+
+Out of these two the most important to getting started is ``setup.py``, so
+let's take a look at that::
+
+    from setuptools import setup, find_packages
+    from turbogears.finddata import find_package_data
+
+    setup(
+        name = "testcommand",
+        version = 0.1,
+        zip_safe = False,
+        install_requires = ["TurboGears >= 1.0",],
+        packages = find_packages(),
+        package_data = find_package_data(),
+        entry_points = """
+        [turbogears.command]
+            testcommand = testcommand.testcommand:TestCommand
+        """
+    )
+
+The two import statements at the beginning of the file bring in functions that
+we use later in the file. ``setup`` is used by setuptools to define a new
+package, which is in turn used by TurboGears to define the command plugin.
+``find_packages`` and ``find_package_data`` are used to gather resources for
+our package.
+
+The call to ``setup`` is used to define a new package. Here is a brief
+description of what the arguments used here do:
+
+* ``name`` - Defines the name of the package. This can be used in the
+  ``install_requires`` argument of other packages to handle dependencies.
+* ``version`` - The version number of this package. This can be used in the
+  ``install_requires`` argument of other packages to make sure the proper
+  version. of this package is installed.
+* ``zip_safe`` - Tells ``setuptools`` if it is safe to run the files in this
+  package from a compressed archive. It is set to false here because I don't
+  have any information on what constitutes safety in running code from an
+  archive.
+* ``install_requires`` - This is a list of either quoted package names, or
+  name/version comparisons that list the dependencies of this package. In this
+  case we are requiring a copy of ``TurboGears``, version 1.0 or greater.
+  (Note for 0.9 users, you should be able to change this to fit your version
+  without effect)
+* ``entry_points`` - The string listed here will be rewritten as a
+  configuration file that defines where this code may be called from.
+  When ``tg-admin`` starts up it looks at the ``turbogears.command`` entry
+  point for a list of modules and command names to use. The statement
+  ``testcommand = testcommand.testcommand.TestCommand`` tells it to register
+  ``testcommand`` as a ``tg-admin`` command, and directs it to use the
+  ``TestCommand`` class in the module ``testcommand.testcommand``.
+
+There are a lot of additional arguemnts to ``setup()``, which can be used to
+define more information about your package and provide information that is used
+to upload it to PyPI. Please refer to the official Python `documentation for
+distutils`_ and the `setuptools documentation`_ for more information.
+
+.. _documentation for distutils: http://docs.python.org/dist/setup-script.html
+.. _setuptools documentation:
+    http://peak.telecommunity.com/DevCenter/setuptools#new-and-changed-setup-keywords
+
+
+``testcommand.py``
+~~~~~~~~~~~~~~~~~~
+
+This file contains the ``TestCommand`` class, which the ``setup.py`` file
+directs to use when ``tg-admin testcommand`` is executed. Here are the contents
+of the file::
+
+    class TestCommand:
+        """Tests command-line plugin."""
+        desc = "Print test output from a command line plugin"
+        need_project = False
+        name = None
+        package = None
+        __version__ = "0.1"
+        __author__ = "John Doe"
+
+        def __init__(self, version):
+            pass
+
+        def run(self):
+            print "This is a test"
+
+The command line plugin system looks for a few attributes and a ``run`` method
+defined in a class. The attributes listed here are the bare minimum needed for
+the command plugin to work. There are more options that will be discussed
+later. The ``run`` method is called when the plugin is run, and should be the
+start of the plugin's functionality.
+
+
+Installing the test plugin
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Before TurboGears can use the test plugin, it needs to be installed. To do this
+navigate to the directory where the setup.py file for your project is located
+and enter the following command::
+
+    python setup.py develop
+
+The ``develop`` argument instructs the ``setup()`` function in ``setup.py`` to
+install a development build of the plugin on your system. This will generate
+egg information for the package, and place a ``testcommand.egg-link`` file in
+the ``site-packages`` folder in your Python library directory, so that Python
+can find the package of your command plugin and it can be imported directly
+from the development directory. Now you should be able to run
+``tg-admin testcommand`` and see the desired result. It should look something
+like this::
+
+    $ tg-admin testcommand
+    This is a test
+
+Granted, it is nothing fancy, but it works. Extending it to incorporate the
+functionality you want is not very difficult either.
+
+
+Building the plugin for distribution
+------------------------------------
+
+Aside from the turbogears.command entry point, the distribution of your command
+plugin is no different from any other TurboGears component. See the
+:doc:`page on .egg distribution <Install/DeployWithAnEgg>` for more information.
+
+
+Requiring that the command is run in a project
+----------------------------------------------
+
+It is pretty easy to ensure that your command is run inside a project. Just set
+``need_project = True`` in your command class. Here is a sample::
+
+    class ProjectRequiringCommand:
+        desc="This command must be run in a project"
+        need_project=True
+
+    def __init__(self, version):
+        ...
+
+
+Requiring access to a database
+------------------------------
+
+*To be done...*
+
+
+Listing the command in the CogBin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Once your command is listed on PyPI/Cheeseshop with a ``turbogears.command``
+keyword, it will automatically appear in the "tg-admin Commands" section of the
+CogBin_.
+
+.. _cogbin: http://www.turbogears.org/cogbin/

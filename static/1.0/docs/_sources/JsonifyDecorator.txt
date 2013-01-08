@@ -1,0 +1,165 @@
+.. index:: @jsonify, jsonify decorator
+
+The ``jsonify`` Decorator
+=========================
+
+.. contents::
+  :depth: 2
+
+
+.. index:: JSON
+
+JSON (`rfc4627`_) is a "lightweight, text-based, language-independent
+data interchange format." TurboGears provides built-in support for
+generating JSON, normally accessed via the ``@expose('json')``
+decorator.
+
+.. _rfc4627: http://www.ietf.org/rfc/rfc4627.txt
+
+.. index:: simplejson
+
+If your only exposure to ``@expose('json')`` is the 20 Minute Wiki, the
+conversion process can seem magical, but we know there is no magic in
+Python. The conversion is done by Bob Ippolito's ``simplejson`` module,
+which knows how to convert the standard Python primitives and
+collections into correctly formatted, reasonable JSON equivalents. The
+problem is that ``simplejson`` does not know how to convert arbitrary
+Python objects. For that, it needs a bit of help.
+
+.. index:: TurboJSON
+
+In TurboGears, that help takes the form of the :doc:`TurboJson </TurboJson>` plugin.
+Despite the name, TurboJson functions perfectly well outside of a
+TurboGears project, depending only on ``simplejson``, ``dispatch``,
+and ``sqlobject``. The ``jsonify`` submodule takes care of the
+conversion while the rest of the plugin enables ``jsonify`` to be used
+as a TurboGears template. ``jsonify`` module provides two ways for you to
+specify how a particular object maps onto the Python primitives and
+collections ``simplejson`` is able to convert:
+
+.. _TurboJson: /TurboJson
+
+
+``@jsonify.when()`` conversion method
+-------------------------------------
+
+The ``jsonify`` package provides two functions: ``jsonify`` and
+``encode``. ``encode`` takes in objects and spits out javascript while
+``jsonify`` performs the actual object conversion.
+
+::
+
+    In [1]: from turbojson.jsonify import jsonify, encode as js_encode
+
+For this section, we'll use a simple ``Item`` class as an example::
+
+    In [2]: from decimal import *
+
+    In [3]: class Item(object):
+       ...:     def __init__(self,name,price=0):
+       ...:         self.name = name
+       ...:         self.price = Decimal(price)
+       ...:
+
+    In [4]: bb = Item("TurboGears Beach Ball", "4.99")
+
+This class knows nothing about JSON and neither ``simplejson`` and
+``jsonify`` doesn't know how to handle it::
+
+    In [5]: js_encode(bb)
+
+    ---------------------------------------------------------------------------
+    dispatch.interfaces.NoApplicableMethods     Traceback (most recent call last)
+
+    #Traceback elided
+
+To register our object with the ``jsonify`` function, we'll use the
+``@jsonify.when()`` decorator::
+
+    In [6]: @jsonify.when("isinstance(obj, Item)")
+       ...: def jsonify_item(obj):
+       ...:     return {
+       ...:         "name":obj.name,
+       ...:         "price":obj.price
+       ...:     }
+       ...:
+
+    In [7]: js_encode(bb)
+    Out[7]: '{"price": 4.99, "name": "TurboGears Beach Ball"}'
+
+Once we're registered, ``encode`` works just fine. As you can see, our
+conversion method returns a dictionary with strings as keys and a String
+and a Decimal as values...Wait a minute! Decimal isn't a builtin type!
+It is not, but it (along with ``datetime``, ``SQLObject``, and
+SQLObject's ``SelectResults``) is already registered with ``jsonify``
+for your convenience.
+
+
+The magic __json__ method
+-------------------------
+
+If an object has a ``__json__`` attribute, it is called and the result
+is passed directly into ``simplejson``. For example::
+
+    In [8]: class ShoppingCart(object):
+       ...:     items = []
+       ...:     def __json__(self):
+       ...:         return {
+       ...:            "number_of_items" : len(self.items),
+       ...:            "items" : self.items
+       ...:         }
+       ...:
+
+    In [9]: sc = ShoppingCart()
+
+    In [10]: from turbojson import jsonify
+
+    In [11]: jsonify.encode(sc)
+    Out[11]: '{"items": [], "number_of_items": 0}'
+
+    In [12]: sc.items.append("TurboGears Beach Ball")
+
+    In [13]: jsonify.encode(sc)
+    Out[13]: '{"items": [{"name":"TurboGears Beach Ball","price":4.99}], "number_of_items": 1}'
+
+
+As long as each item in ``items`` is directly convertable or is
+registered with ``jsonify``, our conversion will work swimmingly.
+
+
+So, how does this all work?
+---------------------------
+
+``jsonify`` (the function) is a RuleDispatch generic dispatch function.
+While the full details are more complex, you can think of it as a
+function with an extensible if/elif condition::
+
+    #this is pseudocode
+
+    def jsonify(obj):
+        #if ....:
+        #...
+        elif isinstance(obj, Item):
+            jsonify_item(obj)
+        #...
+        else:
+            raise NoApplicableMethods
+
+
+Decorating a function with ``@jsonify.when('condition')`` is like adding
+another ``elif condition: function()`` onto the end of the chain, the
+function gets called when the condition specified within ``when``
+evaluates to a true value. You can use whatever you like for the test.
+In fact, the 'magic __json__' method listed above, is implemented as::
+
+    @jsonify.when("hasattr(obj,'__json__')")
+    def jsonify_explicit(obj):
+        return obj.__json__()
+
+TurboGears makes extensive use of RuleDispatch in many modules,
+including error handling and the :doc:`FastData <FastData/index>` plugin.
+If you're interested in learning more, there's a `developerworks article`_
+introducing RuleDispatch. Beyond that, PJE wrote an article on how he went
+about optimizing RuleDispatch, but no real documentation exists.
+
+.. _developerworks article: http://www-128.ibm.com/developerworks/library/l-cppeak2/

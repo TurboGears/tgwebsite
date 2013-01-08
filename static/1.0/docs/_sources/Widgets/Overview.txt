@@ -1,0 +1,246 @@
+Widgets Overview
+================
+
+.. contents:: Table of Contents
+  :depth: 2
+
+TurboGears widgets are a simple, yet powerful way to bundle up bits of
+HTML, CSS and Javascript into reusable components.   As a consumer of
+Widgets, you can use them to create everything from HTML Forms, to Ajax
+based AutoComplete fields.
+
+Perhaps the most common use of Widgets right now is as a convenient way
+to include form controls in a web page.
+
+In this case, each field is a widget, and the whole form is also a widget
+- a compound widget that contains the field widgets. In a simple case the
+fields would use standard form controls such as text boxes.
+
+Widget based forms have a number of useful properties.  For example, you
+can set up the individual form fields to know their validation rules, and
+when you do this, the Form Widget knows how to display any validation
+error messages next to the appropriate field if a user enters bad data.
+
+The beauty of widgets is that replacing standard text entry fieds with
+"fancy" alternatives is easy for the programmer. For example, you could
+use a CalendarDatePicker instead of a TextField, to get a pop-up calendar.
+
+
+Simple Widget Example
+---------------------
+
+Widgets are python objects, which need to be instantiated and setup
+before you can use them in your view code.  The standard way to do this
+is to instantiate a widget in your controllers.py file.   We'll start
+with a simple TextField widget that isn't very exciting, but is easy to
+understand in full.  Don't worry, though this isn't all there is.  We've
+got fancy javascript heavy widgets that do animation, lightboxes, and
+autocomplete fields.
+
+To instantiate a TextField widget instance in your controller you'll need
+to import turbogears.widgets into your controller, and create a widget
+instance like this::
+
+    fname = TextField(default="Enter your First Name")
+
+This will create a widget instance, which you can pass into a template
+and display using it's ``.display()`` method::
+
+     fname.display()
+
+This will automatically add a text input field to your page.  The
+rendered HTML should look something like this::
+
+     <INPUT ID="widget" TYPE="text" NAME="widget"
+      VALUE="Enter your First Name" CLASS="textfield">
+
+The ``VALUE`` is picked up from the default value we provided at
+instantiation time.
+
+But you can override the default at render time, just by passing a value
+to the display method, either as the first parameter, or explicitly as
+the named parameter value::
+
+     fname.display("mark")
+
+Which would create the following HTML::
+
+     <INPUT ID="widget" TYPE="text"
+      VALUE="mark" CLASS="textfield">'
+
+As we mentioned, you can also assign values with the ``value`` parameter::
+
+     fname.display(value="karl")
+
+
+Setting Widget Parameters
+-------------------------
+
+So, now that we've seen a couple of simple examples how we create a
+widget and assign parameters, it's probably worth taking a deeper look at
+how all of this works.
+
+.. warning:: Widgets instances are **stateless,**
+    which means that they should not try to have any *request specific*
+    data stored in a widget.
+
+
+Thread Safety for Widgets
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Because widgets are stateless, it's really only safe to assign widget
+attributes at instantiation time or display time.
+
+In fact, to keep you from shooting yourself in the foot, if you try to
+modify an attribute after the widget is instantiate, (other than as a
+``.display()`` option) you'll receive a friendly warning message
+reminding you that widgets are display logic, not a place to store data.
+
+
+General Widget Attributes
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's take a look at the various attributes all widgets have, and what
+they do.
+
+* **name** -- Defines the name of the widget, for form fields this is
+  used  to define the field's `name` attribute.
+
+* **template** -- Defines the Kid template which is used to render the
+  HTML for this widget.   In a way this is very standard TurboGears
+  stuff. The template can either be a string that is valid Kid Syntax or
+  it can be a reference to a .kid template file.  We'll look at
+  overriding the template in a bit more depth in the next section, since
+  this is a very common requirement for widget users.
+
+* **default** -- As seen above, this just defines the default ``value``
+  of the widget.
+
+* **params** --  Widgets ``params`` are where any special characteristics
+  of the widget would be defined.   Widgets also have some special
+  functions to make sure that any given widget instance has all the
+  ``params``, not just from the widget itself, but also from all of its
+  bases.
+
+* **attrs** -- You can pass a dictionary to this attribute to set
+  arbitrary HTML attributes of the generated HTML element.
+
+In addition several widgets have other attributes which you can setup.
+For example, form widgets have an ``action`` attribute which defines what
+URL the form will send it's HTTP Post to for processing. Another common
+example is the select field widget which has an ``options`` parameter
+which takes a list of tuples which define the value returned by the drop
+down list and the name that should be displayed in the list.
+
+We will be documenting the complete list of attributes for each of the
+built in widgets on the :doc:`WidgetList <List>` page.
+
+
+Setting Parameters with Callables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+But for now, let's just use the ``options`` attribute of the SelectField
+widget as an example of the final way that you can pass information to
+widget attributes.  You can define a callable (generally a function, but
+any callable will do) which returns the data needed by the widget, and
+pass that callable into the widget at instantiation time.  The widget
+will automatically call that function whenever you display the widget on
+a page.
+
+So, you might want to create a function which gets data from the
+database, and creates an options list for display in some widget.  In
+this case, we're just going to define list statically in our function,
+but extending this to do interesting stuff is just standard python::
+
+    def get_options():
+         options= []
+         for item in range(11):
+             options.append((item, "item %s" %item))
+         return options
+
+    my_selector = widgets.SingleSelectField(options=get_options)
+
+This creates a new my_selector widget with a bunch of selection options.
+When you do a my_selector.display on your page template you'll get code
+like this::
+
+   <SELECT CLASS="singleselectfield" NAME="widget" ID="widget">
+        <OPTION VALUE="0">item 0</OPTION>
+        <OPTION VALUE="1">item 1</OPTION>
+        <OPTION VALUE="2">item 2</OPTION>
+        ...
+        <OPTION VALUE="10">item 10</OPTION>
+    </SELECT>
+
+
+In addition to the above attributes, there are a couple more, which
+define CSS and JavaScript files that need to be imported into your
+template for the widget itself to work properly.   These can only be
+setup at instantiation time (at render time, it's too late to inject them
+into the form itself).
+
+* **css** -- This is where you can define any CSSlinks that are required
+  to properly display your widget.  For more details on how all this
+  works, see :doc:`Using JavaScript and CSS with widgets <WithJSandCSS>`.
+
+* **javascript** -- This is where you define any JSLink and JSSource for
+  the widget.
+
+If you're just using existing widgets, you shouldn't ever have to worry
+about ``css`` and ``javascript`` attributes, they should already be set
+up for you.
+
+
+Template Replacement
+~~~~~~~~~~~~~~~~~~~~
+
+On of the most common cusomization needs when working with Widgets is
+some slight modification of the widget template code.   The Turbogears
+Toolbox includes a WidgetBrowser application which, among other things,
+shows you all the template code for every widget you have installed.   If
+for instance you need to edit the TextField widget's template to include
+a <br /> tag after the field you could easily do that by grabbing the
+existing template code from the widget browser and modifying it.
+
+Once you've got a modified template, you can either create a new file
+(say widgettemplate.kid) and saving it in your templates directory, or
+you can pass it to the template attribute as a string.
+
+So if you've saved your new template as widgettemplate.kid you can
+instantiate a new text field widget that uses this new template with code
+like this::
+
+   field1 = widgets.TextField(name='Field one",
+                              template='yourapp.templates.widgettemplate')
+
+Or if you don't want to bother with the extra template file for short
+templates, you can just pass your template definition to the template
+attribute as a string like this::
+
+   field1 = widgets.TextField(name='Field one",
+                              template="""
+    <input xmlns:py="http://purl.org/kid/ns#"
+        type="text"
+        name="${name}"
+        class="${field_class}"
+        id="${field_id}"
+        value="${value}"
+        py:attrs="attrs"
+    />
+    <br />
+    """)
+
+
+Going Beyond Simple Widgets
+---------------------------
+
+Single widgets are pretty simple, and you can use them to create reusable
+view elements pretty easily.
+
+But there's a whole lot more that's a available to you if you're willing
+to go beyond single widgets, and look at the way that Widget based Form
+handling integrates Form handling tasks, making it easy to reuse the same
+widget to get new data, edit existing data, and handle the display of
+validation errors.
+
+Your next step in the Widgets Journey is :doc:`creating a Widget-based form <SimpleForm>`.

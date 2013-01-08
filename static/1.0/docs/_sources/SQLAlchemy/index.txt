@@ -1,0 +1,400 @@
+.. index:: SQLAlchemy
+
+SQLAlchemy
+==========
+
+.. contents::
+  :depth: 2
+
+
+Introduction
+------------
+
+`SQLAlchemy`_ is a database library by Michael Bayer. It can be used as an ORM in TurboGears, just like SQLObject. It has some advantages over SQLObject, particularly composite keys and query efficiency. There are disadvantages too; a full comparison is in :doc:`/SQLObject/VsSQLAlchemy`.
+
+.. _SQLAlchemy: http://www.sqlalchemy.org
+
+In TurboGears 1.0, SQLObject is the default. SQLAlchemy can be used and support is solid, especially in 1.0.4 and newer. In TurboGears 1.1, SQLAlchemy is the default, and SQLObject is still supported. SQLAlchemy is recommended for new TurboGears projects. If you're converting an existing SQLObject project to SQLALchemy, see the notes at the end.
+
+One thing to be aware of is that SA has just had a significant new release. SA 0.4 has some backwards-incompatible changes with SA 0.3. This document will focus on the SA 0.4 approach. You can check the version installed by issuing "import sqlalchemy; sqlalchemy.__version__". TurboGears 1.0.4 and newer supports both SA 0.4 and 0.3 (requiring at least 0.3.10). Older versions only support SA 0.3. There are notes about migrating existing 0.3 applications to 0.4, at the end of the document.
+
+
+TurboGears Support for SQLAlchemy
+---------------------------------
+
+What works:
+
+* Automatic request transactions
+* :doc:`Quickstart </TgAdmin>`
+* :doc:`Identity </Identity/index>`
+* :doc:`jsonify </JSON>`
+* :doc:`tg-admin sql </TgAdmin>`
+* :doc:`Paginate </PaginateDecorator>`
+* `DBSprockets`_ (FastData replacement)
+* `DBMechanic`_ (Catwalk replacement)
+
+.. _DBSprockets: http://dbsprockets.googlecode.com
+.. _DBMechanic: http://code.google.com/p/dbsprockets/wiki/DBMechanic
+
+What doesn't work:
+
+* :doc:`Catwalk </Catwalk>`
+* :doc:`Model Designer </ModelDesigner>`
+* :doc:`FastData </FastData/index>`
+
+
+Defining the Model
+------------------
+
+There are two main ways to define the model:
+
+* using plain SQLAlchemy with contextual sessions
+* using the Elixir layer on top of SQLAlchemy
+
+Plain SQLAlchemy is recommend for new projects, as it offers the full power of SQLAlchemy. Elixir often results in shorter code, however some advanced functionality can't be achieved (e.g. mapping objects to select statements, rather than tables). Elixir is recommended for users experienced with SQLAlchemy, who understand the complexity/functionality trade-off made when using it.
+
+Getting SQLAlchemy
+------------------
+
+`SQLAlchemy`_ is automatically installed with TurboGears 1.1. For 1.0 users,
+you can grab the most recent release via the cheeseshop_::
+
+    easy_install SQLAlchemy
+
+You can also get it via the `SQLAlchemy download`_ page.
+The `SqlAlchemy documentation`_ is quite thorough.
+
+.. _cheeseshop: http://pypi.python.org
+.. _SqlAlchemy download: http://www.sqlalchemy.org/download.myt
+.. _SqlAlchemy documentation: http://www.sqlalchemy.org/docs/
+
+
+Using SQLAlchemy in TurboGears
+------------------------------
+
+The simplest way to get started using SQLAlchemy is to quickstart a new project
+with either the ``--sqlalchemy`` or ``--elixir`` switch::
+
+    tg-admin quickstart --sqlalchemy / --elixir
+
+(Or more briefly: tg-admin quickstart -s / -e)
+
+This switch sets up your ``model.py`` properly for using SQLAlchemy. If you said yes to the identity prompt, you'll get the identity tables as either plain SQLAlchemy or Elixir.
+
+Now change the value of ``sqlalchemy.dburi`` to point to a valid database connection. During development, this is in dev.cfg.
+
+To init the database schema you need to run:
+
+    tg-admin sql create
+
+Plain SQLAlchemy with contextual sessions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Use ``turbogears.database.mapper`` as the mapper::
+
+    from turbogears.database import metadata, mapper
+    from sqlalchemy import Table, Column, Integer
+
+    mytable = Table('mytable', metadata,
+        Column('id', Integer, primary_key=True))
+    class MyTable(object):
+        pass
+    mapper(MyTable, mytable)
+
+The mapper function from ``turbogears.database`` is identical with SQLAlchemy's contextual mapper() if you use SQLAlchemy >= 0.4, and something similar if you use SQLAlchemy < 0.4
+
+For more information, see http://www.sqlalchemy.org/docs/04/session.html#unitofwork_contextual
+
+In TurboGears <= 1.0.4b2, ``turbogears.database.mapper`` is not available; you must define it explicitly in one of the following ways::
+
+    # standard SQLAlchemy mapper
+    from sqlalchemy.orm import mapper
+
+    # contextual mapper (only for SQLAlchemy >= 0.4)
+    mapper = session.mapper
+
+    # assignmapper extension (deprecated)
+    from sqlalchemy.ext.assignmapper import assign_mapper
+    mapper = lambda *args, **kw: assign_mapper(session.context, *args, **kw)
+
+Accessing your data
+~~~~~~~~~~~~~~~~~~~
+
+There's a special way for the controller to access the session and data.
+::
+
+    import turbogears as tg
+    from turbogears import controllers, expose, flash
+    from turbogears.database import session
+    from YOURPACKAGE import model
+
+    class Root(controllers.RootController):
+        @expose(template="YOURPACKAGE.templates.test")
+        def index(self):
+            data = {}
+            entries = []
+            data['entries'] = entries
+
+            myTable = model.MyTable()
+            session.save(myTable) # TurboGears handles session creation
+            session.commit()
+
+            for table in session.query(model.MyTable):
+                entries.append(table.id)
+
+            return data
+            # session is automatically closed for you
+
+Then in the template you can have something like::
+
+    <span py:for="table_id in entries">${table_id}</span>
+
+Don't use .all() in your queries. The only place where you need to use .all() is with MSSQL server
+2000 which does not support offsets.
+
+
+The Elixir layer on top of SQLAlchemy
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`Elixir`_ is a declarative layer on top of the SQLAlchemy library.
+
+Using Elixir, you would define your model like that::
+
+    from elixir import Entity, Field, Unicode
+
+    class MyTable(Entity):
+        name = Field(Unicode(30))
+
+In Elixir < 0.4, this new syntax is not available, you have to use the old syntax::
+
+    from elixir import Entity, has_field, Unicode
+
+    class MyTable(Entity):
+        has_field('name', Unicode(30))
+
+The differences between Elixir 0.3 and 0.4 are explained here: http://elixir.ematia.de/trac/wiki/Migrate03to04
+
+In future Elixir versions, you may need to create your mappings explicitly using::
+
+    setup_all()
+
+For more information on Elixir, see the `Elixir documentation`_.
+
+.. _Elixir: http://elixir.ematia.de/trac/wiki
+.. _Elixir documentation: http://elixir.ematia.de/trac/wiki/Documentation
+
+Tips
+----
+
+Logging
+~~~~~~~
+
+The default dev.cfg files contains the following to configure SA logging. By default it will not log every SQL statement issued. This can be changed for debugging.::
+
+    [[[database]]]
+    # Set to INFO to make SQLAlchemy display SQL commands
+    level='ERROR'
+    qualname='sqlalchemy.engine'
+    handlers=['debug_out']
+    propagate=0
+
+
+Custom Column Types
+~~~~~~~~~~~~~~~~~~~
+
+While SQLObject uses formencode to perform Python to database conversions, SQLAlchemy
+performs conversions through defining its column datatypes.
+This section demonstrates how to use the SQLAlchemy column datatypes.
+
+Below are two examples, one which converts a number representing the system timestamp to a
+Python ``datetime`` while the other converts IPv4 addresses between integer and
+octet notation. Keep in mind that ``convert_bind_param`` is *to* the database
+while ``convert_result_value`` is *from* the database.
+
+Creating a ``TIMESTAMP`` column type::
+
+  import time
+  from datetime import datetime
+
+  class TIMESTAMP(Numeric):
+      # to the database
+      def convert_bind_param(self,value,engine):
+          return super(TIMESTAMP,self).convert_bind_param(time.mktime(value.timetuple()),engine)
+      # from the database
+      def convert_result_value(self,value,engine):
+          return datetime.fromtimestamp(super(TIMESTAMP,self).convert_result_value(value,engine))
+
+Creating an ``IPV4`` column type::
+
+  import struct
+  from socket import inet_aton, inet_ntoa, error as socket_error
+
+  class IPv4AddrTypeError(TypeError):
+      def __init__(self, addr):
+          self.addr = addr
+      def __str__(self):
+          return "Illegal IPv4 address '%s'" % self.addr
+
+  class IPV4(Numeric):
+      # to the database
+      def convert_bind_param(self,value,engine):
+          try:
+              return super(IPV4,self).convert_bind_param(struct.unpack('!L',inet_aton(value))[0],engine)
+          except socket_error:
+              raise IPv4AddrTypeError(value)
+      # from the database
+      def convert_result_value(self,value,engine):
+          return inet_ntoa(struct.pack('!L',super(IPV4,self).convert_result_value(value,engine))
+
+
+Using Predefined Databases
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are times when you want to load your table definitions from a preexisting database.  SQLAlchemy makes it easy to do this via an argument to the Table creation function and the addition of one function call:
+
+.. parsed-literal::
+
+    from turbogears.database import metadata, bind_meta_data
+    # This function makes the metadata variable ready for us to use
+    **bind_meta_data()**
+
+    # Notice the autoload=True parameter.  This tells SQLAlchemy
+    # to load the table definition by introspecting the database
+    MyTable = Table('mytable', metadata, **autoload=True**)
+
+
+Passing Parameters to create_engine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is possible to specify parameters for create_engine in the configuration file (dev.cfg during development). The syntax looks like::
+
+    sqlalchemy.dburi = 'sqlite:///mydb'
+    sqlalchemy.pool_recycle = 30
+
+In this example, pool_recycle=30 will be passed to create_engine. If multiple databases are used all create_engine calls get the same arguments.
+
+
+Common Problems
+---------------
+
+'module' object has no attribute 'bind_meta_data'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you are using a version of SQLAlchemy that is too old (or you did not install SQLAlchemy at all), you will receive the following error message::
+
+   Unhandled exception in thread started by <bound method Server._start of <cherrypy._cpserver.Server object at 0x832ce0c>>
+   Traceback (most recent call last):
+     File ".../site-packages/CherryPy....egg/cherrypy/_cpserver.py", line 78, in _start
+       Engine._start(self)
+     File ".../site-packages/CherryPy....egg/cherrypy/_cpengine.py", line 108, in _start
+       func()
+     File ".../site-packages/TurboGears....egg/turbogears/startup.py", line 227, in startTurboGears
+       database.bind_meta_data()
+   AttributeError: 'module' object has no attribute 'bind_meta_data'
+
+If this is the case, you should update to a newer version of SQLAlchemy.
+
+
+Future Developments
+-------------------
+
+Evan Rosson, as part of the Google Summer of Code 2006, was the original author of the
+`Migrate`_ project, which provides tools to enable controlled schema migration. Currently,
+migrate does not work with SQLAlchemy 0.4 but there is some work underway to revive this
+project.
+
+.. _Migrate: http://code.google.com/p/sqlalchemy-migrate/
+
+
+TurboGears Interface
+--------------------
+
+The TurboGears ``database`` module provides the following:
+
+* ``session`` - The SQLAlchemy session, in a thread local wrapper. This is mostly used in the controller.
+* ``get_engine()`` - Connects to the database (if not already connected) and returns the SQLAlchemy engine. Only used rarely. With TG 1.1, a package name can be passed as an argument.
+* ``metadata`` - The SQLAlchemy metadata, initially not bound to any database. This is mostly used in the model.
+* ``get_metadata(pkg)`` - With TG 1.1, gets the metadata for the given package name, or the default package if not specified.
+* ``bind_meta_data()`` - Bind the SQLAlchemy metadata to the database connection. Automatically called from ``startTurboGears()``, so rarely used manually.
+* ``mapper``: - A contextual SQLAlchemy mapper. This is identical with ``session.mapper`` for SQLAlchemy 0.4 and above.
+* ``cherrypy.request.sa_transaction`` - Can be used to manually control the transaction that is created automatically for each request. For SQLAlchemy 0.4 and above, it is recommended to use transaction methods on the session instead.
+
+
+Multiple Databases
+------------------
+
+With TG 1.1, multiple databases are fully supported. Multiple DBURIs can be specified in the configuration. With TG 1.0 it is possible to use multiple databases, although secondary databases must have their connection details embedded in the code.
+
+The configuration file (dev.cfg during development) could look like::
+
+    sqlalchemy.dburi = 'mysql://maindb/myapp'
+    sales.dburi = 'oracle://extserver/oldapp'
+
+To define tables in these databases using plain SA, code would look like::
+
+    from turbogears.database import get_metadata
+    mytbl = Table('mytbl', get_metadata(), # Creates in main db
+    ...
+    tbl2 = Table('tbl2', get_metadata('sales'), # Creates in sales db
+    ...
+
+The equivalent TG 1.0 code would be::
+
+    from turbogears.database import metadata
+    sales_metadata = MetaData('oracle://extserver/oldapp')
+    mytbl = Table('mytbl', metadata, # Creates in main db
+    ...
+    tbl2 = Table('tbl2', sales_metadata, # Creates in sales db
+    ...
+
+With Elixir, one option is specify the metadata for every table, with using_options(metadata=alt_metadata). Another approach (usually preferable) is to keep the table definitions for each database in separate files. In each file, set the global variable "metadata" (__metadata__ with Elixir 0.4) to the appropriate metadata.
+
+The controller can use tables from multiple databases, being mostly unaware of the separation. Queries can only use tables from a single database.
+
+
+Migrating Existing Projects
+---------------------------
+
+Before starting, be warned this can be quite a major task. You'll need to be reasonably familiar with SQLAlchemy. And make sure you test your application thoroughly after the change.
+
+
+From SQLObject
+~~~~~~~~~~~~~~
+
+To update the model, start by using `AutoCode`_ to generate SQLAlchemy code that matches your existing database. Then, by hand, move all the logic code from your old model into the new one.
+
+.. _AutoCode: http://www.sqlalchemy.org/trac/wiki/UsageRecipes/AutoCode
+
+You'll also need to update any other code that calls the model. The main change is that MyTable.get becomes MyTable.query.get, and .select becomes .filter.
+
+
+From SQLAlchemy 0.3
+~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   ActiveMapper
+   /GettingStarted/UseElixir
+
+See the SQLAlchemy docs: http://www.sqlalchemy.org/docs/04/intro.html#overview_migration
+
+The most significant change is a change to query syntax that affects migrating from assign_mapper (or ActiveMapper) to the SQLAlchemy contextual mapper. The previous syntax of ``Object.get(id)`` is now ``Object.query.get(id)``, ``get_by()`` is gone,  ``select()`` and ``select_by()`` are replaced by ``query.filter()`` and ``query.filter_by()``. Elixir is affected in the same way, since it inherited its methods from assign_mapper; however the ``Object.get(id)`` and ``Object.get_by(id)`` shortcuts still remain if you are using Elixir.
+
+There were several approaches for defining the model in SQLAlchemy 0.3, with different suggestions for migration
+
+* Plain SA (manual sessions) - this will work in SQLAlchemy 0.4 without changes. Consider changing to contextual session, as that is the convenient new way.
+* assign_mapper - will *not* work with TurboGears and SQLAlchemy 0.4. Change to contextual session.
+* `ActiveMapper <SQLAlchemy/ActiveMapper>`_ - will work in SQLAlchemy 0.4. It is now deprecated and should not be used for new projects; use Elixir instead. Changes will be needed for TG 1.1, see below.
+* `Elixir <GettingStarted/UseElixir>` - will work with SQLAlchemy 0.4
+
+TurboGears projects that use ``req.sa_transaction`` will see no visible change. However, they should now use transaction controls on the ``turbogears.database.session`` object. ``req.sa_transaction`` will be removed at some point.
+
+Also, in the TG config file, ``sqlalchemy.echo`` no longer works. There is an alternative log configuration syntax, see above.
+
+In TG 1.0, ActiveMapper is bound to the turbogears database and session automatically. To use ActiveMapper with TG 1.1, you must add the following boiler plate to the top of your model::
+
+    from sqlalchemy.ext import activemapper
+    from turbogears.database import metadata, session
+    activemapper.objectstore = session
+    __metadata__ = metadata

@@ -1,0 +1,1263 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Brian’s TurboGears Tutorial &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="tg-admin command line tool reference" href="TgAdmin.html" />
+    <link rel="prev" title="File Upload Tutorial" href="FileUploadTutorial.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="TgAdmin.html" title="tg-admin command line tool reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FileUploadTutorial.html" title="File Upload Tutorial"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">TurboGears 1.0 FAQ</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Brian&#8217;s TurboGears Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-turbogears">Installing TurboGears</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generating-a-project-skeleton">Generating a Project Skeleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-model">Building Your Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-controllers">Building Your Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#giving-resources-templates">Giving Resources Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#building-your-templates">Building Your Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#form-handling">Form Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-asynchronous-javascript">Adding Asynchronous JavaScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#advanced-features">Advanced Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="brian-s-turbogears-tutorial">
+<h1><a class="toc-backref" href="#id1">Brian&#8217;s TurboGears Tutorial</a><a class="headerlink" href="#brian-s-turbogears-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#brian-s-turbogears-tutorial" id="id1">Brian&#8217;s TurboGears Tutorial</a><ul>
+<li><a class="reference internal" href="#installing-turbogears" id="id2">Installing TurboGears</a></li>
+<li><a class="reference internal" href="#generating-a-project-skeleton" id="id3">Generating a Project Skeleton</a></li>
+<li><a class="reference internal" href="#building-your-model" id="id4">Building Your Model</a></li>
+<li><a class="reference internal" href="#building-your-controllers" id="id5">Building Your Controllers</a></li>
+<li><a class="reference internal" href="#giving-resources-templates" id="id6">Giving Resources Templates</a></li>
+<li><a class="reference internal" href="#building-your-templates" id="id7">Building Your Templates</a></li>
+<li><a class="reference internal" href="#form-handling" id="id8">Form Handling</a></li>
+<li><a class="reference internal" href="#adding-asynchronous-javascript" id="id9">Adding Asynchronous JavaScript</a></li>
+<li><a class="reference internal" href="#advanced-features" id="id10">Advanced Features</a></li>
+<li><a class="reference internal" href="#license" id="id11">License</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Starting a TurboGears project? Here&#8217;s what you need to know.</p>
+<p>This tutorial won&#8217;t discuss advanced features like the Identity framework or
+automatic form generation and validation. Instead, this tutorial will focus
+on giving you a deeper understanding of the basics behind TurboGears.</p>
+<p>The tutorial application will be a multi-user to-do list manager.
+You can <a class="reference download internal" href="_downloads/todolist.tar.gz"><tt class="xref download docutils literal"><span class="pre">download</span></tt></a> the final code here.</p>
+<div class="section" id="installing-turbogears">
+<h2><a class="toc-backref" href="#id2">Installing TurboGears</a><a class="headerlink" href="#installing-turbogears" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial will cover version 1.0.9 of TurboGears. The basics
+should still work across versions.</p>
+<p>First of course, you need to install TurboGears as explained in the
+<a class="reference internal" href="Install/index.html"><em>instructions</em></a> for downloading and installing.</p>
+<p>Make sure you did everything right by running <tt class="docutils literal"><span class="pre">tg-admin</span></tt>:</p>
+<div class="highlight-python"><pre>$ tg-admin</pre>
+</div>
+<p>The output should look something like this:</p>
+<div class="highlight-python"><pre>TurboGears 1.0.9 command line interface
+
+Usage: /usr/local/bin/tg-admin [options] &lt;command&gt;
+
+...</pre>
+</div>
+</div>
+<div class="section" id="generating-a-project-skeleton">
+<h2><a class="toc-backref" href="#id3">Generating a Project Skeleton</a><a class="headerlink" href="#generating-a-project-skeleton" title="Permalink to this headline">¶</a></h2>
+<p>Type this to make your project skeleton:</p>
+<div class="highlight-python"><pre>$ tg-admin quickstart</pre>
+</div>
+<p>We choose &#8216;tutorial&#8217; as project and package name (simply press the return key
+when being asked for the package name and whether you need Identity):</p>
+<div class="highlight-python"><pre>Enter project name: tutorial
+Enter package name [tutorial]:
+Yo you need Identity (username/passwords) in this project? [no]</pre>
+</div>
+<p>Change to the directory created for you by <tt class="docutils literal"><span class="pre">tg-admin</span></tt>. From now on any
+path references during this tutorial will be relative to this directory:</p>
+<div class="highlight-python"><pre>$ cd tutorial</pre>
+</div>
+<p>At this point your project should be operational. Make sure this is
+the case by starting the built-in web server:</p>
+<div class="highlight-python"><pre>$ python start-tutorial.py</pre>
+</div>
+<p>If everything worked, you should be able to browse to <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>
+and see the welcome message. If something goes wrong (hard drive erased, monitor
+on fire, etc.), then the TurboGears package was probably installed incorrectly.</p>
+<p>To change the port used by the built-in web server, edit <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">server</span><span class="o">.</span><span class="n">socket_port</span> <span class="o">=</span> <span class="mi">8080</span>
+</pre></div>
+</div>
+<p>To use the default &#8216;production&#8217; configuration, specify the corresponding
+configuration file when starting the server:</p>
+<div class="highlight-python"><pre>$ python start-tutorial.py prod.cfg</pre>
+</div>
+</div>
+<div class="section" id="building-your-model">
+<h2><a class="toc-backref" href="#id4">Building Your Model</a><a class="headerlink" href="#building-your-model" title="Permalink to this headline">¶</a></h2>
+<p>The very first thing you should customize is the location of the database your
+TurboGears app will use. If you don&#8217;t need an SQL database, go to the next section.</p>
+<p>Open <tt class="docutils literal"><span class="pre">dev.cfg</span></tt> and find the appropriate commented line for the SQL
+implementation you will be using. For this tutorial we will use SQLite
+because it uses a local file instead of a server connection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&quot;sqlite://</span><span class="si">%(current_dir_uri)s</span><span class="s">/tutorial.sqlite&quot;</span>
+</pre></div>
+</div>
+<p>This will create the database in the project directory, but you can specify
+any other absolute path:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sqlobject</span><span class="o">.</span><span class="n">dburi</span> <span class="o">=</span> <span class="s">&quot;sqlite:///home/brian/tutorial/tutorial.sqlite&quot;</span>
+</pre></div>
+</div>
+<p>Close <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>, you won&#8217;t need it for the rest of this tutorial.</p>
+<p>To define your database tables, open the existing file <tt class="docutils literal"><span class="pre">tutorial/model.py</span></tt>.
+TurboGears 1.0 uses SQLObject for database abstraction. In SQLObject, classes
+represent tables and class attributes represent columns. Since we&#8217;re making a
+to-do list application, add the following classes in <tt class="docutils literal"><span class="pre">tutorial/model.py</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">User</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">StringCol</span><span class="p">(</span><span class="n">alternateID</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">lists</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;List&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">List</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;User&#39;</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">MultipleJoin</span><span class="p">(</span><span class="s">&#39;Item&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Item</span><span class="p">(</span><span class="n">SQLObject</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">UnicodeCol</span><span class="p">(</span><span class="n">notNone</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="nb">list</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;List&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, at the top of the module, make sure you have imported everything you need
+from SQLObject. For us, the following will suffice:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sqlobject</span> <span class="kn">import</span> <span class="n">SQLObject</span><span class="p">,</span> <span class="n">SQLObjectNotFound</span><span class="p">,</span> \
+    <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">MultipleJoin</span><span class="p">,</span> <span class="n">StringCol</span><span class="p">,</span> <span class="n">UnicodeCol</span>
+</pre></div>
+</div>
+<p>In this model, users are uniquely identified by their e-mail address and can
+have multiple lists. Lists have a title, an owner, and multiple items. Items
+have a value and their containing list.</p>
+<p>Note that if you want to use some other databases than SQLite, you may need to
+give the table for storing the users a different name, because <tt class="docutils literal"><span class="pre">user</span></tt> may be
+a reserved keyword there. In the Identity framework, it is called <tt class="docutils literal"><span class="pre">tg_user</span></tt>.
+You can keep the name for the class if you add the following lines to it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">sqlmeta</span><span class="p">:</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="s">&#39;tg_user&#39;</span>
+</pre></div>
+</div>
+<p>See the <a class="reference external" href="http://sqlobject.org/SQLObject.html">SQLObject documentation</a> for help with defining and using your model.</p>
+<p>TurboGears now has enough information to generate the newly defined tables using
+the database specified in <tt class="docutils literal"><span class="pre">dev.cfg</span></tt>. To generate the tables, run:</p>
+<div class="highlight-python"><pre>$ tg-admin sql create</pre>
+</div>
+<p>If there were no errors, then your tables were successfully created.</p>
+<p>If you need to change your table definitions, make sure to drop whatever
+is currently in your database first. To remake your tables, run:</p>
+<div class="highlight-python"><pre>$ tg-admin sql drop
+$ tg-admin sql create</pre>
+</div>
+<p>After creating your tables, you can test them and add rows using an
+interactive Python shell suited to your project. To start the shell, type:</p>
+<div class="highlight-python"><pre>$ tg-admin shell</pre>
+</div>
+<p>Any data you add or modify in this shell is handled in a transaction.
+If you quit without committing, no changes will be written to the database.
+To commit the transaction, type this in the shell after making your changes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hub</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here&#8217;s how I tested my tables using the interactive shell. You should follow
+along in order to insert some items into your database:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="s">&quot;exogen@gmail.com&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">email</span>
+<span class="go">&#39;exogen@gmail.com&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">id</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">lists</span>
+<span class="go">[]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;Groceries&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">u</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">title</span>
+<span class="go">u&#39;Groceries&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">user</span>
+<span class="go">&lt;User 1 email=&#39;exogen@gmail.com&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">email</span>
+<span class="go">&#39;exogen@gmail.com&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">t</span><span class="o">.</span><span class="n">items</span>
+<span class="go">[]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span><span class="o">.</span><span class="n">lists</span>
+<span class="go">[&lt;List 1 title=u&#39;Groceries&#39; userID=1&gt;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i1</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;Milk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i2</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;Eggs&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i3</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="nb">list</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;Bread&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">]</span>
+<span class="go">[u&#39;Milk&#39;, u&#39;Eggs&#39;, u&#39;Bread&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>Remember to commit your changes if you want them to be saved:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">hub</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If your tables are working and sufficient, then you can close
+<tt class="docutils literal"><span class="pre">model.py</span></tt>, you won&#8217;t need to change it for the rest of this tutorial.</p>
+</div>
+<div class="section" id="building-your-controllers">
+<h2><a class="toc-backref" href="#id5">Building Your Controllers</a><a class="headerlink" href="#building-your-controllers" title="Permalink to this headline">¶</a></h2>
+<p>Controllers are your way of specifying what code gets executed when an incoming
+request to your web service is received. To map request URLs and parameters to
+Python functions, TurboGears uses an underlying HTTP framework called CherryPy.</p>
+<p>To start adding and modifying controllers, open <tt class="docutils literal"><span class="pre">tutorial/controllers.py</span></tt>.</p>
+<p>If we replace the Root class in <tt class="docutils literal"><span class="pre">controllers.py</span></tt> with the code below, we have
+the TurboGears equivalent of a &#8216;Hello, world&#8217; application:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;Hello, world!&quot;</span>
+</pre></div>
+</div>
+<p>If you have stopped the server, start the server again and browse to
+<a class="reference external" href="http://localhost:8080">http://localhost:8080</a>. You should see &#8220;Hello, world!&#8221; in plaintext.</p>
+<p>How does it work?</p>
+<p>The <tt class="docutils literal"><span class="pre">Root</span></tt> controller corresponds to the root URL of your web service, <tt class="docutils literal"><span class="pre">/</span></tt>.
+When a request for <tt class="docutils literal"><span class="pre">/</span></tt> is received, TurboGears looks for the default resource
+in the <tt class="docutils literal"><span class="pre">Root</span></tt> controller: the <tt class="docutils literal"><span class="pre">index</span></tt> method. The <tt class="docutils literal"><span class="pre">index</span></tt> method is
+the equivalent of an index.html file in a web directory.</p>
+<p>To make the resource public, expose it with the <tt class="docutils literal"><span class="pre">expose</span></tt> decorator which
+can be imported from turbogears:</p>
+<div class="highlight-python"><pre>@expose()</pre>
+</div>
+<p>Any code in an exposed method will be executed when a request for that
+resource is received. You can add more resources to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;This tutorial was written by Brian Beck.&quot;</span>
+</pre></div>
+</div>
+<p>View the above resource by browsing to <a class="reference external" href="http://localhost:8080/about">http://localhost:8080/about</a>.</p>
+<p>In development mode, you should be able to see changes made to your controllers
+without even restarting the server.</p>
+<p>Requests can also have parameters. These are specified in the URL for GET
+requests and encoded in the form input for POST requests. Both are handled the
+same way in your controllers&#8217; method arguments:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s">&quot;Brian Beck&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;This tutorial was written by </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">author</span>
+</pre></div>
+</div>
+<p>Now requesting <tt class="docutils literal"><span class="pre">/about</span></tt> will print the same text as before, but requesting
+<tt class="docutils literal"><span class="pre">/about?author=Napoleon</span></tt> will print:</p>
+<blockquote>
+<div>&#8220;This tutorial was written by Napoleon.&#8221;</div></blockquote>
+<p>To add more path components, just add attributes in your <tt class="docutils literal"><span class="pre">Root</span></tt> controller
+that are class instances containing more resources. Here I added a path
+component <tt class="docutils literal"><span class="pre">users</span></tt> to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">tutorial</span> <span class="kn">import</span> <span class="n">model</span>
+
+<span class="k">class</span> <span class="nc">Users</span><span class="p">:</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="n">users</span> <span class="o">=</span> <span class="n">Users</span><span class="p">()</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Now browsing to <tt class="docutils literal"><span class="pre">/users/index</span></tt> or just <tt class="docutils literal"><span class="pre">/users/</span></tt> will print a list of
+the users in the database.</p>
+<p>See the <a class="reference external" href="http://www.cherrypy.org/wiki/TableOfContents">CherryPy documentation</a> for help with structuring your controllers:</p>
+<p>In addition, each user should have their own resource in the <tt class="docutils literal"><span class="pre">Users</span></tt>
+controller. However, this would require adding a method for every user in the
+database. Luckily, there is an easy way to specify dynamic path components.
+When a resource is requested that cannot be found in the corresponding
+controller, a method called <tt class="docutils literal"><span class="pre">default</span></tt> is invoked with the requested resource&#8217;s
+name as its argument:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Users</span><span class="p">:</span>
+
+    <span class="o">...</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">userID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;Invalid user ID!&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;No such user!&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span>
+</pre></div>
+</div>
+<p>Now requesting <tt class="docutils literal"><span class="pre">/users/1</span></tt> will print the e-mail address of the user with
+integer ID 1 in the database, or &#8220;No such user!&#8221; if no user with that ID exists.
+Requesting <tt class="docutils literal"><span class="pre">/users/dog</span></tt> will print &#8220;Invalid user ID!&#8221; since by default the
+user IDs in our table are integers.</p>
+</div>
+<div class="section" id="giving-resources-templates">
+<h2><a class="toc-backref" href="#id6">Giving Resources Templates</a><a class="headerlink" href="#giving-resources-templates" title="Permalink to this headline">¶</a></h2>
+<p>So far we&#8217;ve been returning plaintext for every incoming request, for
+demonstration purposes. Now I&#8217;ll show how to plug real templates into your
+controllers. TurboGears uses the Kid templating system for controlling dynamic
+content in your markup.</p>
+<p>For each page on your site, give its corresponding resource in your
+controllers a template. Do this by specifying the <tt class="docutils literal"><span class="pre">template</span></tt> argument
+of the <tt class="docutils literal"><span class="pre">expose</span></tt> decorator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.welcome&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Each template can optionally take arguments. Template arguments are used to
+pass variables and other dynamic content to the template. You can pass template
+arguments from your controllers by returning a dictionary whose keys are the
+names by which the variables will be accessible in the template:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.users&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="n">users</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Not every template has dynamic content and therefore may not need arguments.
+In that case, just return an empty dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.welcome&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here are the modified controllers for our application, now using templates
+instead of returning plaintext:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Users</span><span class="p">:</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.users&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">select</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">users</span><span class="o">=</span><span class="n">users</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.user&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">userID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">cherrypy</span><span class="o">.</span><span class="n">NotFound</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="n">users</span> <span class="o">=</span> <span class="n">Users</span><span class="p">()</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.welcome&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">()</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&quot;tutorial.templates.about&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s">&quot;Brian Beck&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Accessing the application now won&#8217;t work because some of the templates don&#8217;t
+exist yet, and others are no longer given arguments they are expecting.</p>
+<p>To create skeletons for your templates, just copy the default <tt class="docutils literal"><span class="pre">welcome.kid</span></tt>
+template that was generated when your project was created:</p>
+<div class="highlight-python"><pre>$ cp tutorial/templates/welcome.kid tutorial/templates/users.kid
+$ cp tutorial/templates/welcome.kid tutorial/templates/user.kid
+$ cp tutorial/templates/welcome.kid tutorial/templates/about.kid</pre>
+</div>
+</div>
+<div class="section" id="building-your-templates">
+<h2><a class="toc-backref" href="#id7">Building Your Templates</a><a class="headerlink" href="#building-your-templates" title="Permalink to this headline">¶</a></h2>
+<p>Now it&#8217;s time to modify the markup in your templates.</p>
+<p>All the templates used by the resources we exposed inherit from a master
+template called <tt class="docutils literal"><span class="pre">master.kid</span></tt>. If every page on your site has common elements
+like headers, navigation links, and footers, then these pieces belong in
+<tt class="docutils literal"><span class="pre">master.kid</span></tt>. This is also the best place to insert CSS and JavaScript that
+will be used by every page on your site.</p>
+<p>Open <tt class="docutils literal"><span class="pre">tutorial/templates/master.kid</span></tt>. There are some pieces of the welcome
+screen you saw when you first started up the server, as well as some
+advanced elements I won&#8217;t use in this tutorial.</p>
+<p>You only need two elements in the <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> of your master template:</p>
+<div class="highlight-python"><pre>&lt;div id="status_block" class="flash"
+    py:if="value_of('tg_flash', None)" py:content="tg_flash"&gt;&lt;/div&gt;
+&lt;div py:replace="[item.text]+item[:]"&gt;page content&lt;/div&gt;</pre>
+</div>
+<p>The first element is for messages that you can show on the page after the user
+has performed some action. The second element is a placeholder for any elements
+that appear in the body of the template that inherits from this one.</p>
+<p>For example, if you were to return <tt class="docutils literal"><span class="pre">dict(tg_flash=&quot;Test</span> <span class="pre">message.&quot;)</span></tt> from a
+controller, and the only element in that controller&#8217;s template <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> is
+<tt class="docutils literal"><span class="pre">&lt;p&gt;Hello,</span> <span class="pre">world!&lt;/p&gt;</span></tt>, this is what would be rendered:</p>
+<div class="highlight-python"><pre>&lt;body&gt;
+    &lt;div id="status_block" class="flash"&gt;Test message.&lt;/div&gt;
+    &lt;p&gt;Hello, world!&lt;/p&gt;
+&lt;/body&gt;</pre>
+</div>
+<p>For help with building your templates using Kid, see the
+<a class="reference external" href="http://www.kid-templating.org/language.html">Kid language specification</a>.</p>
+<p>Note that in the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> section of the master template, the CSS file
+<tt class="docutils literal"><span class="pre">/static/css/style.css</span></tt> gets included. The file will be loaded from the
+<tt class="docutils literal"><span class="pre">static</span></tt> directory that has been created inside the <tt class="docutils literal"><span class="pre">tutorial</span></tt> package
+in order to hold all the static files such as stylesheets, scripts, and images.</p>
+<p>Open the default stylesheet <tt class="docutils literal"><span class="pre">style.css</span></tt> and replace its content with:</p>
+<div class="highlight-python"><pre>html, body, div, p, form {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+li form {
+    display: inline;
+    clear: both;
+}</pre>
+</div>
+<p>I normally reset some default values in my stylesheets using the above code,
+and later add whatever style elements I like in this file.</p>
+<p>You could also include JavaScript files in the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> section of the master
+template, e.g. you can include the MochiKit by adding:</p>
+<blockquote>
+<div>&lt;script type=&#8221;text/javascript&#8221; src=&#8221;/tg_widgets/turbogears/js/MochiKit.js&#8221;/&gt;</div></blockquote>
+<p>In this case, you can achieve the same by adding the following line to the
+configuration file <tt class="docutils literal"><span class="pre">config/app.cfg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tg</span><span class="o">.</span><span class="n">include_widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;turbogears.mochikit&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>MochiKit is a lightweight JavaScript library that adds some Pythonic features to
+JavaScript and makes handling AJAX easier. If you have additional scripts, put
+them in the <tt class="docutils literal"><span class="pre">static/javascript/</span></tt> subdirectory of your <tt class="docutils literal"><span class="pre">tutorial</span></tt> package.</p>
+<p>The second addition to <tt class="docutils literal"><span class="pre">master.kid</span></tt> is any page layout markup. I&#8217;m just going
+to add links to the three sections of the site on every page. To do this, add
+the following code to the top of the <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> in <tt class="docutils literal"><span class="pre">master.kid</span></tt>, just before
+the <tt class="docutils literal"><span class="pre">main_content</span></tt> <tt class="docutils literal"><span class="pre">div</span></tt> section with the important two elements mentioned
+before, and remove all the rest:</p>
+<div class="highlight-python"><pre>&lt;h1&gt;Brian's List Manager&lt;/h1&gt;
+&lt;ul id="navigation"&gt;
+    &lt;li&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href="/users/"&gt;Users&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</pre>
+</div>
+<p>You&#8217;re probably getting impatient and wanting to see the changes so far. One
+more thing before we can do that: open the homepage template (<tt class="docutils literal"><span class="pre">welcome.kid</span></tt>),
+and any other templates you created when assigning templates to your
+controllers. I opened <tt class="docutils literal"><span class="pre">welcome.kid</span></tt>, <tt class="docutils literal"><span class="pre">users.kid</span></tt>, <tt class="docutils literal"><span class="pre">user.kid</span></tt>, and
+<tt class="docutils literal"><span class="pre">about.kid</span></tt>, and changed each of their <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> contents to only the
+following:</p>
+<div class="highlight-python"><pre>&lt;p&gt;Hello, world!&lt;/p&gt;</pre>
+</div>
+<p>Save your templates, restart the server, and browse to <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>.
+You should see the three section links at the top of the page and the &#8220;Hello,
+world!&#8221; message. Note that restarting the server is only necessary if you make
+changes to the master template, because these are not picked up by the auto
+reload mechanism of TurboGears.</p>
+<p>If you are satisfied with your master template, you can close <tt class="docutils literal"><span class="pre">master.kid</span></tt>,
+you won&#8217;t need to change it for the rest of this tutorial.</p>
+<p>Now you can add functionality to your page templates. Recall that the <tt class="docutils literal"><span class="pre">index</span></tt>
+method in the <tt class="docutils literal"><span class="pre">Root</span></tt> controller does not pass any arguments to the template.
+No extra functionality is needed, so close <tt class="docutils literal"><span class="pre">welcome.kid</span></tt>, leaving just the
+&#8220;Hello, world!&#8221; message.</p>
+<p>The <tt class="docutils literal"><span class="pre">about</span></tt> method passes an <tt class="docutils literal"><span class="pre">author</span></tt> argument to its template. To reproduce
+the plaintext string substitution we had before, change the contents of
+<tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> in <tt class="docutils literal"><span class="pre">about.kid</span></tt> to the following:</p>
+<div class="highlight-python"><pre>&lt;p&gt;This tutorial was written by ${author}.&lt;/p&gt;</pre>
+</div>
+<p>Browse to <a class="reference external" href="http://localhost:8080/about">http://localhost:8080/about</a> to ensure that the changes worked.</p>
+<p>Recall that on the Users page, we want to print a list of users in the database.
+Now that we have templates, we should add a link to each user&#8217;s to-do lists as
+well. Change the contents of <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> in <tt class="docutils literal"><span class="pre">users.kid</span></tt> to the following:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;Users&lt;/h2&gt;
+
+&lt;ol&gt;
+    &lt;li py:for="user in users"&gt;
+        $user.email (&lt;a href="$user.id"&gt;View lists&lt;/a&gt;)
+    &lt;/li&gt;
+&lt;/ol&gt;</pre>
+</div>
+<p>Now on each user&#8217;s page, print each of their lists. Change the contents of
+<tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> in <tt class="docutils literal"><span class="pre">user.kid</span></tt> to the following:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;$user.email's Lists&lt;/h2&gt;
+
+&lt;div py:for="userList in user.lists"&gt;
+    &lt;h3 py:content="userList.title"/&gt;
+    &lt;ol&gt;
+        &lt;li py:for="item in userList.items" py:content="item.value"/&gt;
+    &lt;/ol&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>If you added users to the database using the interactive shell, you should
+be able to browse around to see the output of the above template code. This
+should give you a good starting point for writing templates with Kid.</p>
+</div>
+<div class="section" id="form-handling">
+<h2><a class="toc-backref" href="#id8">Form Handling</a><a class="headerlink" href="#form-handling" title="Permalink to this headline">¶</a></h2>
+<p>The next few additions are forms to let us manage users and lists in our
+application instead of through the interactive shell.</p>
+<p>Adding and removing users is the first addition. Both actions will require
+the unique e-mail address of a user. Performing the actions will trigger
+status messages to display, then redirect the client to the Users page at
+<tt class="docutils literal"><span class="pre">/users/index</span></tt>.</p>
+<p>Since these methods will be the result of a POST request and will immediately
+redirect the client, no new templates are necessary. Here are the two new
+methods to be added to the <tt class="docutils literal"><span class="pre">Users</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Users</span><span class="p">:</span>
+
+    <span class="o">...</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+        <span class="c"># Remove extra spaces</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="c"># Remove null bytes (they can seriously screw up the database)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">email</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">byEmail</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">email</span><span class="p">)</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;User </span><span class="si">%s</span><span class="s"> added!&quot;</span> <span class="o">%</span> <span class="n">email</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;User </span><span class="si">%s</span><span class="s"> already exists!&quot;</span> <span class="o">%</span> <span class="n">email</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;E-mail must be non-empty!&quot;</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/&#39;</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">byEmail</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;The user </span><span class="si">%s</span><span class="s"> does not exist.&quot;</span>
+                <span class="s">&quot; (Did someone else remove it?)&quot;</span> <span class="o">%</span> <span class="n">email</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">userlist</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">lists</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">userlist</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+                <span class="n">userlist</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;User </span><span class="si">%s</span><span class="s"> removed!&quot;</span> <span class="o">%</span> <span class="n">email</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">flash()</span></tt> and <tt class="docutils literal"><span class="pre">redirect()</span></tt> methods must be imported from <tt class="docutils literal"><span class="pre">turbogears</span></tt>
+at the top of the <tt class="docutils literal"><span class="pre">controllers.py</span></tt> module.</p>
+<p>Notice that for the <tt class="docutils literal"><span class="pre">add</span></tt> method, I rolled my own super-simple validation:
+just checking to make sure that the input email is non-empty. In reality you&#8217;d
+use some fancy regular expression here or even better, the <tt class="docutils literal"><span class="pre">&#64;validate()</span></tt>
+decorator. All the <tt class="docutils literal"><span class="pre">try</span></tt>/<tt class="docutils literal"><span class="pre">except</span></tt> blocks are for ensuring that the client
+doesn&#8217;t add duplicate users or modify users that don&#8217;t exist. This kind of
+validation is necessary for any public web service.</p>
+<p>Now we need to add the forms that will trigger these methods. The form
+<tt class="docutils literal"><span class="pre">action</span></tt> will be the name of the corresponding method we just added to the
+<tt class="docutils literal"><span class="pre">Users</span></tt> controller. Add this to the end of the <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> in
+<tt class="docutils literal"><span class="pre">tutorial/templates/users.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;form id="addUser" action="add" method="POST"&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Add a User&lt;/legend&gt;
+        &lt;label for="email"&gt;Email:&lt;/label&gt;
+        &lt;input type="text" id="email" name="email"/&gt;
+        &lt;input type="submit" value="Add"/&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</pre>
+</div>
+<p>Next, add a Remove button for each user in the list. Modify the list in
+<tt class="docutils literal"><span class="pre">users.kid</span></tt> to have a button in each list item:</p>
+<div class="highlight-python"><pre>&lt;div class="list"&gt;
+    &lt;ol&gt;
+        &lt;li py:for="(row, user) in enumerate(users)"
+                class="${row % 2 and 'odd' or None}"&gt;
+            &lt;form style="float: right" action="remove" method="POST"&gt;
+                &lt;input type="hidden" name="email" value="$user.email"/&gt;
+                &lt;input type="submit" value="Remove"/&gt;
+            &lt;/form&gt;
+            &lt;span&gt;$user.email (&lt;a href="$user.id"&gt;View lists&lt;/a&gt;)&lt;/span&gt;
+        &lt;/li&gt;
+    &lt;/ol&gt;
+&lt;/div&gt;</pre>
+</div>
+<p>Reload the Users page and try adding and removing a few users. Notice the
+status messages that appear as a result of calling <tt class="docutils literal"><span class="pre">flash()</span></tt>.</p>
+<p>Also note that every other row in our list gets the <tt class="docutils literal"><span class="pre">odd</span></tt> CSS class set,
+which will later allow us to style the rows with alternating colors.</p>
+<p>The process is similar for adding forms to modify lists and items, so I won&#8217;t
+give much explanation for those. Instead, just look at the code I used and see
+if you can follow along.</p>
+<p>The new <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> of <tt class="docutils literal"><span class="pre">tutorial/templates/user.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;h2&gt;$user.email's Lists&lt;/h2&gt;
+
+&lt;div py:for="userList in user.lists" class="list"&gt;
+    &lt;form style="float: right" action="/removeList" method="POST"&gt;
+        &lt;input type="hidden" name="userID" value="$user.id"/&gt;
+        &lt;input type="hidden" name="listID" value="$userList.id"/&gt;
+        &lt;input type="submit" value="Delete This List"/&gt;
+    &lt;/form&gt;
+    &lt;h3 py:content="userList.title"/&gt;
+    &lt;ol&gt;
+       &lt;li py:for="(row, item) in enumerate(userList.items)"
+                class="${row % 2 and 'odd' or None}"&gt;
+            &lt;form style="float: right" action="/removeItem" method="POST"&gt;
+                &lt;input type="hidden" name="userID" value="$user.id"/&gt;
+                &lt;input type="hidden" name="itemID" value="$item.id"/&gt;
+                &lt;input type="submit" value="Remove"/&gt;
+            &lt;/form&gt;
+            &lt;span py:content="item.value"/&gt;
+        &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;form id="addItem" action="/addItem" method="POST"&gt;
+        &lt;input type="hidden" name="userID" value="$user.id"/&gt;
+        &lt;input type="hidden" id="listID" name="listID" value="$userList.id"/&gt;
+        &lt;label&gt;Add Item: &lt;input type="text" name="value"/&gt;&lt;/label&gt;
+        &lt;input type="submit" value="Add"/&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+&lt;form id="addList" action="/addList" method="POST"&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Create a List&lt;/legend&gt;
+        &lt;input type="hidden" name="userID" value="$user.id"/&gt;
+        &lt;label for="title"&gt;Title:&lt;/label&gt;
+        &lt;input type="text" id="title" name="title"/&gt;
+        &lt;input type="submit" value="Create"/&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</pre>
+</div>
+<p>Additions to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">addList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">userID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">userID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">):</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Cannot add list - user not found!&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Remove extra spaces</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="c"># Remove null bytes (they can seriously screw up the database)</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">List</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;List created!&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Title must be non-empty!&quot;</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">userID</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">removeList</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">listID</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">listID</span><span class="p">)</span>
+            <span class="n">userlist</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">List</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">listID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Invalid list!&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;List not found! (Did someone else remove it?)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">userlist</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+            <span class="n">userlist</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;List deleted!&quot;</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">userID</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">addItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">listID</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">listID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">listID</span><span class="p">)</span>
+            <span class="n">userlist</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">List</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">listID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Invalid list!&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;List not found! (Did someone else remove it?)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Remove extra spaces</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="c"># Remove null bytes (they can seriously screw up the database)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Item</span><span class="p">(</span><span class="n">listID</span><span class="o">=</span><span class="n">listID</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Item added!&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Item must be non-empty!&quot;</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">userID</span><span class="p">)</span>
+
+    <span class="nd">@expose</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">removeItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">userID</span><span class="p">,</span> <span class="n">itemID</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">itemID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">itemID</span><span class="p">)</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">itemID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Invalid item!&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">:</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;No such item! (Did someone else remove it?)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">destroySelf</span><span class="p">()</span>
+            <span class="n">flash</span><span class="p">(</span><span class="s">&quot;Item removed!&quot;</span><span class="p">)</span>
+        <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/users/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">userID</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This provides a huge leap in functionality, but the page style is still very
+ugly. Now is probably the time to take a look at your markup and apply more
+style to it in <tt class="docutils literal"><span class="pre">tutorial/static/css/style.css</span></tt>, like this:</p>
+<div class="highlight-python"><pre>body {
+    font-family: sans-serif;
+    padding: 1em;
+}
+
+fieldset {
+    margin-top: 1em;
+}
+
+legend {
+    font-weight: bold;
+}
+
+h1 {
+    border-bottom: 1px dotted #ccc;
+}
+
+h3 {
+    margin-top: 1em;
+}
+
+.flash {
+    padding: 0.5em;
+    background-color: #ffa;
+    border: 1px solid #cc8;
+}
+
+.list {
+    border: 1px dotted #ccc;
+    padding: 1em;
+    margin: 1em 0;
+}
+
+.list li {
+    padding: 0.5em;
+    border-top: 1px dotted #ccc;
+    background-color: #eef;
+}
+
+.list li.odd {
+    background-color: #eee;
+}
+
+
+#navigation {
+    border: 1px solid #ccc;
+    background-color: #eee;
+    padding: 1em 2em;
+    float: left;
+    margin: 0 1em 1em 0;
+    width: 4em;
+}
+
+#main_content {
+    margin-left: 9em;
+}
+
+#addUser, #addList {
+    width: 22em;
+}
+
+#addUser fieldset, #addList fieldset {
+    text-align: center;
+    border: 1px dashed #338;
+    background-color: #ddf;
+}</pre>
+</div>
+</div>
+<div class="section" id="adding-asynchronous-javascript">
+<h2><a class="toc-backref" href="#id9">Adding Asynchronous JavaScript</a><a class="headerlink" href="#adding-asynchronous-javascript" title="Permalink to this headline">¶</a></h2>
+<p>Remember the MochiKit JavaScript library we included to all our pages earlier?
+This section will use pieces of it to add AJAX to our application. (Actually,
+we&#8217;ll be using JSON instead of XML, but that does not make much difference.
+TurboGears makes using AJAX with JSON very easy.)</p>
+<p>One useful ability we can add to the application is the ability to edit
+list items inline, without reloading the page. Before we start coding,
+here&#8217;s a description of what this entails:</p>
+<ul class="simple">
+<li>Add an Edit button next to each list item.</li>
+<li>Pressing the button will replace the item text with an input field
+containing the item text.</li>
+<li>Pressing the button will also turn the Edit button into a Save button.</li>
+<li>When the client makes changes and presses Save, send the modified
+value to the server.</li>
+<li>On the server, a controller method will handle incoming item
+modifications and write them to the database.</li>
+<li>Change the input field back into normal text with the updated value.</li>
+</ul>
+<p>The first one is easy, put an Edit button next to each list item. In
+<tt class="docutils literal"><span class="pre">tutorial/templates/user.kid</span></tt>, add a new form to each list item. Since
+the form will be submitted with JavaScript, no <tt class="docutils literal"><span class="pre">action</span></tt> or <tt class="docutils literal"><span class="pre">method</span></tt> is
+necessary. Instead, add an <tt class="docutils literal"><span class="pre">onsubmit</span></tt> attribute to the form and an
+<tt class="docutils literal"><span class="pre">onclick</span></tt> attribute to the button:</p>
+<div class="highlight-python"><pre>&lt;ol class="list"&gt;
+   &lt;li py:for="(row, item) in enumerate(userList.items)"
+            class="${row % 2 and 'odd' or None}"&gt;
+        &lt;form style="float: right" action="/removeItem" method="POST"&gt;
+            &lt;input type="hidden" name="userID" value="$user.id"/&gt;
+            &lt;input type="hidden" name="itemID" value="$item.id"/&gt;
+            &lt;input type="submit" value="Remove"/&gt;
+        &lt;/form&gt;
+        &lt;form onsubmit="return saveItem(this)" action=""&gt;
+            &lt;input type="button" style="float: right" value="Edit"
+                   onclick="editItem(this)"/&gt;
+            &lt;span py:content="item.value"/&gt;
+            &lt;input type="hidden" name="itemID" value="$item.id"/&gt;
+        &lt;/form&gt;
+    &lt;/li&gt;
+&lt;/ol&gt;</pre>
+</div>
+<p>As you can see, we made calls to two JavaScript functions that don&#8217;t
+actually exist yet. Since this is the only page that will make use of these
+functions, create a new file at <tt class="docutils literal"><span class="pre">tutorial/static/javascript/user.js</span></tt> and load
+it in the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> of <tt class="docutils literal"><span class="pre">user.kid</span></tt>:</p>
+<div class="highlight-python"><pre>&lt;script type="text/javascript" src="${tg.url('/static/javascript/user.js')}"/&gt;</pre>
+</div>
+<p>First, make pressing the Edit button (a call to <tt class="docutils literal"><span class="pre">editItem</span></tt>) replace the
+item text with an input field as described above. In <tt class="docutils literal"><span class="pre">user.js</span></tt>, add:</p>
+<div class="highlight-python"><pre>var editItem = function(button) {
+    var item = getElementsByTagAndClassName('span', null, button.parentNode)[0];
+    var editBox = INPUT({'type': 'text', 'value': item.innerHTML});
+    swapDOM(item, editBox);
+    swapDOM(button, INPUT({'type': 'submit', 'style': 'float: right',
+                           'value': 'Save'}));
+}</pre>
+</div>
+<p>This JavaScript uses a few helpful MochiKit functions. The less obvious of them
+is <tt class="docutils literal"><span class="pre">INPUT</span></tt>, which creates an <tt class="docutils literal"><span class="pre">&lt;input&gt;</span></tt> element with the specified attributes.
+<tt class="docutils literal"><span class="pre">INPUT</span></tt> is used here to make the edit field and the Save button.</p>
+<p>Now that there is a Save button, pushing it will submit the form. The <tt class="docutils literal"><span class="pre">onsubmit</span></tt>
+attribute of the form calls <tt class="docutils literal"><span class="pre">saveItem</span></tt>, which should look like this:</p>
+<div class="highlight-python"><pre>var saveItem = function(form) {
+    var fields = getElementsByTagAndClassName('input', null, form);
+    var editBox = fields[1];
+    var itemID = fields[2].value;
+    var button = fields[0];
+    var d = postJSON('/editItem', {'itemID': itemID, 'value': editBox.value});
+    d.addCallback(showChanges, editBox, button);
+    return false;
+}</pre>
+</div>
+<p>The function returns <tt class="docutils literal"><span class="pre">false</span></tt> because when <tt class="docutils literal"><span class="pre">onsubmit</span></tt> encounters a <tt class="docutils literal"><span class="pre">false</span></tt>
+return value, it does not trigger the form&#8217;s <tt class="docutils literal"><span class="pre">action</span></tt>, which normally causes
+the page to reload. (Remember, we didn&#8217;t give our form an <tt class="docutils literal"><span class="pre">action</span></tt> because
+we&#8217;re sending it with JavaScript instead.)</p>
+<p>The most important part of this function is the call to <tt class="docutils literal"><span class="pre">postJSON</span></tt>. JSON is
+JavaScript Object Notation, a lightweight format with which to pass around data.
+It is used here as an alternative to XML, since that would require building and
+parsing XML constructs. MochiKit and TurboGears provide automatic conversion
+routines to turn JSON into JavaScript objects where necessary, and into Python
+objects in your controllers. Unfortunately, <tt class="docutils literal"><span class="pre">postJSON</span></tt> is not part of MochiKit,
+but it should be! Here is the code, just add it to your <tt class="docutils literal"><span class="pre">user.js</span></tt> file:</p>
+<div class="highlight-python"><pre>var postJSON = function(url, postVars) {
+    var req = getXMLHttpRequest();
+    req.open('POST', url, true);
+    req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    var data = queryString(postVars);
+    var d = sendXMLHttpRequest(req, data);
+    return d.addCallback(evalJSONRequest);
+}</pre>
+</div>
+<p>When <tt class="docutils literal"><span class="pre">postJSON</span></tt> is called, it immediately returns a <tt class="docutils literal"><span class="pre">Deferred</span></tt> object. If
+you&#8217;re familiar with the <a class="reference external" href="http://twistedmatrix.com/">Twisted</a> library for Python, the concept is the same.
+Adding callbacks to a <tt class="docutils literal"><span class="pre">Deferred</span></tt> causes them to be invoked when the result of
+the call is ready. In <tt class="docutils literal"><span class="pre">saveItem</span></tt>, we add the <tt class="docutils literal"><span class="pre">showChanges</span></tt> function as a
+callback. <tt class="docutils literal"><span class="pre">showChanges</span></tt> will change the client&#8217;s display of the modified item
+once it is sure that the server received the changes. This requires replacing
+the edit field with the new item text, and replacing the Save button with the
+Edit button:</p>
+<div class="highlight-python"><pre>var showChanges = function(editBox, button, data) {
+    swapDOM(editBox, SPAN(null, data.value));
+    swapDOM(button, INPUT({'type': 'button',
+                           'style': 'float: right', 'value': 'Edit',
+                           'onclick': function() { editItem(this); }}));
+}</pre>
+</div>
+<p>That&#8217;s all the JavaScript needed. One more addition to the <tt class="docutils literal"><span class="pre">Root</span></tt> controller
+and you&#8217;re done. Notice that our <tt class="docutils literal"><span class="pre">postJSON</span></tt> call sent its input data to
+<tt class="docutils literal"><span class="pre">/editItem</span></tt>. This is the new resource to add:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="o">...</span>
+
+    <span class="nd">@expose</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s">&#39;json&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">editItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">itemID</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">itemID</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">itemID</span><span class="p">)</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">itemID</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">SQLObjectNotFound</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># Remove extra spaces</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="c"># Remove null bytes (they can seriously screw up the database)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\x00</span><span class="s">&#39;</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The only new thing here is passing <tt class="docutils literal"><span class="pre">format=&quot;json&quot;</span></tt> to <tt class="docutils literal"><span class="pre">expose()</span></tt>. Since
+the arguments we&#8217;re returning from this method are being sent to a JavaScript
+callback that&#8217;s expecting JSON, we tell TurboGears to convert the dictionary
+we&#8217;re returning into a JSON object.</p>
+<p>Start the server if necessary and try to edit a few items. Saving the items
+should be very responsive if you&#8217;re accessing the site from localhost.</p>
+<p>For help with asychronous JavaScript and DOM manipulation using MochiKit,
+see the <a class="reference external" href="http://mochi.github.com/mochikit/doc/html/MochiKit/">MochiKit documentation</a>.</p>
+</div>
+<div class="section" id="advanced-features">
+<h2><a class="toc-backref" href="#id10">Advanced Features</a><a class="headerlink" href="#advanced-features" title="Permalink to this headline">¶</a></h2>
+<p>There are a few things this application needs that could easily be addressed by
+the more advanced features of TurboGears. One such thing is handling account
+logins. Right now, anyone can modify users and user lists. To enforce any kind
+of permissions would require the use of sessions and the Identity framework.</p>
+<p>Some error checking and form generation could also be automated for us using
+the widget and validation pieces of TurboGears. These features are demonstrated
+other tutorials that are part of the official TurboGears documentation.</p>
+<p>Here&#8217;s an advanced feature you can add right now with two lines of code.
+Think of it as your reward for reading all the way to the end. Open
+<tt class="docutils literal"><span class="pre">controllers.py</span></tt> and add this <tt class="docutils literal"><span class="pre">import</span></tt> statement to the top:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears.toolbox.catwalk</span> <span class="kn">import</span> <span class="n">CatWalk</span>
+</pre></div>
+</div>
+<p>Then make the following addition to your <tt class="docutils literal"><span class="pre">Root</span></tt> controller:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Root</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">RootController</span><span class="p">):</span>
+
+    <span class="n">catwalk</span> <span class="o">=</span> <span class="n">CatWalk</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>Now browsing to <a class="reference external" href="http://localhost:8080/catwalk">http://localhost:8080/catwalk</a> will allow you to view and
+modify the rows in your database through a nice web interface!</p>
+</div>
+<div class="section" id="license">
+<h2><a class="toc-backref" href="#id11">License</a><a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>This tutorial and accompanying application are available under the MIT license.</p>
+<p>Copyright (c) 2006 Brian Beck</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the &#8220;Software&#8221;),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software
+is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

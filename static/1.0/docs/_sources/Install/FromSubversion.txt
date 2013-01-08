@@ -1,0 +1,40 @@
+.. index:: Subversion, SVN
+
+Installing From Subversion
+==========================
+
+Installation instructions to install TurboGears from Subversion.
+
+1. Make sure python.exe and Scripts/ directory from the Python installation
+   are on your system PATH.
+
+2. Install latest setuptools:
+
+  * Download and run http://peak.telecommunity.com/dist/ez_setup.py
+
+3. Checkout TurboGears source:
+
+  * svn co svn://svn.code.sf.net/p/turbogears1/code/branches/1.0/ turbogears
+
+4. Go to turbogears/thirdparty folder and install components found there:
+
+  * easy_install cherrypy
+
+  * easy_install kid
+
+  * easy_install paste
+
+  * easy_install sqlobject
+
+5. Return to turbogears folder and run ``setup.py develop``. This should install
+   TurboGears itself along with fetch and install all extra dependencies for
+   Turbogears, like RuleDispatch.
+
+**Note for Windows:**
+
+If you do not have a C compiler you won't be able to install cElementTree from source.
+Instead do ::
+
+  easy_install -f http://www.turbogears.org/1.0/downloads/current/index cElementTree
+
+to download and install pre-packaged version from Turbogears' site.

@@ -1,0 +1,207 @@
+.. index:: LightTPD
+
+Deploying TurboGears on LightTPD
+================================
+
+.. contents::
+  :depth: 2
+
+
+Introduction
+------------
+
+This document intended to convey a best-practice method of deploying TurboGears
+using the LightTPD_ web server. It assumes you have an instance of LightTP
+already installed.
+
+.. _LightTPD: http://www.lighttpd.net/
+
+There are currently two ways to deploy TurboGears with LightTPD:
+
+1.  The Simple Proxy Method
+2.  The SCGI/WSGI Method
+
+
+The Simple Proxy Method
+-----------------------
+
+This method is a very simple way to deploy TurboGears applications. The idea is
+that LightTPD serves all static files and forwards all dynamic requests to a
+TurboGears application running on its own port. For example, let's say we have
+a TurboGears instance for the domain ``example.org`` running on port 1082, in
+the ``/var/www/example.org/`` directory.
+
+Our ``lighttpd.conf`` would include the following:
+
+::
+
+
+    server.modules = (
+      # We *must* enable mod_proxy
+      "mod_proxy"
+
+      # Other modules follow
+    )
+
+    $HTTP["host"] == "example.org" {
+       server.document-root = "/var/www/example.org/"
+
+       $HTTP["url"] !~ "^/static" {
+          proxy.server = (
+                          "" => (
+                                  (
+                                   "host" => "127.0.0.1",
+                                   "port" => 1082
+                                  )
+                                )
+                          )
+       }
+    }
+
+Start the TurboGears application and (re)start LightTPD. You're good to go!
+
+
+The SCGI/WSGI Method
+--------------------
+
+(This article was originally written by `Jonathan LaCour`_, used with permission.)
+
+.. _Jonathan LaCour: http://cleverdevil.org/
+
+Though the following method is more complex to set up, there have been reports
+about better performance and stability using it. Read the comments for `ticket 193`_
+on the TurboGears Trac, if you want to know more.
+
+.. _ticket 193: http://trac.turbogears.org/ticket/193
+
+
+Flup it up
+~~~~~~~~~~
+
+The first step is to download and install `the flup WSGI toolkit`_ by Allan Saddi.
+This is a great little toolkit that provides a host of WSGI servers for FastCGI,
+SCGI, and more in both threaded and pre-forking versions.
+
+.. _the flup WSGI toolkit: http://www.saddi.com/software/flup/
+
+::
+
+  sudo easy_install flup
+
+
+SCGI Python Module
+~~~~~~~~~~~~~~~~~~
+
+Next, we install the ``scgi`` module:
+
+::
+
+  sudo easy_install scgi
+
+The `SCGI protocol`_ is "a replacement for the Common Gateway Interface (CGI)
+protocol. It is a standard for applications to interface with HTTP servers.
+It is similar to FastCGI but is designed to be easier to implement."
+
+.. _SCGI protocol: http://www.mems-exchange.org/software/scgi/
+
+
+A TurboGears WSGI Server
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now that we have all the various parts and pieces that we need, we create a script
+that will run the TurboGears application as a WSGI server over the SCGI protocol.
+Thanks to Flup, this is pretty easy. In the TurboGears project, a script exists
+to start the application with the built-in CherryPy web server. Copy it to a new
+file called ``ProjectName-start-scgi.py`` and replace its contents with the following:
+
+::
+
+    #!/usr/bin/env python
+    import pkg_resources
+    import cherrypy
+    import sys
+
+    pkg_resources.require("TurboGears")
+
+    from cherrypy._cpwsgi       import wsgiApp
+    from flup.server.scgi_fork  import WSGIServer
+    from os.path                import *
+
+    if len(sys.argv) > 1:
+        cherrypy.config.update(file=sys.argv[1])
+    elif exists(join(dirname(__file__), "setup.py")):
+        cherrypy.config.update(file="dev.cfg")
+    else:
+        cherrypy.config.update(file="prod.cfg")
+
+    from ProjectName.controllers import Root
+
+    cherrypy.root = Root()
+
+    cherrypy.server.start(initOnly=True, serverClass=None)
+
+    WSGIServer(application=wsgiApp).run()
+
+**Important**: *Don't forget to modify the script to reflect your settings!*
+
+Executing this script will start your application as a WSGI application that
+listens on port 4000 for SCGI requests.
+
+
+Lighttpd SCGI Configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now we configure ``lighttpd.conf`` to listen to the SCGI server we just created,
+in a similar manner to the Proxy Method described above:
+
+::
+
+
+    server.modules = ( "mod_access",
+                       "mod_scgi",
+                       "mod_accesslog",
+                       "mod_rewrite",
+                       "mod_staticfile" )
+
+    server.document-root = "/full/path/to/your/application"
+    server.errorlog      = "/tmp/lighttpd.error.log"
+
+    # Use the following line for Mac OS X and FreeBSD
+    server.event-handler = "freebsd-kqueue"
+
+    accesslog.filename   = "/tmp/access.log"
+
+    $HTTP["url"] !~ "^/static/" {
+      scgi.server = (
+                      "/" =>
+                        ( "127.0.0.1" =>
+                          (
+                            "host" => "127.0.0.1",
+                            "port" => 4000,
+                            "check-local" => "disable"
+                          )
+                        )
+                    )
+    }
+
+Run the new startup script, then (re)start LightTPD with this configuration file,
+and you should be good to go! To really feel the speed, make sure that you pass
+``prod.cfg`` to the startup script so that your TurboGears application is running
+under "production mode" which turns off a host of debugging features.
+
+
+Some Caveats
+~~~~~~~~~~~~
+
+The SCGI method described here uses the pre-forking WSGI server from flup. If you
+are using in-memory sessions, or the standard visit model, this seems to go insane.
+It is recommended that you use the database or on-disk session backend. You could
+also try using the threaded WSGI server in flup, but your mileage may vary.
+
+Fo use the threaded version of the WSGI server, change this line from the startup script::
+
+    from flup.server.scgi_fork  import WSGIServer
+
+to::
+
+    from flup.server.scgi import WSGIServer

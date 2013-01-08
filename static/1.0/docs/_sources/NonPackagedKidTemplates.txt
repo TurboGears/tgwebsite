@@ -1,0 +1,144 @@
+Loading Kid templates from outside your application package
+===========================================================
+
+.. contents::
+    :depth: 2
+
+
+Motivation
+----------
+
+You want to deploy a site that uses Kid templates in a manner that suites more traditional web
+deployment models. For example, you are working with web developers who are comfortable with HTML
+templating, possibly are familiar with Kid, but are not Python developers. Additionally you may
+have very specific requirements with regard to how your site content is hosted, permissions,
+existing caching systems etc. For these reasons it is more convenient to support a site directory
+to which Kid template files (``.kid``) can be uploaded to. The standard mechanism for integrating
+Kid templates with TurboGears controllers looks like this::
+
+    class Root(controllers.RootControllers):
+        @expose(template='yourpythonapp.templates.welcome')
+        def index(self):
+            import time
+            return dict(now=time.time())
+
+This uses the TurboKid plugin to load templates from a Python package that you must provide to
+wrap the templates.
+
+The example lined out below enables you to rewrite the above as::
+
+    class Root(controllers.RootControllers):
+
+        # bigsitesupport is the name you gave your turbogears application
+        #  when you set it up (tg-admin quickstart)
+
+        @expose(template='bigsitesupport.templates/welcome')
+        def index(self):
+            import time
+            return dict(now=time.time())
+
+And have ``welcome.kid`` loaded from the file system (possibly via custom caching machinery)
+without the need to bundle the template in a Python package. It does this using a technique
+that is compatible with TurboKid and the existing TurboGears template engine machinery.
+
+
+Add a Python import hook
+------------------------
+
+First create an import hook that is compatible with `PEP 302`_. This enables your customization
+to be picked up by TurboKid with out needing to patch its source. The following module, which
+you should save as ``kidimport.py`` inside the package directory of your application, is derived
+from the import machinery that exists in `kid.importer`_. Note that the following was based on an old
+version of Kid that only worked with Python 2.4. If you are using Python 2.5 or newer, you need to
+update this machinery to how it is done in the latest version of Kid.
+
+.. _PEP 302: http://www.python.org/dev/peps/pep-0302/
+.. _kid.importer: http://www.kid-templating.org/trac/browser/trunk/kid/importer.py
+
+::
+
+    import os, logging
+    from sys import path_hooks, path_importer_cache
+    from kid.importer import import_template
+    from turbogears import config
+
+    log = logging.getLogger('bigsitesupport.kidimport')
+
+
+    class _Importer(object):
+
+        def __init__(self, path=None):
+            self.templates = config.get('kid.templates')
+            if not self.templates:
+                raise ImportError
+            self.path = path
+
+        def find_module(self, fullname):
+            parts = fullname.split('/', 1)
+            if len(parts) < 2 or not parts[0].endswith('.templates'):
+                return
+            filename = os.path.join(self.templates, parts[1].replace('/', os.sep))
+            filename += '.kid'
+            if not os.path.exists(filename):
+                log.warning("Kid template does not exist: %s" % filename)
+                return
+            self.filename = filename
+            return self
+
+        def load_module(self, fullname):
+            # A production quality implementation would integrate
+            #  with your custom caching solution in this method.
+            # This expositional implementation will ** force **
+            #  recompilation of the  template on every access.
+            # Which is fine for development but not for the real world.
+            return import_template(fullname, self.filename, force=True)
+
+
+    _installed=False
+
+    def install_import_hook():
+        global _installed
+        if not _installed:
+            path_hooks.append(_Importer)
+            path_importer_cache.clear()
+            _installed = True
+
+    def remove_import_hook():
+        global _installed
+        if _installed:
+            i = 0
+            while i < len(path_hooks):
+                if isinstance(path_hooks[i], _Importer):
+                    del path_hooks[i]
+                else:
+                    i += 1
+            path_importer_cache.clear()
+            _installed = False
+
+
+Activate the import hook
+------------------------
+
+In order to activate the import hook when your application is started, insert the following
+lines to the ``commands.py`` module that already exists in the package directory of your application,
+just before the line that starts the server with ``turbogears.start_server(Root())``::
+
+    from bigsitesupport import kidimport
+    kidimport.install_import_hook()
+
+To get TurboKid to actually use your import hook: Add the lines ``kid.precompiled = True``
+and ``kid.templates = '/my/template/dir'`` to the ``[global]`` section of your TurboGears
+application config file (``config/app.cfg``), where ``/my/template/dir`` is the external
+directory where you want the Kid templates to be fetched from.
+
+
+Explanation
+-----------
+
+This works because, when you tell TurboKid your template files are 'precompiled', TurboKid relies
+on Python's standard ``__import__`` machinery to load the template. But to get that far you need
+to pass the initial sanity check on your template name. Following this example, all your template
+references in your ``controller.py`` start with ``bigsitesupport.templates``, so when TurboKid finds
+the dot it interprets it as a marker denoting which package your templates logically belong in.
+TurboKid does not do any further processing on the template name because it then sees that templates
+are flagged as precompiled and invokes ``__import__``.

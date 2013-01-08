@@ -1,0 +1,199 @@
+.. index:: model-view-controller pattern, MVC, overview
+
+The Big Picture
+===============
+
+.. contents::
+    :depth: 2
+
+.. image:: images/howitallfits.jpg
+    :alt: Diagram showing how TurboGears components interact
+
+
+The Model-View-Controller Pattern
+---------------------------------
+
+This diagram is not as bad as it may seem. It shows the core parts that make up
+a TurboGears application.
+
+TurboGears follows the MVC (Model, View, Controller) design pattern, which
+separates the web application design into three different domains, which is
+also reflected in the structure of a default quickstarted project.
+
+A great deal of the boilerplate code is contained in the the TurboGears package
+itself. Your application consists of the parts in the light purple boxes. Let's
+look at each part.
+
+
+Model
+~~~~~
+
+.. toctree::
+   :hidden:
+
+   UseDatabase
+
+- Your :doc:`model <UseDatabase>` objects represent the data that your application is working
+  with.
+
+.. _model: UseDatabase
+
+
+Controller
+~~~~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   Controller
+
+- The :doc:`controller's <Controller>` responsibility is to map URLs to actual functionalities.
+
+- Those functionalities are able to call the model's API to retrieve and/or
+  update the data in the database or other object.
+
+- The controller is able to choose some sort of templating engine to provide the
+  user's view of the data.
+
+.. _cherrypy:
+.. _controller's: Controller
+
+
+View
+~~~~
+
+.. toctree::
+   :hidden:
+
+   Kid
+
+- In TurboGears, your view is in :doc:`templates <Kid>` that present the
+  information that is provided by the controller.
+
+
+Wrap-up
+~~~~~~~
+
+.. toctree::
+   :hidden:
+
+   MochiKit
+
+The controller is the basis of the framework, and the view and the model can be
+created in other ways. This means that TurboGears offers you the flexibility
+to 'not use the MVC design as well. Thus you can port existing web software to
+TurboGears without an immediate complete revision to all of the code.
+
+So, you have these three areas to populate with code in order to build your
+application. TurboGears provides help at each point.
+
+* `CherryPy`_ makes it easy for your controller to get information from the web
+  and string together all of the pieces that comprise your website.
+
+* :doc:`SQLObject </SQLObject/index>` makes it easy to define and work with your model.
+
+* :doc:`Kid <Kid>` makes it easy to generate good HTML for the browser.
+
+* Additionally, the combination of :doc:`MochiKit <MochiKit>` and :doc:`JSON </JSON>`
+  make it easy to implement complex in-the-browser behavior and can even be used to
+  format output in `AJAX`_ requests that skip over Kid.
+
+.. _AJAX: http://en.wikipedia.org/wiki/AJAX
+
+
+The Project Structure
+---------------------
+
+While entering the quickstart template folder, you'll see the project skeleton
+laid there. Those files can be categorized for 4 purposes. Note that with
+TurboGears you'll spend most of time on the files printed in **bold** below.
+We will cover all the important files that make up a fresh quickstarted project
+in the following sections categorized by purpose.
+
+
+Deployment
+~~~~~~~~~~
+
+* ``README.txt``
+
+  To Write anything you like about your project.
+
+* **setup.py**
+
+  Packaging, distribution and installation related settings.
+
+* ``start-<yourprojectname>.py``
+
+  To start your web application
+
+* ``<yourpackagename>/release.py``
+
+  To provide application related infomation.
+
+* ``<yourprojectname>.egg-info/``
+
+  Auto-generated packaging meta-data from ``setup.py``.
+
+You an publish your project to the Python Cheeseshop_ in minutes by changing
+only a few lines in the above files.
+
+.. _cheeseshop: http://cheeseshop.python.org/pypi/
+
+
+Configuration
+~~~~~~~~~~~~~
+
+* **dev.cfg**
+
+  For deployment-specific configuration settings in development mode
+
+* ``sample-prod.cfg``
+
+  A template for deployment-specific configuration settings in production mode
+
+* ``<your project name>/config/*.cfg``
+
+  For deployment-independent configuration settings of your application
+
+You do most of configurations for your project in those files. See the
+:doc:`configuration reference </Configuration>` for more information.
+
+It is possible to deploy TurboGears applications behind a separate web server
+or let them use a database that is not located on the same server. The same
+web server can be placed in front of multiple applications, which can have
+the same database or different databases as backends.
+
+
+Development
+~~~~~~~~~~~
+
+* ``<yourpackagename>/`` **controllers.py**
+
+  Write your controllers (main program) here.
+
+* ``<yourpackagename>/`` **model.py**
+
+  Write your data model (ORM/database access) here.
+
+* ``<yourpackagename>/`` **templates**
+
+  Write your view (templates) here.
+
+* ``<yourpackagename>/json.py``
+
+  Alternative view for AJAX applications (optional)
+
+
+Testing
+~~~~~~~
+
+* ``<yourpackagename>/tests/*``
+
+  Place your unit test code in this directory. :doc:`Test your web application </Testing>`
+  model, view, and controllers by writing a ``:doc:`/test`*.py`` file for each and
+  run them trough ``nosetest``.
+
+----
+
+:doc:`Previous: Starting Up the Server <Server>` :
+:doc:`Next: Basic Configuration </Configuration>`

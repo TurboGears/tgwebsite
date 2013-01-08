@@ -1,0 +1,85 @@
+.. index:: cookies
+
+Using Cookies in TurboGears
+===========================
+
+.. contents::
+  :depth: 1
+
+
+TurboGears uses the CherryPy method of setting and reading cookies, which is to say it uses Python's `Cookie.SimpleCookie`_ object.
+
+.. _Cookie.SimpleCookie: http://www.python.org/doc/current/lib/module-Cookie.html
+
+
+Setting a Cookie
+----------------
+
+To set a cookie, you'll need to make sure cherrypy is imported and set a few options.
+Here's an example::
+
+    import cherrypy
+
+    cherrypy.response.simple_cookie['user_name'] = 'TurboGears User'
+
+Here we've set up a cookie called *user_name* that has the value "TurboGears User".
+It doesn't matter if you create a new cookie or if you overwrite an existing one,
+just assign the value to a key with the name of your cookie.
+
+The ``simple_cookie`` object basically behaves like a Python dictionary and all cookies you
+set will be sent automatically to the client. You can read more about further
+options for cookies in the `Python Cookie Module Documentation`_.
+
+.. _Python Cookie Module Documentation: http://www.python.org/doc/current/lib/module-Cookie.html
+
+
+Reading a Cookie
+----------------
+
+To read a cookie, we use the ``cherrypy.request.simple_cookie`` object.
+Let's say we want to find the value for the *user_name* cookie::
+
+    username = cherrypy.request.simple_cookie['user_name'].value
+
+If you don't know, whether a cookie is set, you can test it using
+normal Python dictionary methods::
+
+    if cherrypy.request.simple_cookie.has_key('user_name'):
+        # do something
+
+or better just::
+
+    try:
+        username = cherrypy.request.simple_cookie['user_name'].value
+    except KeyError:
+        # do something else
+
+It's as simple as that!
+
+
+Deleting a Cookie
+-----------------
+
+Deleting cookies is not quite as straightforward as it would seem, but
+is nonetheless very easy. All you have to do is set the cookie's expiration
+to 0. Let's delete the *user_name* cookie::
+
+    cherrypy.response.simple_cookie['user_name']['expires'] = 0
+
+
+Accessing Cookies in Templates
+------------------------------
+
+If you want to read or write cookies in your templates (though doing so might be
+considered a violation of of the MVC pattern), you can add the
+``simple_cookie`` object as a custom template variable::
+
+   from turbogears.view import variable_providers
+
+   def add_cookie(vars):
+       vars['cookie'] = cherrypy.response.simple_cookie
+
+   variable_providers.append(add_cookie)
+
+Now the ``simple_cookie`` object will be available as ``tg.cookie`` in all your templates.
+The page :doc:`Global Template Variables <StdVars>` has more about custom template variables in the section "Custom Additions".

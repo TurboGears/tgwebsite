@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>turbogears.scheduler</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="turbogears-module.html">Package&nbsp;turbogears</a> ::
+        Module&nbsp;scheduler
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module scheduler</h1><p class="nomargin-top"><span class="codelink"><a href="turbogears.scheduler-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+Module that provides a cron-like task scheduler.
+
+This task scheduler is designed to be used from inside your own program.
+You can schedule Python functions to be called at specific intervals or
+days. It uses the standard 'sched' module for the actual task scheduling,
+but provides much more:
+
+* repeated tasks (at intervals, or on specific days)
+* error handling (exceptions in tasks don't kill the scheduler)
+* optional to run scheduler in its own thread or separate process
+* optional to run a task in its own thread or separate process
+
+If the threading module is available, you can use the various Threaded
+variants of the scheduler and associated tasks. If threading is not
+available, you could still use the forked variants. If fork is also
+not available, all processing is done in a single process, sequentially.
+
+There are three Scheduler classes:
+
+    Scheduler    ThreadedScheduler    ForkedScheduler
+
+You usually add new tasks to a scheduler using the add_interval_task or
+add_daytime_task methods, with the appropriate processmethod argument
+to select sequential, threaded or forked processing. NOTE: it is impossible
+to add new tasks to a ForkedScheduler, after the scheduler has been started!
+For more control you can use one of the following Task classes
+and use schedule_task or schedule_task_abs:
+
+    IntervalTask    ThreadedIntervalTask    ForkedIntervalTask
+    SingleTask      ThreadedSingleTask      ForkedSingleTask
+    WeekdayTask     ThreadedWeekdayTask     ForkedWeekdayTask
+    CronLikeTask    ThreadedCronLikeTask    ForkedCronLikeTask
+
+Kronos is the Greek god of time. Kronos scheduler (c) by Irmen de Jong.
+
+This module is based on the Kronos scheduler by Irmen de Jong, but has been
+modified to better fit within TurboGears. Vince Spicer and Mathieu Bridon have
+contributed some additions and improvements such as cron-like tasks. Some fixes
+have been made to make it work on Python 2.6 (adaptations sched module changes).
+
+</pre>
+
+<hr />
+<div class="fields">      <p><strong>Version:</strong>
+        2.0
+      </p>
+</div><!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.Scheduler-class.html" class="summary-name">Scheduler</a><br />
+      The Scheduler itself.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.Task-class.html" class="summary-name">Task</a><br />
+      Abstract base class of all scheduler tasks
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.SingleTask-class.html" class="summary-name">SingleTask</a><br />
+      A task that only runs once.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.IntervalTask-class.html" class="summary-name">IntervalTask</a><br />
+      A repeated task that occurs at certain intervals (in seconds).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.WeekdayTask-class.html" class="summary-name">WeekdayTask</a><br />
+      A task that is run on a given weekday.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.MonthdayTask-class.html" class="summary-name">MonthdayTask</a><br />
+      A task that is run on a given day every month.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedScheduler-class.html" class="summary-name">ThreadedScheduler</a><br />
+      A Scheduler that runs in its own thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedTaskMixin-class.html" class="summary-name">ThreadedTaskMixin</a><br />
+      A mixin class to make a Task execute in a separate thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedIntervalTask-class.html" class="summary-name">ThreadedIntervalTask</a><br />
+      Interval Task that executes in its own thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedSingleTask-class.html" class="summary-name">ThreadedSingleTask</a><br />
+      Single Task that executes in its own thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedWeekdayTask-class.html" class="summary-name">ThreadedWeekdayTask</a><br />
+      Weekday Task that executes in its own thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ThreadedMonthdayTask-class.html" class="summary-name">ThreadedMonthdayTask</a><br />
+      Monthday Task that executes in its own thread.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedScheduler-class.html" class="summary-name">ForkedScheduler</a><br />
+      A Scheduler that runs in its own forked process.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedTaskMixin-class.html" class="summary-name">ForkedTaskMixin</a><br />
+      A mixin class to make a Task execute in a separate process.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedIntervalTask-class.html" class="summary-name">ForkedIntervalTask</a><br />
+      Interval Task that executes in its own process.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedSingleTask-class.html" class="summary-name">ForkedSingleTask</a><br />
+      Single Task that executes in its own process.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedWeekdayTask-class.html" class="summary-name">ForkedWeekdayTask</a><br />
+      Weekday Task that executes in its own process.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="turbogears.scheduler.ForkedMonthdayTask-class.html" class="summary-name">ForkedMonthdayTask</a><br />
+      Monthday Task that executes in its own process.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.scheduler-module.html#add_interval_task" class="summary-sig-name">add_interval_task</a>(<span class="summary-sig-arg">action</span>,
+        <span class="summary-sig-arg">interval</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">kw</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">initialdelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">processmethod</span>=<span class="summary-sig-default">threaded</span>,
+        <span class="summary-sig-arg">taskname</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Add an interval task to the scheduler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_interval_task">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.scheduler-module.html#add_single_task" class="summary-sig-name">add_single_task</a>(<span class="summary-sig-arg">action</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">kw</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">initialdelay</span>=<span class="summary-sig-default">0</span>,
+        <span class="summary-sig-arg">processmethod</span>=<span class="summary-sig-default">threaded</span>,
+        <span class="summary-sig-arg">taskname</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Add a single task to the scheduler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_single_task">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.scheduler-module.html#add_weekday_task" class="summary-sig-name">add_weekday_task</a>(<span class="summary-sig-arg">action</span>,
+        <span class="summary-sig-arg">weekdays</span>,
+        <span class="summary-sig-arg">timeonday</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">kw</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">processmethod</span>=<span class="summary-sig-default">threaded</span>,
+        <span class="summary-sig-arg">taskname</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Add a weekday task to the scheduler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_weekday_task">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.scheduler-module.html#add_monthday_task" class="summary-sig-name">add_monthday_task</a>(<span class="summary-sig-arg">action</span>,
+        <span class="summary-sig-arg">monthdays</span>,
+        <span class="summary-sig-arg">timeonday</span>,
+        <span class="summary-sig-arg">args</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">kw</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">processmethod</span>=<span class="summary-sig-default">threaded</span>,
+        <span class="summary-sig-arg">taskname</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Add a monthly task to the scheduler.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_monthday_task">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="turbogears.scheduler-module.html#cancel" class="summary-sig-name">cancel</a>(<span class="summary-sig-arg">task</span>)</span><br />
+      Cancel task by task name.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="turbogears.scheduler-pysrc.html#cancel">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="method"></a><span class="summary-name">method</span> = <code title="Enum('sequential', 'forked', 'threaded')">Enum('sequential', 'forked', 'threaded')</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="add_interval_task"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_interval_task</span>(<span class="sig-arg">action</span>,
+        <span class="sig-arg">interval</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">kw</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">initialdelay</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">processmethod</span>=<span class="sig-default">threaded</span>,
+        <span class="sig-arg">taskname</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_interval_task">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add an interval task to the scheduler.</p>
+  <p>Pass in initialdelay with a number of seconds to wait before running 
+  and an  interval with the number of seconds between runs.</p>
+  <p>For example, an initialdelay of 600 and interval of 60 would mean 
+  &quot;start running after 10 minutes and run every 1 minute after 
+  that&quot;.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>interval</code></strong> - The interval in seconds between executing the action</li>
+        <li><strong class="pname"><code>initaldelay</code></strong> - the initial delay before starting execution</li>
+        <li><strong class="pname"><code>action</code></strong> - The callable that will be called at the time you request</li>
+        <li><strong class="pname"><code>args</code></strong> - Tuple of positional parameters to pass to the action</li>
+        <li><strong class="pname"><code>kw</code></strong> - Keyword arguments to pass to the action</li>
+        <li><strong class="pname"><code>taskname</code></strong> - Tasks can have a name (stored in task.name), which can help if 
+          you're trying to keep track of many tasks.</li>
+        <li><strong class="pname"><code>precessmethod</code></strong> - By default, each task will be run in a new thread. You can also 
+          pass in turbogears.scheduler.method.sequential or 
+          turbogears.scheduler.method.forked.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_single_task"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_single_task</span>(<span class="sig-arg">action</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">kw</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">initialdelay</span>=<span class="sig-default">0</span>,
+        <span class="sig-arg">processmethod</span>=<span class="sig-default">threaded</span>,
+        <span class="sig-arg">taskname</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_single_task">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add a single task to the scheduler.</p>
+  <p>Runs a task once. Pass in ``initialdelay`` with a number of seconds to
+  wait before running.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>initaldelay</code></strong> - the initial delay before starting execution</li>
+        <li><strong class="pname"><code>action</code></strong> - The callable that will be called at the time you request</li>
+        <li><strong class="pname"><code>args</code></strong> - Tuple of positional parameters to pass to the action</li>
+        <li><strong class="pname"><code>kw</code></strong> - Keyword arguments to pass to the action</li>
+        <li><strong class="pname"><code>taskname</code></strong> - Tasks can have a name (stored in task.name), which can help if 
+          you're trying to keep track of many tasks.</li>
+        <li><strong class="pname"><code>precessmethod</code></strong> - By default, each task will be run in a new thread. You can also 
+          pass in turbogears.scheduler.method.sequential or 
+          turbogears.scheduler.method.forked.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_weekday_task"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_weekday_task</span>(<span class="sig-arg">action</span>,
+        <span class="sig-arg">weekdays</span>,
+        <span class="sig-arg">timeonday</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">kw</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">processmethod</span>=<span class="sig-default">threaded</span>,
+        <span class="sig-arg">taskname</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_weekday_task">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Add a weekday task to the scheduler.</p>
+  <p>Runs on certain days of the week. Pass in a list or tuple of weekdays 
+  from 1-7 (where 1 is Monday). Additionally, you need to pass in timeonday
+  which is the time of day to run. timeonday should be a tuple with (hour, 
+  minute).</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>weekdays</code></strong> - list ot tuple of weekdays to execute action</li>
+        <li><strong class="pname"><code>timeonday</code></strong> - tuple (hour, minute), to run on weekday</li>
+        <li><strong class="pname"><code>action</code></strong> - The callable that will be called at the time you request</li>
+        <li><strong class="pname"><code>args</code></strong> - Tuple of positional parameters to pass to the action</li>
+        <li><strong class="pname"><code>kw</code></strong> - Keyword arguments to pass to the action</li>
+        <li><strong class="pname"><code>taskname</code></strong> - Tasks can have a name (stored in task.name), which can help if 
+          you're trying to keep track of many tasks.</li>
+        <li><strong class="pname"><code>precessmethod</code></strong> - By default, each task will be run in a new thread. You can also 
+          pass in turbogears.scheduler.method.sequential or 
+          turbogears.scheduler.method.forked.</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="add_monthday_task"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">add_monthday_task</span>(<span class="sig-arg">action</span>,
+        <span class="sig-arg">monthdays</span>,
+        <span class="sig-arg">timeonday</span>,
+        <span class="sig-arg">args</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">kw</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">processmethod</span>=<span class="sig-default">threaded</span>,
+        <span class="sig-arg">taskname</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.scheduler-pysrc.html#add_monthday_task">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <pre class="literalblock">
+Add a monthly task to the scheduler.
+
+Runs on certain days of the month. Pass in a list or tuple of monthdays
+from 1-31, import and also pass in timeonday which is an (hour, minute)
+ tuple of the time of day to run the task.
+
+@param monthdays: list ot tuple of monthdays to execute action
+@param timeonday: tuple (hour, minute), to run on monthday
+
+@param action: The callable that will be called at the time you request
+@param args: Tuple of positional parameters to pass to the action
+@param kw: Keyword arguments to pass to the action
+@param taskname:  Tasks can have a name (stored in task.name), which can
+help if you're trying to keep track of many tasks.
+@param precessmethod: By default, each task will be run in a new thread.
+You can also pass in turbogears.scheduler.method.sequential or
+turbogears.scheduler.method.forked.
+
+</pre>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="cancel"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">cancel</span>(<span class="sig-arg">task</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="turbogears.scheduler-pysrc.html#cancel">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Cancel task by task name.</p>
+  <dl class="fields">
+    <dt>Parameters:</dt>
+    <dd><ul class="nomargin-top">
+        <li><strong class="pname"><code>task</code></strong> - the task.name of the task to cancel</li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="turbogears-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a href="http://www.turbogears.org/">TurboGears</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Thu Jul 14 21:45:36 2011
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

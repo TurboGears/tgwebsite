@@ -1,0 +1,216 @@
+.. index:: Cheetah, TurboCheetah
+
+Templates for using TurboCheetah with TurboGears
+================================================
+
+So you want to use Cheetah templates for your pages but still take advantage of the automatic Javascript/CSS inclusion that the standard Kid ``sitetemplate.kid`` does? Here are the files you need to set up a mini TurboGears project using :doc:`Cheetah Templates <CheetahTemplating>`.
+
+Before starting, make sure you have TurboGears 1.0.4, TurboCheetah 1.0 and Cheetah 2.0.1 or higher versions installed. Older versions do not support ``cheetah.importhooks`` setting and have problems with Unicode.
+
+
+The controller
+--------------
+
+We are going to test our templates with this minimal controller. Just replace the contents of ``controllers.py`` of our fresh, quickstarted project with this code::
+
+
+  # -*- coding: UTF-8 -*-
+
+  from turbogears import controllers, expose, flash
+
+  class Root(controllers.RootController):
+
+      @expose(template="cheetah:cheetahtemplates.templates.welcome")
+      def index(self):
+          import time
+          flash(u"Herzliche Grüße & viel Spaß!")
+          return dict(now=time.ctime())
+
+
+Note the encoding declaration at the top of the file, so that we can use UTF-8 characters in our unicode strings. Make sure to save this file with UTF-8 encoding. Replace ``cheetahtemplates`` in the template name with the package name of your project.
+
+
+The template base class
+-----------------------
+
+With Cheetah your templates can subclass a pure Python class. Attributes and functions of this class are available as template variables. This allows to define some handy utility functions you can use in your templates::
+
+    from Cheetah.Template import Template
+
+    from turbogears import url
+    from turbogears.widgets.meta import load_kid_template
+
+
+    PlainHTML = load_kid_template('''<html xmlns:py="http://purl.org/kid/ns#"
+      py:replace="elements"/>''',  modname="turbogears.widgets.plainhtml")[0]
+
+    def serialize_et(elem, format='html'):
+        """Convert an ElementTree.Element into a string representation."""
+
+        t = PlainHTML(elements=elem)
+        return t.serialize(output=format, fragment=True)
+
+    def escape(s, quote=False):
+        """Escape special HTML chars in string."""
+
+        # These substitutions are copied from cgi.escape().
+        s = s.replace("&", "&amp;") # Must be done first!
+        s = s.replace("<", "&lt;")
+        s = s.replace(">", "&gt;")
+        if quote:
+            s = s.replace('"', "&quot;")
+        return s
+
+
+    class SiteBase(Template):
+        """The base class for the project's Cheetah templates.
+
+        Implements a few utility functions, which will be available as
+        template placeholders.
+        """
+
+        image_base = url('/static/images/')
+        css_base = url('/static/css/')
+        js_base = url('/static/javascript/')
+
+        _js_src_tmpl = '<script type="text/javascript" language="JavaScript%s">\n%s</script>'
+
+        _js_link_tmpl = '<script type="text/javascript" language="JavaScript%s" src="%s"></script>'
+
+        _css_link_tmpl = '<link rel="%s" type="text/css" href="%s" />'
+
+        def js_src(self, relpath, version=''):
+            return self._js_src_tmpl % (version, self.js_base + relpath)
+
+        def js_link(self, relpath, version=''):
+            return self._js_link_tmpl % (version, self.js_base + relpath)
+
+        def css_link(self, relpath, type="stylesheet"):
+            return self._css_link_tmpl % (type, self.css_base + relpath)
+
+Save this code to a file named ``SiteBase.py`` in the ``templates`` folder of your project (the exact name and capitalization is important!). You can delete all Kid templates (files with extension ``*.kid``), since we will not use them for our mini project. Don't delete the ``__init__.py`` file.
+
+It also implements a little trick that allows one to use ``ElementTree.Element`` instances directly as placeholders values. The custom filter will transform them into a string representation that Cheetah then substitutes for the placeholder in your template. This comes in handy for widgets and other dynamic HTML elements provided by your controller code.
+
+
+The site template
+-----------------
+
+The site template defines the basic layout of all your pages. Customize to your liking or plug in another template in the inheritance structure. See the Cheetah user guide for more information. **Be sure to always include the meta header that sets the page encoding to UTF-8**::
+
+
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+    #extends SiteBase
+    #implements respond
+    <html>
+    <head>
+      #block headtop
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      #end block
+
+      #for $css in $tg_css
+      $css
+      #end for
+
+      ## include your own external CSS stylesheet links here, e.g.
+      ##$css_link('myproject.css')
+
+      #for $js in $tg_js_head
+      $js
+      #end for
+
+      ## include your own external JS files links here, e.g.
+      ##$js_link('myproject.js')
+
+      #block pagetitle
+      <title>HEre goes the page title</title>
+      #end block
+    </head>
+
+    <body>
+    #for $js in $tg_js_bodytop
+    $js
+    #end for
+
+    <div id="header">
+      #if $tg.config('identity.on', False)
+      <div id="pageLogin">
+        #if $tg.identity.anonymous
+        You are not logged in
+          #if 'loggin_in' not in locals()
+          <span class="menu-sep">::</span>
+          <a href="$tg.url('/login')">Login</a>
+          #end if
+        #else
+        You are logged in as
+        <span class="user_name">$tg.identity.user.display_name</span>
+        <span class="menu-sep">::</span>
+        <a href="$tg.url('/logout')">Logout</a>
+        #end if
+        <span class="menu-sep">::</span>
+        <a href="$tg.url('/')">Home</a>
+      </div>
+      #end if
+    </div>
+
+    #if $tg_flash
+    <div class="tg_flash">${tg_flash, escape=True}</div>
+    #end if
+
+    <div id="pagecontent">
+      #block pagecontent
+      <p class="placeholder">Here comes the page content...</p>
+      #end block
+    </div>
+
+    #for $js in $tg_js_bodybottom
+    $js
+    #end for
+    </body>
+    </html>
+
+
+Save this code in a file named ``SiteTemplate.tmpl`` in the ``templates`` folder of your project.
+
+If you have set ``cheetah.precompiled = True`` or you have not set ``cheetah.importhooks = True`` in your configuration, then you need to compile this template manually with ``cheetah-compile SiteTemplate.py``. Generally, if you set  ``cheetah.precompiled = True`` then you need to compile all templates manually. Otherwise, if you have not set ``cheetah.importhooks = True``, then the page templates are compiled automatically, but you need to compile the extended (indirectly loaded) templates, like ``SiteTemplate.tmpl``. If you set ``cheetah.importhooks = True``, then even these are compiled automatically when they are imported. On a production server, you may want to do without the automatisms by setting ``cheetah.precompiled = True`` and compiling all templates manually.
+
+
+The page template
+-----------------
+
+Finally, here's an example for a page template. Note how we just write the actual content of the page by redefining the ``pagecontent`` block with the ``#def`` directive. All the rest of the HTML comes from ``SiteTemplate``::
+
+    #extends cheetahtemplates.templates.SiteTemplate
+
+    #def pagetitle
+    <title>Welcome to TurboGears!</title>
+    #end def
+
+    #def pagecontent
+    <h1>Welcome to TurboGears!</h1>
+
+    <p>This page was generated on $now</p>
+    #end def
+
+Save this code in a file named ``welcome.tmpl`` in the ``templates`` folder of your project. Again, replace ``cheetahtemplates`` in the ``#extends`` directive with the package name of your project.
+
+
+Testing
+-------
+
+Now start your Turbogears server and open your browser at ``http://localhost:8080``. You should see a page with "Herzliche Grüße & viel Spaß!" (this is from ``turbogears.flash()``) at the top and the current date & time in place of the ``$now`` placeholder (this is from the dict returned by the controller method).
+
+Conclusion
+----------
+
+Here's a recap of the most important things to remember:
+
+ * Prefix your template name in ``@expose`` with ``cheetah:``.
+ * You need to compile your Cheetah page template with ``cheetah-compile`` if you have set ``cheetah.precompiled = True`` in your configuration.
+ * You need to compile your Cheetah site template with ``cheetah-compile`` if you haven't set ``cheetah.importhooks = True`` or if you have set ``cheetah.precompiled = True`` in your configuration.
+ * Put a meta header declaring the UTF-8 encoding of the HTML code in your site template.
+ * Put an encoding declaration for UTF-8 in your Python source files if you use literal unicode strings and save them UTF-8 encoded.
+ * Put any complex function you want to use in all your templates as methods of the ``SiteBase`` class.
+ * If your template variables may contain special HTML characters, use the ``escape`` parameter for placeholders, e.g. ``${myvar, escape=True}``.
+

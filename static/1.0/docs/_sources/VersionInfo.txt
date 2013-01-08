@@ -1,0 +1,15 @@
+.. index:: version numbers
+
+Toolbox Info
+============
+
+The :doc:`Toolbox <Toolbox>` Info page lists the version numbers of the running
+TurboGears version and other installed Python packages.
+
+It also lists all registered plug-ins for the :doc:`entry points <EntryPointList>`,
+which TurboGears provides, together with the package that provides the plug-in
+and its version number.
+
+Here is a screenshot of the Toolbox Info page:
+
+.. image:: images/toolbox_version_info.png

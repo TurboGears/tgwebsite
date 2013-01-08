@@ -1,0 +1,950 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>TurboGears 1.0 FAQ &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sidebar.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="index.html" />
+    <link rel="next" title="Downloading and Installing TurboGears" href="Install/index.html" />
+    <link rel="prev" title="TurboGears 1.0 Documentation" href="index.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Install/index.html" title="Downloading and Installing TurboGears"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="TurboGears 1.0 Documentation"
+             accesskey="P">previous</a> |</li>
+<li><a href="index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">TurboGears 1.0 FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general">General</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-turbogears">What is TurboGears?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-is-turbogears-licensed-can-i-use-it-for-commercial-applications">How is TurboGears licensed? Can I use it for commercial applications?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-does-turbogears-compare-to-ruby-on-rails-django-pylons-etc">How does TurboGears compare to Ruby on Rails/Django/Pylons/etc.?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#which-framework-should-i-choose-for-my-new-project">Which framework should I choose for my new project?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#where-can-i-find-documentation-about-using-turbogears-1-0">Where can I find documentation about using TurboGears 1.0?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-books-are-available-for-learning-turbogears">What books are available for learning TurboGears?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-should-i-learn-to-become-a-better-python-web-application-developer">What should I learn to become a (better) Python web application developer?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#when-can-we-expect-python-2-5-support">When can we expect Python 2.5 support?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#when-can-we-expect-python-2-6-support">When can we expect Python 2.6 support?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-do-offline-installations">How can I do offline installations?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-do-non-root-installations">How can I do non-root installations?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-causing-typeerror-generate-content">What is causing <tt class="docutils literal"><span class="pre">TypeError:</span> <span class="pre">generate_content()</span></tt>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-do-i-get-the-log-messages-twice">Why do I get the log messages twice?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-does-the-javascript-css-code-of-my-widgets-not-get-included-in-my-page">Why does the JavaScript/CSS code of my widgets not get included in my page?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#what-causes-stream-object-has-no-attribute-tag">What causes <tt class="docutils literal"><span class="pre">&quot;'Stream'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'tag'&quot;</span></tt>?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-do-i-sometimes-get-500-internal-errors-after-my-app-has-been-idle">Why do I sometimes get 500 Internal Errors after my app has been idle?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#why-do-my-ajax-enabled-widgets-stop-working-after-some-minutes">Why do my AJAX-enabled widgets stop working after some minutes?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#components">Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#why-does-turbogears-1-0-still-use-cherrypy-2-x-instead-of-cherrypy-3">Why does TurboGears 1.0 still use CherryPy 2.x instead of CherryPy 3?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#which-alternative-template-engines-can-i-use-with-turbogears">Which alternative template engines can I use with TurboGears?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-use-sqlalchemy-instead-of-sqlobject-for-my-project">How do I use SQLAlchemy instead of SQLObject for my project?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#can-i-use-more-than-one-database-handle-with-turbogears">Can I use more than one database handle with TurboGears?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-port-my-project-from-kid-tg-widgets-to-genshi-toscawidgets">How can I port my project from Kid &amp; TG widgets to Genshi &amp; ToscaWidgets?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#can-i-use-mochikit-1-4-with-turbogears">Can I use MochiKit 1.4 with TurboGears?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment">Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-deploy-my-configuration-and-a-default-database">How do I deploy my configuration and a default database?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#how-do-i">How do I ...?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-divide-controller-py-and-model-py-into-separate-files">How do I divide <tt class="docutils literal"><span class="pre">controller.py</span></tt> and <tt class="docutils literal"><span class="pre">model.py</span></tt> into separate files?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-find-the-filesystem-locations-for-my-project">How can I find the filesystem locations for my project?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-use-special-characters-in-my-urls">How can I use special characters in my URLs?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-change-the-name-of-a-project">How do I change the name of a project?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-output-html-passed-by-the-controller-in-my-kid-templates">How can I output HTML passed by the controller in my Kid templates?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-organize-my-templates-hierarchically">How can I organize my templates hierarchically?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-i-specify-an-alternate-template-to-use-in-my-controller-method">How to I specify an alternate template to use in my controller method?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-set-the-attributes-of-a-form-or-a-form-field-widget">How can set the attributes of a form or a form field widget?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-pre-fill-some-fields-when-i-display-a-widgets-based-form">How do I pre-fill (some) fields when I display a widgets-based form?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-access-a-method-of-a-custom-widget-from-its-template">How can I access a method of a custom widget from its template?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-re-use-the-definition-of-a-form-field-list-for-another-form">How can I re-use the definition of a form field list for another form?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-properly-display-error-messages-from-chained-validators">How can I properly display error messages from chained validators?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-validate-two-forms-on-the-same-page">How do I validate two forms on the same page?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-write-a-widget-which-displays-an-image">How can I write a widget which displays an image?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-can-i-log-exception-tracebacks-in-my-production-server-logs">How can I log exception tracebacks in my production server logs?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-do-full-text-indexing-with-turbogears">How do I do full text indexing with TurboGears?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-do-i-activate-localization-for-my-turbogears-project">How do I activate localization for my TurboGears project?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Install/index.html">Downloading and Installing TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Install/Deployment.html">Deploying TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Database/index.html">Database Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/BigPicture.html">The Big Picture</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGScreencasts.html">TurboGears Screencasts</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Wiki20/Page1.html">The 20 Minutes Wiki</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Controller.html">Controller Getting Started Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseDatabase.html">Data Model Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Kid.html">A Brief Introduction to Kid Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/MochiKit.html">A Brief Introduction to MochiKit</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Introduction.html">Introduction To Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToDoListTutorial.html">Brian&#8217;s TurboGears Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TgAdmin.html">tg-admin command line tool reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="QuickStart.html">Are you ready to gear up?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Server.html">Starting Up The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">TurboGears Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SpecificProblems.html">Solving specific problems</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/Arguments.html">I Wanted An Argument!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/URLs.html">Using URLs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RequestResponse.html">Access Request/Response Information</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StaticFiles.html">Serving Static Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Cookies.html">Using Cookies in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Sessions.html">Using Sessions in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FeedController.html">Serving RSS and Atom feeds</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnifiedControllers.html">Unified Form Data Validation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ExposeDecorator.html">&#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ValidateDecorator.html">&#64;validate()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorHandling.html">Error Handling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PaginateDecorator.html">&#64;paginate()</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="StdVars.html"><tt class="docutils literal"><span class="pre">stdvars</span></tt>: Global Template Variables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HeadersFooters.html">Application-wide Headers and Footers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JSON.html">JSON Output</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Designer.html">Designer-Friendly Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="KidHTMLEntities.html">HTML Entities in Kid templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CheckedCheckBox.html">Automatically Checking a Checkbox or Radio Button</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BreadCrumb.html">Breadcrumb Style Navigation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CreatingBigApplications.html">Creating Big Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NonPackagedKidTemplates.html">Loading Kid templates from outside your application package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiInternationalizationWithBabel.html">Genshi Templates Internationalization with Babel</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AdvancedCheetahTemplates.html">Templates for using TurboCheetah with TurboGears</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/DefineDatabase.html">Data Model Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BackEndOverview.html#supported-backends">Supported backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DbUri.html">The DB-URI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/index.html">SQLObject Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TgAdminSqlUpgrade.html">How to Use <tt class="docutils literal"><span class="pre">tgadmin</span> <span class="pre">sql</span> <span class="pre">upgrade</span></tt> with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelOutsideTG.html">Using Your Model Outside of TurboGears Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MultipleDatabases.html">Using Multiple Databases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/AutoUpdateField.html">Auto-updating an attribute with SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/DirectSQL.html">SQLObject direct SQL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ForeignKeys.html">SQLObject Foreign Keys</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/QuickGuide.html">SQLObject Quick Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/ReservedWords.html">Avoiding SQL reserved words in the model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Caching.html">SQLObject Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Gotchas.html">SQLObject &#8220;gotcha&#8217;s&#8221;</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/StoringAndRetrievingFiles.html">Storing and Retrieving Files from a Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Views.html">Views in SQLObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/VsHibernate.html">Hibernate vs SqlObject</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLAlchemy/Configuration.html">SQLAlchemy Configuration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Overview.html">Widgets Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/index.html">Guide to the TurboGears Widgets Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Explore.html">Dive Into Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/SimpleForm.html">Simple Widget Form Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/FormValidationWithSchemas.html">Widget Form Validation with Schemas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/ModifyDefaults.html">Changing Widget Defaults at Run Time</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DynamicForm.html">Dynamically Modifying a Form&#8217;s Widgets With Ajax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DynamicValidation.html">Dynamic Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Packages.html">Widget Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/StatelessWidgets.html">StatelessWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/DataGrid.html">DataGrid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AjaxGrid.html">Ajax Grid Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/AutoCompleteField.html">The AutoCompleteField Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteForm.html">RemoteForm Widget Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RemoteLink.html">Wrap Ajax Operations in Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CompoundWidgets.html">Implementing and using CompoundWidgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/RepeatingFieldSet.html">RepeatingFieldSet Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/CalendarDatePicker.html">CalendarDatePicker Widget</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/NicerForms.html">Nicer Forms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/index.html">FastData</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Recipes.html">Widget Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Tips.html">Widget Tips</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ToscaWidgets.html">Using ToscaWidgets in TurboGears 1.0</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Visit/index.html">Using the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/Extending.html">Extending the Visit Framework</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/UserTrackedLogging.html">User Tracked Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Visit/PermanentLogin.html">Permanent Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/index.html">Identity Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/GettingStarted.html">Getting Started With Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Usage.html">Using Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/EncryptedPassword.html">Using Identity with Encrypted Passwords</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/Recipes.html">Identity Recipes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Identity/OpenID.html">OpenID Authentication with TurboGears Identity</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Testing.html">Testing Your Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="LoggingSystem.html">Understanding the Logging System</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Debugging.html">Debugging a TurboGears Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DummyTemplate.html">Dummy Kid Template for Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SQLObject/Debug.html">SQLObject Debugging</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Optimization.html">Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CachingTechniques.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GzipCompressing.html">Gzip Compressing Content</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingPylint.html">Using Pylint to Improve the Quality of Your Code</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Toolbox.html">TurboGears Toolbox</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Admi18n.html">The Admi18n Tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Catwalk.html">CatWalk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FastData/DataController.html">DataController</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VersionInfo.html">Toolbox Info</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModelDesigner.html">ModelDesigner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebConsole.html">Web Console</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Widgets/Browser.html">WidgetBrowser</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DreamWeaverIntegration.html">DreamWeaver Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VimIntegration.html">Vim Editor Integration</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="FlashNotes.html">Using Flash Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="JsonifyDecorator.html">The <tt class="docutils literal"><span class="pre">jsonify</span></tt> Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Internationalization.html">Internationalizing your application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UnicodeTips.html">Tips for Using Non-ASCII Characters in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Scheduler.html">Scheduling Tasks with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ErrorReporting.html">Custom Error Reporting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ZeroConfSupport.html">Zeroconf support in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="StartupHook.html">Startup Hook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CRUDTemplate.html">CRUD Template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPath.html">RESTful URLs with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RESTfulPaginate.html">RESTful Pagination Using the Paginate Decorator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WebServices.html">WebServices with TGWebServices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="OAuthAuthentication.html">Validating Signed Requests from OpenSocial Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenerateFigures.html">Generating Graphs and Figures in TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadTutorial.html">File Upload Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="FileUploadProgressBar.html">File Upload Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="AlternativeComponents.html">Alternative Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GettingStarted/UseElixir.html">Getting Started with Elixir</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RoutesIntegration.html">Using Routes with TurboGears</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EntryPointList.html">TurboGears Entry Point list</a></li>
+<li class="toctree-l1"><a class="reference internal" href="MakingYourAppExtensible.html">Making Extensible Applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html">What does this have to do with TurboGears?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#an-example-is-worth-a-thousand-pages-worth-of-blather">An example is worth a thousand pages worth of blather</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TurboGearsAndMicroApps.html#now-for-the-bad-news">Now for the bad news</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UsingSphinx.html">Using Sphinx</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CookieDefault.html">Cookie Default</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ConvertCookies.html">Converting Between Cookie Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtraRequestParams.html">Handling Extra Request Parameters With CherryPy Filters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="RouteByHttpMethod.html">Routing Requests According to HTTP Request Method</a></li>
+<li class="toctree-l1"><a class="reference internal" href="VirtualHost.html">Virtual Host</a></li>
+<li class="toctree-l1"><a class="reference internal" href="GenshiRenderingWithoutExpose.html">Genshi Rendering without using &#64;expose()</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ServeDynamicFiles.html">Serving Dynamically Generated Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="HybridNestedSetModel.html">Hybrid Nested Set Model for Hierarchical Storage of SQLObject Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SockFile.html">Connecting to MySQL via a socket file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SelectingOption.html">Setting the selected option of a SELECT element</a></li>
+<li class="toctree-l1"><a class="reference internal" href="DojoIEWorkaround.html">Dojo / IE workaround</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Philosophy.html">TurboGears Project Philosophy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Plugins.html">TurboGears Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TemplatePlugins.html">Writing a Template Engine</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CommandPlugins.html"><tt class="docutils literal"><span class="pre">tg-admin</span></tt> Command Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtendingQuickstart.html">Extending Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="License.html">TurboGears Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ThirdParty.html">ThirdParty Components Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ChangeLog.html">TurboGears Changelog</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGBooks.html">TurboGears Books</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="TGArticles.html">TuboGears Articles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PresentationMaterial.html">TurboGears presentation material</a></li>
+</ul>
+
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="turbogears-1-0-faq">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id1">TurboGears 1.0 FAQ</a><a class="headerlink" href="#turbogears-1-0-faq" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#turbogears-1-0-faq" id="id1">TurboGears 1.0 FAQ</a><ul>
+<li><a class="reference internal" href="#general" id="id2">General</a><ul>
+<li><a class="reference internal" href="#what-is-turbogears" id="id3">What is TurboGears?</a></li>
+<li><a class="reference internal" href="#how-is-turbogears-licensed-can-i-use-it-for-commercial-applications" id="id4">How is TurboGears licensed? Can I use it for commercial applications?</a></li>
+<li><a class="reference internal" href="#how-does-turbogears-compare-to-ruby-on-rails-django-pylons-etc" id="id5">How does TurboGears compare to Ruby on Rails/Django/Pylons/etc.?</a></li>
+<li><a class="reference internal" href="#which-framework-should-i-choose-for-my-new-project" id="id6">Which framework should I choose for my new project?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#documentation" id="id7">Documentation</a><ul>
+<li><a class="reference internal" href="#where-can-i-find-documentation-about-using-turbogears-1-0" id="id8">Where can I find documentation about using TurboGears 1.0?</a></li>
+<li><a class="reference internal" href="#what-books-are-available-for-learning-turbogears" id="id9">What books are available for learning TurboGears?</a></li>
+<li><a class="reference internal" href="#what-should-i-learn-to-become-a-better-python-web-application-developer" id="id10">What should I learn to become a (better) Python web application developer?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation" id="id11">Installation</a><ul>
+<li><a class="reference internal" href="#when-can-we-expect-python-2-5-support" id="id12">When can we expect Python 2.5 support?</a></li>
+<li><a class="reference internal" href="#when-can-we-expect-python-2-6-support" id="id13">When can we expect Python 2.6 support?</a></li>
+<li><a class="reference internal" href="#how-can-i-do-offline-installations" id="id14">How can I do offline installations?</a></li>
+<li><a class="reference internal" href="#how-can-i-do-non-root-installations" id="id15">How can I do non-root installations?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting" id="id16">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#what-is-causing-typeerror-generate-content" id="id17">What is causing <tt class="docutils literal"><span class="pre">TypeError:</span> <span class="pre">generate_content()</span></tt>?</a></li>
+<li><a class="reference internal" href="#why-do-i-get-the-log-messages-twice" id="id18">Why do I get the log messages twice?</a></li>
+<li><a class="reference internal" href="#why-does-the-javascript-css-code-of-my-widgets-not-get-included-in-my-page" id="id19">Why does the JavaScript/CSS code of my widgets not get included in my page?</a></li>
+<li><a class="reference internal" href="#what-causes-stream-object-has-no-attribute-tag" id="id20">What causes <tt class="docutils literal"><span class="pre">&quot;'Stream'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'tag'&quot;</span></tt>?</a></li>
+<li><a class="reference internal" href="#why-do-i-sometimes-get-500-internal-errors-after-my-app-has-been-idle" id="id21">Why do I sometimes get 500 Internal Errors after my app has been idle?</a></li>
+<li><a class="reference internal" href="#why-do-my-ajax-enabled-widgets-stop-working-after-some-minutes" id="id22">Why do my AJAX-enabled widgets stop working after some minutes?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#components" id="id23">Components</a><ul>
+<li><a class="reference internal" href="#why-does-turbogears-1-0-still-use-cherrypy-2-x-instead-of-cherrypy-3" id="id24">Why does TurboGears 1.0 still use CherryPy 2.x instead of CherryPy 3?</a></li>
+<li><a class="reference internal" href="#which-alternative-template-engines-can-i-use-with-turbogears" id="id25">Which alternative template engines can I use with TurboGears?</a></li>
+<li><a class="reference internal" href="#how-do-i-use-sqlalchemy-instead-of-sqlobject-for-my-project" id="id26">How do I use SQLAlchemy instead of SQLObject for my project?</a></li>
+<li><a class="reference internal" href="#can-i-use-more-than-one-database-handle-with-turbogears" id="id27">Can I use more than one database handle with TurboGears?</a></li>
+<li><a class="reference internal" href="#how-can-i-port-my-project-from-kid-tg-widgets-to-genshi-toscawidgets" id="id28">How can I port my project from Kid &amp; TG widgets to Genshi &amp; ToscaWidgets?</a></li>
+<li><a class="reference internal" href="#can-i-use-mochikit-1-4-with-turbogears" id="id29">Can I use MochiKit 1.4 with TurboGears?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#deployment" id="id30">Deployment</a><ul>
+<li><a class="reference internal" href="#how-do-i-deploy-my-configuration-and-a-default-database" id="id31">How do I deploy my configuration and a default database?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-do-i" id="id32">How do I ...?</a><ul>
+<li><a class="reference internal" href="#how-do-i-divide-controller-py-and-model-py-into-separate-files" id="id33">How do I divide <tt class="docutils literal"><span class="pre">controller.py</span></tt> and <tt class="docutils literal"><span class="pre">model.py</span></tt> into separate files?</a></li>
+<li><a class="reference internal" href="#how-can-i-find-the-filesystem-locations-for-my-project" id="id34">How can I find the filesystem locations for my project?</a></li>
+<li><a class="reference internal" href="#how-can-i-use-special-characters-in-my-urls" id="id35">How can I use special characters in my URLs?</a></li>
+<li><a class="reference internal" href="#how-do-i-change-the-name-of-a-project" id="id36">How do I change the name of a project?</a></li>
+<li><a class="reference internal" href="#how-can-i-output-html-passed-by-the-controller-in-my-kid-templates" id="id37">How can I output HTML passed by the controller in my Kid templates?</a></li>
+<li><a class="reference internal" href="#how-can-i-organize-my-templates-hierarchically" id="id38">How can I organize my templates hierarchically?</a></li>
+<li><a class="reference internal" href="#how-to-i-specify-an-alternate-template-to-use-in-my-controller-method" id="id39">How to I specify an alternate template to use in my controller method?</a></li>
+<li><a class="reference internal" href="#how-can-set-the-attributes-of-a-form-or-a-form-field-widget" id="id40">How can set the attributes of a form or a form field widget?</a></li>
+<li><a class="reference internal" href="#how-do-i-pre-fill-some-fields-when-i-display-a-widgets-based-form" id="id41">How do I pre-fill (some) fields when I display a widgets-based form?</a></li>
+<li><a class="reference internal" href="#how-can-i-access-a-method-of-a-custom-widget-from-its-template" id="id42">How can I access a method of a custom widget from its template?</a></li>
+<li><a class="reference internal" href="#how-can-i-re-use-the-definition-of-a-form-field-list-for-another-form" id="id43">How can I re-use the definition of a form field list for another form?</a></li>
+<li><a class="reference internal" href="#how-can-i-properly-display-error-messages-from-chained-validators" id="id44">How can I properly display error messages from chained validators?</a></li>
+<li><a class="reference internal" href="#how-do-i-validate-two-forms-on-the-same-page" id="id45">How do I validate two forms on the same page?</a></li>
+<li><a class="reference internal" href="#how-can-i-write-a-widget-which-displays-an-image" id="id46">How can I write a widget which displays an image?</a></li>
+<li><a class="reference internal" href="#how-can-i-log-exception-tracebacks-in-my-production-server-logs" id="id47">How can I log exception tracebacks in my production server logs?</a></li>
+<li><a class="reference internal" href="#how-do-i-do-full-text-indexing-with-turbogears" id="id48">How do I do full text indexing with TurboGears?</a></li>
+<li><a class="reference internal" href="#how-do-i-activate-localization-for-my-turbogears-project" id="id49">How do I activate localization for my TurboGears project?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="general">
+<h2><a class="toc-backref" href="#id2">General</a><a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-turbogears">
+<h3><a class="toc-backref" href="#id3">What is TurboGears?</a><a class="headerlink" href="#what-is-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears is a rapid development &#8220;front-to_back&#8221; web meta-framework.
+Its aim is to simplify and speed up the development of modern web
+applications written in the Python programming language.</p>
+<p>Please see also the TurboGears <a class="reference external" href="http://turbogears.org/about/">homepage</a> for a description of the project&#8217;s
+goals.</p>
+</div>
+<div class="section" id="how-is-turbogears-licensed-can-i-use-it-for-commercial-applications">
+<h3><a class="toc-backref" href="#id4">How is TurboGears licensed? Can I use it for commercial applications?</a><a class="headerlink" href="#how-is-turbogears-licensed-can-i-use-it-for-commercial-applications" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears itself is licensed under the <a class="reference external" href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>. Its different parts may
+be licensed differently. Please read the details on the <a class="reference external" href="http://docs.turbogears.org/1.0/License">license page</a>.</p>
+<p>In general, all licenses allow commercial usage and even closed-source
+distribution of your application if you include a copy of the resp. license,
+but if in doubt, please <strong>consult your lawyer</strong>.</p>
+</div>
+<div class="section" id="how-does-turbogears-compare-to-ruby-on-rails-django-pylons-etc">
+<h3><a class="toc-backref" href="#id5">How does TurboGears compare to Ruby on Rails/Django/Pylons/etc.?</a><a class="headerlink" href="#how-does-turbogears-compare-to-ruby-on-rails-django-pylons-etc" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="which-framework-should-i-choose-for-my-new-project">
+<h3><a class="toc-backref" href="#id6">Which framework should I choose for my new project?</a><a class="headerlink" href="#which-framework-should-i-choose-for-my-new-project" title="Permalink to this headline">¶</a></h3>
+<p>This is an ever popular topic on the mailing list.
+See, for example, these threads:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/a37037677b067872/e2d226ec2d062a6d?">TurboGears vs Django (older)</a> (2006-07-29)</li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/9dbde16e18adfaa4/aa0016827977f55a?">TurboGears vs JSP vs PHP vs Ruby on Rails vs Webware</a> (2006-08-15)</li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/1ab38ef8f76eab9f/b7b074f4a58fdc0a?">Who are the core TurboGears developers</a> (2006-11-14)</li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/0e9664be2f12a31d/e354217af8e322e8?">Sharing between TurboGears/Django/Pylons/etc.</a> (2006-12_02)</li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/d3998a4e750c39c9/4d7710c0297e36c3?">TurboGears vs Django</a> (2006-12-05)</li>
+</ul>
+<p>And these blog articles:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://sanjaypatel.blogspot.com/2007/07/why-i-chose-turbogears.html">Why I Chose Turbogears</a></li>
+<li><a class="reference external" href="http://blog.ianbicking.org/turbogears-and-pylons.html">TurboGears and Pylons (a technical comparison)</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2><a class="toc-backref" href="#id7">Documentation</a><a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="where-can-i-find-documentation-about-using-turbogears-1-0">
+<h3><a class="toc-backref" href="#id8">Where can I find documentation about using TurboGears 1.0?</a><a class="headerlink" href="#where-can-i-find-documentation-about-using-turbogears-1-0" title="Permalink to this headline">¶</a></h3>
+<p>There is a Wiki for all documentation. Start with the
+<a class="reference internal" href="index.html"><em>TurboGears 1.0 Documentation</em></a> page.</p>
+</div>
+<div class="section" id="what-books-are-available-for-learning-turbogears">
+<h3><a class="toc-backref" href="#id9">What books are available for learning TurboGears?</a><a class="headerlink" href="#what-books-are-available-for-learning-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>The &#8220;official&#8221; TurboGears book is <em>Rapid Web Applications with TurboGears</em>
+by Mark Ramm et al. The book has its own homepage at
+<a class="reference external" href="http://www.turbogearsbook.com/">http://www.turbogearsbook.com/</a> and you can also visit the <a class="reference external" href="http://www.amazon.com/Rapid-Web-Applications-TurboGears-Ajax-Powered/dp/0132433885/ref=pd_sxp_f_pt/002-9656812-7128002">Amazon page</a>
+for this book.</p>
+</div>
+<div class="section" id="what-should-i-learn-to-become-a-better-python-web-application-developer">
+<h3><a class="toc-backref" href="#id10">What should I learn to become a (better) Python web application developer?</a><a class="headerlink" href="#what-should-i-learn-to-become-a-better-python-web-application-developer" title="Permalink to this headline">¶</a></h3>
+<p>Which other books should I read?</p>
+<p>Please refer to these mailing list discussions:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/97857ec694fb980a/155570d241090b9e">What&#8217;s My Learning Path?</a></li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/9288051c66a6b212/a81c4ecb276d84f6">Suggestions for a intermediate or advanced python book</a></li>
+<li><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/31cd587d08c582fe/ef446d6383f876c6">Best advanced python text?</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2><a class="toc-backref" href="#id11">Installation</a><a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>For now, there is also a separate page for <a class="reference internal" href="Install/Troubleshooting.html"><em>Installation Troubleshooting</em></a></p>
+<div class="section" id="when-can-we-expect-python-2-5-support">
+<h3><a class="toc-backref" href="#id12">When can we expect Python 2.5 support?</a><a class="headerlink" href="#when-can-we-expect-python-2-5-support" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears supports Python 2.5 as of version <strong>1.0.2</strong>.</p>
+</div>
+<div class="section" id="when-can-we-expect-python-2-6-support">
+<h3><a class="toc-backref" href="#id13">When can we expect Python 2.6 support?</a><a class="headerlink" href="#when-can-we-expect-python-2-6-support" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears officially supports Python 2.6 as of version <strong>1.1</strong>.</p>
+</div>
+<div class="section" id="how-can-i-do-offline-installations">
+<h3><a class="toc-backref" href="#id14">How can I do offline installations?</a><a class="headerlink" href="#how-can-i-do-offline-installations" title="Permalink to this headline">¶</a></h3>
+<p>How can I save the eggs that <tt class="docutils literal"><span class="pre">easy_install</span></tt> downloads, so I can install
+them to another host or location later without having to download them again?</p>
+<p>You can use the recipe explained in this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/msg/69bfb85830f9a15e">TurboGears-1.0 available at WebFaction</a> (2007-01-05)</p>
+<p>In short, download the eggs with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">easy_install</span> <span class="o">-</span><span class="n">zmaxd</span> <span class="o">&lt;</span><span class="n">somedir</span><span class="o">&gt;</span> <span class="n">TurboGears</span>
+</pre></div>
+</div>
+<p>and install them with:</p>
+<div class="highlight-python"><pre>easy_install -H None -f &lt;somedir&gt; TurboGears</pre>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">&lt;somedir&gt;</span></tt> should be the directory where you want to save the <tt class="docutils literal"><span class="pre">.egg</span></tt>
+files.</p>
+</div>
+<div class="section" id="how-can-i-do-non-root-installations">
+<h3><a class="toc-backref" href="#id15">How can I do non-root installations?</a><a class="headerlink" href="#how-can-i-do-non-root-installations" title="Permalink to this headline">¶</a></h3>
+<p>How can I install TurboGears on a Unix-like system without root user privileges?</p>
+<p>An easy and quick way is to use the <a class="reference external" href="http://cheeseshop.python.org/pypi/virtualenv">virtualenv</a> program to create a separate,
+clean Python environment and install TurboGears in this environment. The basic
+steps are:</p>
+<ol class="arabic simple">
+<li>install virtualenv with  <tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">virtualenv</span></tt>.</li>
+<li>Run <tt class="docutils literal"><span class="pre">virtualenv</span> <span class="pre">&lt;new</span> <span class="pre">env</span> <span class="pre">dir&gt;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">source</span> <span class="pre">&lt;new</span> <span class="pre">env</span> <span class="pre">dir&gt;/bin/activate</span></tt></li>
+<li>Download <a class="reference external" href="http://sourceforge.net/projects/turbogears1/files/1.0/tgsetup.py">tgsetup.py</a> and run <tt class="docutils literal"><span class="pre">python</span> <span class="pre">tgsetup.py</span></tt>.</li>
+<li>Install additional eggs, like nose, pysqlite, SQLObject, SQLAlchemy,
+etc. with <tt class="docutils literal"><span class="pre">easy_install</span> <span class="pre">&lt;package</span> <span class="pre">name&gt;</span></tt></li>
+</ol>
+<p><tt class="docutils literal"><span class="pre">&lt;new</span> <span class="pre">env</span> <span class="pre">dir&gt;</span></tt> is the name of a directory that virtualenv should create.
+It will contain the new Python environment. Everytime you want to work with
+this environment, you need to carry out step 3. from above, so that the library
+modules and scripts from the environment are used.</p>
+<p>See also <a class="reference internal" href="Install/NonRoot.html"><em>How to Install TurboGears Without root Privileges</em></a>
+for detailed instructions.</p>
+</div>
+</div>
+<div class="section" id="troubleshooting">
+<h2><a class="toc-backref" href="#id16">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="what-is-causing-typeerror-generate-content">
+<h3><a class="toc-backref" href="#id17">What is causing <tt class="docutils literal"><span class="pre">TypeError:</span> <span class="pre">generate_content()</span></tt>?</a><a class="headerlink" href="#what-is-causing-typeerror-generate-content" title="Permalink to this headline">¶</a></h3>
+<p>Why do I see the exception** <tt class="docutils literal"><span class="pre">&quot;TypeError:</span> <span class="pre">generate_content()</span> <span class="pre">takes</span> <span class="pre">exactly</span> <span class="pre">1</span>
+<span class="pre">argument</span> <span class="pre">(2</span> <span class="pre">given)&quot;</span></tt> whenever I access any page of my TurboGears application?</p>
+<p>This is an incompatibilty between kid version 0.9.3 and 0.9.4.</p>
+<p><strong>Solution:</strong> delete all <tt class="docutils literal"><span class="pre">*.pyc</span></tt> files in your <tt class="docutils literal"><span class="pre">templates</span></tt> folder and
+subfolders and restart your application.</p>
+<p>See also <a class="reference external" href="http://trac.turbogears.org/ticket/1200">ticket #1200</a>.</p>
+</div>
+<div class="section" id="why-do-i-get-the-log-messages-twice">
+<h3><a class="toc-backref" href="#id18">Why do I get the log messages twice?</a><a class="headerlink" href="#why-do-i-get-the-log-messages-twice" title="Permalink to this headline">¶</a></h3>
+<p>Why do I see all logging messages twice when I run my application in
+development mode?</p>
+<p>This is normal. The TurboGears application server, Cherrypy 2.x, runs two
+processes when in development mode and it&#8217;s set to autoreload. Each process
+outputs logging messages and that is why they appear twice. This does not
+happen in production mode and also doesn&#8217;t happen in newer (i.e. CP3)
+CherryPy versions (which TurboGears does not use yet), which involved a
+rewrite of the reloading mechanism.</p>
+</div>
+<div class="section" id="why-does-the-javascript-css-code-of-my-widgets-not-get-included-in-my-page">
+<h3><a class="toc-backref" href="#id19">Why does the JavaScript/CSS code of my widgets not get included in my page?</a><a class="headerlink" href="#why-does-the-javascript-css-code-of-my-widgets-not-get-included-in-my-page" title="Permalink to this headline">¶</a></h3>
+<p>Do your templates inherit from <tt class="docutils literal"><span class="pre">master.kid</span></tt>? See the mailing list post
+<a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/f1769fdb294d5edb/6f387ced6ff00e54?#6f387ced6ff00e54">scripts in head</a> for details.</p>
+</div>
+<div class="section" id="what-causes-stream-object-has-no-attribute-tag">
+<h3><a class="toc-backref" href="#id20">What causes <tt class="docutils literal"><span class="pre">&quot;'Stream'</span> <span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'tag'&quot;</span></tt>?</a><a class="headerlink" href="#what-causes-stream-object-has-no-attribute-tag" title="Permalink to this headline">¶</a></h3>
+<p>This is most probably caused by mixing Genshi and ToscaWidgets incorrectly.</p>
+<p>In the beginning, there was Kid and &#8220;traditional&#8221; widgets.  Traditional widgets
+returned an ElementTree object, which the Kid engine converted into HTML.  In
+Genshi, you can use traditional widgets, but you must use the <tt class="docutils literal"><span class="pre">&quot;ET()&quot;</span></tt> function
+to explicitly convert them to HTML.  (If you get <tt class="docutils literal"><span class="pre">&quot;&lt;script</span> <span class="pre">element</span> <span class="pre">at</span> <span class="pre">ASDFASDF&gt;&quot;</span></tt>
+in your output, that is a sign that you are handing a traditional widget back
+to Genshi, and NOT wrapping it in <tt class="docutils literal"><span class="pre">ET()</span></tt>.)</p>
+<p>ToscaWidgets, on the other hand, return HTML natively.  If you wrap a
+ToscaWidget reference in <tt class="docutils literal"><span class="pre">ET()</span></tt>, you will get a stack trace saying <tt class="docutils literal"><span class="pre">&quot;'Stream'</span>
+<span class="pre">object</span> <span class="pre">has</span> <span class="pre">no</span> <span class="pre">attribute</span> <span class="pre">'tag'&quot;</span></tt>.</p>
+<p>Note that these issues do not exist any more in TurboGears 1.1 and 1.5,
+they do all the necessary wrapping and converting for you. TurboGears 1.5
+even allows Genshi templates in TurboGears widgets and will convert between
+the Kid and Genshi templating systems under the hood.</p>
+</div>
+<div class="section" id="why-do-i-sometimes-get-500-internal-errors-after-my-app-has-been-idle">
+<h3><a class="toc-backref" href="#id21">Why do I sometimes get 500 Internal Errors after my app has been idle?</a><a class="headerlink" href="#why-do-i-sometimes-get-500-internal-errors-after-my-app-has-been-idle" title="Permalink to this headline">¶</a></h3>
+<p>Why does my application work fine until it&#8217;s idle for a while then the next
+request returns a <tt class="docutils literal"><span class="pre">&quot;500</span> <span class="pre">Internal</span> <span class="pre">Error&quot;</span></tt> response?</p>
+<p>Are you using a MySQL database? If so, this is probably the MySQL time out.
+Because CherryPy is a long running process it doesn&#8217;t make a new connection on
+every page load. After a period of inactivity the MySQL server will timeout
+the connection. This causes an error the next time the application attempts to
+use the connection.</p>
+<p>One solution some people use is to set up a cron job that every so often wgets
+a page from the application that will cause a database query. There is also
+apparently a MySQL <tt class="docutils literal"><span class="pre">wait_timeout</span></tt> setting that can be adjusted to stop the
+connection from timing out.</p>
+</div>
+<div class="section" id="why-do-my-ajax-enabled-widgets-stop-working-after-some-minutes">
+<h3><a class="toc-backref" href="#id22">Why do my AJAX-enabled widgets stop working after some minutes?</a><a class="headerlink" href="#why-do-my-ajax-enabled-widgets-stop-working-after-some-minutes" title="Permalink to this headline">¶</a></h3>
+<p>This might be due to the fact that you have enabled identity and the session
+has timed out and the AJAX-calls from your widget (e.g. <tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt>)
+encounter a 401 (&#8220;Unauthorized&#8221;) or 500 (&#8220;Internal Server Error&#8221;) error.</p>
+<p>A simple method to handle this would be to wrap the <tt class="docutils literal"><span class="pre">loadJSONDoc</span></tt> call and
+always add a <tt class="docutils literal"><span class="pre">errback</span></tt> callback function that catches this error:</p>
+<div class="highlight-python"><pre>function ljd_errhandler(result) {
+    if (result instanceof XMLHttpRequestError &amp;&amp;
+        (result.number == 401 || result.number == 500) {
+        /* handle error here, for example simply display an error message */
+    }
+}
+
+function do_loadjsondoc(url, cb_func) {
+    d = loadJSONDoc(url);
+    d.addCallbacks(cb_func, ljd_erhandler);
+    return d;
+}</pre>
+</div>
+</div>
+</div>
+<div class="section" id="components">
+<h2><a class="toc-backref" href="#id23">Components</a><a class="headerlink" href="#components" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="why-does-turbogears-1-0-still-use-cherrypy-2-x-instead-of-cherrypy-3">
+<h3><a class="toc-backref" href="#id24">Why does TurboGears 1.0 still use CherryPy 2.x instead of CherryPy 3?</a><a class="headerlink" href="#why-does-turbogears-1-0-still-use-cherrypy-2-x-instead-of-cherrypy-3" title="Permalink to this headline">¶</a></h3>
+<p>When TurboGears was created, CP3 didn&#8217;t exist and there where <a class="reference external" href="http://cherrypy.org/wiki/WhatsNewIn30">major changes</a>
+between CP2 and CP3. Therefore the breaking changes required to support CP3
+in have been made only in TG 1.5.</p>
+</div>
+<div class="section" id="which-alternative-template-engines-can-i-use-with-turbogears">
+<h3><a class="toc-backref" href="#id25">Which alternative template engines can I use with TurboGears?</a><a class="headerlink" href="#which-alternative-template-engines-can-i-use-with-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>What are the pros and cons of each?</p>
+<p>In principle, you can use any templating language that provides a <a class="reference external" href="http://projects.dowski.com/projects/buffet">Buffet</a> plugin
+interface, either directly or through a separate <a class="reference internal" href="TemplatePlugins.html"><em>template engine plugin</em></a>
+package. Template engines, that have been successfully used with TurboGears,
+include <a class="reference internal" href="GenshiTemplating.html"><em>Genshi</em></a>, <a class="reference internal" href="CheetahTemplating.html"><em>Cheetah</em></a> and <a class="reference internal" href="DjangoTemplating.html"><em>Jinja</em></a>.
+For general information how to use non-standard template engines with TurboGears,
+see <a class="reference internal" href="AlternativeTemplating.html"><em>Using Alternate Templating Engines</em></a>.</p>
+<p>If you are using widgets, you need Kid to render the widgets, but you can still
+use a different template engine for your page templates. With ToscaWidget you
+can use any Buffet-compliant template engine for your widgets.</p>
+<p>For a long mailing list thread with a discussion of different template engines
+and speed comparisons, see <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/8feecc4deec2f937/aeea222b2890b661?lnk=gst&amp;q=%27++vs+%27&amp;rnum=2">Kid vs Cheetah</a></p>
+</div>
+<div class="section" id="how-do-i-use-sqlalchemy-instead-of-sqlobject-for-my-project">
+<h3><a class="toc-backref" href="#id26">How do I use SQLAlchemy instead of SQLObject for my project?</a><a class="headerlink" href="#how-do-i-use-sqlalchemy-instead-of-sqlobject-for-my-project" title="Permalink to this headline">¶</a></h3>
+<p>What are the pros and cons of this exchange?</p>
+<p>See the article <a class="reference internal" href="SQLObject/VsSQLAlchemy.html"><em>SQLObject vs SQLAlchemy</em></a>.</p>
+</div>
+<div class="section" id="can-i-use-more-than-one-database-handle-with-turbogears">
+<h3><a class="toc-backref" href="#id27">Can I use more than one database handle with TurboGears?</a><a class="headerlink" href="#can-i-use-more-than-one-database-handle-with-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>You sure can! The page <a class="reference internal" href="MultipleDatabases.html"><em>MultipleDatabases</em></a> explains how to do it with
+SQLAchemy.</p>
+</div>
+<div class="section" id="how-can-i-port-my-project-from-kid-tg-widgets-to-genshi-toscawidgets">
+<h3><a class="toc-backref" href="#id28">How can I port my project from Kid &amp; TG widgets to Genshi &amp; ToscaWidgets?</a><a class="headerlink" href="#how-can-i-port-my-project-from-kid-tg-widgets-to-genshi-toscawidgets" title="Permalink to this headline">¶</a></h3>
+<p>See the page <cite>Ugrading from 1.0 to 1.1 &lt;http://docs.turbogears.org/1.1/Upgrade&gt;</cite> for hints on this.</p>
+</div>
+<div class="section" id="can-i-use-mochikit-1-4-with-turbogears">
+<h3><a class="toc-backref" href="#id29">Can I use MochiKit 1.4 with TurboGears?</a><a class="headerlink" href="#can-i-use-mochikit-1-4-with-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>TurboGears 1.0.8 comes with MochiKit 1.4 included, though version 1.3.1
+is still used by default. You can use the newer version by setting
+<tt class="docutils literal"><span class="pre">tg.mochikit_version</span></tt> or <tt class="docutils literal"><span class="pre">tg_mochikit.version</span></tt>  to &#8216;1.4&#8217;</p>
+<p>It is also possible in older versions of TurboGears, but you have to include
+the new MochiKit version with your project. There are two ways to do this.</p>
+<ol class="arabic">
+<li><p class="first">Copy the latest <tt class="docutils literal"><span class="pre">MochiKit.js</span></tt> in the <tt class="docutils literal"><span class="pre">static/javascript</span></tt> directory
+of your project and include it manually in <tt class="docutils literal"><span class="pre">master.kid</span></tt> or in each
+template that needs it with the following tag in the HTML <tt class="docutils literal"><span class="pre">head</span></tt> section:</p>
+<div class="highlight-python"><pre>&lt;script src="${tg.url('/static/javascript/MochiKit.js')}" /&gt;</pre>
+</div>
+</li>
+<li><p class="first">Create a custom widget that wraps MochiKit and include it in
+<tt class="docutils literal"><span class="pre">tg_include_widgets</span></tt>. Here&#8217;s how to do this:</p>
+<ol class="arabic">
+<li><p class="first">Create sub-package called <tt class="docutils literal"><span class="pre">widgets</span></tt> in your project:</p>
+<div class="highlight-python"><pre>$ mkdir &lt;yourproject&gt;/widgets
+$ touch &lt;yourproject&gt;/widgets/__init__.py</pre>
+</div>
+</li>
+<li><p class="first">Create sub-sub-package called <tt class="docutils literal"><span class="pre">widgets.jslibs</span></tt> in your project:</p>
+<div class="highlight-python"><pre>$ mkdir -p &lt;yourproject&gt;/widgets/jslibs/static/javascript
+$ vi &lt;yourproject&gt;/widgets/jslibs/__init__.py</pre>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># &lt;yourproject&gt;/widgets/jslibs/__init__.py</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="s">&#39;mochikit&#39;</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">pkg_resources</span>
+<span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">JSLink</span><span class="p">,</span> <span class="n">register_static_directory</span>
+
+<span class="n">js_dir</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s">&quot;yourproject.widgets.jslibs&quot;</span><span class="p">,</span>
+        <span class="s">&quot;static&quot;</span><span class="p">)</span>
+<span class="n">register_static_directory</span><span class="p">(</span><span class="s">&quot;jslibs&quot;</span><span class="p">,</span> <span class="n">js_dir</span><span class="p">)</span>
+
+<span class="n">mochikit</span> <span class="o">=</span> <span class="n">JSLink</span><span class="p">(</span><span class="s">&quot;jslibs&quot;</span><span class="p">,</span> <span class="s">&quot;javascript/MochiKit.js&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Put <tt class="docutils literal"><span class="pre">MochiKit.js</span></tt> 1.4 in
+<tt class="docutils literal"><span class="pre">yourproject/widgets/jslibs/static/javascript</span></tt></p>
+</li>
+<li><p class="first">Use it in your application by e.g. setting this in <tt class="docutils literal"><span class="pre">app.cfg</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tg</span><span class="o">.</span><span class="n">include_widgets</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;myproject.widgets.jslibs.mochikit&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="deployment">
+<h2><a class="toc-backref" href="#id30">Deployment</a><a class="headerlink" href="#deployment" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-deploy-my-configuration-and-a-default-database">
+<h3><a class="toc-backref" href="#id31">How do I deploy my configuration and a default database?</a><a class="headerlink" href="#how-do-i-deploy-my-configuration-and-a-default-database" title="Permalink to this headline">¶</a></h3>
+<p>Do I have to copy my configuration file and/or database when I deploy my
+TurboGears application as an egg?</p>
+<p>From TurboGears version 1.0.4b3 onwards it is easy to include a default
+configuration file in your application&#8217;s egg file, which then will be found
+by the standard start script automatically. You just have to uncomment a section
+in your project&#8217;s <tt class="docutils literal"><span class="pre">setup.py</span></tt> file, which is appropriatly commented. Older
+projects can be updated to use this technique by following the instructions
+on the <a class="reference internal" href="Install/Upgrade.html"><em>Upgrade</em></a> page.</p>
+<p>While, in principle, one could also include a default database in the egg, this
+would only make sense for single-file databases, like those used by SQLite, but
+then again, one wouldn&#8217;t normally want to write to files contained in an egg.</p>
+<p>One solution is to provide a <a class="reference internal" href="CommandPlugins.html"><em>custom tg-admin command</em></a> for your application,
+that asks the user for the database connection parameters and then initializes
+the database using the <tt class="docutils literal"><span class="pre">tg-admin</span> <span class="pre">sql</span> <span class="pre">create</span></tt> command followed by some custom
+code to fill the the dadabase with some bootstrap data.</p>
+</div>
+</div>
+<div class="section" id="how-do-i">
+<h2><a class="toc-backref" href="#id32">How do I ...?</a><a class="headerlink" href="#how-do-i" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="how-do-i-divide-controller-py-and-model-py-into-separate-files">
+<h3><a class="toc-backref" href="#id33">How do I divide <tt class="docutils literal"><span class="pre">controller.py</span></tt> and <tt class="docutils literal"><span class="pre">model.py</span></tt> into separate files?</a><a class="headerlink" href="#how-do-i-divide-controller-py-and-model-py-into-separate-files" title="Permalink to this headline">¶</a></h3>
+<p>Please see this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/61bb34312502c444/6a4b64021e1ef856?">How use tgbig to break controllers.py into multiple files</a> (2007-01-17)</p>
+</div>
+<div class="section" id="how-can-i-find-the-filesystem-locations-for-my-project">
+<h3><a class="toc-backref" href="#id34">How can I find the filesystem locations for my project?</a><a class="headerlink" href="#how-can-i-find-the-filesystem-locations-for-my-project" title="Permalink to this headline">¶</a></h3>
+<p>How can I find out the filesystem location of my application&#8217;s project
+directory or its package directory?</p>
+<p>Use the <tt class="docutils literal"><span class="pre">pkg_resources</span></tt> module which comes with <tt class="docutils literal"><span class="pre">setuptools</span></tt></p>
+<p>For example, You can get the full path to the <tt class="docutils literal"><span class="pre">templates</span></tt> directory
+inside the <tt class="docutils literal"><span class="pre">wiki20</span></tt> package by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">resource_filename</span>
+<span class="n">resource_filename</span><span class="p">(</span><span class="s">&#39;wiki20&#39;</span><span class="p">,</span> <span class="s">&#39;templates&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then easily move up an down in the filesystem by using the
+functions form the standard <a class="reference external" href="http://docs.python.org/lib/module-os.path.html">os.path module</a>.</p>
+<p>Please bear in mind, when you have <a class="reference internal" href="Install/DeployWithAnEgg.html"><em>installed your application as an egg</em></a>,
+there is no &#8220;project directory&#8221; per se, in fact, the files of your
+application may not even reside directly in the filesystem but in a ZIP
+archive. You can build an egg that contains additiional data file alongside
+your application&#8217;s package directory. See the <a class="reference external" href="http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources">setuptools documentation</a>
+for more information.</p>
+</div>
+<div class="section" id="how-can-i-use-special-characters-in-my-urls">
+<h3><a class="toc-backref" href="#id35">How can I use special characters in my URLs?</a><a class="headerlink" href="#how-can-i-use-special-characters-in-my-urls" title="Permalink to this headline">¶</a></h3>
+<p>How can I use special (non-identifier) characters in my URLs resp. controller
+method names?</p>
+<p>You can&#8217;t because method names have to conform to the rules for Python
+identifiers. But you can work around this by handling URL dispatching yourself
+in an exposed <tt class="docutils literal"><span class="pre">default</span></tt> method of your controller, ex: setattr(class,
+irregular, method) to effectively alias the page.</p>
+<p>See post <a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/cf72ba5333c84001/1d768d8640866570?#1d768d8640866570">irregular controller names</a> for details.</p>
+</div>
+<div class="section" id="how-do-i-change-the-name-of-a-project">
+<h3><a class="toc-backref" href="#id36">How do I change the name of a project?</a><a class="headerlink" href="#how-do-i-change-the-name-of-a-project" title="Permalink to this headline">¶</a></h3>
+<p>To change the name of a project called &#8220;foo&#8221; created by tg-admin quickstart,
+you have to manually go through all the files of the project and replace all
+occurences of &#8220;foo&#8221;  with &#8220;matrix&#8221;, where &#8220;matrix&#8221; is the new name of the
+project. If you are under Linux/Mac, you can automate this tedious work with
+this shell snippet:</p>
+<div class="highlight-python"><pre>find . -name "*" | \
+    while read f; do
+        sed -e 's#foo#matrix#g' &lt; "$f" &gt; /tmp/x
+        mv /tmp/x "$f"
+    done</pre>
+</div>
+</div>
+<div class="section" id="how-can-i-output-html-passed-by-the-controller-in-my-kid-templates">
+<h3><a class="toc-backref" href="#id37">How can I output HTML passed by the controller in my Kid templates?</a><a class="headerlink" href="#how-can-i-output-html-passed-by-the-controller-in-my-kid-templates" title="Permalink to this headline">¶</a></h3>
+<p>How can I display HTML markup in my template variable without having Kid
+escape the HTML special characters?</p>
+<p>Use <tt class="docutils literal"><span class="pre">${XML(mytemplatevar)}</span></tt> or refactor by defining and using a <a class="reference external" href="http://kid-templating.org/language.html#named-template-functions-py-def">kid template
+function</a>, for example:</p>
+<div class="highlight-python"><pre>&lt;a py:def="link(url, text)" href='${url}'&gt;${text}&lt;/a&gt;</pre>
+</div>
+<p>Then in your template you use:</p>
+<div class="highlight-python"><pre>${link('http://foo.com/', 'Foo.com')}</pre>
+</div>
+<p>Which will render to this output:</p>
+<div class="highlight-python"><pre>&lt;a href='http://foo.com/'&gt;Foo.com&lt;/a&gt;</pre>
+</div>
+</div>
+<div class="section" id="how-can-i-organize-my-templates-hierarchically">
+<h3><a class="toc-backref" href="#id38">How can I organize my templates hierarchically?</a><a class="headerlink" href="#how-can-i-organize-my-templates-hierarchically" title="Permalink to this headline">¶</a></h3>
+<p>How can I have templates in subdirectories of my project&#8217;s <tt class="docutils literal"><span class="pre">templates</span></tt> directory?</p>
+<p>Short answer: Just put an empty file named <tt class="docutils literal"><span class="pre">__init__.py</span></tt> in the
+subdirectory.</p>
+<p>Long answer: templates are looked up by the template engines via the normal
+Python module package mechanisms and the <tt class="docutils literal"><span class="pre">templates</span></tt> directory is therefore
+a <a class="reference external" href="http://docs.python.org/tut/node8.html#SECTION008400000000000000000">Python package</a>. Subdirectories have to be sub-packages as well and you
+can achieve that by placing an <tt class="docutils literal"><span class="pre">__init__.py</span></tt> file in them. The
+<tt class="docutils literal"><span class="pre">__init__.py</span></tt> can contain Python code, but an empty file will do just as
+well.</p>
+</div>
+<div class="section" id="how-to-i-specify-an-alternate-template-to-use-in-my-controller-method">
+<h3><a class="toc-backref" href="#id39">How to I specify an alternate template to use in my controller method?</a><a class="headerlink" href="#how-to-i-specify-an-alternate-template-to-use-in-my-controller-method" title="Permalink to this headline">¶</a></h3>
+<p>Put <tt class="docutils literal"><span class="pre">tg_template</span></tt> set to the name of the template you want to use into the
+dictionary you return from your controller method, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;.templates.index&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="s">&#39;Hello World!&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">some_condition</span><span class="p">:</span>
+        <span class="n">d</span><span class="p">[</span><span class="s">&#39;tg_template&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;.templates.other&#39;</span>
+    <span class="k">return</span> <span class="n">d</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="how-can-set-the-attributes-of-a-form-or-a-form-field-widget">
+<h3><a class="toc-backref" href="#id40">How can set the attributes of a form or a form field widget?</a><a class="headerlink" href="#how-can-set-the-attributes-of-a-form-or-a-form-field-widget" title="Permalink to this headline">¶</a></h3>
+<p>Please refer to the &#8220;Tips&#8221; section on the <a class="reference internal" href="Widgets/Tips.html"><em>Widgets Tips &amp; Tricks</em></a> page.</p>
+</div>
+<div class="section" id="how-do-i-pre-fill-some-fields-when-i-display-a-widgets-based-form">
+<h3><a class="toc-backref" href="#id41">How do I pre-fill (some) fields when I display a widgets-based form?</a><a class="headerlink" href="#how-do-i-pre-fill-some-fields-when-i-display-a-widgets-based-form" title="Permalink to this headline">¶</a></h3>
+<p>You provide a dictionary to the <tt class="docutils literal"><span class="pre">value</span></tt> parameter when you display the widget
+in the template. The dictionary must contain the the field names as keys and
+their preset value as values. You pass both the widget form object and the
+values dictionary to the template from your controller method.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre># widgets.py
+myform = TableForm(
+    fields = [
+        widgets.TextField('name'),
+        widgets.TextField('email')
+)</pre>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># controllers.py</span>
+<span class="kn">from</span> <span class="nn">widgets</span> <span class="kn">import</span> <span class="n">myform</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">controller</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;.templates.form_template&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">showform</span><span class="p">(</span><span class="n">sefl</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">form_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Joe Doe&quot;</span><span class="p">,</span>
+            <span class="n">email</span> <span class="o">=</span> <span class="s">&quot;joe@doe.com&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">myform</span><span class="p">,</span> <span class="n">form_values</span><span class="o">=</span><span class="n">form_values</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>&lt;!-- form_template.kid --&gt;
+...
+${form(value=form_values)}
+...</pre>
+</div>
+</div>
+<div class="section" id="how-can-i-access-a-method-of-a-custom-widget-from-its-template">
+<h3><a class="toc-backref" href="#id42">How can I access a method of a custom widget from its template?</a><a class="headerlink" href="#how-can-i-access-a-method-of-a-custom-widget-from-its-template" title="Permalink to this headline">¶</a></h3>
+<p>Please see this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/2d2844b1b626b6ed/2d2e5f2e2f81a83b?">Adding custom method to a custom widget</a> (2007-01-27)</p>
+</div>
+<div class="section" id="how-can-i-re-use-the-definition-of-a-form-field-list-for-another-form">
+<h3><a class="toc-backref" href="#id43">How can I re-use the definition of a form field list for another form?</a><a class="headerlink" href="#how-can-i-re-use-the-definition-of-a-form-field-list-for-another-form" title="Permalink to this headline">¶</a></h3>
+<p>Please see this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/0083be65857021e4/c673acfda86e881c?">how to reuse form definition</a> (2007-01-29)</p>
+</div>
+<div class="section" id="how-can-i-properly-display-error-messages-from-chained-validators">
+<h3><a class="toc-backref" href="#id44">How can I properly display error messages from chained validators?</a><a class="headerlink" href="#how-can-i-properly-display-error-messages-from-chained-validators" title="Permalink to this headline">¶</a></h3>
+<p>How do I prevent the error message from a chained validator to show up next
+to all form fields?</p>
+<p>Please see this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/3551860964d78ed1/d21eed1006017280?">custom validator help</a> (2007-01-26)</p>
+</div>
+<div class="section" id="how-do-i-validate-two-forms-on-the-same-page">
+<h3><a class="toc-backref" href="#id45">How do I validate two forms on the same page?</a><a class="headerlink" href="#how-do-i-validate-two-forms-on-the-same-page" title="Permalink to this headline">¶</a></h3>
+<p>Just set the action attribute of each form to a different value making
+them submit to two different controller methods.</p>
+<p>You can then use a <tt class="docutils literal"><span class="pre">&#64;validate</span></tt> decorator with a different <cite>form</cite> argument
+on each method.</p>
+</div>
+<div class="section" id="how-can-i-write-a-widget-which-displays-an-image">
+<h3><a class="toc-backref" href="#id46">How can I write a widget which displays an image?</a><a class="headerlink" href="#how-can-i-write-a-widget-which-displays-an-image" title="Permalink to this headline">¶</a></h3>
+<p>That&#8217;s easy. Just include an image tag in the template of the widget:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ImageWidget</span><span class="p">(</span><span class="n">widgets</span><span class="o">.</span><span class="n">Widget</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&#39;&lt;img xmlns:py=&quot;http://purl.org/kid/ns#&quot; src=&quot;${value}&quot; /&gt;&#39;</span>
+</pre></div>
+</div>
+<p>and provide the image URL when you display the widget:</p>
+<div class="highlight-python"><pre>${myimagewidget(tg.url('myimage.png'))}</pre>
+</div>
+<p>If you want to serve a <a class="reference internal" href="ServeDynamicFiles.html"><em>dynamically generated image</em></a>, you have to provide a
+controller method for this, and use the URL to this controller
+method as the value for the widget.</p>
+</div>
+<div class="section" id="how-can-i-log-exception-tracebacks-in-my-production-server-logs">
+<h3><a class="toc-backref" href="#id47">How can I log exception tracebacks in my production server logs?</a><a class="headerlink" href="#how-can-i-log-exception-tracebacks-in-my-production-server-logs" title="Permalink to this headline">¶</a></h3>
+<p>Please see this mailing list post:</p>
+<p><a class="reference external" href="http://groups.google.com/group/turbogears/browse_thread/thread/22a00b086714d34a">How to get python tracebacks into production log</a> (2007-01-14)</p>
+</div>
+<div class="section" id="how-do-i-do-full-text-indexing-with-turbogears">
+<h3><a class="toc-backref" href="#id48">How do I do full text indexing with TurboGears?</a><a class="headerlink" href="#how-do-i-do-full-text-indexing-with-turbogears" title="Permalink to this headline">¶</a></h3>
+<p>Krys Wilken has released TurboLucene, which makes it easy to use Lucene
+based searches within TurboGears. You can find our more at:
+<a class="reference external" href="http://dev.krys.ca/turbolucene/">http://dev.krys.ca/turbolucene/</a></p>
+<p>Alternatively, Nadav Samet explains how to do full text indexing with Xapian
+on his blog:</p>
+<p><a class="reference external" href="http://www.thesamet.com/blog/2007/02/04/pumping-up-your-applications-with-xapian-full-text-search/">http://www.thesamet.com/blog/2007/02/04/pumping-up-your-applications-with-xapian-full-text-search/</a></p>
+</div>
+<div class="section" id="how-do-i-activate-localization-for-my-turbogears-project">
+<h3><a class="toc-backref" href="#id49">How do I activate localization for my TurboGears project?</a><a class="headerlink" href="#how-do-i-activate-localization-for-my-turbogears-project" title="Permalink to this headline">¶</a></h3>
+<p>Keywords: i18n, l10n</p>
+<p>If you want to activate localization for your project, you need to do the
+following. This will copy the localized strings of TurboGears into your
+project. These steps are necessary if you want get TurboGears&#8217;s built-in texts
+translated, even if you have not localized your part of the project.:</p>
+<div class="highlight-python"><pre>tg-admin i18n collect
+tg-admin i18n add &lt;locale&gt;
+tg-admin i18n compile</pre>
+</div>
+<p>TurboGears does support localized validation error messages from FormEncode
+since 1.0.2 (<a class="reference external" href="http://trac.turbogears.org/ticket/1136">ticket 1136</a>). Please note that you need at least FormEncode 0.7
+for localized validation error messages.</p>
+</div>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

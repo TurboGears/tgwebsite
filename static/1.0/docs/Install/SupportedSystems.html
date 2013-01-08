@@ -1,0 +1,550 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Supported Operating Systems &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Downloading and Installing TurboGears" href="index.html" />
+    <link rel="next" title="Use TurboGears with Python 2.3" href="Python2.3Support.html" />
+    <link rel="prev" title="Downloading and Installing TurboGears" href="index.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Python2.3Support.html" title="Use TurboGears with Python 2.3"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Downloading and Installing TurboGears"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="index.html" accesskey="U">Downloading and Installing TurboGears</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Supported Operating Systems</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#c-extension-modules-required-by-turbogears">C-Extension Modules Required by TurboGears</a></li>
+<li><a class="reference internal" href="#linux">Linux</a></li>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Downloading and Installing TurboGears</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Python2.3Support.html"
+                        title="next chapter">Use TurboGears with Python 2.3</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="supported-operating-systems">
+<span id="index-0"></span><h1><a class="toc-backref" href="#id22">Supported Operating Systems</a><a class="headerlink" href="#supported-operating-systems" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#supported-operating-systems" id="id22">Supported Operating Systems</a><ul>
+<li><a class="reference internal" href="#introduction" id="id23">Introduction</a></li>
+<li><a class="reference internal" href="#c-extension-modules-required-by-turbogears" id="id24">C-Extension Modules Required by TurboGears</a></li>
+<li><a class="reference internal" href="#linux" id="id25">Linux</a></li>
+<li><a class="reference internal" href="#mac-os-x" id="id26">Mac OS X</a></li>
+<li><a class="reference internal" href="#windows" id="id27">Windows</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id23">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>TurboGears and CherryPy are pure-Python packages, so in theory they should run on every platform that Python supports. However, TurboGears has a few dependencies on C-extension modules, which must be compilable on the target system to be able to install and run TurboGears.</p>
+<p>This page will list combinations of operating system, architecture, Python and TurboGears versions that are known to work and whether a compiler is necessary to install a certain combination.</p>
+</div>
+<div class="section" id="c-extension-modules-required-by-turbogears">
+<h2><a class="toc-backref" href="#id24">C-Extension Modules Required by TurboGears</a><a class="headerlink" href="#c-extension-modules-required-by-turbogears" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="20%" />
+<col width="13%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Extension</th>
+<th class="head">Python 2.3 / 2.4</th>
+<th class="head">Python 2.5</th>
+<th class="head">Extra library requirements</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cElementTree</td>
+<td>yes</td>
+<td>no <a class="footnote-reference" href="#id5" id="id1">[1]</a></td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>Cheetah</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="row-even"><td>PyProtocols</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>RuleDispatch</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="row-even"><td>simplejson</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>pysqlite2 (optional)</td>
+<td>yes</td>
+<td>no <a class="footnote-reference" href="#id6" id="id2">[2]</a></td>
+<td>libsqlite3</td>
+</tr>
+<tr class="row-even"><td>psycopg2 (optional)</td>
+<td>yes</td>
+<td>yes</td>
+<td>libpq <a class="footnote-reference" href="#id7" id="id3">[3]</a></td>
+</tr>
+<tr class="row-odd"><td>MySQL-python <a class="footnote-reference" href="#id8" id="id4">[4]</a> (optional)</td>
+<td>yes</td>
+<td>yes</td>
+<td>libmysqlclient</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>uses standard library module xml.etree</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>uses standard library module sqlite3</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>might require additional libraries, depending on PostgreSQL client installation, e.g. SSL and Kerberos libraries</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[4]</a></td><td>a.k.a. MySQLdb</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="linux">
+<h2><a class="toc-backref" href="#id25">Linux</a><a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h2>
+<p>Standard TurboGears installation should be supported on all systems with a proper build environment and a Python development package installed. Optional database modules will require the appropriate database client libraries and headers when no binary package is available and the package must be compiled on the target system.</p>
+<p>Tested for TurboGears version: 1.0.4.4</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="18%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Python version</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+</tr>
+<tr class="row-even"><th class="head" colspan="2">Architecture</th>
+<th class="head" colspan="3">i686</th>
+<th class="head" colspan="3">x86_64</th>
+</tr>
+<tr class="row-odd"><th class="head">Extension</th>
+<th class="head">Version</th>
+<th class="head" colspan="6">Binary available? <a class="footnote-reference" href="#id10" id="id9">[5]</a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cElementTree</td>
+<td>1.0.5</td>
+<td>no</td>
+<td>yes</td>
+<td>n/A</td>
+<td>no</td>
+<td>yes</td>
+<td>n/A</td>
+</tr>
+<tr class="row-odd"><td>Cheetah</td>
+<td>2.0.1</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>RuleDispatch</td>
+<td>r2306</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>PyProtocols</td>
+<td>r2302</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>simplejson</td>
+<td>1.8.1</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>pysqlite</td>
+<td>2.4.1</td>
+<td>no</td>
+<td>yes</td>
+<td>n/A</td>
+<td>no</td>
+<td>yes</td>
+<td>n/A</td>
+</tr>
+<tr class="row-even"><td colspan="2">Install w/out compiler?</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[5]</a></td><td>from <a class="reference external" href="http://turbogears.org/download/">http://turbogears.org/download/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="mac-os-x">
+<h2><a class="toc-backref" href="#id26">Mac OS X</a><a class="headerlink" href="#mac-os-x" title="Permalink to this headline">¶</a></h2>
+<p>Standard TurboGears installation should be supported on Mac OS X 10.4 (&#8220;Tiger&#8221;) and 10.5 (&#8220;Leopard&#8221;) with Python &gt;= 2.3 and the Xcode developer tools (includes gcc) installed.</p>
+<p>Optional database modules can be downloaded as binary packages from third-party vendors, see the <a class="reference internal" href="Mac.html"><em>Mac OS X installation page</em></a> for more information.</p>
+<p>Tested for TurboGears version: 1.0.4.4</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="12%" />
+<col width="5%" />
+<col width="5%" />
+<col width="23%" />
+<col width="5%" />
+<col width="5%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Python version</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+</tr>
+<tr class="row-even"><th class="head" colspan="2">OS X version</th>
+<th class="head" colspan="3">10.4 (Tiger, ppc/i386)</th>
+<th class="head" colspan="3">10.5 (Leopard, ix86)</th>
+</tr>
+<tr class="row-odd"><th class="head">Extension</th>
+<th class="head">Version</th>
+<th class="head" colspan="6">Binary available? <a class="footnote-reference" href="#id12" id="id11">[6]</a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cElementTree</td>
+<td>1.0.5</td>
+<td>y/y</td>
+<td>y/y</td>
+<td>n/A</td>
+<td>no</td>
+<td>no</td>
+<td>n/A</td>
+</tr>
+<tr class="row-odd"><td>Cheetah</td>
+<td>2.0.1</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>RuleDispatch</td>
+<td>r2306</td>
+<td>n/y</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr class="row-odd"><td>PyProtocols</td>
+<td>r2302</td>
+<td>n/y</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+<tr class="row-even"><td>simplejson</td>
+<td>1.8.1</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>pysqlite</td>
+<td>2.4.1</td>
+<td>no</td>
+<td>yes</td>
+<td>n/A</td>
+<td>no</td>
+<td>no</td>
+<td>n/A</td>
+</tr>
+<tr class="row-even"><td colspan="2">Install w/out compiler?</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11">[6]</a></td><td>from <a class="reference external" href="http://turbogears.org/download/">http://turbogears.org/download/</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="windows">
+<h2><a class="toc-backref" href="#id27">Windows</a><a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h2>
+<p>Tested for TurboGears version: 1.0.4.4</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="14%" />
+<col width="16%" />
+<col width="16%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Python version</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+<th class="head">2.3</th>
+<th class="head">2.4</th>
+<th class="head">2.5</th>
+</tr>
+<tr class="row-even"><th class="head" colspan="2">Architecture</th>
+<th class="head" colspan="3">win32 (x86)</th>
+<th class="head" colspan="3">x86-64</th>
+</tr>
+<tr class="row-odd"><th class="head">Extension</th>
+<th class="head">Version</th>
+<th class="head" colspan="6">Binary available? <a class="footnote-reference" href="#id18" id="id13">[7]</a></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>cElementTree</td>
+<td>1.0.5</td>
+<td>yes</td>
+<td>yes</td>
+<td>n/A</td>
+<td>no</td>
+<td>no</td>
+<td>n/A</td>
+</tr>
+<tr class="row-odd"><td>Cheetah</td>
+<td>2.0.1</td>
+<td>no <a class="footnote-reference" href="#id19" id="id14">[8]</a></td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="row-even"><td>RuleDispatch</td>
+<td>r2306</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>PyProtocols</td>
+<td>r2302</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="row-even"><td>simplejson</td>
+<td>1.8.1</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+<tr class="row-odd"><td>pysqlite</td>
+<td>2.4.1</td>
+<td>yes <a class="footnote-reference" href="#id20" id="id15">[9]</a></td>
+<td>yes <a class="footnote-reference" href="#id20" id="id16">[9]</a></td>
+<td>n/A</td>
+<td>no</td>
+<td>no</td>
+<td>n/A</td>
+</tr>
+<tr class="row-even"><td colspan="2">Install w/out compiler?</td>
+<td>no <a class="footnote-reference" href="#id21" id="id17">[10]</a></td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id18" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[7]</a></td><td>from <a class="reference external" href="http://turbogears.org/download/">http://turbogears.org/download/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id19" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id14">[8]</a></td><td>Cheetah installs without C compiler but is much slower)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id20" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[9]</td><td><em>(<a class="fn-backref" href="#id15">1</a>, <a class="fn-backref" href="#id16">2</a>)</em> from <a class="reference external" href="http://pypi.python.org/pypi">http://pypi.python.org/pypi</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id21" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id17">[10]</a></td><td>Python 2.3 support broken in TurboGears 1.0.4.4</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

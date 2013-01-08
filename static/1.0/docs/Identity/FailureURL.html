@@ -1,0 +1,199 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Identity Failure URL &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="Identity Recipes" href="Recipes.html" />
+    <link rel="next" title="OpenID Authentication with TurboGears Identity" href="OpenID.html" />
+    <link rel="prev" title="Identity Recipes" href="Recipes.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="OpenID.html" title="OpenID Authentication with TurboGears Identity"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Recipes.html" title="Identity Recipes"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Recipes.html" accesskey="U">Identity Recipes</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Identity Failure URL</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#setting-an-identity-failure-url-callable">Setting an Identity Failure URL Callable</a></li>
+<li><a class="reference internal" href="#manually-redirecting-after-explicit-identity-checks">Manually Redirecting After Explicit Identity Checks</a><ul>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#download-the-example-project">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Recipes.html"
+                        title="previous chapter">Identity Recipes</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="OpenID.html"
+                        title="next chapter">OpenID Authentication with TurboGears Identity</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="index-0">
+<span id="identity-failure-url"></span><h1><a class="toc-backref" href="#id2">Identity Failure URL</a><a class="headerlink" href="#index-0" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#index-0" id="id2">Identity Failure URL</a><ul>
+<li><a class="reference internal" href="#overview" id="id3">Overview</a></li>
+<li><a class="reference internal" href="#setting-an-identity-failure-url-callable" id="id4">Setting an Identity Failure URL Callable</a></li>
+<li><a class="reference internal" href="#manually-redirecting-after-explicit-identity-checks" id="id5">Manually Redirecting After Explicit Identity Checks</a></li>
+<li><a class="reference internal" href="#download-the-example-project" id="id6">Download the Example Project</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id3">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>When you protect a controller method via <a class="reference internal" href="index.html"><em>identity</em></a>, unauthenticated or
+unauthorized users are redirected to the login page. Is it possible to make a
+difference between a user that is not logged in, i.e. unauthenticated
+(redirect to login page) and a logged in user that has not enough credentials,
+i.e. is unauthorized (redirect to a &#8220;access denied&#8221; page)?</p>
+<p>Yes, you can, by setting an identity failure URL callable or by explicitly
+checking permissions and redirecting manually in your controller methods.</p>
+</div>
+<div class="section" id="setting-an-identity-failure-url-callable">
+<h2><a class="toc-backref" href="#id4">Setting an Identity Failure URL Callable</a><a class="headerlink" href="#setting-an-identity-failure-url-callable" title="Permalink to this headline">¶</a></h2>
+<p>You can set the configuration setting <a class="reference external" href="http://docs.turbogears.org/1.0/Configuration#identity">identity.failure_url</a> to a callable,
+which will get evaluated every time an <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt> exception occurs.
+In this function you can then, for example, check</p>
+<ul class="simple">
+<li>whether the current user is anonymous (not logged in)</li>
+<li>or, what the error message(s) of the <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt> exception are</li>
+</ul>
+<p>and return different URLs depending on this information.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">config</span><span class="p">,</span> <span class="n">identity</span><span class="p">,</span> <span class="n">url</span>
+
+<span class="k">def</span> <span class="nf">failure_url</span><span class="p">():</span>
+    <span class="k">if</span> <span class="s">&#39;Maintenance downtime&#39;</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">url</span><span class="p">(</span><span class="s">&#39;/maintenance&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">not_anonymous</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">url</span><span class="p">(</span><span class="s">&#39;/access_denied&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">url</span><span class="p">(</span><span class="s">&#39;/login&#39;</span><span class="p">)</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;identity.failure_url&#39;</span><span class="p">:</span> <span class="n">failure_url</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>See the source code for module <tt class="docutils literal"><span class="pre">turbogears.identity.exceptions</span></tt> (see function
+<tt class="docutils literal"><span class="pre">set_identity_errors</span></tt> and class <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt>) and module
+<tt class="docutils literal"><span class="pre">turbogears.identity.conditions</span></tt> (see class <tt class="docutils literal"><span class="pre">Predicate</span></tt> and function
+<tt class="docutils literal"><span class="pre">require</span></tt>) for particulars.</p>
+</div>
+<div class="section" id="manually-redirecting-after-explicit-identity-checks">
+<h2><a class="toc-backref" href="#id5">Manually Redirecting After Explicit Identity Checks</a><a class="headerlink" href="#manually-redirecting-after-explicit-identity-checks" title="Permalink to this headline">¶</a></h2>
+<p>As a simpler, but less general alternative, you can test for the required
+permissions <em>within</em> your controller method and then just do the redirect
+manually. If you are just redirecting to a &#8220;Access denied&#8221; page, you probably
+don&#8217;t need to care about retaining request parameters across redirects, as
+redirecting via the <tt class="docutils literal"><span class="pre">IdentityFailure</span></tt> exception does.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">turbogears</span> <span class="kn">import</span> <span class="n">controller</span><span class="p">,</span> <span class="n">identity</span><span class="p">,</span> <span class="n">redirect</span>
+
+<span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">controllers</span><span class="o">.</span><span class="n">Controller</span><span class="p">,</span> <span class="n">identity</span><span class="o">.</span><span class="n">SecureResource</span><span class="p">):</span>
+
+     <span class="nd">@expose</span><span class="p">(</span><span class="s">&#39;bla&#39;</span><span class="p">)</span>
+     <span class="k">def</span> <span class="nf">bla</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;foo&#39;</span> <span class="ow">in</span> <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">permissions</span><span class="p">:</span>
+             <span class="k">if</span> <span class="n">identity</span><span class="o">.</span><span class="n">current</span><span class="o">.</span><span class="n">not_anonymous</span><span class="p">:</span>
+                 <span class="n">redirect</span><span class="p">(</span><span class="s">&#39;/access_denied&#39;</span><span class="p">)</span>
+             <span class="k">raise</span> <span class="n">identity</span><span class="o">.</span><span class="n">IdentityFailure</span>
+</pre></div>
+</div>
+<div class="section" id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="Usage.html#explicit-permission-checking"><em>Using Identity: Explicit Permission Checking</em></a></p>
+</div>
+</div>
+<div class="section" id="download-the-example-project">
+<h2><a class="toc-backref" href="#id6">Download the Example Project</a><a class="headerlink" href="#download-the-example-project" title="Permalink to this headline">¶</a></h2>
+<p>We have created a TurboGears example project, which uses a custom
+identity failure URL callable. It is attached to this page and can
+be downloaded here:</p>
+<p><a class="reference download internal" href="../_downloads/IdentityURLTest-1.0.zip"><tt class="xref download docutils literal"><span class="pre">IdentityURLTest-1.0.zip</span></tt></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

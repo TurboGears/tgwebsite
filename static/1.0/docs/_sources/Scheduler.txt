@@ -1,0 +1,250 @@
+.. index:: scheduler
+
+Scheduling Tasks with TurboGears
+================================
+
+.. contents::
+    :depth: 2
+
+
+TurboGears includes a scheduler that is based on Kronos_ by Irmen de Jong. This
+scheduler makes it easy to have one time or recurring tasks run as needed.
+
+You can schedule Python functions to be called at specific intervals or
+days. It uses the standard sched_ module for the actual task scheduling,
+but provides much more:
+
+* Repeated (at intervals, or on specific days).
+* Error handling (exceptions in your tasks don't kill the scheduler).
+* You can run the scheduler in its own thread or a separate process.
+* You can run a task in its own thread or a separate process.
+
+To use the scheduler, set the ``tg.scheduler`` config variable to ``True`` in
+your ``[global]`` configuration. This tells TurboGears to start the scheduler
+when the server starts.
+
+Edit ``<yourproject>/<yourpkg>/config/app.cfg``::
+
+    # Set to True if the scheduler should be started
+    tg.scheduler = True
+
+.. _kronos: http://www.razorvine.net/download/kronos.py
+.. _sched: http://www.python.org/doc/current/lib/module-sched.html
+
+
+Scheduling Jobs
+---------------
+
+There are three functions in the ``turbogears.schedule`` module you can use to
+schedule jobs. They are called ``add_interval_task``, ``add_weekday_task``, and
+``add_monthday_task``.
+
+All three functions return a ``Task`` object. If you hold on to that ``Task``
+object, you can later cancel it by calling ``turbogears.scheduler.cancel()``
+with that ``Task``.
+
+Here is an example that runs the function ``"do_something"`` every ten seconds::
+
+    from turbogears import scheduler
+
+    def do_something():
+        print "Hello world."
+
+    scheduler.add_interval_task(action=do_something, taskname='do_something',
+        initialdelay=0, interval=10)
+
+All three scheduling functions take the following arguments:
+
+``action``
+    The callable that will be called at the time you request
+
+``args``
+    Tuple of positional parameters to pass to the action
+
+``kw``
+    Keyword arguments to pass to the action
+
+``taskname``
+    Tasks can have a name (stored in ``task.name``), which can help if you're
+    trying to keep track of many tasks.
+
+``processmethod``
+    By default, each task will be run in a new thread. You can also pass in
+    ``turbogears.scheduler.method.sequential`` or
+    ``turbogears.scheduler.method.forked``. The default is
+    ``turbogears.scheduler.method.threaded``.
+
+    *Sequential* means that the task will run in the same thread as the
+    scheduler, and task will be execuetd sequentially, one after another. This
+    should only be used for quick tasks.
+
+    *Forked* means to fork a new process to run the job, which is sometimes more
+    effective for intense jobs, particularly on multiprocessor machines (due to
+    Python's architecture).
+
+    .. warning::
+        it is impossible to add new tasks to a ``ForkedScheduler``,
+        after the scheduler has been started!
+
+    Here's an example of how to schedule the same function as above as a task
+    using the sequential method::
+
+        turbogears.scheduler.add_interval_task(
+            processmethod=turbogears.scheduler.method.sequential,
+            action=do_something,
+            taskname='do_something',
+            initialdelay=5,
+            interval=60)
+
+In addition to these common parameters, the three scheduling functions each
+offer additional options to determine when they run. Here are the four
+functions and their parameters for how often to run:
+
+``add_interval_task``
+    Pass in ``initialdelay`` with a number of seconds to wait before running and
+    an ``interval`` with the number of seconds between runs.
+
+    For example, an initialdelay of 600 and interval of 60 would mean "start
+    running after 10 minutes and run every 1 minute after that".
+
+``add_weekday_task``
+    Runs on certain days of the week. Pass in a list or tuple of ``weekdays``
+    from 1-7 (where 1 is Monday). Additionally, you need to pass in
+    ``timeonday`` which is the time of day to run. ``timeonday`` should be a
+    tuple with (hour, minute).
+
+``add_monthday_task``
+    Runs on certain days of the month. Pass in a list or tuple of ``monthdays``
+    from 1-31, and also pass in ``timeonday`` which is an (hour, minute) tuple
+    of the time of day to run the task.
+
+
+Using Task Objects Directly
+---------------------------
+
+For more control you can create one of the following ``Task`` sub-classes:
+
++--------------+----------------------+--------------------+
+| IntervalTask | ThreadedIntervalTask | ForkedIntervalTask |
++--------------+----------------------+--------------------+
+| WeekdayTask  | ThreadedWeekdayTask  | ForkedWeekdayTask  |
++--------------+----------------------+--------------------+
+| MonthdayTask | ThreadedMonthdayTask | ForkedMonthdayTask |
++--------------+----------------------+--------------------+
+
+All ``Task`` sub-classes support the following methods:
+
+``execute(self)``
+    Execute the actual task.
+
+``reschedule(self, scheduler)``
+    ``*IntervalTask``
+        Reschedule this task according to its interval (in seconds).
+    ``*WeekdayTask``
+        Reschedule this for tomorrow, for the given daytime.
+    ``*MonthdayTask``
+        Not applicable (raises a ``NotImplementedError`` exception.).
+
+You can the schedule a task using one of the following methods of a
+``Scheduler`` instance. To get and instance, you can either call
+``turbogears.schedule._get_scheduler()`` or create your own instance of one of
+the following Schedule classes:
+
+* Scheduler
+* ThreadedScheduler
+* ForkedScheduler
+
+``schedule_task(self, task, delay)``
+    Add a new task to the scheduler with the given delay (in seconds).
+
+``schedule_task_abs(self, task, abstime)``
+    Add a new task to the scheduler for the given absolute time value.
+
+
+Usage Example
+-------------
+
+You might want to use the scheduler as a kind of mini-cron to execute tasks at
+regular intervals or to dynamically schedule new tasks during runtime (e.g, a
+RSS reader). Where you place the code for your tasks and scheduling them will
+depend on your application. In any case you will need to run a function to (re)
+schedule your tasks after application startup.
+
+For example, you could use the scheduler to regularly run jobs ranging from
+reporting to updating the database using external data. For this purpose, you
+might create a ``jobs.py`` file in your applications package, containing a
+function per 'job' and ``schedule()`` function to schedule the tasks during
+startup. ``jobs.py`` basically reads as follows::
+
+    # jobs.py
+
+    import datetime
+    from turbogears.scheduler import add_weekday_task, add_interval_task
+
+    def generate_product_ranking():
+        # do something useful here...
+        pass
+
+    def synchronize_stock(from=None):
+        # do something useful here...
+        pass
+
+    def schedule():
+        add_weekday_task(action=generate_product_ranking,
+            weekdays=range(1,8), timeonday=(0))
+
+        add_interval_task(action=synchronize_stock,
+            args=[lambda:datetime.datetime.now() -
+                datetime.timedelta(minutes=2)],
+            interval=120)
+
+Then add two lines to the ``start()`` function in ``commands.py``, just before
+the TurboGears server is started, to run the schedule function at each startup
+(assuming your applications package is called ``yourpkg``)::
+
+    # commands.py
+
+    ...
+
+    def start():
+
+        ...
+
+        # following two lines added
+        from yourpkg import jobs
+        turbogears.startup.call_on_startup.append(jobs.schedule)
+
+        from yourpkg.controllers import Root
+        turbogears.start_server(Root())
+
+As another example, you can use the scheduler to delete expired entries in the identity tables. The following assumes you're using SQLAlchemy and a PostgreSQL database, but you can easily adapt this to your database configuration::
+
+    # jobs.py
+
+    from sqlalchemy import sql
+
+    from turbogears import config
+    from turbogears.scheduler import add_interval_task
+
+    from yourpkg.model import visits_table, visit_identity_table
+
+    import logging
+    log = logging.getLogger("yourpkg.jobs")
+
+    _expired_visits = sql.text("expiry<current_timestamp-'15min'::interval")
+    _orphaned_identities = sql.text("not exists(select * from visit"
+        " where visit_key=visit_identity.visit_key)")
+
+    def delete_expired_visits():
+        """Delete expired visits from database."""
+        log.info("Deleting expired visits from database...")
+        visits_table.delete(_expired_visits).execute()
+        visit_identity_table.delete(_orphaned_identities).execute()
+
+    def schedule():
+        if config.get('tg.scheduler'):
+            log.info("Scheduling background jobs...")
+            add_interval_task(action=delete_expired_visits, interval=30*60)
+        else:
+            log.warning("Scheduler not activated!")
+

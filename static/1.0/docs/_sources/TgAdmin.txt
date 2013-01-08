@@ -1,0 +1,250 @@
+.. index:: tg-admin command
+
+tg-admin command line tool reference
+====================================
+
+.. contents::
+    :depth: 1
+
+
+The ``tg-admin`` command line tool provides commands for working with
+TurboGears projects. You can get a list of the available commands by running::
+
+  tg-admin
+
+The basic syntax is::
+
+  tg-admin <command> [options]
+
+For most commands, if you add the ``-h`` or ``--help`` argument, you'll find a
+reference to the options for that command.
+
+You can also give the ``-h`` or ``--help`` option without any command, which will
+give you this help message for a standard TurboGears installation::
+
+    TurboGears X.Y.Z command line interface
+
+    Usage: /path/to/tg-admin [options] <command>
+
+    Options:
+        -c CONFIG --config=CONFIG    Config file to use
+        -e EGG_SPEC --egg=EGG_SPEC   Run command on given Egg
+
+    Commands:
+          i18n  Manage i18n data
+          info  Show version info
+    quickstart  Create a new TurboGears project
+         shell  Start a Python prompt with your database available
+           sql  Run the database provider manager
+       toolbox  Launch the TurboGears Toolbox
+        update  Update an existing turbogears project
+
+
+.. _tgadmin_info:
+
+``info`` -- list installed packages with version info
+-----------------------------------------------------
+
+The ``tg-admin info`` command will list all packages that are part of TurboGears or
+are required by it, which are currently installed and shows their version numbers.
+Also, all packages that are registered for one of TurboGears' :doc:`entry points <EntryPointList>` are shown.
+
+.. _entry points: EntryPointList
+
+
+.. _tgadmin_quickstart:
+
+``quickstart`` -- create a new project
+--------------------------------------
+
+The ``tg-admin quickstart [options] [NAME]`` command will give you a new project skeleton so
+that you can be up and running without wondering where to put things. The
+quickstart command needs a couple of options and can either get them from the
+command line or prompt you for them.
+
+The options available for quickstart are::
+
+    -s, --sqlalchemy                     use SQLAlchemy rather than SQLObject
+    -e, --elixir                         use SQLAlchemy Elixir instead of SQLObject
+    -o, --sqlobject                      use SQLObject instead of SQLAlchemy
+    -i, --identity                       enable Identity
+    -p PACKAGE, --package=PACKAGE        package name for the code
+    -t TEMPLATES, --templates=TEMPLATES  use non-default template
+    -r REPOS, --svn-repository=REPOS     create project in given SVN repository
+    --dry-run                            dry run (don't actually do anything)
+
+In a standard installation, TurboGears provides two additional templates:
+
+* ``tgbig`` is a project with a more complex directory structure for
+  when you're starting a big project.
+* ``tgwidget`` serves as a base for your own custom widget distribution.
+
+More quickstart templates can be created as TurboGears extensions and may be found
+in the CogBin_.
+
+.. _cogbin: http://turbogears.org/cogbin/
+
+Most people will just let quickstart prompt them for the name and the package.
+
+The name of the project is the friendly name that you want to appear on PyPI
+(if you're releasing it), and it's also the name that will be used for the egg
+(if you package it up that way).
+
+The package name is the filesystem- and Python-friendly version of the
+project's name. Since Python package names are generally lower case, the
+package name should be lowercase as well. If you don't specify a package name
+on the command line, quickstart will guess at a suitable name based on the
+project's name.
+
+If you want to create the new TurboGears project in an SVN repository,
+you can specify its URL with the ``-r`` option, and quickstart will automatically
+create your new TurboGears project there, using the ``svn add`` command. You will
+still have to give a final ``svn commit`` command in order to check the project
+in to your SVN repository.
+
+If you use the ``--dry-run`` option, quickstart will tell you about the files
+and directories it would have created without actually creating them.
+
+
+.. _tgadmin_shell:
+
+``shell`` -- manipulate your database with ease
+-----------------------------------------------
+
+The ``tg-admin shell`` command will give you a Python interactive shell, just
+like when you type ``python`` from the command line. But, unlike a default
+``python`` command, this shell is prepopulated with everything in your
+``model.py`` file and with your database configuration loaded. This makes it
+really easy to interactively manipulate your database.
+
+Let's say you have a class in ``model.py`` called ``Person``. Let's say your
+group is going for the casual amosphere and you've decided that all Fredericks
+will now be called "Fred"::
+
+  freds = Person.select_by(first_name="Frederick")
+  for fred in freds:
+    fred.first_name = "Fred"
+
+SQLObject generally defaults to running in autoCommit mode. This means that the
+p.name update is automatically saved to the database. If you want to do
+multiple updates in a single transaction, you can use the ``hub`` that is defined in the model.py file::
+
+  hub.begin()
+  freds = Person.select_by(first_name="Frederick")
+  for fred in freds:
+      fred.first_name = "Fred"
+  #hub.rollback()  #rollback does work
+  hub.commit()
+  hub.end()
+
+The ``tg-admin shell`` command does not have any command line parameters.
+
+
+.. _tgadmin_sql:
+
+``sql`` -- wrapper for sqlobject-admin
+--------------------------------------
+
+SQLObject includes a utility called sqlobject-admin. sqlobject-admin includes a
+number of handy features, including a command to create a database and another
+for recording a checkpoint to keep track of database changes.
+
+Running ``tg-admin sql`` is equivalent to sqlobject-admin, but the tg-admin sql
+command will pass a command line parameter specifying the database to use (as
+pulled from the configuration file). sqlobject-admin also automatically knows
+where your model objects are stored, because of metadata put into
+``Project.egg-info/sqlobject.txt`` when you run quickstart.
+
+The ``tg-admin sql`` wrapper makes it possible to create your database just by
+running ``tg-admin sql create``.
+
+Beyond these default parameters, tg-admin sql just wraps sqlobject-admin. For
+further information about the commands and options available there, look at the
+`documentation for sqlobject-admin`_ itself.
+
+.. _documentation for sqlobject-admin: http://sqlobject.org/sqlobject-admin.html
+
+If you are using SQLAlchemy instead of SQLObject, the command will provide
+a similar functionality, though less sophisticated. Further information about
+the subcommands available here can be listed with ``tg-admin sql help``.
+
+Note that you can pass the location of the configuration file to tg-admin.
+So in order to create the database specified in your productive configuration,
+you would run ``tg-admin -c prod.cfg sql create``.
+
+
+.. _tgadmin_i18n:
+
+``i18n`` -- I18N administration tool
+------------------------------------
+
+The ``tg-admin i18n`` command helps you to manage your i18n data. It works
+similarly to admi18n command from the :doc:`toolbox <Toolbox>` but operates via command-line.
+
+The following sub-commands available:
+
+- ``add``: Creates a message catalog for specified locale
+- ``collect``: Scan source files to gather translatable strings to a .pot file
+- ``merge``: Sync message catalog in different languages with master .pot file
+- ``compile``: Compile message catalog (.po to .mo)
+- ``clean``: Delete backups and compiled files
+
+
+Collecting strings to translate
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Command ``tg-admin i18n collect`` runs through all of the project's source file
+to find strings marked for translations and write them to a so-called "master
+.pot file", which in most cases is locales/messages.pot.
+
+If file exists its content is updated with new data and backup is made, just in
+case.
+
+
+Adding new locales
+~~~~~~~~~~~~~~~~~~
+
+To add another locale to your project run ``tg-admin i18n add`` command and
+supply appropriate locale code, like ``es`` or ``uk_UA``. This will create locale's
+directory and locale's message catalog file which contains translations.
+
+
+Compiling catalog data
+~~~~~~~~~~~~~~~~~~~~~~
+
+Command ``tg-admin i18n compile`` compile every locale's message catalog file
+into machine efficient .mo file.
+
+
+Keeping translations up to date
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Command ``tg-admin i18n merge`` copies newly-added message strings from master
+.pot file to locales' message catalogs, keeping existing tranlsations intact.
+
+**Note**: you'll need to run ``tg-admin i18n collect`` first to grab new
+strings from the source files. Once you've added new translations run ``tg-admin
+i18n compile`` to actually see the changes.
+
+
+``toolbox`` -- through the web toolkit
+--------------------------------------
+
+This starts up the :doc:`Toolbox <Toolbox>`. The options available are::
+
+    --version                   show program's version number and exit
+    -h, --help                  show this help message and exit
+    -n, --no-open               don't open browser automatically
+    -c HOST, --add-client=HOST  allow the client ip address specified to connect to
+                                the toolbox
+
+.. _Toolbox: Toolbox
+
+By default, the toolbox allows only the localhost to connect but more host ip
+addresses can be added using the ``-c`` option, which accepts hostnames in
+standard CIDR format.
+
+So if your IP address was 192.168.0.1, you could allow all the machines in
+192.168.0.* to connect by passing ``-c 192.168.0.0/24``, 10.0.* would be ``-c
+10.0.0.0/16``, and * would be ``-c 0.0.0.0/0`` (**not** recommended).
+

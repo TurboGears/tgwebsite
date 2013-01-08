@@ -1,0 +1,55 @@
+Setting the selected option of a SELECT element
+===============================================
+
+From the mailing list ...
+
+``On 11/2/05, Jaime Wyant <programmer.py@gmail.com> wrote:`` ::
+
+    <!--
+         I want to `set' the selection based on the character.ascended expression.
+        This just seems clunky.
+    -->
+    <select py:if="$character.ascended" name="ascended">
+        <option  value="True" selected="selected">True</option>
+        <option value="False">False</option>
+    </select>
+
+    <select py:if="not $character.ascended" name="ascended">
+        <option  value="True">True</option>
+        <option value="False" selected="selected">False</option>
+    </select>
+
+``Yes, that would be painful to have to do that everywhere... There was another thread on this recently, which shows that we need to add some documentation about this.``
+
+::
+
+    <select name="ascended">
+       <option value="True" py:attrs="selected=std.selector(character.ascended)">True</option>
+       <option value="False" py:attrs="selected=std.selector(not character.ascended)">False</option>
+    </select>
+
+Dynamic select boxes
+--------------------
+
+This can be easily extended to dynamic select boxes, for example: ::
+
+    from model import YourDataType
+
+    class YourController:
+        @turbogears.expose(html='yourtemplate')
+        def index(self):
+            items = YourDataType.select()
+            # item_id is used to added the "selected" attribute
+            #  to the correct <option>
+            # Below is just for example: in reality, this value would be pulled from
+            #  another SQLObject (or other source)
+            item_id = 3
+            return dict(items = items, item_id = item_id)
+
+Then in the template: ::
+
+    <select name="the_item">
+       <option py:for="i in items" value="${i.id}"
+           py:attrs="selected=std.selector(i.id == item_id)">
+           ${i.name}</option>
+    </select>

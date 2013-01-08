@@ -1,0 +1,128 @@
+Dynamic Validation
+==================
+
+.. contents::
+    :depth: 2
+
+
+Overview
+--------
+
+``TurboGears`` provides the ``@validate`` decorator for form validation. In order to make the validation possible it is required to pass all the necessary information (validation schema) to the decorator. This can be done either via the form or validators parameter. Obviously the validation schema must be available at the moment you decorate your controller method. But sometimes it is required to do the validation dynamically. That is the validation schema depends on the request data.
+
+Fortunately, the decorator's form parameter can be a callable which will be called by ``@validate`` when it decides to do the validation.
+
+
+Example
+-------
+
+Imagine you are developing an LDAP user management application. LDAP directory uses very flexible data model defined by its schema. That means you can't get any record metadata before you retrieve it from the directory and refer to the directory schema.
+
+For instance you need a method for displaying user editing for which accepts uid as a parameter::
+
+
+    class UidSchema(validators.Schema):
+        uid = validators.PlainText(not_empty=True)
+
+    class Root(controllers.RootController):
+        # [...]
+
+        @expose(template=".templates.edit")
+        @validate(validators=UidSchema())
+        @error_handler(error)
+        def edit(self, **kwargs):
+            uid = kwargs.get('uid')
+            user = model.get_user(uid)
+            metadata = model.get_metadata(user)
+            return dict(metadata=metadata, user=user)
+
+
+Nothing special here. The ``UidSchema`` class is used to validate the uid value. The metadata variable is used to provide the template with some additional information from the directory schema about the record fields (e.g. required fields) for proper rendering.
+
+Suppose the form displayed by this method is submitted to the update method. As you use the metadata for dynamic form generation you can't tell for sure which fields come with the request. How to do the validation in this situation? Use a callable form!
+
+::
+
+    class MyForm(object):
+        '''
+        Wrapper for validation schema
+        '''
+        def __init__(self, schema):
+            self.schema = schema
+
+        def validate(self, value, state=None):
+            '''
+            @decorate calls this method to do the validation
+            '''
+            return self.schema.to_python(value, state)
+
+
+    class UpdateSchema(validators.Schema):
+        password = validators.String()
+        passwordRepeat = validators.String()
+        chained_validators = [validators.FieldsMatch('password', 'passwordRepeat')]
+
+
+    class FormGenerator:
+        uid_schema = UidSchema()
+
+        def get_user(self):
+            args = cherrypy.request.params
+            uid = self.uid_schema.to_python(args).get('uid')
+            user = model.get_user(uid)
+            return user
+
+        def get_user_validators(self, user):
+            '''
+            Make sure required attributes are not empty
+            '''
+            schema = dict()
+            metadata = model.get_metadata(user)
+            for attr in metadata.get_attributes(user):
+                if attr in metadata.get_editable_attrs(user):
+                   schema[attr] = validators.String()
+                if attr in metadata.get_required_attrs(user):
+                   schema[attr] = validators.String(not_empty=True)
+            return schema
+
+        def get_update_form(self, form):
+            try:
+                user = self.get_user()
+            except validators.Invalid, error:
+                schema = self.uid_schema
+            else:
+                schema = UpdateSchema(**self.get_user_validators(user))
+            return MyForm(schema)
+
+        # [...]
+
+    class Root(controllers.RootController):
+        # [...]
+
+        get_update_schema = FormGenerator().get_update_form
+
+        # [...]
+
+        @expose(template=".templates.view")
+        @validate(form=get_update_schema)
+        @error_handler(error)
+        def update(self, **kwargs):
+            uid = kwargs.get('uid')
+            user = model.get_user(uid)
+
+        # [...]
+
+        @expose(template=".templates.view")
+        @validate(form=get_create_schema)
+        @error_handler(error)
+        def create(self, **kwargs):
+            # do something...
+
+        # [...]
+
+
+
+The ``FormGenerator`` class is responsible for dynamic validation schema generation. First it reuses the ``UidSchema`` class to check if a valid user id value present in the request. If the value is invalid it simply wraps the ``UidSchema`` instance into a ``MyForm`` instance and returns it back to ``@decorate``. Otherwise ``FormGenerator`` proceeds with schema generation according to the metadata. Moreover, ``FormGenerator`` can be extended to generate schemas for other controller methods similar to update (e.g. create).
+
+The approach described here can also be used with TurboGears widgets. In this case the ``MyForm`` class should generate a complete form rather than just wrapped validation schema.
+

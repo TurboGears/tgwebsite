@@ -1,0 +1,202 @@
+.. index:: HTTPS redirects
+
+Making HTTPS Redirects Work With a Reverse Proxy
+================================================
+
+.. contents::
+    :depth: 2
+
+
+The Problem
+------------
+
+One common setup is to have a reverse proxy (like Pound, Lighttpd, or Apache)
+sit in front of CherryPy and handle requests. If you want to handle both http
+and https protocols, you set up your reverse proxy to deal with the secure
+communications, and then pass types of both types of requests (secure and
+insecure) to CherryPy as a normal http request. CherryPy processes the requests,
+returns them to the proxy, and the proxy passes them on to the client (secure
+or insecure, depending on the original request).
+
+This causes a problem if you do a HTTPRedirect to a URL in your application.
+CherryPy thinks that this is an unencrypted request. So, the redirect URL
+provided by CherryPy will begin with http, regardless of whether or not the
+original URL scheme was http or https.
+
+
+One Solution
+-------------
+
+One way to work around this is to have the proxy give a hint to CherryPy as
+to the original protocol. Most proxies have some way to set a custom header
+to the request before passing it on. So, the general solution is to add a
+special header to https requests, and then have a CherryPy filter look for
+that header and modify the base URL to something more appropriate.
+
+
+Step One: Have the proxy set a custom header
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pound_ is a fairly easy to configure reverse proxy that we can use as an example.
+In the Pound configuration, we add a custom header called 'X-Forwarded-Ssl'.
+The relevant part of the Pound configuration file looks like::
+
+  ListenHTTPS
+    Address 127.0.0.1
+    Port 443
+    Cert "/Users/plewis/Desktop/Pound-2.0.2/mycert.pem"
+    AddHeader "X-Forwarded-Ssl: on"
+    Service
+        BackEnd
+            Address 127.0.0.1
+            Port 8080
+        End
+    End
+  End
+
+.. _Pound: http://www.apsis.ch/pound/
+
+Apache users can use mod_headers_ to add a custom header. For example, in your
+SSL virtualhost section, add the following line::
+
+  RequestHeader add X-Forwarded-Ssl on
+
+.. _mod_headers: http://httpd.apache.org/docs/2.2/mod/mod_headers.html
+
+Lighttpd users can set a custom header via `setenv.add-request-header`_.
+
+.. _setenv.add-request-header: http://trac.lighttpd.net/trac/wiki/Docs%3AModSetEnv
+
+Regardless of the proxy you are using, you don't want to add this header on a
+global basis, but only for https requests.
+
+
+Step Two: Create a new filter
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now, we create a special CherryPy filter to search for the "X-Forwarded-Ssl"
+header. Below is one file that will do the trick:
+
+*httpsfilter.py*
+
+::
+
+    from cherrypy.filters.basefilter import BaseFilter
+    import cherrypy
+    from turbogears import config
+
+    class HTTPSFilter(BaseFilter):
+
+        def before_request_body(self):
+            # if the filter isn't turned on, exit immediately
+            if not config.get('https_filter.on', False):
+                return
+
+            request = cherrypy.request
+
+            # Check for a special header 'X-Forwarded-Ssl'.
+            # If we have it, then we substitute the secure base URL.
+            headers = request.headers
+            forwarded_ssl = headers.get('X-Forwarded-Ssl', 'off')
+            if forwarded_ssl == 'on':
+                base = config.get('https_filter.secure_base_url')
+                if base is None:
+                    if config.get('base_url_filter.use_x_forwarded_host', False):
+                        base = headers.get('X-Forwarded-Host', 'localhost')
+                    else:
+                        base = 'localhost'
+                request.base = 'https://' + base
+
+When the filter finds the 'X-Forwarded-Ssl' header, it sets the base URL
+of the request with the secure URL.
+
+
+Step Three: Set configuration file settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In your configuration file (e.g. prod.cfg),
+set the following configuration variables::
+
+ [/]
+ https_filter.on = True
+ # You can ommit the following setting if you set
+ # base_url_filter.use_x_forwarded_host to True. In this case, the HTTPSFilter
+ # will just use the X-Forwarded-Host header value so there is no need to hard
+ # code your URL. If you do specify a value for https_filter.secure_base_url it
+ # will take preference over the X-Forwarded-Host header.
+ # https_filter.secure_base_url = "https://secure.site.example"
+
+
+Step Four: Use the filter
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assuming you want to use this filter throughout your application,
+add the following to your root controller::
+
+    from httpsfilter import HTTPSFilter
+
+    class Root(turbogears.controllers.RootController):
+
+        _cp_filters = [HTTPSFilter()]
+        # Rest of controller code ...
+
+This is the super-secret semi-undocumented way to add a custom filter
+to your controller.
+
+Step Five: Test things out
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You should be able to add a method to your controller like::
+
+    @turbogears.expose()
+    def test_redirect(self):
+        turbogears.redirect('/') # uses cherrypy.HTTPRedirect
+
+Calling this URL should work over both http and https, and will properly
+redirect to the base of your application.
+
+
+Solving the problem with Apache
+-------------------------------
+
+The above solution will work for any protocol/URL combination.
+For example, if you have a controller 'do_stuff' that redirects to 'done',
+the following will work:
+
+    * \http://example.com/do_stuff -> redirects to -> \http://example.com/done
+    * \https://example.com/do_stuff -> redirects to -> \https://example.com/done
+
+However, you may not need to do this in all cases. If part of your site is only
+going to be accessed via https (e.g. \https://example.com/secure), you may be
+able to have configure Apache to fix the redirected URLs to this area.
+
+Using Apache you configure it normally to listen on whatever port you'd like
+to have it. And code your TurboGears code normally, as if it was all local.
+Using any of cherrypy.HTTPRedirect or turbogears.redirect work the same way.
+
+To achieve that you just need to put in your server (if you're only serving one
+website in one port) or virtual host (if you're serving more websites, mixing
+technologies such as TurboGears and Zope, using both HTTP and HTTPS, etc.)
+the following lines::
+
+ ProxyPass /root_of_site http://localhost:8080/
+ ProxyPassReverse /root_of_site http://localhost:8080/
+
+If your newly developed TurboGears site is the root of your HTTPS website,
+then those lines would become::
+
+ <VirtualHost hostname:443>
+   # Several common Apache configurations for servername, certificate, etc.
+
+   # Let the magic begin!
+   ProxyPass / http://localhost:8080/
+   ProxyPassReverse / http://localhost:8080/
+ </VirtualHost>
+
+ProxyPass takes care of passing the request on the SSL-encrypted port to the
+local 8080 port where CherryPy is listening. Then, ProxyPassReverse takes care
+that everything coming back from CherryPy references the public website.
+
+I've been using these without any new filter or change to headers and with a
+lot of turbogears.redirects inside the code. I've also found that using Apache
+makes the site more responsive than using Pound, I believe it is due cache.

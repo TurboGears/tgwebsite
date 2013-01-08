@@ -1,0 +1,51 @@
+.. index:: extension, setuptools
+
+Making Extensible Applications
+==============================
+
+Due to its use of ``setuptools``, it is much easier to make your TurboGears application extensible than in other frameworks. Extensibility concepts like themes and plugins usually require you to direct users to install, replace, or modify specific files in your project. This can become very involved, and is traditionally a cause of problems for many users. By using ``setuptools`` entry points you can avoid much of this hassle, and pass on that ease-of-use to your users. You will probably want to be at least generally familiar with the ``setuptools.pkg_resources`` library before reading this. You can find a basic introduction to the concept of entry points at :doc:`UsingEntryPoints`, and should be able to find links to more involved discussion of these concepts on that page.
+
+The code in this sample will assume that we are working on a hypothetical blog software platform and would like to allow developers to provide functionality that occurs after a comment has been made directly before it is saved to the database. Here is the comment saving function.::
+
+    @expose()
+    def postComment(self, **kw):
+        try:
+        comm = model.BlogComment(kw)
+    except:
+        raise turbogears.redirect('/error')
+
+Obviously this is not an acceptable implementation of this behavior for a lot of reasons, but the most important one to us is that there is nowhere to take actions before the post is made. Let's add an entry point to help solve this.::
+
+    @expose()
+    def postComment(self, **kw):
+        import pkg_resources
+        for entrypoint in pkg_resources.iter_entry_points("blog.comment.prepost"):
+        entry = entrypoint.load()
+        kw = entry.process(kw)
+        try:
+        comm = model.BlogComment(kw)
+    except:
+        raise turbogears.redirect('/error')
+
+That is pretty much all it takes. Now anyone who wants to add functionality to this part of your blog can do so by creating a ``process()`` function and defining an entry point on ``blog.comment.prepost`` which points to the module it is in.
+
+Providing an entry point
+------------------------
+
+.. toctree::
+   :hidden:
+
+   UsingEntryPoints
+
+It is pretty much equally easy to provide code that is used in an entry point. In addition to the entry point system, ``setuptools`` provides (among other things) egg distribution and easy_install. Declaring an entry point into your application is as easy as writing the code that will be used, adding a ``entry_points`` parameter to your setup.py file, and making ``setuptools`` aware of your project.
+
+Here is a sample setup.py that would provide the entry point used above::
+
+    setup(
+        name="sample",
+    entry_points = """
+        [blog.comment.prepost]
+        spamfilter = myproject.components:spamfilter
+        """)
+
+When you are developing your extension you can use this by issuing the command ``python setup.py develop``. This will instruct setuptools to look directly at the files for your package as though they were an installed egg. After you have finished the extension you can distribute it as an egg and everything else will be taken care of for you.

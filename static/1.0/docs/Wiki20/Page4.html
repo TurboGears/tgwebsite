@@ -1,0 +1,244 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>20 Minute Wiki Page 4 &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="up" title="The 20 Minutes Wiki" href="Page1.html" />
+    <link rel="next" title="20 Minute Wiki Page 5" href="Page5.html" />
+    <link rel="prev" title="page.kid" href="templates/page.kid.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="Page5.html" title="20 Minute Wiki Page 5"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="templates/page.kid.html" title="page.kid"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+          <li><a href="Page1.html" accesskey="U">The 20 Minutes Wiki</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">20 Minute Wiki Page 4</a><ul>
+<li><a class="reference internal" href="#friendlier-urls">Friendlier URLs</a></li>
+<li><a class="reference internal" href="#what-about-wikiwords">What about WikiWords?</a></li>
+<li><a class="reference internal" href="#hey-where-s-the-page">Hey, where&#8217;s the page?</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="templates/page.kid.html"
+                        title="previous chapter">page.kid</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="Page5.html"
+                        title="next chapter">20 Minute Wiki Page 5</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="minute-wiki-page-4">
+<h1>20 Minute Wiki Page 4<a class="headerlink" href="#minute-wiki-page-4" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="friendlier-urls">
+<h2>Friendlier URLs<a class="headerlink" href="#friendlier-urls" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have page display and editing working, lets put a bit of polish on
+this wiki and add page linking and creation. Before we do that, though, we&#8217;ll
+address the ugly query cruft on our URLS. We&#8217;d much rather see <tt class="docutils literal"><span class="pre">/Foo</span></tt> instead
+of <tt class="docutils literal"><span class="pre">/?pagename=Foo</span></tt>.</p>
+<p>Luckily, this is really easy to do. We just add a <tt class="docutils literal"><span class="pre">default</span></tt> method to our
+<tt class="docutils literal"><span class="pre">Root</span></tt> controller. The <tt class="docutils literal"><span class="pre">default</span></tt> method is called when no other URLs match
+and provides one way to implement our clean URL scheme:</p>
+<pre class="literal-block">
+# ...
+
+&#64;expose()
+def save(self, pagename, data, submit):
+    page = Page.byPagename(pagename)
+    page.data = data
+    turbogears.flash(&quot;Changes saved!&quot;)
+    raise turbogears.redirect(<strong>&quot;/%s&quot; % pagename</strong>)
+
+<strong>&#64;expose()</strong>
+<strong>def default(self, pagename):</strong>
+    <strong>return self.index(pagename)</strong>
+</pre>
+<p>We&#8217;ve also changed our redirect in the <tt class="docutils literal"><span class="pre">save</span></tt> method to match our new URL
+scheme. But this raises the question, what sort of wiki doesn&#8217;t have a way to
+link pages?</p>
+</div>
+<div class="section" id="what-about-wikiwords">
+<h2>What about WikiWords?<a class="headerlink" href="#what-about-wikiwords" title="Permalink to this headline">¶</a></h2>
+<p>WikiWords have also been described as WordsSmashedTogether. A typical wiki
+will automatically create links for these words when it finds them. Sounds
+like a good idea, and this sounds like a job for a regular expression (and
+we&#8217;ll ignore the <a class="reference external" href="http://regex.info/blog/2006-09-15/247">having two problems</a> comments).</p>
+<p>We&#8217;ll start by pulling in Python&#8217;s regular expression engine into our
+controller:</p>
+<pre class="literal-block">
+#...
+
+from wiki20.model import Page
+from docutils.core import publish_parts
+<strong>import re</strong>
+
+class Root(controllers.RootController):
+#...
+</pre>
+<p>A WikiWord is a word that starts with an uppercase letter, has a collection
+of lowercase letters and numbers followed by another uppercase letter and
+more letters and numbers. Here&#8217;s a regular expression that meets that
+requirement:</p>
+<pre class="literal-block">
+#...
+
+from wiki20.model import Page
+from docutils.core import publish_parts
+import re
+
+<strong>wikiwords = re.compile(r&quot;\b([A-Z]\w+[A-Z]+\w+)&quot;)</strong>
+
+class Root(controllers.RootController):
+#...
+</pre>
+<p>Then, we need to apply it to our formatted text and convert the matches to
+links.:</p>
+<pre class="literal-block">
+def index(self, pagename=&quot;FrontPage&quot;):
+    page = Page.byPagename(pagename)
+    content = publish_parts(page.data,
+                            writer_name=&quot;html&quot;)['html_body']
+    <strong>root = str(turbogears.url('/'))</strong>
+    <strong>content = wikiwords.sub(r'&lt;a href=&quot;%s\1&quot;&gt;\1&lt;/a&gt;' % root, content)</strong>
+    return dict(data=content, page=page)
+</pre>
+<p>Now if you&#8217;ve been wondering about the <tt class="docutils literal"><span class="pre">tg.url()</span></tt>, you can configure TurboGears so that it doesn&#8217;t live at the root of a site. This allows you to combine multiple TurboGears apps on a single server. Using <tt class="docutils literal"><span class="pre">tg.url()</span></tt> means that your links will continue to work when this happens.</p>
+<p>For those of you new to Python, the <tt class="docutils literal"><span class="pre">r'string'</span></tt> means &#8216;raw string&#8217;, one that
+turns off escaping, which is mostly used in regex strings to prevent you from
+having to double escape slashes. The substitution will also look a bit weird,
+but is more understandable if you recognize that the <tt class="docutils literal"><span class="pre">%s</span></tt> gets substituted
+with <tt class="docutils literal"><span class="pre">root</span></tt>, then the substitution is done which replaces the <tt class="docutils literal"><span class="pre">\1</span></tt> with the
+string matching the regex.</p>
+<p>Go ahead and edit your front page to include a WikiWord. When the page is
+displayed, you&#8217;ll see that it&#8217;s now a link. You probably won&#8217;t be surprised
+to find that clicking that link produces an error.</p>
+</div>
+<div class="section" id="hey-where-s-the-page">
+<h2>Hey, where&#8217;s the page?<a class="headerlink" href="#hey-where-s-the-page" title="Permalink to this headline">¶</a></h2>
+<p>It&#8217;s time to add a check for pages that don&#8217;t exist. Our approach will be
+simple: if the page doesn&#8217;t exist, you get an edit page to use to create it.</p>
+<p>In the <tt class="docutils literal"><span class="pre">index</span></tt> method, we&#8217;ll check to see if the page exists. If it doesn&#8217;t,
+we&#8217;ll redirect to a new <tt class="docutils literal"><span class="pre">notfound</span></tt> method. We&#8217;ll add this method after the
+<tt class="docutils literal"><span class="pre">index</span></tt> method and before the <tt class="docutils literal"><span class="pre">edit</span></tt> method. Here are the changes we make to
+the controller:</p>
+<pre class="literal-block">
+from wiki20.model import Page
+from docutils.core import publish_parts
+import re
+<strong>from sqlobject import SQLObjectNotFound</strong>
+
+wikiwords = re.compile(r&quot;\b([A-Z]w+[A-Z]+\w+)&quot;)
+
+class Root(controllers.RootController):
+    &#64;expose(template=&quot;wiki20.templates.page&quot;)
+    def index(self, pagename=&quot;FrontPage&quot;):
+        <strong>try:</strong>
+            <strong>page = Page.byPagename(pagename)</strong>
+        <strong>except SQLObjectNotFound:</strong>
+            <strong>raise turbogears.redirect(&quot;notfound&quot;, pagename = pagename)</strong>
+        content = publish_parts(page.data,
+                                writer_name=&quot;html&quot;)['html_body']
+        root = str(turbogears.url('/'))
+        content = wikiwords.sub(r'&lt;a href=&quot;%s\1&quot;&gt;\1&lt;/a&gt;' % root, content)
+        return dict(data=content, page=page)
+
+    <strong>&#64;expose(&quot;wiki20.templates.edit&quot;)</strong>
+    <strong>def notfound(self, pagename):</strong>
+        <strong>page = Page(pagename=pagename, data=&quot;&quot;)</strong>
+        <strong>return dict(page=page)</strong>
+</pre>
+<p>The <tt class="docutils literal"><span class="pre">index</span></tt> code changes illustrate the &#8220;better to beg forgiveness than ask
+permission&#8221; pattern which is favored by most Pythonistas. We&#8217;re also leaking a
+bit of our model into our controller. For a larger project, we can create a
+facade in our model, but for a 20 minute hack, that&#8217;s more trouble than it&#8217;s
+worth. Notice that we can use the <tt class="docutils literal"><span class="pre">redirect()</span></tt> to pass parameters into the
+destination method.</p>
+<p>As for the <tt class="docutils literal"><span class="pre">notfound</span></tt> method, the first line of the method adds a row to the
+page table.  With SQLObject, just instantiating an object is enough to insert
+it in the database. From there, the path is exactly the same it would be for
+our <tt class="docutils literal"><span class="pre">edit</span></tt> method.</p>
+<p>With these changes in place, we have a fully functional wiki. Give it a try!
+You should be able to create new pages now.</p>
+<p><a class="reference internal" href="Page3.html"><em>Go back to page 3</em></a> | <a class="reference internal" href="Page5.html"><em>Continue on to page 5</em></a></p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

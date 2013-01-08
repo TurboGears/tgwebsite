@@ -1,0 +1,255 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Dive Into Widgets &mdash; TurboGears 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sidebar.js"></script>
+    <script type="text/javascript" src="../_static/header.js"></script>
+    <link rel="top" title="TurboGears 1.0 documentation" href="../index.html" />
+    <link rel="next" title="Simple Widget Form Tutorial" href="SimpleForm.html" />
+    <link rel="prev" title="WidgetBrowser" href="Browser.html" />
+
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="SimpleForm.html" title="Simple Widget Form Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Browser.html" title="WidgetBrowser"
+             accesskey="P">previous</a> |</li>
+<li><a href="../index.html">TurboGears 1.0 documentation</a> &raquo;</li>
+<li id="searchbox" style="display: none; margin: 0 20px;" class="right">
+  <form class="search" action="../search.html" method="get">
+    <span>Search:</span>
+    <input type="text" name="q" size="18" />
+    <input type="submit" value="Go" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</li>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Dive Into Widgets</a><ul>
+<li><a class="reference internal" href="#diving-in">Diving in</a></li>
+<li><a class="reference internal" href="#dive-into-toscawidgets">Dive into ToscaWidgets</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Browser.html"
+                        title="previous chapter">WidgetBrowser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="SimpleForm.html"
+                        title="next chapter">Simple Widget Form Tutorial</a></p>
+        </div>
+      </div>
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="dive-into-widgets">
+<h1>Dive Into Widgets<a class="headerlink" href="#dive-into-widgets" title="Permalink to this headline">¶</a></h1>
+<p>This document shows how you can explore the features of the widgets framework
+from an interactive Python interpreter session. For a structured overview about
+widgets, reference documentation and more tutorials, please read the <a class="reference internal" href="Overview.html"><em>Widgets
+Overview</em></a>.</p>
+<p>The examples below demonstrate some important widgets properties, like
+<tt class="docutils literal"><span class="pre">template</span></tt>, <tt class="docutils literal"><span class="pre">name</span></tt>, <tt class="docutils literal"><span class="pre">value</span></tt>, <tt class="docutils literal"><span class="pre">params</span></tt> and subclassing. It is suggested
+that you fire up an interactive session yourself and try to reproduce the
+examples exactly as given. When you have succeeded with that, try supplying
+different arguments and values to the widgets constructor or the <tt class="docutils literal"><span class="pre">render</span></tt>
+method or change the widget template and see how that changes the output of
+<tt class="docutils literal"><span class="pre">widget.render()</span></tt>. You can use the built-in <tt class="docutils literal"><span class="pre">help</span></tt> function of the
+interpreter to find out the signature of the different methods.</p>
+<p>Next, define your own <tt class="docutils literal"><span class="pre">turbogears.widgets.Widget</span></tt> subclass and add some custom
+parameters to be passed to the widget template by setting class attributes and
+adding them to the <tt class="docutils literal"><span class="pre">params</span></tt> class attribute. Again, try what happens if you
+give different values for those parameters or if you leave them out.
+<strong>Have fun!</strong></p>
+<div class="section" id="diving-in">
+<h2>Diving in<a class="headerlink" href="#diving-in" title="Permalink to this headline">¶</a></h2>
+<p>Now, let&#8217;s dive in:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">turbogears.widgets</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">HelloWorldWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">    &lt;div&gt;Hello World!&lt;/div&gt;</span>
+<span class="gp">... </span><span class="s">    &quot;&quot;&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span> <span class="o">=</span> <span class="n">HelloWorldWidget</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hello</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;DIV&gt;Hello World!&lt;/DIV&gt;&#39;</span>
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">render()</span></tt> will fail if no templating engine has been loaded yet. To load the
+default templating engine, excute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">turbogears.view</span> <span class="kn">import</span> <span class="n">load_engines</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">load_engines</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Back to the widget classes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">FooBarWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">    &lt;ul&gt;</span>
+<span class="gp">... </span><span class="s">            &lt;li&gt;my name is ${name}&lt;/li&gt;</span>
+<span class="gp">... </span><span class="s">            &lt;li&gt;my value is ${value}&lt;/li&gt;</span>
+<span class="gp">... </span><span class="s">    &lt;/ul&gt;</span>
+<span class="gp">... </span><span class="s">    &quot;&quot;&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foobar</span> <span class="o">=</span> <span class="n">FooBarWidget</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;foobar&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">foobar</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;UL&gt;</span>
+<span class="go">                &lt;LI&gt;my name is foobar&lt;/LI&gt;</span>
+<span class="go">                &lt;LI&gt;my value is &lt;/LI&gt;</span>
+<span class="go">        &lt;/UL&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">foobar</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">&#39;&lt;UL&gt;</span>
+<span class="go">                &lt;LI&gt;my name is foobar&lt;/LI&gt;</span>
+<span class="go">                &lt;LI&gt;my value is 5&lt;/LI&gt;</span>
+<span class="go">        &lt;/UL&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">foobar</span> <span class="o">=</span> <span class="n">FooBarWidget</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;foobar&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">foobar</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;UL&gt;</span>
+<span class="go">                &lt;LI&gt;my name is foobar&lt;/LI&gt;</span>
+<span class="go">                &lt;LI&gt;my value is 10&lt;/LI&gt;</span>
+<span class="go">        &lt;/UL&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">foobar</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+<span class="go">&#39;&lt;UL&gt;</span>
+<span class="go">                &lt;LI&gt;my name is foobar&lt;/LI&gt;</span>
+<span class="go">                &lt;LI&gt;my value is 60&lt;/LI&gt;</span>
+<span class="go">        &lt;/UL&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">foobar</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;wrong&quot;</span><span class="p">)</span>
+<span class="go">&#39;&lt;UL&gt;</span>
+<span class="go">                &lt;LI&gt;my name is foobar&lt;/LI&gt;</span>
+<span class="go">                &lt;LI&gt;my value is 60&lt;/LI&gt;</span>
+<span class="go">        &lt;/UL&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">ParamsWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">    &lt;div&gt;my attitude is ${attitude}&lt;/div&gt;</span>
+<span class="gp">... </span><span class="s">    &quot;&quot;&quot;</span>
+<span class="gp">... </span>    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;attitude&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">attitude</span> <span class="o">=</span> <span class="s">&quot;high&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span> <span class="o">=</span> <span class="n">ParamsWidget</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is high&lt;/DIV&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span> <span class="o">=</span> <span class="n">ParamsWidget</span><span class="p">(</span><span class="n">attitude</span><span class="o">=</span><span class="s">&quot;medium&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is medium&lt;/DIV&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">attitude</span><span class="o">=</span><span class="s">&quot;low&quot;</span><span class="p">)</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is low&lt;/DIV&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span><span class="o">.</span><span class="n">params</span>
+<span class="go">[&#39;attitude&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">param</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;medium&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ParamsWidget</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;high&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">AnotherParamsWidget</span><span class="p">(</span><span class="n">ParamsWidget</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="gp">... </span><span class="s">    &lt;div&gt;my attitude is ${attitude} and my favourite language is ${language}&lt;/div&gt;</span>
+<span class="gp">... </span><span class="s">    &quot;&quot;&quot;</span>
+<span class="gp">... </span>    <span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;language&quot;</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="n">language</span> <span class="o">=</span> <span class="s">&quot;python&quot;</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span> <span class="o">=</span> <span class="n">AnotherParamsWidget</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is high and my favourite language is python&lt;/DIV&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnotherParamsWidget</span><span class="o">.</span><span class="n">params</span>
+<span class="go">[&#39;attitude&#39;, &#39;language&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">params</span>
+<span class="go">[&#39;attitude&#39;, &#39;language&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnotherParamsWidget</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;high&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;high&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnotherParamsWidget</span><span class="o">.</span><span class="n">language</span>
+<span class="go">&#39;python&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">language</span>
+<span class="go">&#39;python&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span> <span class="o">=</span> <span class="n">AnotherParamsWidget</span><span class="p">(</span><span class="n">attitude</span><span class="o">=</span><span class="s">&quot;nice&quot;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s">&quot;java&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnotherParamsWidget</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;high&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">attitude</span>
+<span class="go">&#39;nice&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AnotherParamsWidget</span><span class="o">.</span><span class="n">language</span>
+<span class="go">&#39;python&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">language</span>
+<span class="go">&#39;java&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is nice and my favourite language is java&lt;/DIV&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">another</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">attitude</span><span class="o">=</span><span class="s">&quot;very low&quot;</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s">&quot;ruby&quot;</span><span class="p">)</span>
+<span class="go">&#39;&lt;DIV&gt;my attitude is very low and my favourite language is ruby&lt;/DIV&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dive-into-toscawidgets">
+<h2>Dive into ToscaWidgets<a class="headerlink" href="#dive-into-toscawidgets" title="Permalink to this headline">¶</a></h2>
+<p>All the examples should work with the <a class="reference external" href="http://www.toscawidgets.org/">ToscaWidgets</a> package as well.
+After you have installed ToscWidgets with</p>
+<div class="highlight-python"><pre>$ easy_install ToscaWidgets</pre>
+</div>
+<p>just replace the initial import with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">tw.api</span> <span class="kn">import</span> <span class="n">Widget</span>
+</pre></div>
+</div>
+<p>You don&#8217;t need to import <tt class="docutils literal"><span class="pre">turbogears</span></tt> or load a template engine when using
+ToscaWidgets.</p>
+</div>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears</a> Doc Team.
+    Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+.. index:: alternative components
+
+Alternative Components
+======================
+
+.. contents::
+    :depth: 2
+
+
+One inherent advantage TurboGears has over monolithic frameworks is in its
+ability to exploit the best in already existing and supported component projects
+rather than having to duplicate their efforts. A consequence of this ability
+is the ease with which components can be swapped for alternative choices when
+preferred by the developer.
+
+Installing one or more of these options into your library is very simple. It is possible
+to call upon an alternate component on an as needed basis, for example for just a single
+template reference. Or, Quickstart Templates can allow for rapid configuration of a new
+project which has an alternate component as its new default.
+
+
+You can find most of TurboGears alternative components at http://www.turbogears.org/cogbin/
+
+
+Alternative Database Access Modules
+-----------------------------------
+
+* :doc:`Using Alternative DataBase Access Modules <Database/index>`
+
+  - `SQLite <http://cheeseshop.python.org/pypi/pysqlite>`_
+
+  - `MySQL <http://cheeseshop.python.org/pypi/MySQL-python>`_
+
+  - `PostgreSQL <http://cheeseshop.python.org/pypi/pyPgSQL>`_
+
+  - `Other Python Database Modules <http://www.python.org/topics/database/modules.html>`_
+
+
+Alternative Model Providers
+---------------------------
+
+.. toctree::
+   :hidden:
+
+   BackEndOverview
+   SQLObject/VsSQLAlchemy
+   SQLAlchemy/index
+   GettingStarted/DefineDatabase
+
+- :doc:`Database Backends Available in TurboGears <BackEndOverview>`
+
+- :doc:`SQLObject vs SQLAlchemy <SQLObject/VsSQLAlchemy>`
+
+- :doc:`SQLAlchemy <SQLAlchemy/index>` (Default in TG 1.1)
+
+- :doc:`SQLObject <GettingStarted/DefineDatabase>` (Default in TG 1.0)
+
+
+Alternative Templating Engines
+-------------------------------
+
+.. toctree::
+   :hidden:
+
+   AlternativeTemplating
+   CheetahTemplating
+   DjangoTemplating
+   GenshiTemplating
+   GettingStarted/Kid
+
+* :doc:`Using Alternative Templating Engines <AlternativeTemplating>`
+
+  - :doc:`Cheetah <CheetahTemplating>`
+
+  - `Clearsilver <http://cheeseshop.python.org/pypi/TurboClearsilver/>`_
+
+  - :doc:`Django Templates <DjangoTemplating>`
+
+  - :doc:`Genshi <GenshiTemplating>`
+
+  - `HtmlPy <http://cheeseshop.python.org/pypi/TurboHtmlPy/>`_
+
+  - :doc:`Jinja <DjangoTemplating>`
+
+  - :doc:`Kid <GettingStarted/Kid>` (Default)
+
+  - `Myghty <http://cheeseshop.python.org/pypi/BuffetMyghty/>`_
+
+  - `Stan <http://www.develix.com/software/>`_
+
+  - `XSLT <http://cheeseshop.python.org/pypi/BuffetXSLT/>`_
+
+  - `ZPT <http://ido.nl.eu.org/turbozpt/>`_
+
+
+Alternate Widgets
+-----------------
+
+.. toctree::
+   :hidden:
+
+   ToscaWidgets
+
+* :doc:`Using ToscaWidgets in TG 1.0 <ToscaWidgets>`
+
+
+Alternative AJAX/JavaScript Libraries
+-------------------------------------
+
+.. toctree::
+   :hidden:
+
+   AlternativeAJAXLibraries
+
+* :doc:`Using Alternative AJAX Libraries <AlternativeAJAXLibraries>`
+
+  - `Dojo <http://dojotoolkit.org>`_
+
+  - `JQuery <http://jquery.com>`_
+
+  - :doc:`Mochikit <GettingStarted/MochiKit>` (Default)
+
+  - `Moo.fx <http://www.python.org/pypi/moofx>`_
+
+  - `Prototype <http://www.python.org/pypi/Scriptaculous>`_
+
+  - `Rico <http://openrico.org/>`_
+
+  - `Scriptaculous <http://www.python.org/pypi/Scriptaculous>`_
+
+  - `/Yahoo!UI <http://developer.yahoo.com/yui/>`_
+
+
+Alternative Test Utilities
+--------------------------
+
+* Using Alternative Test Utilities
+
+  - `nose <http://docs.turbogears.org/1.0/Testing>`_ (Default)
+
+  - `mechanize <http://wwwsearch.sourceforge.net/mechanize/>`_
+
+  - `twill <http://twill.idyll.org/>`_
+
+  - `selenium <http://www.openqa.org/selenium/>`_
+
+
+And More...
+-----------
+
+Free your productivity by taking advantage of 5000+ Python modules at the Cheeseshop_
+(aka the Python Package Index, PyPI).
+
+.. _cheeseshop: http://www.python.org/about/apps/

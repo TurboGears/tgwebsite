@@ -1,0 +1,68 @@
+SQLAlchemy Configuration
+========================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+When forming your dburi for your dev.cfg file, use the same argument that would be
+used by the `create_engine method`_ of SQLAlchemy.
+
+.. _SQLAlchemy documentation:
+.. _create_engine method: http://www.sqlalchemy.org/docs/04/dbengine.html#dbengine_establishing
+
+``sqlalchemy.dburi=`` *argument*
+
+Scheme Choices
+--------------
+
+Examples are reproduced here for convenience, but see `SQLAlchemy documentation`_ for authoritative syntax.
+
+SQLite
+~~~~~~
+
+Absolute Path
+ Note the four slashes for an absolute path::
+
+  sqlalchemy.dburi="sqlite:////absolute/path/to/database.txt"
+
+A relative database path
+ ::
+
+  sqlalchemy.dburi="sqlite:///relative/path/to/database.txt"``
+
+An in-memory database
+ ::
+
+  sqlalchemy.dburi="sqlite://"
+
+Also an in-memory database. Same as above
+ ::
+
+  sqlalchemy.dburi="sqlite://:memory:"
+
+Postgres
+~~~~~~~~
+
+::
+
+ sqlalchemy.dburi='postgres://scott:tiger@localhost:5432/mydatabase'
+
+MySQL
+~~~~~
+
+::
+
+ sqlalchemy.dburi='mysql://localhost/foo'
+
+Oracle
+~~~~~~
+
+Via TNS name
+ ::
+
+  sqlalchemy.dburi='oracle://scott:tiger@dsn'
+
+Oracle will feed host/port/SID into cx_oracle.makedsn
+ ::
+
+  sqlalchemy.dburi='oracle://scott:tiger@127.0.0.1:1521/sidname'

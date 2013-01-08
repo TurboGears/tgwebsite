@@ -1,0 +1,97 @@
+TurboGears Books
+================
+
+.. contents:: Books
+   :depth: 2
+
+
+English Books
+-------------
+
+
+Rapid Web Applications with TurboGears
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Using Python to Create Ajax-Powered Sites**
+
+
+By `Mark Ramm <http://compoundthinking.blogspot.com>`_, `Kevin Dangoor <http://BlueSkyOnMars.com>`_, Gigi Sayfan
+
+.. image:: images/tgbooks_rwawt_cover.jpg
+
+**From the Back Cover:**
+
+TurboGears gives Python a powerful development framework: one that dramatically increases
+developer productivity, and makes it far easier to create dynamic, user-friendly,
+Ajax-enabled Web applications. Now, for the first time, there’s a definitive guide to
+TurboGears–coauthored by its creator, Kevin Dangoor.
+
+This book will help experienced Web developers get productive with TurboGears fast. You’ll
+quickly build your first TurboGears Web application–then extend it one step at a time,
+mastering the multiple TurboGears frameworks that make these enhancements possible. Next,
+the authors demonstrate TurboGears at work in one of today's most advanced open source,
+real-world TurboGears programs: the Fast Track project status tracker. Finally, you’ll gain
+deep insight into the Python model, viewer, and controller technologies TurboGears is built
+upon: knowledge that will help you build far more robust and capable Python applications.
+Coverage includes
+
+    * Understanding the architecture of a TurboGears application
+    * Mastering SQLObject, customizing it, and using it with TurboGears models
+    * Utilizing TurboGears view technologies, including dynamic templates and MochiKit for Ajax
+    * TurboGears Widgets: Bringing CSS, XHTML, and JavaScript together in reusable components
+    * CherryPy and TurboGears controller technologies: from decorators to deployment
+    * Exploring the TurboGears toolbox
+    * Ensuring security and identity in TurboGears applications
+
+Visit the the book's homepage at http://turbogearsbook.com/.
+
+Buy from `Amazon <http://www.amazon.com/gp/explorer/0132433885/2/ref=pd_lpo_ase/104-5441194-0551106?>`_ `Bookpool  <http://www.bookpool.com/sm/0132433885>`_
+
+
+Professional Python Frameworks: Web 2.0 Programming with Django and Turbogears
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dana Moore, Raymond Budd, William Wright
+
+.. image:: images/tgbooks_0470138092.jpg
+
+Publisher: `wrox <http://www.wrox.com/WileyCDA/WroxTitle/Professional-Python-Frameworks-Web-2-0-Programming-with-Django-and-Turbogears.productCd-0470138092.html>`_
+
+
+Non-English Books
+-----------------
+
+
+Rapid Web Development mit Python
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Web-2.0-Anwendungen mit TurboGears**
+
+Author:
+    Michael Wiegand
+Publisher
+    `entwickler.press <http://entwickler-press.de/ep/psecom,id,1,buchid,125.html>`_
+Publish date
+    October 2007
+    322 pages, Softcover
+ISBN:
+    978-3-939084-64-8
+Price:
+    29,90 € / 30,80 € (A) / 49.90 CHF
+Info (German)
+    Im Mittelpunkt steht das Rapid Web Development Framework TurboGears.
+    Anhand eines durchgehenden Beispiels – ein Quiz im Stil von "Wer wird
+    Millionär?" – werden die typischen Merkmale einer Web 2.0-Anwendung
+    erläutert. Der Leser lernt die grund- legenden Konzepte der
+    Web 2.0-Technologie mit Python kennen. Auch Leser, die nicht mit
+    TurboGears arbeiten wollen, profitieren von diesem Buch.
+Target group
+    Web application developers, particularly for Web 2.0 sites, students
+    of computer sciences, teachers and trainers.
+About the Author (German)
+    Michael Weigend ist Dipl.-Informatiker und Lehrer an einer
+    Wittener Schule. Seit 1995 hat er einen Lehrauftrag für Didaktik
+    der Informatik an der Fernuniversität Hagen. Er ist Autor bei
+    mitp (u.a. "Python ge-packt") und entwickler.press ("Exploring Python").
+    Momentan entwickelt er an der Universität Münster E-Learning-Plattformen
+    auf der Basis der im Buch beschriebenen Komponenten.

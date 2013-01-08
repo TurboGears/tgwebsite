@@ -1,0 +1,128 @@
+.. index:: error handling
+
+How does error handling work?
+=============================
+
+.. contents:: Table of Contents
+    :depth: 2
+
+
+1 Validation errors
+--------------------
+Definitions:
+
+    **error handler** -- method called when an error occurs.
+
+Let foo be a function defined as::
+
+    @expose()
+    @validate(validators={"bar":validators.Int()}, "baz":validators.Int())
+    def foo(self, bar=None, baz=None):
+        pass
+
+1.1 Basics
+~~~~~~~~~~
+Basic form of error handling is via decorator *error_handler* with error handler as argument::
+
+    @error_handler(my_eh)
+
+my_eh can have an arbitrary signature, however one might wish to declare parameter *tg_errors* wherein errors (causing our error handler to be called) will be passed. Other parameters of interest are any named the same as arguments being validated, allowing us to fully reconstruct the original call (that failed validation). A more general approach would be using *\*identifier* and *\*\*identifier*.
+
+my_eh now looks something like::
+
+    def my_eh(self, tg_errors, bar):
+        pass
+
+Of course nothing prevents us from using an existing (exposed) method as error handler.
+
+A method can even be its own error handler when *error_handler* is applied without any arguments::
+
+    @error_handler()
+
+Care should be taken with this approach as it can introduce subtle bugs. Consider the following example::
+
+    @expose()
+    @validate(...)
+    @identity.require(...)
+    @error_handler()
+    def foo(self, bar=None, baz=None):
+
+Whenever validation fails **identity.require will be by-passed!** This happens because the function **as it was at decoration time** is registered as error handler.
+
+A safer alternative is to for the method do declare parameter *tg_errors*::
+
+    def foo(self, bar=None, tg_errors=None):
+
+Mind, *tg_errors* should be a keyword argument, when used in this manner (since for valid input the method will not get re-called as error handler, hence *tg_errors* will not get passed in).
+
+If no appropriate error handler is defined and validation failed, NotImplementedError? [#]_ exception (from standard library) is raised.
+
+1.2 Dispatch rules
+~~~~~~~~~~~~~~~~~~~
+What if we want to handle invalid baz-es differently than invalid bar-s? Fortunately for us, *error_handler* takes a second keyword argument *rules*, making it possible to influence selection of appropriate error handler (actually a limited interface to *RuleDispatch*). Rules are arbitrary logical Python expressions passed as strings. For example::
+
+    @error_handler(baz_eh, "'baz' in tg_errors")
+    @error_handler(bar_eh)
+
+The most specific applicable rule is selected, meaning if validation of baz fails, baz_eh will be called regardless of bar's state or in other words, bar_eh will be called if and only if validation of bar fails and baz passes.
+
+Any number of calls to *error_handler* can be made with the same handler.
+
+Since both arguments of *error_handler* are optional, specialization is possible even when method is its own error handler::
+
+    @error_handler(rules="'baz' in tg_errors")
+
+1.3 Fail-safe mechanism
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If validation fails for an input, said input also does not get to be converted to designated Python type, which could be rather inconvenient. A fail-safe mechanism is provided for such cases.
+
+
+2 Exceptions
+------------
+
+2.1 Basics
+~~~~~~~~~~
+
+Analogue to *error_handler* and *tg_errors*, *exception_handler* and *tg_exceptions* are defined.
+
+If no appropriate exception handler is defined, exception is passed to a lower layer (e.g. CherryPy?).
+
+2.2 Combining with error handling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+One method can have any number of exception handlers and error handlers.
+
+If having the same handler for errors and exceptions is desired, one can use *errorhandling.register_handler* which is similar to *error_handler* and *exception_handler* but without inherent specialisations.
+
+
+3 References
+------------
+
+.. [#] http://www-128.ibm.com/developerworks/library/l-cppeak2/index.html
+
+3.1 Further reading
+~~~~~~~~~~~~~~~~~~~
+
+3.1.1 Source
+`````````````
+
+http://trac.turbogears.org/browser/branches/1.0/turbogears/errorhandling.py
+
+http://trac.turbogears.org/browser/branches/1.0/turbogears/tests/test_errorhandling.py
+
+3.1.2 Generic functions
+````````````````````````
+
+http://peak.telecommunity.com/PyCon05Talk/
+
+http://peak.telecommunity.com/DevCenter/CombiningResults
+
+http://peak.telecommunity.com/DevCenter/VisitorRevisited
+
+http://www.gigamonkeys.com/book/object-reorientation-generic-functions.html
+
+3.1.3 Continuations
+`````````````````````
+
+http://www.ps.uni-sb.de/~duchier/python/continuations.html

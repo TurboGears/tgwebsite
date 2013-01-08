@@ -1,0 +1,116 @@
+#!/bin/sh
+
+# Comments to support chkconfig on RedHat Linux
+# chkconfig: 35 96 96
+# description: Cherrypy start/stop script
+
+# Author: Rune Hansen
+
+# This is the init script  
+# I use for my redhat based servers(readhat/ES/Fedora/Centos).
+# The script is chkconfig compatible and offers stop, start and status.
+
+. /etc/init.d/functions
+
+python="/absolute/path/to/python/binary"
+server="/absolute/path/to/your/start_script.py"
+serverdir="/absoulte/path/to/your/server/dir"
+serverpidfile="$serverdir/your_applications_pid.pid"
+serverlog="$serverdir/your_std_out_log.log"
+
+[ -x $python ] || exit 0
+
+RETVAL=0
+
+start () {
+    echo "Starting $server: "
+    if test -f "$serverdir/$server"; then
+        cd "$serverdir"
+        $python "$server" >> "$serverlog" 2>&1 &
+        RETVAL=$?
+    else
+        RETVAL=1
+    fi
+    start_success_or_fail $RETVAL
+    return $RETVAL
+}
+
+stop() {
+    if test -f "$serverpidfile"; then
+        serverpid=`cat "$serverpidfile"`
+        kill -15 $serverpid
+        rm -f "$serverpidfile"
+        RETVAL=$?
+    else
+         RETVAL=1
+    fi
+    stop_success_or_fail $RETVAL
+    return $RETVAL
+}
+
+start_success_or_fail(){
+    if [ $RETVAL -eq 1 ]; then
+        echo -n "Can't start $server"
+        echo_failure
+        echo
+    else
+        echo -n $server "started"
+        echo_success
+        echo
+    fi
+}
+
+stop_success_or_fail(){
+    if [ $RETVAL -eq 1 ]; then
+        echo -n "Killing $server"
+        echo_failure
+        echo
+    else
+        echo -n "Killing $server"
+        echo_success
+        echo
+    fi
+}
+
+status() {
+    local base=${1##*/}
+    if test -f "$serverpidfile"; then
+        pid=`cat "$serverpidfile"`
+        checkpid $pid
+        RETVAL=$?
+    else
+        RETVAL=1
+    fi
+    if [ $RETVAL -eq 0 ]; then
+        echo "$server pid($pid) is running..."
+        return 0
+    else
+        if [ -f /var/run/${base}.pid ]; then
+            read pid < /var/run/${base}.pid
+            if [ -n "$pid" ]; then
+                echo $"${base} dead but pid file exists"
+                return 1
+            fi
+        fi
+        echo $"${base} is stopped"
+        return 2
+     fi
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status "$server"
+        RETVAL=$?
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status}"
+        exit 1
+esac
+
+exit $RETVAL

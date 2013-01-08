@@ -1,0 +1,72 @@
+Cheetah templating
+==================
+
+.. contents::
+  :depth: 1
+
+Cheetah is an python open source  template engine and code generation tool.
+You can use Cheetah templates as part of your TurboGears project with this step by step guide:
+
+
+Step 0: Install TurboCheetah
+----------------------------
+
+The TurboCheetah module allows you to use Cheetah templates with Turbogears.
+Since it ships with Turbogears, you don't need to install it manually.
+
+
+Step 1: Quickstart
+------------------
+
+Use the ``tg-admin`` command to create a new project ('``turbocht``' in this example)::
+
+    $ tg-admin quickstart turbocht
+
+
+Step 2: Edit the controller
+---------------------------
+
+Enter your ``turbocht`` project directory, edit ''``/turbocht/controller.py``'', and add the following method to the "Root" class::
+
+   @expose(template = "cheetah:turbocht.templates.cheetahpage")
+   def page(self):
+       return dict(name="TurboGears")
+
+In the expose decorator we use the ``cheetah:`` template scheme, with "cheetahpage" as the Cheetah template filename (under the templates directory).
+
+
+Step 3: Edit the template
+-------------------------
+
+Edit ``/turbocht/templates/cheetahpage.tmpl``::
+
+      <h1>Hello, ${name}</h1>
+
+Cheetah templates have a ``.tmpl`` file name extension.
+
+The Cheetah syntax documentation can be found here:
+http://www.cheetahtemplate.org/learn.html
+
+Note that there are two config options (to be put in ``app.cfg``) for TurboCheetah which determine how the compilation of Cheetah templates is handled:
+
+  * ``cheetah.precompiled``: You can set this to True to indicate that TurboCheetah shall not try to compile Cheetah templates, but only use the corresponding Python modules which you must have already precompiled manually, using the ``cheetah-compile`` command. (Default: False).
+  * ``cheetah.importhooks``: If this is set to True, then Cheetah will "automagically" compile Cheetah templates to Python modules when you import the corresponding modules. (Default: False).
+
+For this simple example, the default settings are ok. You won't have to compile anything manually.
+
+
+Step 4: Test
+------------
+
+In turbodj directory, start the development server by running ''start-turbocht'' script::
+
+     $ ./start-turbocht
+
+Open the browser and enter the URL ``http://localhost:8080/page``. You'll see:
+
+**Hello, TurboGears**
+
+See also
+--------
+
+See also: :doc:`Advanced Cheetah Templates <AdvancedCheetahTemplates>`
