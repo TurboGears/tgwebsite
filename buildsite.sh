@@ -23,7 +23,7 @@ function sitesync() {
 
 function syncfolder() {
     FLD=$1
-    sitesync static/${FLD}/ ${WORK}/${FLD}/
+    sitesync ${SITEREPOROOT}/static/${FLD}/ ${WORK}/${FLD}/
 }
 
 function mkvenv() {
@@ -70,8 +70,9 @@ function workinit() {
     test -e ${SITE} || mkdir -p ${SITE}
     test -e ${SITEREPOROOT} || git clone ${TGSITEURL} ${SITEREPOROOT}
     test -e ${TGDOCS} || git clone ${TGDOCSURL} ${TGDOCS}
-    for v in 1.0 1.1 1.5 ; do
+    for v in 1.1 1.5 ; do
 	test -e ${REPOROOT}/docs-${v} || svn checkout ${TG1SVN}/docs/${v} ${REPOROOT}/docs-${v}
+	test -e ${REPOROOT}/apidocs-${v} || svn checkout ${TG1SVN}/branches/${v} ${REPOROOT}/apidocs-${v}
     done
     
     mkdir -p ${WORK}
@@ -96,7 +97,6 @@ function makesitehtml() {
 }
 
 function maketg1docbranch() {
-    # install tg1.x as well
     BRANCH=$1
     OUTLOC=${WORK}/$2
     mkvenv docsbuild1
@@ -115,6 +115,22 @@ function maketg1docbranch() {
     sitesync _build/html/ ${OUTLOC}/
     rm -rf _build/html
     venvoff
+}
+
+function maketg1apidocs() {
+    BRANCH=$1
+    OUTLOC=${WORK}/$2
+    if [ ${BRANCH} == "1.0" ]; then
+	BRANCH=1.1
+    fi
+    mkvenv apidocsbuild1-${BRANCH}
+    venvon apidocsbuild1-${BRANCH}
+    pip install --upgrade 'docutils==0.5' 'epydoc>=3.0' 'SQLObject==1.1.1' 'SQLAlchemy==0.6.8' 'WebTest==1.2.3'
+    cd ${REPOROOT}/apidocs-${BRANCH}
+    python setup.py develop
+    venvoff
+    sitesync doc/api/ ${WORK}/${BRANCH}/docs/api/
+    rm -rf doc/api
 }
 
 function maketg2docbranch() {
@@ -152,13 +168,13 @@ workinit
 makesitehtml
 
 maketg1docbranch 1.1 1.1/docs
+maketg1apidocs 1.1 1.1/docs/api
 maketg1docbranch 1.5 1.5/docs
+maketg1apidocs 1.5 1.5/docs/api
 maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs
 maketg2docbranch tg2.1.5 2.1/docs
 maketg2docbranch development 2.2/docs
 
-# sync 1.1/api-docs to top of workspace
-# sync 1.5/api-docs to top of workspace
 # sync remaining static files to top of workspace
 # generate planet and sync to top of workspace
 
