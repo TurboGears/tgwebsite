@@ -1,8 +1,5 @@
 TODO:
-- Need to make a 'makebook' function
-- Need to silence sphinx
 - Add search box on site template. Include doc page inventories for searching
-- All items at the bottom of the buildsite.sh file
 
 README:
 

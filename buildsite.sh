@@ -133,6 +133,20 @@ function maketg1apidocs() {
     rm -rf doc/api
 }
 
+function maketg2book() {
+    mkvenv bookbuild
+    venvon bookbuild
+    cd ${TGDOCS}
+    git checkout development
+    cd book
+    python setup.py develop
+    pip install nose dulwich==0.8.5 tw.forms simplejson zope.interface simplegeneric repoze.who-testutil repoze.who-friendlyform repoze.who.plugins.sa repoze.what-quickstart repoze.what-pylons repoze.what.plugins.sql kid decorator coverage WebTest WebOb WebHelpers WebFlash TurboGears2 Tempita SymbolType SQLAlchemy Routes PEAK-Rules MarkupSafe Genshi Extremes DecoratorTools BytecodeAssembler Babel AddOns
+    test -e _build && rm -rf _build
+    make html
+    venvoff
+    sitesync _build/html/ ${WORK}/book/
+}
+
 function maketg2docbranch() {
     BRANCH=$1
     OUTLOC=${WORK}/$2
@@ -148,6 +162,10 @@ function maketg2docbranch() {
     sitesync _build/html/ ${OUTLOC}/
     rm -rf _build/html
     venvoff
+}
+
+function syncstaticfiles() {
+    rsync -a ${SITEREPOROOT}/static/google4bdb33412f144140.html ${WORK}/
 }
 
 function cleanup() {
@@ -166,6 +184,7 @@ checkcommands
 workinit
 
 makesitehtml
+maketg2book
 
 maketg1docbranch 1.1 1.1/docs
 maketg1apidocs 1.1 1.1/docs/api
@@ -175,7 +194,6 @@ maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs
 maketg2docbranch tg2.1.5 2.1/docs
 maketg2docbranch development 2.2/docs
 
-# sync remaining static files to top of workspace
 # generate planet and sync to top of workspace
 
 syncfolder packages
@@ -187,5 +205,6 @@ syncfolder 2.0/downloads
 syncfolder 2.1/downloads
 syncfolder 2.2/downloads
 
+syncstaticfiles
 finalize
 cleanup
