@@ -11,4 +11,4 @@ cd `dirname $0`
 python ./planet.py ./tgplanet/config.ini
 
 test -e ${OUTPUT} || mkdir -p ${OUTPUT}
-rsync -a --delete static/ ${OUTPUT}/
+rsync -a static/ ${OUTPUT}/

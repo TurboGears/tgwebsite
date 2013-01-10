@@ -194,8 +194,6 @@ maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs
 maketg2docbranch tg2.1.5 2.1/docs
 maketg2docbranch development 2.2/docs
 
-# generate planet and sync to top of workspace
-
 syncfolder packages
 
 syncfolder 1.0
@@ -204,6 +202,8 @@ syncfolder 1.5/downloads
 syncfolder 2.0/downloads
 syncfolder 2.1/downloads
 syncfolder 2.2/downloads
+
+planet/updplanet ${WORK}/planet
 
 syncstaticfiles
 finalize
