@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+    echo Usage: $0 outputdir
+    exit 1
+fi
+
+OUTPUT=$1
+
+cd `dirname $0`
+python ./planet.py ./tgplanet/config.ini
+
+test -e ${OUTPUT} || mkdir -p ${OUTPUT}
+rsync -a --delete static/ ${OUTPUT}/
