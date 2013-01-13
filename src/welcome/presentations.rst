@@ -12,12 +12,12 @@ Here are some talks about TurboGears 2 and related topics found around the inter
 
 Intermediate TurboGears part 1
 
-.. youtube:: hhm4F-QLZ38
+.. youtube:: OgoZXWrUJLs
 
 Intermediate TurboGears part 2
 
-.. youtube:: nrraNDj8QuI
+.. youtube:: vD5w6jDj0c0
 
 Intermediate TurboGears part 3
 
-.. youtube:: F0i1QTt7DLc
+.. youtube:: S5gYW-uLRO8

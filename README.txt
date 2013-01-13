@@ -1,5 +1,7 @@
 TODO:
 - Add search box on site template. Include doc page inventories for searching
+- Cogbin issues: Those need to be fixed. It should be more obvious that the keywords are clickable links to get to the right tables. It's not, and that's bad styling, I admit.
+- The color changes for the menu items: Support for :static and :hover is currently broken. Needs to be fixed.
 
 README:
 
