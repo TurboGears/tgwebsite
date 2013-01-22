@@ -1,14 +1,14 @@
+.. include:: welcome/sidebar.rst
+
 ##########################
  TurboGears Web Framework
 ##########################
 
-.. include:: welcome/sidebar.rst
-   
-*********************************************************
- The next generation web framework that scales with you.
-*********************************************************
-
 TurboGears will help you to create a database-driven, ready-to-extend application in minutes. All with code that is `as natural as writing a function`_, `designer friendly templates`_, easy `AJAX`_ on the `browser side`_ and on the `server side`_ and with an incredibly powerful and flexible `Object Relational Mapper (ORM)`_.
+
+.. rst-class:: googleplus
+
+Follow on `Google+`_ for the latest news!
 
 ***************
  Give It a Try
@@ -28,11 +28,9 @@ TurboGears will help you to create a database-driven, ready-to-extend applicatio
 
 Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
 
-Follow on `Google+`_ for the latest news.
-
-############################################
- A new Generation in dynamic web frameworks
-############################################
+#########################################################
+The next generation web framework that scales with you.
+#########################################################
 
 
 TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails. All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration. We wanted something that had:
