@@ -24,11 +24,12 @@ body {
     margin: 0 auto;
     padding: 0;
     text-align: left;
-    font-size: 12px;
+    font-size: 15px;
     font-family:arial,"Arial",geneva,verdana,sans-serif;
     line-height: 1.5em;
     color: {{ theme_textcolor }};
     background-color: {{ theme_bgcolor }};
+    text-rendering: optimizeSpeed;
 }
 
 dl {
