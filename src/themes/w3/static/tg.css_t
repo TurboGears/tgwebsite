@@ -25,8 +25,8 @@ body {
     padding: 0;
     text-align: left;
     font-size: 15px;
-    font-family:arial,"Arial",geneva,verdana,sans-serif;
     line-height: 1.5em;
+    font-family:arial,"Arial",geneva,verdana,sans-serif;
     color: {{ theme_textcolor }};
     background-color: {{ theme_bgcolor }};
     text-rendering: optimizeSpeed;
@@ -227,6 +227,7 @@ div.body h6 {
   border-bottom: 1px solid #ccc;
   margin: 20px -20px 10px -20px;
   padding: 3px 0 3px 10px;
+  line-height: 1.0;
 }
 
 div.body h1 { margin-top: 0; font-size: 200%; }
@@ -250,7 +251,7 @@ a.headerlink:hover {
 
 div.body p, div.body dd, div.body li {
   text-align: justify;
-  line-height: 130%;
+  line-height: 1.3;
 }
 
 div.admonition p.admonition-title + p {
@@ -298,10 +299,10 @@ p.admonition-title:after {
 
 pre {
   padding: 10px;
-  background-color: lightgray;
+  background-color: white;
   color: {{ theme_codetextcolor }};
-  line-height: 120%;
-  font-size: 110%;
+  line-height: 17px;
+  font-size: 14px;
   border: 2px solid #C6C9CB;
   border-left: none;
   border-right: none;
@@ -588,11 +589,21 @@ ul#mainmenu li span.hoverfirstitem {
 	font-weight: bold;
 }
 
+.sidebar+.section>ul,
+.sidebar+.section>p,
+.sidebar+.section>blockquote {
+    margin-left: 260px;
+}
+
+.sidebar+.section+.section {
+    clear: left;
+}
+
 .sidebar
 {
 	margin: 0 0 0.5em 1em;
     	border: 1px solid #ddb;
-    	padding: 7px 7px 0 7px;
+    	padding: 7px 7px 14px 7px;
     	background-color: #ffe;
     	width: 215px;;
     	float: left;
@@ -603,6 +614,7 @@ ul#mainmenu li span.hoverfirstitem {
 .sidebar p
 {
 	display: none;
+    text-align: left;
 }
 
 .sidebar ul
@@ -616,6 +628,7 @@ ul#mainmenu li span.hoverfirstitem {
 {
 	display: block;
 	margin: 0;
+    text-align: left;
 }
 
 .sidebar ul li a
@@ -670,4 +683,18 @@ ul#mainmenu li span.hoverfirstitem {
 	color: #2d2d2d;
 	background: url('images/featurebar_selectedbg.jpg') 0px -20px no-repeat;
 	width: 139px;
+}
+
+.googleplus {
+    font-size: 110%;
+    font-style: italic;
+}
+
+.doclink>img {
+    vertical-align: middle;
+}
+
+.doclink>a {
+    margin-left: 10px;
+    font-size: 120%;
 }

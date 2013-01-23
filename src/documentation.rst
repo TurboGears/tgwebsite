@@ -8,11 +8,13 @@ After that, if your answer is not there, we recommend you check out the older do
 
 To install the current version of TurboGears, please review the `2.2 Installation`_ document.  For doing more, please review `the book`_ and then the general index for `2.2 documentation`_.
 
-|batteriesincluded| `TurboGears2 Web Apps: Batteries Included`_
+.. rst-class:: doclink
 
-|tgdocs| `TurboGears 2.2 Documentation`_
+    |batteriesincluded| `TurboGears2 Web Apps: Batteries Included`_
 
-|tutorials| `CheatSheet`_ and `Poster`_
+    |tgdocs| `TurboGears 2.2 Documentation`_
+
+    |tutorials| `CheatSheet`_ and `Poster`_
 
 We have several older versions of TurboGears, and we continue to support all of them. As such, we also have several older versions of the documentation. While we will eventually reduce the 2.x documentation into a single set, we are not yet ready for this.
 
