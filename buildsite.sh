@@ -203,7 +203,7 @@ syncfolder 2.0/downloads
 syncfolder 2.1/downloads
 syncfolder 2.2/downloads
 
-planet/updplanet ${WORK}/planet
+${SITEREPOROOT}/planet/updplanet ${WORK}/planet
 
 syncstaticfiles
 finalize
