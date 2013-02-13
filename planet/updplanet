@@ -9,6 +9,8 @@ OUTPUT=$1
 
 cd `dirname $0`
 python ./planet.py ./tgplanet/config.ini
+cp tgplanet/planet.css static/
+cp -pr tgplanet/images static/images
 
 test -e ${OUTPUT} || mkdir -p ${OUTPUT}
 rsync -a static/ ${OUTPUT}/
