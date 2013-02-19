@@ -32,10 +32,10 @@ We have several older versions of TurboGears, and we continue to support all of 
 .. _`TurboGears2 Web Apps: Batteries Included`: http://www.turbogears.org/book/
 .. _`TurboGears Documentation`: http://turbogears.readthedocs.org/en/latest/
 .. _`Installation`: http://turbogears.readthedocs.org/en/latest/main/DownloadInstall.html
-.. _`CheatSheet`: http://www.turbogears.org/2.2/docs/Cheatsheet.pdf
-.. _`Poster`: http://www.turbogears.org/2.2/docs/Poster.pdf
-.. _`2.2 Documentation`: http://www.turbogears.org/2.2/docs
-.. _`2.2 Installation`: http://www.turbogears.org/book/part1/install.html
+.. _`CheatSheet`: http://unstable.tg.gy/EP2012/Cheatsheet.pdf
+.. _`Poster`: http://unstable.tg.gy/EP2012/Poster.pdf
+.. _`2.2 Documentation`: https://turbogears.readthedocs.org/en/tg2.2.2/
+.. _`2.2 Installation`: http://turbogears.readthedocs.org/en/tg2.2.2/main/DownloadInstall.html
 .. _`2.1 Documentation`: http://www.turbogears.org/2.1/docs/
 .. _`2.1 Installation`: http://www.turbogears.org/2.1/docs/main/DownloadInstall.html
 .. _`2.0 Documentation`: http://www.turbogears.org/2.0/docs/
