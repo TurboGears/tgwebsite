@@ -33,7 +33,7 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _Fedora Community: https://admin.fedoraproject.org/community/
 .. _OrcaTec LLC: http://www.orcatec.com/
 .. _PyF: http://pyfproject.org/
-.. _ACR CMS: http://www.acrcms.org/acr/index
+.. _ACR CMS: http://acrcms.readthedocs.org/
 .. _Moksha: https://fedorahosted.org/moksha/
 .. _1000 Corks: http://1000corks.com/
 .. _Glossom: http://www.glossom.com/
