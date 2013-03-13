@@ -698,3 +698,7 @@ ul#mainmenu li span.hoverfirstitem {
     margin-left: 10px;
     font-size: 120%;
 }
+
+.consulting-table th {
+    display: none;
+}

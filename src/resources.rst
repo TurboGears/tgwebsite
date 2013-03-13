@@ -27,6 +27,39 @@ Finally, we also have an `irc channel`_.
 
 As you can see, we're on a lot of places. We hope to see you on one of them!
 
+*****************************
+Consulting
+*****************************
+
+Lots of TurboGears developers are ready to help develop your application or train your team.
+Here is a list of the TurboGears core contributors that also provide consulting and use TurboGears
+for their everyday work:
+
+.. rst-class:: consulting-table
+
++------------------------+---------------------------------------------------------+
+| Contact                | Short Bio                                               |
++========================+=========================================================+
+| `Chris Perkins`_       | Chris has been a core contributor of TurboGears and the |
+|                        | release manager for 2.1 series. He is also the main     |
+|                        | author of some core packages like crank and sprox.      |
++------------------------+---------------------------------------------------------+
+| `Alessandro Molina`_   | Founder of `AXANT.it`_, Alessandro has been a core      |
+|                        | contributor for 2.2 series and for MongoDB and Python3  |
+|                        | support. He is also author of some core packages like   |
+|                        | tgext.pluggable and tgext.debugbar.                     |
++------------------------+---------------------------------------------------------+
+| `Jonathan Schemoul`_   | Jonathan is skilled Javascript and Python developer     |
+|                        | who has been involved with the TurboGears project       |
+|                        | for many years. He is the author of the PyF flow        |
+|                        | programming frameworks which relies on TurboGears and   |
+|                        | of some TurboGears extensions like tgext.pages.         |
++------------------------+---------------------------------------------------------+
+
+.. _`Chris Perkins`: chris@percious.com
+.. _`Alessandro Molina`: alessandro.molina@axant.it
+.. _`AXANT.it`: http://www.axant.it
+.. _`Jonathan Schemoul`: jonathan.schemoul@gmail.com
 
 .. _`CogBin`:  http://turbogears.org/cogbin
 .. _`Google+`: https://plus.google.com/115723575598932631951
