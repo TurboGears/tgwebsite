@@ -192,7 +192,6 @@ maketg1docbranch 1.5 1.5/docs
 maketg1apidocs 1.5 1.5/docs/api
 maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs
 maketg2docbranch tg2.1.5 2.1/docs
-maketg2docbranch development 2.2/docs
 
 syncfolder packages
 
