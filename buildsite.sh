@@ -101,18 +101,22 @@ function maketg1docbranch() {
     OUTLOC=${WORK}/$2
     mkvenv docsbuild1
     venvon docsbuild1
-    pip install --upgrade SQLObject 'SQLAlchemy<0.7a' sphinx
+    pip install --upgrade SQLObject 'SQLAlchemy<0.7a' 'Sphinx!=1.2b1'
     if [ ${BRANCH} == "1.0" ]; then
 	BRANCH=1.1
     fi
     pip install --upgrade -i ${INSTURL}/${BRANCH}/downloads/current/index ${PACKAGE}
     cd ${REPOROOT}/docs-${BRANCH}
+    rm -rf _build/html
     svn update .
-    mkdir -p branches/${BRANCH}
-    svn export ${TG1SVN}/branches/${BRANCH}/CHANGELOG.txt branches/${BRANCH}/CHANGELOG.txt
+    mkdir -p ../../branches/${BRANCH}
+    svn export ${TG1SVN}/branches/${BRANCH}/CHANGELOG.txt ../../branches/${BRANCH}/CHANGELOG.txt
     make clean
     make html
     sitesync _build/html/ ${OUTLOC}/
+    rm ../../branches/${BRANCH}/CHANGELOG.txt
+    rmdir ../../branches/${BRANCH}
+    rmdir ../../branches
     rm -rf _build/html
     venvoff
 }
@@ -127,7 +131,9 @@ function maketg1apidocs() {
     venvon apidocsbuild1-${BRANCH}
     pip install --upgrade 'docutils==0.5' 'epydoc>=3.0' 'SQLObject==1.1.1' 'SQLAlchemy==0.6.8' 'WebTest==1.2.3'
     cd ${REPOROOT}/apidocs-${BRANCH}
+    rm -rf doc/api
     python setup.py develop
+    ./doc/build_api_docs.sh
     venvoff
     sitesync doc/api/ ${WORK}/${BRANCH}/docs/api/
     rm -rf doc/api
