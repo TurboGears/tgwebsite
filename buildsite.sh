@@ -207,6 +207,7 @@ syncfolder 1.5/downloads
 syncfolder 2.0/downloads
 syncfolder 2.1/downloads
 syncfolder 2.2/downloads
+syncfolder 2.3/downloads
 
 ${SITEREPOROOT}/planet/updplanet ${WORK}/planet
 
