@@ -45,13 +45,13 @@ TurboGears 2 is built on top of the experience of several next generation web fr
 .. _`Overview`: welcome/overview.html
 .. _`Presentations`: welcome/presentations.html
 .. _`The TurboGears Way`: welcome/turbogears-way.html
-.. _`as natural as writing a function`: http://www.turbogears.org/2.1/docs/main/Controllers.html
+.. _`as natural as writing a function`: http://turbogears.readthedocs.org/en/latest/main/wiki20.html#controller-code
 .. _`designer friendly templates`: http://genshi.edgewall.org/
 .. _`AJAX`: http://en.wikipedia.org/wiki/AJAX
 .. _`browser side`: http://www.toscawidgets.org/
 .. _`server side`: http://www.pylonshq.org/
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
-.. _`wiki tutorial`: http://www.turbogears.org/book/part1/wiki20.html
+.. _`wiki tutorial`: http://turbogears.readthedocs.org/en/latest/main/wiki20.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
 
 
