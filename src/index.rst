@@ -14,6 +14,11 @@ Follow on `Google+`_ for the latest news!
  Give It a Try
 ***************
 
+The following instructions cover starting a new project with the current stable release
+if you want to try the upcoming 2.3.0 release, you can follow instructions at
+`Installing TurboGears Beta <http://turbogears.readthedocs.org/en/rtfd2.3.0b1/#installing-turbogears>`_ 
+documentation
+
 .. code-block:: bash
 
    $ virtualenv --no-site-packages tg2env
