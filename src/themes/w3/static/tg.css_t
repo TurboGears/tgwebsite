@@ -258,6 +258,8 @@ pre {
     border-radius: 3px;
 
     vertical-align: top;
+    overflow: hidden;
+    width: 115px;
 }
 
 @media only screen and (max-width: 1170px) {
