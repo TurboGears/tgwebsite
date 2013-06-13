@@ -248,6 +248,17 @@ pre {
 }
 
 #gplusdata { float: right; }
+#gplusbtn {
+    background-color: white;
+    display: inline-block;
+
+    background-color: #fafafa;
+    border: 1px solid #d4d4d4;
+    padding: 2px 5px 2px 4px;
+    border-radius: 3px;
+
+    vertical-align: top;
+}
 
 @media only screen and (max-width: 1170px) {
     .body { padding: 0 10px 0 10px; }
