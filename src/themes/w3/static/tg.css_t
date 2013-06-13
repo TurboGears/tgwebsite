@@ -273,10 +273,16 @@ pre {
 
 @media only screen and (max-width: 640px) {
     #gplusdata { display: none; }
-    #header > h1 { font-size: 48px; }
+    #header > h1 { font-size: 44px; }
     #header > h2 { font-size: 18px; }
     #mainmenu > li { padding: 8px; }
     #header { background-size: 120px auto; padding-left: 140px; }
     .body .sidebar { display: none; }
     .sidebar+.section>* { margin-left: 0px !important; }
+}
+
+@media only screen and (max-width: 320px) {
+    #github-flag { display: none; }
+    #header > h1 { font-size: 32px; }
+    #header > h2 { font-size: 16px; }
 }

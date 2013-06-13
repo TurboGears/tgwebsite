@@ -73,7 +73,10 @@
   {%- endif %}
 {% endmacro %}
 
-{% block extrahead %}{{ sidebarcss() }}{% endblock %}
+{% block extrahead %}
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  {{ sidebarcss() }}
+{% endblock %}
 
 {% block sidebar1 %}{{ tgsidebar() }}{% endblock %}
 {% block sidebar2 %}{% endblock %}
