@@ -178,7 +178,8 @@ pre {
 }
 
 .footer {
-    margin-top: 50px;
+    margin-top: 60px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
