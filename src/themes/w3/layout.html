@@ -4,39 +4,52 @@
     and (sidebars != []) %}
 
 {% macro tgheadermenu() %}
-<div id="header">
-  <h1>Turbogears 2
-    <span class="subtitle">
-      The rapid web development megaframework you've been looking for.
-    </span>
-  </h1>
-  <div id="gplusdata" style="float: right; margin-top: 54px">
-    <!-- Place this tag where you want the +1 button to render. -->
-    <div class="g-plusone" data-size="small" data-annotation="inline" data-width="300" data-href="http://www.turbogears.org/"></div>
-    
-    <!-- Place this tag after the last +1 button tag. -->
-    <script type="text/javascript">
-      (function() {
-      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-      po.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
-    </script>
-  </div>
-  <div style="clear:both"></div>
-</div>    
-
 <div id="menu">
+  <div id="menuline"></div>
   <ul id="mainmenu">
-    <li class="first"><a href="{{ pathto(master_doc) }}">Welcome</a></li>
-    <li><a href="{{ pathto('features') }}">Features</a></li>
-    <li><a href="{{ pathto('documentation') }}">Documentation</a></li>
-    <li><a href="{{ pathto('resources') }}">Community & Consulting</a></li>
-    <li><a href="{{ pathto('whos-using') }}">Who's Using It?</a></li>
-    <li><a href="{{ pathto('current-status') }}">Project Status & Contributing</a></li>
-    <li><a href="{{ pathto('cogbin') }}">The CogBin</a></li>
-    <li><a href="http://planet.turbogears.org/">Planet</a></li>
+    <li class="first {{['', 'active'][pagename=='index']}}"><a href="{{ pathto(master_doc) }}">Welcome</a></li>
+    <li class="{{['', 'active'][pagename=='features']}}"><a href="{{ pathto('features') }}">Features</a></li>
+    <li class="{{['', 'active'][pagename=='documentation']}}"><a href="{{ pathto('documentation') }}">Documentation</a></li>
+    <li class="{{['', 'active'][pagename=='resources']}}"><a href="{{ pathto('resources') }}">Community & Consulting</a></li>
+    <li class="{{['', 'active'][pagename=='whos-using']}}"><a href="{{ pathto('whos-using') }}">Who's Using It?</a></li>
+    <li class="{{['', 'active'][pagename=='current-status']}}"><a href="{{ pathto('current-status') }}">Project Status & Contributing</a></li>
+    <li class="{{['', 'active'][pagename=='cogbin']}}"><a href="{{ pathto('cogbin') }}">The CogBin</a></li>
+    <li class="{{['', 'active'][pagename=='features']}}"><a href="http://planet.turbogears.org/">Planet</a></li>
   </ul>
+</div>
+
+<div id="headerbox">
+  <a href="https://github.com/TurboGears">
+    <img id="github-flag" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub">
+  </a>
+
+  <div id="header">
+    <div id="downloadbox">
+      Current: <a id="curversion"
+                  href="http://www.turbogears.org/2.3/downloads/2.3.0/tg.devtools-2.3.0.tar.gz">2.3.0b1</a><br/>
+      <div id="installcmd">
+        <strong>$</strong> pip install -f http://tg.gy/230 tg.devtools
+      </div>
+    </div>
+
+    <h1>TurboGears</h1>
+    <h2>{{ title }}</h2>
+
+    <div id="gplusdata" style="float: right; min-height: 15px;">
+      <iframe src="http://ghbtns.com/github-btn.html?user=TurboGears&repo=tg2&type=watch&count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="90" height="20"></iframe>
+
+      <div class="g-plusone" data-size="small" data-annotation="inline" data-width="300" data-href="http://www.turbogears.org/"></div>
+      <script type="text/javascript">
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      </script>
+    </div>
+    <div style="clear:both"></div>
+  </div>
 </div>
 {% endmacro %}
 

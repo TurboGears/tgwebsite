@@ -33,9 +33,9 @@ documentation
 
 Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
 
-#########################################################
+************************************************************
 The next generation web framework that scales with you.
-#########################################################
+************************************************************
 
 
 TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails. All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration. We wanted something that had:
