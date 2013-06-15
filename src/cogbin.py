@@ -126,7 +126,13 @@ def getPackageList(options):
     def _fetch_last_update(category, result):
         proxy = xmlrpclib.ServerProxy(options.url)
         uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
-        for url in proxy.release_urls(result['name'], result['version']):
+        try:
+            release_urls = proxy.release_urls(result['name'], result['version'])
+        except:
+            print 'Failed to fetch release urls for %s' % result['name']
+            return
+
+        for url in release_urls:
             utime = url['upload_time']
             if utime:
                 uploaded = utime.timetuple()
@@ -144,8 +150,13 @@ def getPackageList(options):
             last_update_pool = ThreadPool(processes=10)
 
             keywords = categories[category]['keywords'].split(':')
-            for keyword in categories[category]['keywords'].split(':'):  
-                results = proxy.search({'keywords': keyword})
+            for keyword in keywords:
+                try:
+                    results = proxy.search({'keywords': keyword})
+                except:
+                    print 'Failed to fetch data for keyword %s' % keyword
+                    continue
+
                 if results:
                     last_update_pool.map(lambda result:_fetch_last_update(category, result), results)
 
