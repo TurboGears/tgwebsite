@@ -124,7 +124,7 @@ def getPackageList(options):
     cogs = {}
 
     def _fetch_last_update(category, result):
-        uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
+        uploaded = '1970-01-01'
 
         package_url = options.url + '/%s/%s/json' % (quote(result['name']),
                                                      quote(result['version']))
@@ -136,10 +136,13 @@ def getPackageList(options):
             print_exc()
             return
 
-        utime = release_data.get('upload_time', None)
-        if utime:
-            uploaded = utime.timetuple()
-        uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
+        release_urls = release_data.get('urls', [])
+        for url in release_urls:
+            utime = url.get('upload_time', None)
+            if utime:
+                uploaded = utime.split('T')[0]
+                break
+
         cogs[category][result['name']] = {
                     'version': result['version'],
                     'summary': result['summary'],
