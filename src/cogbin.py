@@ -10,9 +10,6 @@ import csv
 import datetime
 import xmlrpclib
 from multiprocessing.pool import ThreadPool
-import json, urllib2
-from urllib import quote
-from contextlib import closing
 
 from cStringIO import StringIO
 from traceback import print_exc
@@ -124,25 +121,20 @@ def getPackageList(options):
     cogs = {}
 
     def _fetch_last_update(category, result):
-        uploaded = '1970-01-01'
-
-        package_url = options.url + '/%s/%s/json' % (quote(result['name']),
-                                                     quote(result['version']))
+        proxy = xmlrpclib.ServerProxy(options.url)
+        uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
         try:
-            with closing(urllib2.urlopen(package_url)) as f:
-                release_data = json.loads(f.read())
+            release_urls = proxy.release_urls(result['name'], result['version'])
         except:
-            print 'Failed to fetch release urls for %s: %s' % (result['name'], package_url)
+            print 'Failed to fetch release urls for %s' % result['name']
             print_exc()
             return
 
-        release_urls = release_data.get('urls', [])
         for url in release_urls:
-            utime = url.get('upload_time', None)
+            utime = url['upload_time']
             if utime:
-                uploaded = utime.split('T')[0]
-                break
-
+                uploaded = utime.timetuple()
+            uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
         cogs[category][result['name']] = {
                     'version': result['version'],
                     'summary': result['summary'],
@@ -173,7 +165,7 @@ def getPackageList(options):
     return cogs
 
 class CogBinOptions(object):
-    url = 'http://pypi.python.org/pypi'
+    url = 'https://pypi.python.org/pypi'
 
 def _get_cogbin_data():
     options = CogBinOptions()
@@ -206,22 +198,6 @@ if __name__ == '__main__':
 
 
 """
-def main():
-    parser = OptionParser()
-    parser.add_option('--file', action='store', dest='file', default='cogbin.rst', help='Specify the .rst file to insert cogbin entries into. default: %default')
-    parser.add_option('--url', action='store', dest='url', default='http://pypi.python.org/pypi', help='Change the URL for the PyPi. default: %default')
-    (options, args) = parser.parse_args()
-
-    if not os.path.exists(options.file):
-        print 'cogbin file (%s) does not exist, cannot update. Aborting' % (options.file)
-        sys.exit(1)
-    
-    cogs = getPackageList(options)
-    #c = open('cogs.json', 'w')
-    #c.write(json.dumps(cogs))
-    #c.close()
-    #cogs = json.load(open('cogs.json'))
-
     output = []
     output.append(genKeywordsToc(options, 'TurboGears 2 Packages', tg2))
     output.append(genKeywordsToc(options, 'TurboGears 1 Packages', tg1))
@@ -231,19 +207,4 @@ def main():
     output.append(genPackages(options, "TurboGears 1 Packages", tg1, cogs))
     output.append(genPackages(options, "Non-TurboGears (but important) Packages", nontg, cogs))
     output.append('')
-    
-    cogbin = '\n'.join(output)
-
-    data = open(options.file).readlines()
-    for i in range(len(data)):
-        if data[i].strip()=='COGBINRST':
-            data[i] = cogbin
-
-    f = open(options.file, 'w')
-    f.write(''.join(data))
-    f.close()
-    
-
-if __name__ == '__main__':
-    main()
 """ 
