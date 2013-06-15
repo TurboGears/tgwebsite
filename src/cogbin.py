@@ -167,18 +167,20 @@ def getPackageList(options):
 class CogBinOptions(object):
     url = 'http://pypi.python.org/pypi'
 
+def _get_cogbin_data():
+    options = CogBinOptions()
+    cogs = getPackageList(options)
+
+    output = []
+    output.extend(genPackages(options, "TurboGears 2 Packages", tg2, cogs).split('\n'))
+    output.append('')
+    return output
+
 class CogBinDirective(Directive):
     def run(self):
-        options = CogBinOptions()
         result = ViewList()
 
-        cogs = getPackageList(options)
-        
-        output = []
-        output.extend(genPackages(options, "TurboGears 2 Packages", tg2, cogs).split('\n'))
-        output.append('')
-
-        for line in output:
+        for line in _get_cogbin_data():
             result.append(line, '<cogbin>')
 
         node = nodes.section()
@@ -188,6 +190,12 @@ class CogBinDirective(Directive):
 
 def setup(app):
     app.add_directive('cogbin', CogBinDirective)
+
+
+if __name__ == '__main__':
+    """ Mostly for testing pourpose """
+    print '\n'.join(_get_cogbin_data())
+
 
 """
 def main():
