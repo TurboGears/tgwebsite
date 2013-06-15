@@ -10,20 +10,23 @@ import csv
 import datetime
 import xmlrpclib
 from multiprocessing.pool import ThreadPool
+import json, urllib2
+from urllib import quote
+from contextlib import closing
 
 from cStringIO import StringIO
 from traceback import print_exc
 
 categories = {
-    "Applications": {'keywords':"turbogears.app"},
-    "Widgets": {'keywords':"turbogears.widgets"},
-    "Template Engine Plugins": {'keywords':"python.templating.engines"},
-    "Quickstart Templates": {'keywords':"turbogears.quickstart.template"},
-    "Extension Components": {'keywords':"turbogears.extension"},
-    "Identity Providers": {'keywords':"turbogears.identity.provider"},
-    "tg-admin Commands": {'keywords':"turbogears.command"},
-    "ToscaWidgets": {'keywords':"toscawidgets.widgets"},
-    "Toolbox Plugins": {'keywords':"turbogears.toolboxcommand"},
+#    "Applications": {'keywords':"turbogears.app"},
+#    "Widgets": {'keywords':"turbogears.widgets"},
+#    "Template Engine Plugins": {'keywords':"python.templating.engines"},
+#    "Quickstart Templates": {'keywords':"turbogears.quickstart.template"},
+#    "Extension Components": {'keywords':"turbogears.extension"},
+#    "Identity Providers": {'keywords':"turbogears.identity.provider"},
+#    "tg-admin Commands": {'keywords':"turbogears.command"},
+#    "ToscaWidgets": {'keywords':"toscawidgets.widgets"},
+#    "Toolbox Plugins": {'keywords':"turbogears.toolboxcommand"},
     "TurboGears2": {'keywords': "turbogears2"},
     "TurboGears2 Applications": {'keywords': "turbogears2.application"},
     "TurboGears2 Widgets": {'keywords': "turbogears2.widgets"},
@@ -121,20 +124,22 @@ def getPackageList(options):
     cogs = {}
 
     def _fetch_last_update(category, result):
-        proxy = xmlrpclib.ServerProxy(options.url)
         uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
+
+        package_url = options.url + '/%s/%s/json' % (quote(result['name']),
+                                                     quote(result['version']))
         try:
-            release_urls = proxy.release_urls(result['name'], result['version'])
+            with closing(urllib2.urlopen(package_url)) as f:
+                release_data = json.loads(f.read())
         except:
-            print 'Failed to fetch release urls for %s' % result['name']
+            print 'Failed to fetch release urls for %s: %s' % (result['name'], package_url)
             print_exc()
             return
 
-        for url in release_urls:
-            utime = url['upload_time']
-            if utime:
-                uploaded = utime.timetuple()
-            uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
+        utime = release_data.get('upload_time', None)
+        if utime:
+            uploaded = utime.timetuple()
+        uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
         cogs[category][result['name']] = {
                     'version': result['version'],
                     'summary': result['summary'],
