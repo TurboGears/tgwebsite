@@ -10,6 +10,7 @@ TurboGears packages added to the `Python Package Index`_ will automatically appe
 
 The table below has the keywords you should use as well:
 
-COGBINRST
+.. cogbin::
+    
 
 .. _`Python Package Index`: http://pypi.python.org/

@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+from docutils import nodes
+from docutils.statemachine import ViewList
+from docutils.parsers.rst import Directive, directives
+
+from sphinx.util.nodes import nested_parse_with_titles
 
 import codecs
 import csv
@@ -7,6 +12,7 @@ import json
 import os.path
 import sys
 import xmlrpclib
+from multiprocessing.pool import ThreadPool
 
 from cStringIO import StringIO
 from optparse import OptionParser
@@ -113,31 +119,67 @@ def genPackages(options, title, keywordlist, cogs):
 
     return "\n".join(output)
 
-def getPackageList(options):
-    proxy = xmlrpclib.ServerProxy(options.url)
 
+def getPackageList(options):
     cogs = {}
-    for category in categories:
+
+    def _fetch_last_update(category, result):
+        proxy = xmlrpclib.ServerProxy(options.url)
+        uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
+        for url in proxy.release_urls(result['name'], result['version']):
+            utime = url['upload_time']
+            if utime:
+                uploaded = utime.timetuple()
+            uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
+        cogs[category][result['name']] = {
+                    'version': result['version'],
+                    'summary': result['summary'],
+                    'uploaded': uploaded
+        }
+
+    def _fetch_category_data(category):
+        proxy = xmlrpclib.ServerProxy(options.url)
         if 'keywords' in categories[category]:
-            if category not in cogs:
-                cogs[category] = {}
-            for keyword in categories[category]['keywords'].split(':'):
+            cogs.setdefault(category, {})
+            last_update_pool = ThreadPool(processes=10)
+
+            keywords = categories[category]['keywords'].split(':')
+            for keyword in categories[category]['keywords'].split(':'):  
                 results = proxy.search({'keywords': keyword})
                 if results:
-                    for result in results:
-                        uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
-                        for url in proxy.release_urls(result['name'], result['version']):
-                            utime = url['upload_time']
-                            if utime:
-                                uploaded = utime.timetuple()
-                        uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
-                        cogs[category][result['name']] = {
-                            'version': result['version'],
-                            'summary': result['summary'],
-                            'uploaded': uploaded
-                            }
+                    last_update_pool.map(lambda result:_fetch_last_update(category, result), results)
+
+    category_pool = ThreadPool(processes=10)
+    category_pool.map(_fetch_category_data, categories)
+            
     return cogs
 
+class CogBinOptions(object):
+    url = 'http://pypi.python.org/pypi'
+
+class CogBinDirective(Directive):
+    def run(self):
+        options = CogBinOptions()
+        result = ViewList()
+
+        cogs = getPackageList(options)
+        
+        output = []
+        output.extend(genPackages(options, "TurboGears 2 Packages", tg2, cogs).split('\n'))
+        output.append('')
+
+        for line in output:
+            result.append(line, '<cogbin>')
+
+        node = nodes.section()
+        node.document = self.state.document
+        nested_parse_with_titles(self.state, result, node)
+        return node.children
+
+def setup(app):
+    app.add_directive('cogbin', CogBinDirective)
+
+"""
 def main():
     parser = OptionParser()
     parser.add_option('--file', action='store', dest='file', default='cogbin.rst', help='Specify the .rst file to insert cogbin entries into. default: %default')
@@ -178,4 +220,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+""" 

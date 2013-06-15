@@ -89,9 +89,7 @@ function makesitehtml() {
     pip install --upgrade sphinx
     cd ${SITEREPOROOT}/src
     test -e _build && rm -rf _build
-    ${SITEREPOROOT}/bin/cogbin.py
     make html
-    git checkout cogbin.rst
     sitesync ${SITEREPOROOT}/src/_build/html/ ${WORK}/
     venvoff
 }

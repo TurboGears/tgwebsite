@@ -262,6 +262,20 @@ pre {
     width: 115px;
 }
 
+#the-cogbin #turbogears-2-packages > dt {
+    display: none;
+}
+
+#the-cogbin dt {
+    margin-top: 40px;
+    font-size: 22px;
+    color: {{theme_secondarycolor}};
+}
+
+#the-cogbin th {
+    font-weight: bold;
+}
+
 @media only screen and (max-width: 1170px) {
     .body { padding: 0 10px 0 10px; }
 }
