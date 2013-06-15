@@ -8,14 +8,11 @@ from sphinx.util.nodes import nested_parse_with_titles
 import codecs
 import csv
 import datetime
-import json
-import os.path
-import sys
 import xmlrpclib
 from multiprocessing.pool import ThreadPool
 
 from cStringIO import StringIO
-from optparse import OptionParser
+from traceback import print_exc
 
 categories = {
     "Applications": {'keywords':"turbogears.app"},
@@ -130,6 +127,7 @@ def getPackageList(options):
             release_urls = proxy.release_urls(result['name'], result['version'])
         except:
             print 'Failed to fetch release urls for %s' % result['name']
+            print_exc()
             return
 
         for url in release_urls:
@@ -155,6 +153,7 @@ def getPackageList(options):
                     results = proxy.search({'keywords': keyword})
                 except:
                     print 'Failed to fetch data for keyword %s' % keyword
+                    print_exc()
                     continue
 
                 if results:
