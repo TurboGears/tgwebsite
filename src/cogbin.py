@@ -14,6 +14,10 @@ from multiprocessing.pool import ThreadPool
 from cStringIO import StringIO
 from traceback import print_exc
 
+# Force import of strptime in main thread, this is a work-around for strptime
+# not being thread safe
+datetime.datetime.strptime("1970-01-01 01:01:01.01", "%Y-%m-%d %H:%M:%S.%f")
+
 categories = {
 #    "Applications": {'keywords':"turbogears.app"},
 #    "Widgets": {'keywords':"turbogears.widgets"},
