@@ -16,7 +16,7 @@ Follow on `Google+`_ for the latest news!
 
 The following instructions cover starting a new project with the current stable release
 if you want to try the upcoming 2.3.0 release, you can follow instructions at
-`Installing TurboGears Beta <http://turbogears.readthedocs.org/en/rtfd2.3.0b1/#installing-turbogears>`_ 
+`Installing TurboGears Beta <http://turbogears.readthedocs.org/en/tg2.3.0b2/#installing-turbogears>`_ 
 documentation
 
 .. code-block:: bash
