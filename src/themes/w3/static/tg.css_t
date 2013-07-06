@@ -194,6 +194,10 @@ pre {
     margin-right: 10px;
 }
 
+#turbogears-presentations iframe {
+    margin: 10px;
+}
+
 #github-flag {
     position: absolute;
     top: 0;
