@@ -293,7 +293,7 @@ pre {
     #gplusdata { display: none; }
     #header > h1 { font-size: 44px; }
     #header > h2 { font-size: 18px; }
-    #mainmenu { height: 40px; }
+    #mainmenu { height: 40px; overflow: hidden; }
     #mainmenu > li { padding: 8px; }
     #header { background-size: 120px auto; padding-left: 140px; }
     .body .sidebar { display: none; }
