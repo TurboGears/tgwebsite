@@ -188,7 +188,7 @@ checkcommands
 workinit
 
 makesitehtml
-maketg2book
+#maketg2book
 
 maketg1docbranch 1.1 1.1/docs
 maketg1apidocs 1.1 1.1/docs/api
