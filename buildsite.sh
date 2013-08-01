@@ -28,7 +28,7 @@ function syncfolder() {
 
 function mkvenv() {
     NAME=$1
-    test -e ${VENVROOT}/${NAME} || virtualenv --no-site-packages ${VENVROOT}/${NAME}
+    test -e ${VENVROOT}/${NAME} || virtualenv --setuptools --no-site-packages ${VENVROOT}/${NAME}
 }
 
 function venvon() {
