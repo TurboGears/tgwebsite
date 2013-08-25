@@ -14,22 +14,17 @@ Follow on `Google+`_ for the latest news!
  Give It a Try
 ***************
 
-The following instructions cover starting a new project with the current stable release
-if you want to try the upcoming 2.3.0 release, you can follow instructions at
-`Installing TurboGears Beta <http://turbogears.readthedocs.org/en/tg2.3.0b2/#installing-turbogears>`_ 
-documentation
-
 .. code-block:: bash
 
    $ virtualenv --no-site-packages tg2env
    $ cd tg2env/
    $ source bin/activate
-   (tg2env)$ easy_install -i http://tg.gy/current tg.devtools
-   (tg2env)$ paster quickstart example
+   (tg2env)$ pip install tg.devtools
+   (tg2env)$ gearbox quickstart example
    (tg2env)$ cd example
-   (tg2env)$ python setup.py develop -i http://tg.gy/current
-   (tg2env)$ paster setup-app development.ini
-   (tg2env)$ paster serve development.ini
+   (tg2env)$ python setup.py develop
+   (tg2env)$ gearbox setup-app
+   (tg2env)$ gearbox serve
 
 Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
 

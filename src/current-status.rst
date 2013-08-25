@@ -6,9 +6,9 @@ TurboGears was first released in 2005. Due to that age, TurboGears has always ha
 for a lot of time. We recommend new projects start on TurboGears2 which is the currently actively under development
 branch of TurboGears.
 
-Latest stable release: 2.2.2 - released Jan 30, 2013
+Latest stable release: 2.3.0 - released Aug 25, 2013
 
-Release announcement available at: http://codersbuffet.blogspot.it/search/label/turbogears
+Release announcement available at: https://plus.google.com/115723575598932631951/posts
 
 ***************************
 Contributing to TurboGears

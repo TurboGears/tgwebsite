@@ -11,9 +11,6 @@ For doing more, please review the `TurboGears Documentation`_.
 
     |tutorials| `CheatSheet`_ and `Poster`_
 
-Documentation for the currently beta stage ``2.3.0`` can be found on 
-`2.3.0b2 <http://turbogears.readthedocs.org/en/tg2.3.0b2/>`_
-
 We have several older versions of TurboGears, and we continue to support all of them.
 As such, we also have several older versions of the documentation.
 
@@ -27,7 +24,7 @@ As such, we also have several older versions of the documentation.
 .. |tgdocs| image:: _static/images/extending.png
 .. |tutorials| image:: _static/images/tutorials.png
 .. _`TurboGears Documentation`: http://turbogears.readthedocs.org/
-.. _`Installation`: http://turbogears.readthedocs.org/en/latest/main/DownloadInstall.html
+.. _`Installation`: http://turbogears.readthedocs.org/en/latest/turbogears/install.html
 .. _`CheatSheet`: http://unstable.tg.gy/EP2012/Cheatsheet.pdf
 .. _`Poster`: http://unstable.tg.gy/EP2012/Poster.pdf
 .. _`2.2 Documentation`: https://turbogears.readthedocs.org/en/rtfd2.2.2/
