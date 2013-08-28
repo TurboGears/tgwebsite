@@ -8,7 +8,7 @@ branch of TurboGears.
 
 Latest stable release: 2.3.0 - released Aug 25, 2013
 
-Release announcement available at: https://plus.google.com/115723575598932631951/posts
+Release announcement available at: https://plus.google.com/115723575598932631951/posts/Fw6mGKfBHjM
 
 ***************************
 Contributing to TurboGears
