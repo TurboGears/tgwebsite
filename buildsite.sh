@@ -154,12 +154,14 @@ function maketg2book() {
 function maketg2docbranch() {
     BRANCH=$1
     OUTLOC=${WORK}/$2
+    VERSION=$3
     mkvenv docsbuild
     venvon docsbuild
     pip install --upgrade sqlalchemy python_memcached tgext.geo mapfish sphinx
     cd ${TGDOCS}
     git checkout ${BRANCH}
     cd docs
+    echo -e "\nrelease = '${VERSION}'" >> conf.py
     test -e _build && rm -rf _build
     make html
     test -e ${OUTLOC} || mkdir -p ${OUTLOC}
@@ -194,8 +196,8 @@ maketg1docbranch 1.1 1.1/docs
 maketg1apidocs 1.1 1.1/docs/api
 maketg1docbranch 1.5 1.5/docs
 maketg1apidocs 1.5 1.5/docs/api
-maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs
-maketg2docbranch tg2.1.5 2.1/docs
+maketg2docbranch a025e26483fcf5cdc800bd4d8bcac9ee290ef0a7 2.0/docs 2.0
+maketg2docbranch tg2.1.5 2.1/docs 2.1
 
 syncfolder packages
 
