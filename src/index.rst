@@ -14,17 +14,18 @@ Follow on `Google+`_ for the latest news!
  Give It a Try
 ***************
 
+Try it on `runnable.com`_ or set it up on your machine:
+
 .. code-block:: bash
 
    $ virtualenv --no-site-packages tg2env
    $ cd tg2env/
    $ source bin/activate
    (tg2env)$ pip install tg.devtools
-   (tg2env)$ gearbox quickstart example
+   (tg2env)$ gearbox quickstart --noauth --nosa example
    (tg2env)$ cd example
-   (tg2env)$ python setup.py develop
-   (tg2env)$ gearbox setup-app
-   (tg2env)$ gearbox serve
+   (tg2env)$ pip install -e .
+   (tg2env)$ gearbox serve --reload
 
 Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
 
