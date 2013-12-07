@@ -14,7 +14,7 @@ Follow on `Google+`_ for the latest news!
  Give It a Try
 ***************
 
-Try it on `runnable.com`_ or set it up on your machine:
+Try it in your browser using `Runnable`_ or set it up on your machine:
 
 .. code-block:: bash
 
@@ -54,7 +54,7 @@ TurboGears 2 is built on top of the experience of several next generation web fr
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
 .. _`wiki tutorial`: http://turbogears.readthedocs.org/en/latest/turbogears/wiki20.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
-
+.. _`Runnable`: http://runnable.com/Unq2c2CaTc52AAAm/basic-turbogears-example-for-python
 
 .. toctree::
    :hidden:
