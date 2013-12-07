@@ -61,7 +61,7 @@ for their everyday work:
 .. _`AXANT.it`: http://www.axant.it
 .. _`Jonathan Schemoul`: jonathan.schemoul@gmail.com
 
-.. _`CogBin`:  http://turbogears.org/cogbin
+.. _`CogBin`:  http://turbogears.org/cogbin.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
 .. _`development`: http://groups.google.com/group/turbogears-trunk
 .. _`end user`: http://groups.google.com/group/turbogears
