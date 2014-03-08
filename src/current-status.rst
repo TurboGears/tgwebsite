@@ -37,9 +37,8 @@ To create your development environment you can perform:
    source ${HOME}/tg2env/bin/activate
    git clone git@github.com:TurboGears/tg2.git
    cd tg2
-   python setup.py tgdevelop
-   python setup.py tgtesting
-   python setup.py tgnose
+   git checkout development
+   python setup.py develop
 
 .. _`TG2.x Core (Git)`: https://github.com/TurboGears/tg2
 .. _`TG2.x Devtools (Git)`: https://github.com/TurboGears/tg2devtools
