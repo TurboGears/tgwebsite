@@ -187,11 +187,12 @@ pre {
     margin-left: 10px;
 }
 
-#turbogears-web-framework .section .simple li:before {
+#the-web-framework-that-scales-with-you > .simple li:before {
     content: '*';
-    font-size: 30px;
+    font-size: 22px;
     color: black;
     margin-right: 10px;
+    vertical-align: middle;
 }
 
 #turbogears-presentations iframe {

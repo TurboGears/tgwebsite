@@ -1,20 +1,33 @@
 .. include:: welcome/sidebar.rst
 
-##########################
- TurboGears Web Framework
-##########################
+############################################################
+The Web Framework that scales with you.
+############################################################
 
-TurboGears will help you to create a database-driven, ready-to-extend application in minutes. All with code that is `as natural as writing a function`_, `designer friendly templates`_, easy `AJAX`_ on the `browser side`_ and on the `server side`_ and with an incredibly powerful and flexible `Object Relational Mapper (ORM)`_.
+TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails.
+All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration:
+
+* Starts as a `microframework`_ and scales up to a `fullstack`_ solution
+* Code that is `as natural as writing a function`_
+* A powerful and flexible `Object Relational Mapper (ORM)`_ with real `multi-database support`_
+* Support for Horizontal data partitioning (aka, sharding)
+* A new `widget system`_ to make building `AJAX`_ heavy apps easier
+* Support for multiple data-exchange formats
+* Built in extensibility `Pluggable Applications`_ and standard WSGI components
+* `Designer friendly template system`_ great for programmers
 
 .. rst-class:: googleplus
 
-Follow on `Google+`_ for the latest news!
+Follow TurboGears on `Google+`_ for the latest news!
 
 ***************
  Give It a Try
 ***************
 
-Try it in your browser using `Runnable`_ or set it up on your machine:
+| TurboGears 2 works on Python 2.6, 2.7, 3.2, 3.3 and 3.4.
+| Try it now, in your browser, using `Runnable`_
+
+Or set it up on your machine:
 
 .. code-block:: bash
 
@@ -22,35 +35,48 @@ Try it in your browser using `Runnable`_ or set it up on your machine:
    $ cd tg2env/
    $ source bin/activate
    (tg2env)$ pip install tg.devtools
-   (tg2env)$ gearbox quickstart --noauth --nosa example
-   (tg2env)$ cd example
-   (tg2env)$ pip install -e .
-   (tg2env)$ gearbox serve --reload
 
-Get started Learning TurboGears 2 by looking at our famous `wiki tutorial`_.
+Start a single file Hello World
 
-************************************************************
-The next generation web framework that scales with you.
-************************************************************
+.. code-block:: python
 
+    from wsgiref.simple_server import make_server
+    from tg import expose, TGController, AppConfig
 
-TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails. All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration. We wanted something that had:
+    class RootController(TGController):
+         @expose()
+         def index(self):
+             return "<h1>Hello World</h1>"
 
-* Real multi-database support
-* Support for Horizontal data partitioning (aka, sharding)
-* Support for a variety of JavaScript toolkits, and new widget system to make building ajax heavy apps easier
-* Support for multiple data-exchange formats
-* Built in extensibility via standard WSGI components
-* Programmer friendly template system that also works for designers
+    config = AppConfig(minimal=True, root_controller=RootController())
+
+    print "Serving on port 8080..."
+    httpd = make_server('', 8080, config.make_wsgi_app())
+    httpd.serve_forever()
+
+Or with a Full Stack project:
+
+.. code-block:: bash
+
+   (tg2env)$ gearbox quickstart example
+   (tg2env)$ cd example/
+   (tg2env)$ python setup.py develop
+   (tg2env)$ gearbox serve
+
+Get started Learning TurboGears 2 by looking at `Documentation`_ and our famous `wiki tutorial`_.
 
 .. _`Overview`: welcome/overview.html
 .. _`Presentations`: welcome/presentations.html
 .. _`The TurboGears Way`: welcome/turbogears-way.html
+.. _`Documentation`: http://turbogears.readthedocs.org/en/latest/
+.. _`microframework`: http://turbogears.readthedocs.org/en/latest/index.html#single-file-application
+.. _`fullstack`: http://turbogears.readthedocs.org/en/latest/index.html#full-stack-projects
 .. _`as natural as writing a function`: http://turbogears.readthedocs.org/en/latest/turbogears/wiki20.html#controller-code
-.. _`designer friendly templates`: http://genshi.edgewall.org/
+.. _`Designer friendly template system`: http://genshi.edgewall.org/
 .. _`AJAX`: http://en.wikipedia.org/wiki/AJAX
-.. _`browser side`: http://www.toscawidgets.org/
-.. _`server side`: http://www.pylonshq.org/
+.. _`Pluggable Applications`: http://turbogears.readthedocs.org/en/latest/turbogears/Pluggable/index.html
+.. _`widget system`: http://www.toscawidgets.org/
+.. _`multi-database support`: http://turbogears.readthedocs.org/en/latest/cookbook/master-slave.html
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
 .. _`wiki tutorial`: http://turbogears.readthedocs.org/en/latest/turbogears/wiki20.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
