@@ -11,6 +11,7 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `Moksha`_ - Web framework that aims to simplify the creation of highly-interactive realtime web applications
 * `TavolaClandestina`_ - High Quality Italian Food eCommerce
 * `The Voice of Turkey`_ - Website of the Turkish version of "The Voice" contest
+* `Rosenberg NMS`_ - A Network Management System which detects devices and services and uses TurboGears2 to provide a web ui.
 * `1000 Corks`_ - A wine comparison / shopping site
 * `OrcaTec LLC`_ - Making eDiscovery products for litigation support
 * `Glossom`_ - Fashion Oriented Social Network
@@ -21,6 +22,7 @@ This is just the beginnings of the list, covering the recent names we have seen.
 
 As we've said above, this list is far from complete. As it stands, this is just the people we've noticed so far for one reason or another. If you want to have your site listed here, tell us what you do with TG (use our Google Groups), and we'll add it.
 
+.. _Rosenberg NMS : http://rosenberg-nms.readthedocs.org/
 .. _TavolaClandestina: http://www.tavolaclandestina.com/
 .. _Kamisons: http://www.umbrellasatkasmisons.com/
 .. _SourceForge: http://sourceforge.net/p/allura
