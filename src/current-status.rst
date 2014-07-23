@@ -24,6 +24,9 @@ In particular, we have several repositories for public use. The main ones are:
 
 For continuous integration work, we use `Travis`_.
 
+**JetBrains** has been supporting the TurboGears development team with `PyCharm`_ licenses,
+which has been the development environment of choice for some of TurboGears contributors.
+
 Development happens on two core branches: the ``development`` one where major changes for
 the upcoming scheduled release happens and ``master`` branch which will point to the
 current stable release. Minor bugfix releases are branched from master on demand and merge
@@ -45,3 +48,4 @@ To create your development environment you can perform:
 .. _`TG2.x Docs (Git)`: https://github.com/TurboGears/tg2docs
 .. _`Travis`: https://travis-ci.org/TurboGears/tg2
 .. _`TurboGears`: https://github.com/TurboGears
+.. _`PyCharm`: http://www.jetbrains.com/pycharm/
