@@ -16,9 +16,10 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `OrcaTec LLC`_ - Making eDiscovery products for litigation support
 * `Glossom`_ - Fashion Oriented Social Network
 * `Toro.it`_ - Community website of a major Italian Soccer Team
-* `Noodle NG`_ - A web frontend for a system to search a network for open Windows shares, and catalog the data made available.
+* `Noodle NG`_ - A web search engine for local smb/cifs network shares (Windows/Samba). 
 * `Soda`_ put TurboGears under the hood of Amnesty International's `Irrepressible.info`_ campaign website promoting freedom on the internet. The site was recently featured in the `Observer`_ and `Slashdotted`_.
 * `ShowMeDo`_ aggregates Python programming (and other) training videos on one site.
+* `SAUCE`_ - A language-independent, web-based automated assessment tool for programming assignments in practical programming courses within academic environments like universities and schools (`Demo Instance`_ on Heroku available).
 
 As we've said above, this list is far from complete. As it stands, this is just the people we've noticed so far for one reason or another. If you want to have your site listed here, tell us what you do with TG (use our Google Groups), and we'll add it.
 
@@ -46,3 +47,5 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _Slashdotted: http://yro.slashdot.org/yro/06/05/28/136247.shtml
 .. _Oprius Software: http://www.oprius.com/
 .. _ShowMeDo: http://showmedo.com/
+.. _SAUCE: https://github.com/moschlar/SAUCE
+.. _Demo Instance: https://sauce-moschlar.herokuapp.com/
