@@ -11,7 +11,7 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `Moksha`_ - Web framework that aims to simplify the creation of highly-interactive realtime web applications
 * `TavolaClandestina`_ - High Quality Italian Food eCommerce
 * `The Voice of Turkey`_ - Website of the Turkish version of "The Voice" contest
-* `Rosenberg NMS`_ - A Network Management System which detects devices and services and uses TurboGears2 to provide a web ui.
+* `Rosenberg NMS`_ - A Network Management System which detects devices and services and uses TurboGears 2 to provide a web ui.
 * `1000 Corks`_ - A wine comparison / shopping site
 * `OrcaTec LLC`_ - Making eDiscovery products for litigation support
 * `Glossom`_ - Fashion Oriented Social Network
@@ -20,10 +20,11 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `Soda`_ put TurboGears under the hood of Amnesty International's `Irrepressible.info`_ campaign website promoting freedom on the internet. The site was recently featured in the `Observer`_ and `Slashdotted`_.
 * `ShowMeDo`_ aggregates Python programming (and other) training videos on one site.
 * `SAUCE`_ - A language-independent, web-based automated assessment tool for programming assignments in practical programming courses within academic environments like universities and schools (`Demo Instance`_ on Heroku available).
+* `Bisque`_  is an advanced image database and analysis system for biological 5D images. It supports large scale image databases, flexible experimental data management, metadata and content based search, analysis integration and knowledge discovery.
 
 As we've said above, this list is far from complete. As it stands, this is just the people we've noticed so far for one reason or another. If you want to have your site listed here, tell us what you do with TG (use our Google Groups), and we'll add it.
 
-.. _Rosenberg NMS : http://rosenberg-nms.readthedocs.org/
+.. _Rosenberg NMS : https://rnms.org/
 .. _TavolaClandestina: http://www.tavolaclandestina.com/
 .. _Kamisons: http://www.umbrellasatkasmisons.com/
 .. _SourceForge: http://sourceforge.net/p/allura
@@ -49,3 +50,4 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _ShowMeDo: http://showmedo.com/
 .. _SAUCE: https://github.com/moschlar/SAUCE
 .. _Demo Instance: https://sauce-moschlar.herokuapp.com/
+.. _Bisque: http://bioimage.ucsb.edu/bisque
