@@ -21,6 +21,8 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `ShowMeDo`_ aggregates Python programming (and other) training videos on one site.
 * `SAUCE`_ - A language-independent, web-based automated assessment tool for programming assignments in practical programming courses within academic environments like universities and schools (`Demo Instance`_ on Heroku available).
 * `Bisque`_  is an advanced image database and analysis system for biological 5D images. It supports large scale image databases, flexible experimental data management, metadata and content based search, analysis integration and knowledge discovery.
+* `IMH`_ - A meal planning website (daily/weekly/monthly/etc. meal schedule, recipe repository, and shopping list generator, plus an inexhaustible list of related features) called {Insert Meal Here}.
+* `Tracim`_ is a collaborative software designed to allow people to share and work on various data and document types.
 
 As we've said above, this list is far from complete. As it stands, this is just the people we've noticed so far for one reason or another. If you want to have your site listed here, tell us what you do with TG (use our Google Groups), and we'll add it.
 
@@ -51,3 +53,5 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _SAUCE: https://github.com/moschlar/SAUCE
 .. _Demo Instance: https://sauce-moschlar.herokuapp.com/
 .. _Bisque: http://bioimage.ucsb.edu/bisque
+.. _IMH: http://www.insertmealhere.com/
+.. _Tracim: https://github.com/tracim/tracim
