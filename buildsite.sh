@@ -86,7 +86,7 @@ function workinit() {
 function makesitehtml() {
     mkvenv sitebuild
     venvon sitebuild
-    pip install --upgrade sphinx
+    pip install --upgrade 'sphinx==1.2.3'
     cd ${SITEREPOROOT}/src
     test -e _build && rm -rf _build
     make html
