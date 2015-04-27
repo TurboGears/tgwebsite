@@ -28,7 +28,7 @@ function syncfolder() {
 
 function mkvenv() {
     NAME=$1
-    test -e ${VENVROOT}/${NAME} || virtualenv --setuptools --no-site-packages ${VENVROOT}/${NAME}
+    test -e ${VENVROOT}/${NAME} || (virtualenv --setuptools --no-site-packages ${VENVROOT}/${NAME} && easy_install -U setuptools pip)
 }
 
 function venvon() {
@@ -86,7 +86,7 @@ function workinit() {
 function makesitehtml() {
     mkvenv sitebuild
     venvon sitebuild
-    pip install --upgrade 'sphinx==1.2.3'
+    pip install --upgrade 'sphinx==1.2.3' unicodecsv
     cd ${SITEREPOROOT}/src
     test -e _build && rm -rf _build
     make html
