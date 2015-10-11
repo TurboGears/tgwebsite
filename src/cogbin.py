@@ -127,7 +127,6 @@ def getPackageList(options):
 
     def _fetch_last_update(result):
         proxy = xmlrpclib.ServerProxy(options.url)
-        uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
         try:
             release_urls = proxy.release_urls(result['name'], result['version'])
         except:
@@ -135,11 +134,15 @@ def getPackageList(options):
             print_exc()
             return
 
+        uploaded = None
         for url in release_urls:
             utime = url['upload_time']
             if utime:
                 uploaded = utime.timetuple()
             uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
+
+        if uploaded is None:
+            return
 
         try:
             release_data = proxy.release_data(result['name'], result['version'])
