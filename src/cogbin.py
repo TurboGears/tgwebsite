@@ -18,26 +18,23 @@ from traceback import print_exc
 # not being thread safe
 datetime.datetime.strptime("1970-01-01 01:01:01.01", "%Y-%m-%d %H:%M:%S.%f")
 
+
+BASE_KEYWORD = 'turbogears2'
 categories = {
-#    "Applications": {'keywords':"turbogears.app"},
-#    "Widgets": {'keywords':"turbogears.widgets"},
-#    "Template Engine Plugins": {'keywords':"python.templating.engines"},
-#    "Quickstart Templates": {'keywords':"turbogears.quickstart.template"},
-#    "Extension Components": {'keywords':"turbogears.extension"},
-#    "Identity Providers": {'keywords':"turbogears.identity.provider"},
-#    "tg-admin Commands": {'keywords':"turbogears.command"},
-#    "ToscaWidgets": {'keywords':"toscawidgets.widgets"},
-#    "Toolbox Plugins": {'keywords':"turbogears.toolboxcommand"},
-    "TurboGears2": {'keywords': "turbogears2"},
-    "TurboGears2 Applications": {'keywords': "turbogears2.application"},
-    "TurboGears2 Widgets": {'keywords': "turbogears2.widgets"},
-    "TurboGears2 Command": {'keywords': "turbogears2.command"},
-    "TurboGears2 Extension": {'keywords': "turbogears2.extension"},
+    "Applications": {'keyword': "turbogears2.application"},
+    "Extensions": {'keyword': "turbogears2.extension"},
+    "Widgets": {'keyword': "turbogears2.widgets"},
+    "Commands": {'keyword': "turbogears2.command"},
 }
 
-nontg = sorted(filter(lambda x: not categories[x]['keywords'].startswith('turbogears'), categories.keys()))
-tg1 = sorted(filter(lambda x: categories[x]['keywords'].startswith('turbogears.'), categories.keys()))
-tg2 = sorted(filter(lambda x: categories[x]['keywords'].startswith('turbogears2.'), categories.keys()))
+tg2 = [
+    'Applications',
+    'Extensions',
+    'Widgets',
+    'Commands',
+    'Uncategorized'
+]
+
 
 class UTF8Recoder:
     """
@@ -51,6 +48,7 @@ class UTF8Recoder:
 
     def next(self):
         return self.reader.next().encode("utf-8")
+
 
 class UnicodeWriter:
     """
@@ -80,14 +78,16 @@ class UnicodeWriter:
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
-            
+
+
 def genKeywordsToc(options, title, keywordlist):
     output = []
     output.append('`%s`_' % title)
     for catname in keywordlist:
         output.append('  `%s`_' % (catname))
-        output.append('    Add ``keywords="%s"`` to your setup.py before uploading to `Python Package Index`_' % (categories[catname]['keywords']))
+        output.append('    Add ``keyword="%s"`` to your setup.py before uploading to `Python Package Index`_' % (categories.get(catname, {'keyword':''})['keyword']))
     return "\n".join(output)
+
 
 def genPackages(options, title, keywordlist, cogs):
     output = []
@@ -98,9 +98,9 @@ def genPackages(options, title, keywordlist, cogs):
     for catname in keywordlist:
         output.append('  .. _`%s`:' % (catname))
         output.append('')
-        output.append('  %s (keywords: %s) (Back To Top of `The Cogbin`_)' % (catname, categories[catname]['keywords']))
+        output.append('  %s (keyword: %s) (Back To Top of `The Cogbin`_)' % (catname, categories.get(catname, {'keyword':''})['keyword']))
 
-        if len(cogs[catname].keys()) > 0:
+        if catname in cogs and len(cogs[catname].keys()) > 0:
             outio = StringIO()
             out = UnicodeWriter(outio)
             for pname in sorted(cogs[catname].keys()):
@@ -122,9 +122,10 @@ def genPackages(options, title, keywordlist, cogs):
 
 
 def getPackageList(options):
+    packages = []
     cogs = {}
 
-    def _fetch_last_update(category, result):
+    def _fetch_last_update(result):
         proxy = xmlrpclib.ServerProxy(options.url)
         uploaded = datetime.datetime(1970, 1, 1, 0, 0, 0).timetuple()
         try:
@@ -139,37 +140,56 @@ def getPackageList(options):
             if utime:
                 uploaded = utime.timetuple()
             uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
-        cogs[category][result['name']] = {
-                    'version': result['version'],
-                    'summary': result['summary'],
-                    'uploaded': uploaded
-        }
 
-    def _fetch_category_data(category):
+        try:
+            release_data = proxy.release_data(result['name'], result['version'])
+        except:
+            print 'Failed to fetch release data for %s' % result['name']
+            print_exc()
+            return
+
+        keywords = release_data.get('keywords', '')
+        keywords_list = keywords.split()
+        if len(keywords_list) == 1:
+            keywords_list = keywords.split(',')
+
+        packages.append({
+            'name': result['name'],
+            'version': result['version'],
+            'summary': result['summary'],
+            'keywords': keywords_list,
+            'uploaded': uploaded
+        })
+
+    def _fetch_all_packages():
         proxy = xmlrpclib.ServerProxy(options.url)
-        if 'keywords' in categories[category]:
-            cogs.setdefault(category, {})
-            last_update_pool = ThreadPool(processes=10)
+        results = proxy.search({'keywords': BASE_KEYWORD})
 
-            keywords = categories[category]['keywords'].split(':')
-            for keyword in keywords:
-                try:
-                    results = proxy.search({'keywords': keyword})
-                except:
-                    print 'Failed to fetch data for keyword %s' % keyword
-                    print_exc()
-                    continue
+        last_update_pool = ThreadPool(processes=10)
+        if results:
+            last_update_pool.map(_fetch_last_update, results)
 
-                if results:
-                    last_update_pool.map(lambda result:_fetch_last_update(category, result), results)
 
-    category_pool = ThreadPool(processes=10)
-    category_pool.map(_fetch_category_data, categories)
-            
+    def _allot_categories(packages):
+        while packages:
+            package_data = packages.pop()
+
+            for category_name, category_data in categories.items():
+                keyword = category_data['keyword']
+                if keyword in package_data['keywords']:
+                    cogs.setdefault(category_name, {})[package_data['name']] = package_data
+                    break
+            else:
+                cogs.setdefault('Uncategorized',{})[package_data['name']] = package_data
+
+    _fetch_all_packages()
+    _allot_categories(packages)
     return cogs
+
 
 class CogBinOptions(object):
     url = 'https://pypi.python.org/pypi'
+
 
 def _get_cogbin_data():
     options = CogBinOptions()
@@ -179,6 +199,7 @@ def _get_cogbin_data():
     output.extend(genPackages(options, "TurboGears 2 Packages", tg2, cogs).split('\n'))
     output.append('')
     return output
+
 
 class CogBinDirective(Directive):
     def run(self):
@@ -200,15 +221,3 @@ if __name__ == '__main__':
     """ Mostly for testing pourpose """
     print '\n'.join(_get_cogbin_data())
 
-
-"""
-    output = []
-    output.append(genKeywordsToc(options, 'TurboGears 2 Packages', tg2))
-    output.append(genKeywordsToc(options, 'TurboGears 1 Packages', tg1))
-    output.append(genKeywordsToc(options, 'Non-TurboGears (but important) Packages', nontg))
-    output.append('')
-    output.append(genPackages(options, "TurboGears 2 Packages", tg2, cogs))
-    output.append(genPackages(options, "TurboGears 1 Packages", tg1, cogs))
-    output.append(genPackages(options, "Non-TurboGears (but important) Packages", nontg, cogs))
-    output.append('')
-""" 
