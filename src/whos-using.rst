@@ -9,13 +9,12 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `Kamisons`_ - South Indian and Arab eCommerce
 * `PyF`_ - Flow based Python programming framework with web gui for drag'n'drop graphic development
 * `Moksha`_ - Web framework that aims to simplify the creation of highly-interactive realtime web applications
-* `TavolaClandestina`_ - High Quality Italian Food eCommerce
 * `The Voice of Turkey`_ - Website of the Turkish version of "The Voice" contest
+* `PyJobsFR` - French Job Board for Python Developers
+* `StreetViewIndia`_ - Website to enjoy views of India from your own room
 * `Rosenberg NMS`_ - A Network Management System which detects devices and services and uses TurboGears 2 to provide a web ui.
 * `1000 Corks`_ - A wine comparison / shopping site
 * `OrcaTec LLC`_ - Making eDiscovery products for litigation support
-* `Glossom`_ - Fashion Oriented Social Network
-* `Toro.it`_ - Community website of a major Italian Soccer Team
 * `Noodle NG`_ - A web search engine for local smb/cifs network shares (Windows/Samba). 
 * `Soda`_ put TurboGears under the hood of Amnesty International's `Irrepressible.info`_ campaign website promoting freedom on the internet. The site was recently featured in the `Observer`_ and `Slashdotted`_.
 * `ShowMeDo`_ aggregates Python programming (and other) training videos on one site.
@@ -23,11 +22,17 @@ This is just the beginnings of the list, covering the recent names we have seen.
 * `Bisque`_  is an advanced image database and analysis system for biological 5D images. It supports large scale image databases, flexible experimental data management, metadata and content based search, analysis integration and knowledge discovery.
 * `IMH`_ - A meal planning website (daily/weekly/monthly/etc. meal schedule, recipe repository, and shopping list generator, plus an inexhaustible list of related features) called {Insert Meal Here}.
 * `Tracim`_ is a collaborative software designed to allow people to share and work on various data and document types.
+* `PandNCeramics`_ Ceramics eCommerce
+* `KeralaBookFestival`_ Kerala Book Festival
+
 
 As we've said above, this list is far from complete. As it stands, this is just the people we've noticed so far for one reason or another. If you want to have your site listed here, tell us what you do with TG (use our Google Groups), and we'll add it.
 
+.. _PyJobsFR: http://pyjobs.fr/
+.. _StreetViewIndia: http://www.streetviewindia.com/
+.. _KeralaBookFestival: http://www.bookfestkochi.org/
+.. _PandNCeramics: http://www.panceramics.com/
 .. _Rosenberg NMS : https://rnms.org/
-.. _TavolaClandestina: http://www.tavolaclandestina.com/
 .. _Kamisons: http://www.umbrellasatkasmisons.com/
 .. _SourceForge: http://sourceforge.net/p/allura
 .. _Fedora Community: https://admin.fedoraproject.org/community/
@@ -36,10 +41,7 @@ As we've said above, this list is far from complete. As it stands, this is just 
 .. _ACR CMS: http://acrcms.readthedocs.org/
 .. _Moksha: https://fedorahosted.org/moksha/
 .. _1000 Corks: http://1000corks.com/
-.. _Glossom: http://www.glossom.com/
 .. _The Voice of Turkey: http://www.osesturkiye.com/
-.. _AxantWeb: http://www.axantweb.com/
-.. _Toro.it: http://www.toro.it/
 .. _Noodle NG: https://code.google.com/p/noodle-ng/
 .. _DiggDot: http://diggdot.us/
 .. _Diggdot.us: http://diggdot.us/
