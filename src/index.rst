@@ -68,17 +68,17 @@ Get started Learning TurboGears 2 by looking at `Documentation`_ and our famous 
 .. _`Overview`: welcome/overview.html
 .. _`Presentations`: welcome/presentations.html
 .. _`The TurboGears Way`: welcome/turbogears-way.html
-.. _`Documentation`: http://turbogears.readthedocs.org/en/latest/
-.. _`microframework`: http://turbogears.readthedocs.org/en/latest/index.html#single-file-application
-.. _`fullstack`: http://turbogears.readthedocs.org/en/latest/index.html#full-stack-projects
-.. _`as natural as writing a function`: http://turbogears.readthedocs.org/en/latest/turbogears/wiki20.html#controller-code
+.. _`Documentation`: http://turbogears.readthedocs.io/en/latest/
+.. _`microframework`: http://turbogears.readthedocs.io/en/latest/index.html#single-file-application
+.. _`fullstack`: http://turbogears.readthedocs.io/en/latest/index.html#full-stack-projects
+.. _`as natural as writing a function`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html#controller-code
 .. _`Designer friendly template system`: http://genshi.edgewall.org/
 .. _`AJAX`: http://en.wikipedia.org/wiki/AJAX
-.. _`Pluggable Applications`: http://turbogears.readthedocs.org/en/latest/turbogears/Pluggable/index.html
+.. _`Pluggable Applications`: http://turbogears.readthedocs.io/en/latest/turbogears/Pluggable/index.html
 .. _`widget system`: http://www.toscawidgets.org/
-.. _`multi-database support`: http://turbogears.readthedocs.org/en/latest/cookbook/master-slave.html
+.. _`multi-database support`: http://turbogears.readthedocs.io/en/latest/cookbook/master-slave.html
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
-.. _`wiki tutorial`: http://turbogears.readthedocs.org/en/latest/turbogears/wiki20.html
+.. _`wiki tutorial`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html
 .. _`Google+`: https://plus.google.com/115723575598932631951
 .. _`Runnable`: http://runnable.com/Unq2c2CaTc52AAAm/basic-turbogears-example-for-python
 
