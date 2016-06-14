@@ -17,6 +17,11 @@ body {
     color: #404040;
 }
 
+.inline {
+    display: inline;
+    vartical-align: middle;
+}
+
 p {
     margin: 20px 0 20px 0;
 }
@@ -187,12 +192,29 @@ pre {
     margin-left: 10px;
 }
 
-#the-web-framework-that-scales-with-you > .simple li:before {
+#start-small .highlight-python pre>span {
+    opacity: 0.7;
+}
+
+#start-small .highlight-python pre>span.hll {
+    opacity: 1.0;
+    background-color: transparent;
+}
+
+#feature-complete-and-flexible > .simple {
+    margin-bottom: 30px;
+}
+
+#feature-complete-and-flexible > .simple li:before {
     content: '*';
     font-size: 22px;
     color: black;
     margin-right: 10px;
     vertical-align: middle;
+}
+
+#feature-complete-and-flexible {
+    margin-top: 30px;
 }
 
 #turbogears-presentations iframe {
