@@ -10,7 +10,7 @@ All of these frameworks had limitations that frustrated us, and TG2 was built as
 Start Small
 ===========
 
-TurboGears can start as a single file app through it's `minimal mode`_ setup:
+TurboGears can start as a single file app through its `minimal mode`_ setup:
 
 .. code-block:: python
    :emphasize-lines: 4-7
