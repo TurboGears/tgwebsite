@@ -36,18 +36,18 @@ which you can then run on Python itself:
    $ pip install TurboGears2
    $ python myapp.py
 
-Scale to a FullStack Solution
-=============================
+Or Scale to a FullStack Solution
+================================
 
-Or can scale to a `full stack solution`_ for more complex applications
-using its `devtools`:
+TurboGears can scale to a `full stack solution`_ for more complex
+applications using TurboGears `devtools`:
 
 .. code-block:: bash
 
    $ pip install tg.devtools
    $ gearbox quickstart myproj
 
-The newly create `myproj` can then be started with the **Gearbox** toolchain:
+The newly created `myproj` application can be started with the **Gearbox** toolchain:
 
 .. code-block:: bash
 
