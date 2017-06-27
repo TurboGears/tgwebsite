@@ -23,7 +23,7 @@ Questions and support requests, or plain discussion about TurboGears can be
 addressed on the TurboGears `end user`_ mailing list, while discussions about
 future development of the framework happens on the `development`_ list.
 
-Finally, we also have an `irc channel`_.
+Finally, we also have a `gitter channel`_.
 
 As you can see, we're on a lot of places. We hope to see you on one of them!
 
@@ -65,4 +65,4 @@ for their everyday work:
 .. _`Google+`: https://plus.google.com/115723575598932631951
 .. _`development`: http://groups.google.com/group/turbogears-trunk
 .. _`end user`: http://groups.google.com/group/turbogears
-.. _`irc channel`: irc://irc.freenode.net/turbogears
+.. _`gitter channel`: https://gitter.im/turbogears/Lobby

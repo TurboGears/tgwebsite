@@ -9,7 +9,7 @@ For doing more, please review the `TurboGears Documentation`_.
 
     |tgdocs| `TurboGears Documentation`_
 
-    |tutorials| `CheatSheet`_ and `Poster`_
+    |tutorials| `CheatSheet`_
 
 We have several older versions of TurboGears, and we continue to support all of them.
 As such, we also have several older versions of the documentation.
@@ -25,8 +25,7 @@ As such, we also have several older versions of the documentation.
 .. |tutorials| image:: _static/images/tutorials.png
 .. _`TurboGears Documentation`: http://turbogears.readthedocs.io/
 .. _`Installation`: http://turbogears.readthedocs.io/en/latest/turbogears/install.html
-.. _`CheatSheet`: http://unstable.tg.gy/EP2012/Cheatsheet.pdf
-.. _`Poster`: http://unstable.tg.gy/EP2012/Poster.pdf
+.. _`CheatSheet`: http://www.turbogears.org/EP2012/Cheatsheet.pdf
 .. _`2.2 Documentation`: https://turbogears.readthedocs.io/en/rtfd2.2.2/
 .. _`2.2 Installation`: http://turbogears.readthedocs.io/en/rtfd2.2.2/main/DownloadInstall.html
 .. _`2.1 Documentation`: http://www.turbogears.org/2.1/docs/
