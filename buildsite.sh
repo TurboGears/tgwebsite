@@ -172,6 +172,7 @@ function maketg2docbranch() {
 
 function syncstaticfiles() {
     rsync -a ${SITEREPOROOT}/static/google4bdb33412f144140.html ${WORK}/
+    rsync -a ${SITEREPOROOT}/static/EP2012 ${WORK}/
 }
 
 function cleanup() {
