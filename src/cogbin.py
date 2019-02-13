@@ -130,16 +130,13 @@ def getPackageList(options):
         try:
             release_urls = proxy.release_urls(result['name'], result['version'])
         except:
-            print 'Failed to fetch release urls for %s' % result['name']
+            print('Failed to fetch release urls for %s' % result['name'])
             print_exc()
             return
 
         uploaded = None
         for url in release_urls:
-            utime = url['upload_time']
-            if utime:
-                uploaded = utime.timetuple()
-            uploaded = '%04d-%02d-%02d' % (uploaded.tm_year, uploaded.tm_mon, uploaded.tm_mday)
+            uploaded = url['upload_time'][:10]
 
         if uploaded is None:
             return
@@ -147,7 +144,7 @@ def getPackageList(options):
         try:
             release_data = proxy.release_data(result['name'], result['version'])
         except:
-            print 'Failed to fetch release data for %s' % result['name']
+            print('Failed to fetch release data for %s' % result['name'])
             print_exc()
             return
 
@@ -222,5 +219,5 @@ def setup(app):
 
 if __name__ == '__main__':
     """ Mostly for testing pourpose """
-    print '\n'.join(_get_cogbin_data())
+    print('\n'.join(_get_cogbin_data()))
 

@@ -2,13 +2,9 @@
 Project Status
 ########################
 
-TurboGears was first released in 2005. Due to that age, TurboGears has always had two branches of development
-for a lot of time. We recommend new projects start on TurboGears2 which is the currently actively under development
-branch of TurboGears.
+Latest stable release: 2.4.0a1 - released November 5, 2018
 
-Latest stable release: 2.3.12 - released April 6, 2018
-
-Release announcement available at: https://github.com/TurboGears/tg2/releases/tag/tg2.3.12
+Release announcement available at: https://plus.google.com/+turbogears/posts/dpZs1B44aE1
 
 ***************************
 Contributing to TurboGears
@@ -36,12 +32,12 @@ To create your development environment you can perform:
 
 .. code-block:: bash
 
-   virtualenv --no-site-packages ${HOME}/tg2env
+   virtualenv ${HOME}/tg2env
    source ${HOME}/tg2env/bin/activate
    git clone git@github.com:TurboGears/tg2.git
    cd tg2
    git checkout development
-   python setup.py develop
+   pip install -e .[testing]
 
 .. _`TG2.x Core (Git)`: https://github.com/TurboGears/tg2
 .. _`TG2.x Devtools (Git)`: https://github.com/TurboGears/tg2devtools

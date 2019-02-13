@@ -13,19 +13,26 @@ Start Small
 TurboGears can start as a single file app through its `minimal mode`_ setup:
 
 .. code-block:: python
-   :emphasize-lines: 4-7
+   :emphasize-lines: 6-9
 
     from wsgiref.simple_server import make_server
-    from tg import expose, TGController, AppConfig
+    from tg import MinimalApplicationConfigurator
+    from tg import expose, TGController
 
+    # RootController of our web app, in charge of serving content for /
     class RootController(TGController):
-         @expose()
-         def index(self):
-             return "<h1>Hello World</h1>"
+        @expose(content_type="text/plain")
+        def index(self):
+            return 'Hello World'
 
-    config = AppConfig(minimal=True, root_controller=RootController())
+    # Configure a new minimal application with our root controller.
+    config = MinimalApplicationConfigurator()
+    config.update_blueprint({
+        'root_controller': RootController()
+    })
 
-    print "Serving on port 8080..."
+    # Serve the newly configured web application.
+    print("Serving on port 8080...")
     httpd = make_server('', 8080, config.make_wsgi_app())
     httpd.serve_forever()
 
@@ -44,7 +51,7 @@ applications using TurboGears `devtools`:
 
 .. code-block:: bash
 
-   $ pip install tg.devtools
+   $ pip install --pre tg.devtools
    $ gearbox quickstart myproj
 
 The newly created `myproj` application can be started with the **Gearbox** toolchain:
@@ -75,13 +82,12 @@ Feature Complete and Flexible
 
 .. rst-class:: inline
 
-   or follow TurboGears on `Google+`_ for the latest news!
+   or follow TurboGears on `Twitter`_ for the latest news!
 
 Give It a Try
 =============
 
-| TurboGears 2 works on Python 2.6, 2.7, 3.2, 3.3 and 3.4.
-| Try it now, in your browser, using `Runnable`_
+TurboGears 2 works on Python 2.7, 3.4, 3.5, 3.6 and 3.7.
 
 Or set it up in a `virtual environment`_ on your machine:
 
@@ -116,7 +122,7 @@ Get started Learning TurboGears 2 by looking at `Documentation`_ and our famous 
 .. _`multi-database support`: http://turbogears.readthedocs.io/en/latest/cookbook/master-slave.html
 .. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
 .. _`wiki tutorial`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html
-.. _`Google+`: https://plus.google.com/115723575598932631951
+.. _`Twitter`: https://twitter.com/turbogearsorg
 .. _`Runnable`: http://runnable.com/Unq2c2CaTc52AAAm/basic-turbogears-example-for-python
 
 .. toctree::
