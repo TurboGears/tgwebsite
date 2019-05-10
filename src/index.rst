@@ -40,7 +40,7 @@ which you can then run on Python itself:
 
 .. code-block:: bash
 
-   $ pip install --pre TurboGears2
+   $ pip install TurboGears2
    $ python myapp.py
 
 Or Scale to a FullStack Solution
@@ -51,7 +51,7 @@ applications using TurboGears `devtools`:
 
 .. code-block:: bash
 
-   $ pip install --pre tg.devtools
+   $ pip install tg.devtools
    $ gearbox quickstart myproj
 
 The newly created `myproj` application can be started with the **Gearbox** toolchain:
@@ -96,7 +96,7 @@ Or set it up in a `virtual environment`_ on your machine:
    $ virtualenv --no-site-packages tg2env
    $ cd tg2env/
    $ source bin/activate
-   (tg2env)$ pip install --pre tg.devtools
+   (tg2env)$ pip install tg.devtools
 
    (tg2env)$ gearbox quickstart example
    (tg2env)$ cd example/
