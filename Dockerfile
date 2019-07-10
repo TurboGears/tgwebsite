@@ -1,6 +1,6 @@
 FROM debian:buster-slim as pybase
 RUN apt update && \
-    apt install -y git make python python-pip python3 python3-pip rsync subversion && \
+    apt install -y git make python python-pip subversion && \
     apt clean
 
 FROM pybase as sphinx2
