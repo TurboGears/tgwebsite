@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tgsite-svc
+  labels:
+    app: tgsite
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      nodePort: 30003
+      protocol: TCP
+  selector:
+    app: tgsite
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tgsite
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tgsite
+  minReadySeconds: 60
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: tgsite
+    spec:
+      containers:
+        - name: tgsite
+          image: spectralhawke/tgsite
+          ports:
+            - containerPort: 80

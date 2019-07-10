@@ -1,0 +1,17 @@
+apiVersion: skaffold/v1beta12
+kind: Config
+build:
+  artifacts:
+  - image: spectralhawke/tgsite
+deploy:
+  kubectl:
+    manifests:
+    - dev.yml
+profiles:
+- name: prod
+  activation:
+    - kubeContext: do-nyc3-icelus-k8s-do-ny3
+  deploy:
+    kubectl:
+      manifests:
+      - prod.yml
