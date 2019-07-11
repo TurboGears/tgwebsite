@@ -11,6 +11,11 @@ profiles:
 - name: prod
   activation:
     - kubeContext: do-nyc3-icelus-k8s-do-ny3
+  build:
+    tagPolicy:
+      dateTime:
+        format: "2006-01-02_15-04-05.999_MST"
+        timezone: "GMT"
   deploy:
     kubectl:
       manifests:
