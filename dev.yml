@@ -29,6 +29,6 @@ spec:
     spec:
       containers:
         - name: tgsite
-          image: spectralhawke/tgsite
+          image: turbogears/tgsite
           ports:
             - containerPort: 80

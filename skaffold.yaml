@@ -2,7 +2,7 @@ apiVersion: skaffold/v1beta13
 kind: Config
 build:
   artifacts:
-  - image: spectralhawke/tgsite
+  - image: turbogears/tgsite
 deploy:
   kubectl:
     manifests:
