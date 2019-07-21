@@ -109,3 +109,4 @@ COPY --chown=nobody:nogroup                 ./static/2.0/downloads /usr/share/ng
 COPY --chown=nobody:nogroup                 ./static/2.1/downloads /usr/share/nginx/html/2.1/downloads
 COPY --chown=nobody:nogroup                 ./static/2.2/downloads /usr/share/nginx/html/2.2/downloads
 COPY --chown=nobody:nogroup                 ./static/2.3/downloads /usr/share/nginx/html/2.3/downloads
+COPY --chown=nobody:nogroup                 ./static/cogbin.html /usr/share/nginx/html/cogbin.html

@@ -1,0 +1,500 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Cogbin &mdash; TurboGears2 Website 3.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/tg.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '3.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/header.js"></script>
+    <link rel="top" title="TurboGears2 Website 3.0 documentation" href="index.html" />
+    <link rel="next" title="Overview" href="welcome/overview.html" />
+    <link rel="prev" title="Community and Consulting" href="resources.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  
+    <style type="text/css">
+    div.document, div.footer { margin-left:0; margin-right: 0; }
+    </style>
+
+
+  </head>
+  <body>
+  
+<div id="menu">
+  <div id="menuline"></div>
+  <ul id="mainmenu">
+    <li class="first "><a href="index.html">Welcome</a></li>
+    <li class=""><a href="features.html">Features</a></li>
+    <li class=""><a href="documentation.html">Documentation</a></li>
+    <li class=""><a href="resources.html">Community</a></li>
+    <li class=""><a href="whos-using.html">Who's Using It?</a></li>
+    <li class=""><a href="current-status.html">Project Status & Contributing</a></li>
+    <li class="active"><a href="#">The CogBin</a></li>
+  </ul>
+</div>
+
+<div id="headerbox">
+  <a href="https://github.com/TurboGears">
+    <img id="github-flag" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub">
+  </a>
+
+  <div id="header">
+    <div id="downloadbox">
+      Current: <a id="curversion"
+                  href="#">2.4.0</a><br/>
+      <div id="installcmd">
+        <strong>$</strong> pip install tg.devtools
+      </div>
+    </div>
+
+    <h1>TurboGears</h1>
+    <h2>The Cogbin</h2>
+
+    <div id="gplusdata" style="min-height: 15px;">
+      <a href="https://gitter.im/turbogears/Lobby"><img src="https://img.shields.io/gitter/room/turbogears/Lobby.svg?style=flat"/></a>
+
+      <a href="https://twitter.com/turbogearsorg" class="twitter-follow-button" data-show-count="false">Follow @turbogearsorg</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+      <div id="gitbtn" style="display: inline">
+        <iframe src="http://ghbtns.com/github-btn.html?user=TurboGears&repo=tg2&type=watch&count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+      </div>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+</div>
+
+
+
+
+    <div class="document">
+  <div class="documentwrapper">
+    <div class="body headerfix">
+      
+  <div class="section" id="the-cogbin">
+<span id="cogbintop"></span><h1>The Cogbin<a class="headerlink" href="#the-cogbin" title="Permalink to this headline">¶</a></h1>
+<p>When you quickstart a TurboGears project, the setup.py file already contains the metadata you need. It&#8217;s just commented out. Choose the right keywords for the kind of project you&#8217;re releasing, and you&#8217;re all set.</p>
+<p>TurboGears packages added to the <a class="reference external" href="http://pypi.python.org/">Python Package Index</a> will automatically appear in the CogBin!</p>
+<p>The table below has the keywords you should use as well:</p>
+<dl class="docutils" id="turbogears-2-packages">
+<dt>TurboGears 2 Packages</dt>
+<dd><dl class="first docutils" id="applications">
+<dt>Applications (keyword: turbogears2.application) (Back To Top of <a class="reference internal" href="#the-cogbin">The Cogbin</a>)</dt>
+<dd><table border="1" class="colwidths-given first last docutils">
+<colgroup>
+<col width="17%" />
+<col width="60%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Project Name</th>
+<th class="head">Summary</th>
+<th class="head">Version</th>
+<th class="head">Uploaded</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/acr/0.3.6">acr</a></td>
+<td>ACRCms is an open source Python web content management system based on Turbogears and libacr</td>
+<td>0.3.6</td>
+<td>2011-12-24</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/cogbin/0.2.11dev">cogbin</a></td>
+<td>Cogbin is a webtool that sync with pypi, it retrives metadata from it and displays the categories you set up in its web interface. It is running for turbogears2 with turbogears2 categories by default but these can be adjusted at any time. Install it, modify the categories, deploy and you have a list of packages for your software community.</td>
+<td>0.2.11dev</td>
+<td>2009-03-07</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/stroller/0.5.1">stroller</a></td>
+<td>E-commerce Application and Library for TurboGears2</td>
+<td>0.5.1</td>
+<td>2015-03-18</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/switchboard-tg2/0.3">switchboard-tg2</a></td>
+<td>UNKNOWN</td>
+<td>0.3</td>
+<td>2013-03-20</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-activitystream/0.1.0">tgapp-activitystream</a></td>
+<td>Pluggable for create a simple activity stream.</td>
+<td>0.1.0</td>
+<td>2018-03-22</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-calendarevents/0.2.0">tgapp-calendarevents</a></td>
+<td>TurboGears2 pluggable application for events and calendars</td>
+<td>0.2.0</td>
+<td>2015-10-01</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-categories/0.2.3">tgapp-categories</a></td>
+<td>categories management system for web applications in turbogears2</td>
+<td>0.2.3</td>
+<td>2018-02-08</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-contactform/0.0.3">tgapp-contactform</a></td>
+<td>tgapp-contactform is a Pluggable application for TurboGears2 that shows a simple contact form.</td>
+<td>0.0.3</td>
+<td>2016-07-10</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-fbauth/0.3.2">tgapp-fbauth</a></td>
+<td>Facebook Authentication for TurboGears2</td>
+<td>0.3.2</td>
+<td>2018-03-07</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-flatpages/0.3.1">tgapp-flatpages</a></td>
+<td>Pluggable application to manage static pages (/about) on DB (sqlalchemy or ming) with RST or html</td>
+<td>0.3.1</td>
+<td>2018-02-19</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-googlePlusAuth/0.0.4">tgapp-googlePlusAuth</a></td>
+<td>Google Authentication for TurboGears2</td>
+<td>0.0.4</td>
+<td>2018-03-08</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-invitations/0.2.6">tgapp-invitations</a></td>
+<td>Provides a way to invite new users into a TurboGears2 application</td>
+<td>0.2.6</td>
+<td>2018-02-22</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-mailtemplates/0.13.3">tgapp-mailtemplates</a></td>
+<td>Email template management for web applications</td>
+<td>0.13.3</td>
+<td>2018-03-29</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-permissions/0.3.1">tgapp-permissions</a></td>
+<td>Permission management for web application in turbogears2</td>
+<td>0.3.1</td>
+<td>2018-02-08</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-photos/0.3.0">tgapp-photos</a></td>
+<td>Minimal Pluggable Photogallery for TurboGears2, EasyCrudRestController based for management</td>
+<td>0.3.0</td>
+<td>2016-07-19</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-placeholder/1.0.1">tgapp-placeholder</a></td>
+<td>Placeholder image on the fly for Turbogears2</td>
+<td>1.0.1</td>
+<td>2018-03-29</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-registration/0.9.0">tgapp-registration</a></td>
+<td>Pluggable registration application for TurboGears2 with hooks for fine customization</td>
+<td>0.9.0</td>
+<td>2017-10-12</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-resetpassword/0.2.3">tgapp-resetpassword</a></td>
+<td>Pluggable application for TurboGears2 that permits to change user password or reset it when lost, with sqla and ming compatibility</td>
+<td>0.2.3</td>
+<td>2018-02-06</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-samlauth/0.0.2">tgapp-samlauth</a></td>
+<td>Pluggable application for TurboGears2 to authenticate users against an SAML2 Identity Provider</td>
+<td>0.0.2</td>
+<td>2015-10-19</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-smallpress/0.6.2">tgapp-smallpress</a></td>
+<td>Pluggable Minimalistic Blog for TurboGears2 with Attachments and Tags</td>
+<td>0.6.2</td>
+<td>2013-08-22</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-tgcomments/0.2.3">tgapp-tgcomments</a></td>
+<td>TurboGears2 pluggable application for comments to entities with facebook sharing</td>
+<td>0.2.3</td>
+<td>2018-04-03</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-tgpolls/0.0.6">tgapp-tgpolls</a></td>
+<td>TurboGears2 pluggable application to handle simple polls</td>
+<td>0.0.6</td>
+<td>2012-11-26</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-turbopress/0.0.5">tgapp-turbopress</a></td>
+<td>Pluggable Blog for TurboGears2 supporting SQLAlchemy and MongoDB</td>
+<td>0.0.5</td>
+<td>2016-07-10</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-userprofile/0.3.3">tgapp-userprofile</a></td>
+<td>Pluggable application for TurboGears2 which provides a basic user profile page with forms to allow users to edit their own profile or change their password</td>
+<td>0.3.3</td>
+<td>2018-03-28</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-userprofile-validated/0.0.4">tgapp-userprofile-validated</a></td>
+<td>Pluggable application for TurboGears2 which provides a basic user profile page with forms to allow users to edit their own profile or change their password</td>
+<td>0.0.4</td>
+<td>2018-02-06</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgapp-youtubevideo/0.0.3">tgapp-youtubevideo</a></td>
+<td>Provides a pluggable youtube video gallery in TurboGears applications and provides a way to filter them by tags.</td>
+<td>0.0.3</td>
+<td>2013-11-28</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="docutils" id="extensions">
+<dt>Extensions (keyword: turbogears2.extension) (Back To Top of <a class="reference internal" href="#the-cogbin">The Cogbin</a>)</dt>
+<dd><table border="1" class="colwidths-given first last docutils">
+<colgroup>
+<col width="17%" />
+<col width="60%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Project Name</th>
+<th class="head">Summary</th>
+<th class="head">Version</th>
+<th class="head">Uploaded</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/libacr/0.9a1">libacr</a></td>
+<td>TurboGears2 Content Management Framework</td>
+<td>0.9a1</td>
+<td>2013-03-06</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.admin/0.7.4">tgext.admin</a></td>
+<td>Admin Controller add-on for basic TG identity model.</td>
+<td>0.7.4</td>
+<td>2016-09-11</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.ajaxforms/0.3.2">tgext.ajaxforms</a></td>
+<td>Makes easier to create AJAX forms in TurboGears2</td>
+<td>0.3.2</td>
+<td>2016-09-21</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.asyncjob/0.3.1">tgext.asyncjob</a></td>
+<td>Asynchronous jobs worker for TurboGears2</td>
+<td>0.3.1</td>
+<td>2014-10-31</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.browserlimit/0.1.2">tgext.browserlimit</a></td>
+<td>High Level Browser Detection Middleware for Turbogears 2, limits access to website only for modern browsers</td>
+<td>0.1.2</td>
+<td>2013-12-06</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.celery/0.1.1">tgext.celery</a></td>
+<td>&nbsp;</td>
+<td>0.1.1</td>
+<td>2018-03-30</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.chameleon_genshi/0.0.1">tgext.chameleon_genshi</a></td>
+<td>Chameleon Genshi rendering engine for TurboGears2</td>
+<td>0.0.1</td>
+<td>2014-03-03</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.coffeescript/0.3.1">tgext.coffeescript</a></td>
+<td>CoffeeScript middleware for TurboGears2</td>
+<td>0.3.1</td>
+<td>2012-03-29</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.crud/0.8.2">tgext.crud</a></td>
+<td>Crud Controller Extension for TG2</td>
+<td>0.8.2</td>
+<td>2016-02-01</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.datahelpers/0.2.0">tgext.datahelpers</a></td>
+<td>Helpers to manage data and attachments on TurboGears</td>
+<td>0.2.0</td>
+<td>2013-12-11</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.djangoforms/0.0.1">tgext.djangoforms</a></td>
+<td>Allows you to use django forms with turbogears</td>
+<td>0.0.1</td>
+<td>2011-11-24</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.evolve/0.0.4">tgext.evolve</a></td>
+<td>Manages automatic updates and evolutions which are better suited outside schema migrations</td>
+<td>0.0.4</td>
+<td>2017-10-23</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.langdomain/0.0.1">tgext.langdomain</a></td>
+<td>TurboGears2 extension for detecting user language from the domain</td>
+<td>0.0.1</td>
+<td>2015-04-20</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.less/0.3.1">tgext.less</a></td>
+<td>LESS middleware for TurboGears2</td>
+<td>0.3.1</td>
+<td>2012-03-29</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.mailer/0.2.0">tgext.mailer</a></td>
+<td>TurboGears extension for sending emails with transaction manager integration</td>
+<td>0.2.0</td>
+<td>2017-02-05</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.matplotrender/0.0.1">tgext.matplotrender</a></td>
+<td>Renderer to expose matplotlib figures</td>
+<td>0.0.1</td>
+<td>2016-06-06</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.minify/0.0.2">tgext.minify</a></td>
+<td>CSS and JS minifier / obfuscator for TurboGears 2</td>
+<td>0.0.2</td>
+<td>2012-06-01</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.mobilemiddleware/0.4">tgext.mobilemiddleware</a></td>
+<td>Mobile Middleware utilities for Turbogears 2 detects mobile browsers</td>
+<td>0.4</td>
+<td>2013-01-17</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.odt/0.3">tgext.odt</a></td>
+<td>tgext.odt is a Pluggable application for TurboGears2 that allows the rendering of .odt (openoffice/libreoffice) documents as an output templates.</td>
+<td>0.3</td>
+<td>2018-02-07</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.pluggable/0.7.2">tgext.pluggable</a></td>
+<td>Plug applications and extensions in a TurboGears2 project</td>
+<td>0.7.2</td>
+<td>2018-02-06</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.routes/0.2.0">tgext.routes</a></td>
+<td>Routes based dispatching for TurboGears2</td>
+<td>0.2.0</td>
+<td>2016-09-18</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.scss/0.4.3">tgext.scss</a></td>
+<td>SCSS for TurboGears2, fast middleware to use SCSS for all your CSS</td>
+<td>0.4.3</td>
+<td>2014-03-19</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.socketio/0.0.3">tgext.socketio</a></td>
+<td>SocketIO support for TurboGears through gevent-socketio</td>
+<td>0.0.3</td>
+<td>2017-08-25</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.tagging/0.3.0">tgext.tagging</a></td>
+<td>Tagging support for TurboGears2 applications</td>
+<td>0.3.0</td>
+<td>2014-12-09</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.utils/0.0.3">tgext.utils</a></td>
+<td>Collection of utilities for TurboGears2</td>
+<td>0.0.3</td>
+<td>2017-12-05</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.wdb/0.0.1">tgext.wdb</a></td>
+<td>WDB - Web Debugger support for TurboGears2</td>
+<td>0.0.1</td>
+<td>2014-03-03</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.webassets/0.0.2">tgext.webassets</a></td>
+<td>assets management extension for TurboGears2</td>
+<td>0.0.2</td>
+<td>2015-04-10</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgming/0.0.8">tgming</a></td>
+<td>TurboGears2 Support for Ming MongoDB ORM</td>
+<td>0.0.8</td>
+<td>2013-02-13</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="docutils" id="widgets">
+<dt>Widgets (keyword: turbogears2.widgets) (Back To Top of <a class="reference internal" href="#the-cogbin">The Cogbin</a>)</dt>
+<dd><table border="1" class="colwidths-given first last docutils">
+<colgroup>
+<col width="17%" />
+<col width="60%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Project Name</th>
+<th class="head">Summary</th>
+<th class="head">Version</th>
+<th class="head">Uploaded</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.debugbar/0.3.0">tgext.debugbar</a></td>
+<td>Provides debug toolbar for TurboGears2</td>
+<td>0.3.0</td>
+<td>2016-08-11</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/tgext.menu/1.0rc3">tgext.menu</a></td>
+<td>Automatic menu/navbar/sidebar generation extension for TurboGears</td>
+<td>1.0rc3</td>
+<td>2012-04-27</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="docutils" id="commands">
+<dt>Commands (keyword: turbogears2.command) (Back To Top of <a class="reference internal" href="#the-cogbin">The Cogbin</a>)</dt>
+<dd>No packages uploaded yet. You can be the first!</dd>
+</dl>
+<dl class="last docutils" id="uncategorized">
+<dt>Uncategorized (keyword: ) (Back To Top of <a class="reference internal" href="#the-cogbin">The Cogbin</a>)</dt>
+<dd><table border="1" class="colwidths-given first last docutils">
+<colgroup>
+<col width="17%" />
+<col width="60%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Project Name</th>
+<th class="head">Summary</th>
+<th class="head">Version</th>
+<th class="head">Uploaded</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://pypi.python.org/pypi/EasyWidgets/0.2dev-20150922">EasyWidgets</a></td>
+<td>A minimalistic approach to HTML generation and validation with TurboGears</td>
+<td>0.2dev-20150922</td>
+<td>2015-09-22</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pypi.python.org/pypi/TurboGears2Frozen/2.2.0">TurboGears2Frozen</a></td>
+<td>Reference this rather than Turbogears2 as a dependency to get a consistent install with your TG2 project</td>
+<td>2.2.0</td>
+<td>2012-08-29</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+
+
+    </div>
+  </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer"><span>
+      &copy; Copyright 
+      by the <a href="">TurboGears2 Website</a> Doc Team.
+  </span></div>
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("UA-7088080-2");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+  </body>
+</html>
