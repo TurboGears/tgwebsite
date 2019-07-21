@@ -1,4 +1,4 @@
-apiVersion: skaffold/v1beta12
+apiVersion: skaffold/v1beta13
 kind: Config
 build:
   artifacts:
@@ -14,8 +14,8 @@ profiles:
   build:
     tagPolicy:
       dateTime:
-        format: "2006-01-02_15-04-05.999_MST"
-        timezone: "GMT"
+        format: 2006-01-02_15-04-05.999_MST
+        timezone: GMT
   deploy:
     kubectl:
       manifests:
