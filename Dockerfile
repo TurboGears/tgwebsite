@@ -110,3 +110,4 @@ COPY --chown=nobody:nogroup                 ./static/2.1/downloads /usr/share/ng
 COPY --chown=nobody:nogroup                 ./static/2.2/downloads /usr/share/nginx/html/2.2/downloads
 COPY --chown=nobody:nogroup                 ./static/2.3/downloads /usr/share/nginx/html/2.3/downloads
 COPY --chown=nobody:nogroup                 ./static/cogbin.html /usr/share/nginx/html/cogbin.html
+COPY --chown=root:root                      ./nginx/default.conf /etc/nginx/conf.d/default.conf
