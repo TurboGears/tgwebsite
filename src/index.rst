@@ -78,7 +78,7 @@ Feature Complete and Flexible
 
 .. raw:: html
 
-   <iframe src="http://ghbtns.com/github-btn.html?user=TurboGears&repo=tg2&type=watch&count=true&size=large"  width="140" height="35" style="display:inline;vertical-align:middle;margin-top:8px;border: none"></iframe>
+   <iframe src="https://ghbtns.com/github-btn.html?user=TurboGears&repo=tg2&type=watch&count=true&size=large"  width="140" height="35" style="display:inline;vertical-align:middle;margin-top:8px;border: none"></iframe>
 
 .. rst-class:: inline
 
