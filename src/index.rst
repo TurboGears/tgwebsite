@@ -87,7 +87,7 @@ Feature Complete and Flexible
 Give It a Try
 =============
 
-TurboGears 2 works on Python 2.7, 3.4, 3.5, 3.6 and 3.7.
+TurboGears 2 works on Python 2.7, 3.4, 3.5, 3.6, 3.7 and 3.8.
 
 Or set it up in a `virtual environment`_ on your machine:
 
