@@ -2,9 +2,9 @@
 Project Status
 ########################
 
-Latest stable release: 2.4.3 - released March 1, 2020
+Latest stable release: 2.5.0 — released February 18, 2025
 
-Release announcement available at: https://github.com/TurboGears/tg2/releases/tag/tg2.4.3
+Release announcement available at: https://github.com/TurboGears/tg2/releases/tag/tg2.5.0
 
 ***************************
 Contributing to TurboGears

@@ -1,0 +1,4 @@
+# Dependencies to build the Sphinx documentation
+# Sphinx 7 works with these docs and local extensions
+sphinx>=4,<8
+requests>=2.31

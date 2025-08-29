@@ -174,6 +174,10 @@ body {
 .sidebar+.section>blockquote {
     margin-left: 260px;
 }
+/* Sphinx 7+ uses <section> instead of .section */
+.sidebar+section {
+    margin-left: 260px;
+}
 
 pre {
     padding: 7px 30px;
@@ -192,6 +196,21 @@ pre {
     margin-left: 10px;
 }
 
+/* Restore bullets for content lists inside sections (reset.css removes them) */
+.body section ul.simple {
+    list-style: disc;
+    margin-left: 1.5em;
+    padding-left: 0.5em;
+    list-style-position: outside;
+}
+
+.body section ol.simple {
+    list-style: decimal;
+    margin-left: 1.5em;
+    padding-left: 0.5em;
+    list-style-position: outside;
+}
+
 #start-small .highlight-python pre>span {
     opacity: 0.7;
 }
@@ -203,18 +222,47 @@ pre {
 
 #feature-complete-and-flexible > .simple {
     margin-bottom: 30px;
+    list-style: disc;
+    margin-left: 1.5em;
 }
 
-#feature-complete-and-flexible > .simple li:before {
-    content: '*';
-    font-size: 22px;
-    color: black;
-    margin-right: 10px;
-    vertical-align: middle;
+#feature-complete-and-flexible > .simple li {
+    list-style: inherit;
 }
 
 #feature-complete-and-flexible {
     margin-top: 30px;
+}
+
+/* Pull-quote styling (used in The Turbogears Way) */
+.body section blockquote.pull-quote {
+    border-left: 4px solid {{ theme_secondarycolor }};
+    background-color: #f7f7f7;
+    padding: 10px 15px;
+    margin: 1.2em 2em;
+    font-style: italic;
+}
+
+.body section blockquote.pull-quote p {
+    margin: 0.4em 0;
+}
+
+.body section blockquote.pull-quote p:first-child:before {
+    content: '\201C'; /* “ */
+    font-size: 2.2em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: {{ theme_primarycolor }};
+    margin-right: 6px;
+}
+
+.body section blockquote.pull-quote p:last-child:after {
+    content: '\201D'; /* ” */
+    font-size: 2.2em;
+    line-height: 0;
+    vertical-align: -0.4em;
+    color: {{ theme_primarycolor }};
+    margin-left: 6px;
 }
 
 #turbogears-presentations iframe {

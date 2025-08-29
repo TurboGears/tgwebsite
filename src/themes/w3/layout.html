@@ -25,7 +25,7 @@
   <div id="header">
     <div id="downloadbox">
       Current: <a id="curversion"
-                  href="#">2.4.3</a><br/>
+                  href="https://github.com/TurboGears/tg2/releases/tag/tg2.5.0">2.5.0</a><br/>
       <div id="installcmd">
         <strong>$</strong> pip install tg.devtools
       </div>
@@ -131,3 +131,6 @@
 {% if theme_headerheight %}
 {% set script_files = script_files + ['_static/header.js'] %}
 {% endif %}
+
+{# Ensure jQuery loads before any theme scripts that use it #}
+{% set script_files = ['https://code.jquery.com/jquery-1.12.4.min.js'] + script_files %}

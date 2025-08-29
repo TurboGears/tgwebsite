@@ -5,14 +5,18 @@ from docutils.parsers.rst import Directive, directives
 
 from sphinx.util.nodes import nested_parse_with_titles
 
-import codecs
 import datetime
-import xmlrpclib
-import unicodecsv
+import re
+import socket
+import requests
+import csv
 from multiprocessing.pool import ThreadPool
 
-from cStringIO import StringIO
+from io import StringIO
 from traceback import print_exc
+
+# Network timeout for XML-RPC calls during build
+socket.setdefaulttimeout(10)
 
 # Force import of strptime in main thread, this is a work-around for strptime
 # not being thread safe
@@ -36,48 +40,18 @@ tg2 = [
 ]
 
 
-class UTF8Recoder:
-    """
-    Iterator that reads an encoded stream and reencodes the input to UTF-8
-    """
-    def __init__(self, f, encoding):
-        self.reader = codecs.getreader(encoding)(f)
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        return self.reader.next().encode("utf-8")
-
-
 class UnicodeWriter:
-    """
-    A CSV writer which will write rows to CSV file "f",
-    which is encoded in the given encoding.
-    """
+    """Minimal CSV writer for Python 3 using csv + StringIO."""
 
-    def __init__(self, f, dialect=unicodecsv.excel, encoding="utf-8", **kwds):
-        # Redirect output to a queue
-        self.queue = StringIO()
-        self.writer = unicodecsv.writer(self.queue, dialect=dialect, **kwds)
-        self.stream = f
-        self.encoder = codecs.getincrementalencoder(encoding)()
+    def __init__(self):
+        self.buffer = StringIO()
+        self.writer = csv.writer(self.buffer)
 
     def writerow(self, row):
-        self.writer.writerow([str(s).encode("utf-8") for s in row])
-        # Fetch UTF-8 output from the queue ...
-        data = self.queue.getvalue()
-        data = data.decode("utf-8")
-        # ... and reencode it into the target encoding
-        data = self.encoder.encode(data)
-        # write to the target stream
-        self.stream.write(data)
-        # empty queue
-        self.queue.truncate(0)
+        self.writer.writerow([str(s) for s in row])
 
-    def writerows(self, rows):
-        for row in rows:
-            self.writerow(row)
+    def getvalue(self):
+        return self.buffer.getvalue()
 
 
 def genKeywordsToc(options, title, keywordlist):
@@ -95,19 +69,25 @@ def genPackages(options, title, keywordlist, cogs):
     output.append('.. _`%s`:' % (title))
     output.append('')
     output.append(title)
+    output.append('')
+    if not cogs:
+        output.append('.. note::')
+        output.append('   Unable to fetch CogBin data from PyPI at build time (offline or network error).')
+        output.append('   Categories are shown below without package entries.')
+        output.append('')
     for catname in keywordlist:
         output.append('  .. _`%s`:' % (catname))
         output.append('')
         output.append('  %s (keyword: %s) (Back To Top of `The Cogbin`_)' % (catname, categories.get(catname, {'keyword':''})['keyword']))
 
         if catname in cogs and len(cogs[catname].keys()) > 0:
-            outio = StringIO()
-            out = UnicodeWriter(outio)
+            out = UnicodeWriter()
             for pname in sorted(cogs[catname].keys()):
                 prgent = cogs[catname][pname]
-                url = '%s/%s/%s' % (options.url, pname, prgent['version'])
+                # Link to the PyPI project page (not the XML-RPC endpoint)
+                url = 'https://pypi.org/project/%s/%s/' % (pname, prgent['version'])
                 out.writerow(['`%s <%s>`_' % (pname, url), prgent['summary'], prgent['version'], prgent['uploaded']])
-            rows = outio.getvalue().split('\n')
+            rows = out.getvalue().split('\n')
             rows = ['       %s' % (row) for row in rows]
             output.append('    .. csv-table::')
             output.append('       :header: "Project Name", "Summary", "Version", "Uploaded"')
@@ -124,50 +104,160 @@ def genPackages(options, title, keywordlist, cogs):
 def getPackageList(options):
     packages = []
     cogs = {}
+    selected_url = None
 
-    def _fetch_last_update(result):
-        proxy = xmlrpclib.ServerProxy(options.url)
+    def _add_package_from_json(name):
         try:
-            release_urls = proxy.release_urls(result['name'], result['version'])
-        except:
-            print('Failed to fetch release urls for %s' % result['name'])
+            resp = requests.get(f'https://pypi.org/pypi/{name}/json', timeout=10)
+            if resp.status_code != 200:
+                return
+            data = resp.json()
+        except Exception:
+            print(f'Failed to fetch JSON for {name}')
             print_exc()
             return
 
-        uploaded = None
-        for url in release_urls:
-            uploaded = url['upload_time'][:10]
+        info = data.get('info', {})
+        version = info.get('version') or ''
+        summary = info.get('summary') or ''
+        keywords = info.get('keywords') or ''
+        classifiers = info.get('classifiers') or []
+        if isinstance(keywords, list):
+            keywords_list = keywords
+        else:
+            # split on comma or whitespace
+            parts = re.split(r'[\s,]+', keywords.strip()) if isinstance(keywords, str) else []
+            keywords_list = [p for p in parts if p]
 
-        if uploaded is None:
-            return
-
+        uploaded = ''
         try:
-            release_data = proxy.release_data(result['name'], result['version'])
-        except:
-            print('Failed to fetch release data for %s' % result['name'])
-            print_exc()
-            return
-
-        keywords = release_data.get('keywords', '')
-        keywords_list = keywords.split()
-        if len(keywords_list) == 1:
-            keywords_list = keywords.split(',')
+            files = data.get('releases', {}).get(version, [])
+            if files:
+                up = files[0].get('upload_time_iso_8601') or files[0].get('upload_time')
+                if up:
+                    uploaded = up[:10]
+        except Exception:
+            pass
 
         packages.append({
-            'name': result['name'],
-            'version': result['version'],
-            'summary': result['summary'],
+            'name': name,
+            'version': version,
+            'summary': summary,
             'keywords': keywords_list,
-            'uploaded': uploaded
+            'uploaded': uploaded,
+            'classifiers': classifiers,
         })
 
-    def _fetch_all_packages():
-        proxy = xmlrpclib.ServerProxy(options.url)
-        results = proxy.search({'keywords': BASE_KEYWORD})
+    def _discover_project_names():
+        names = set()
+        # 1) Trove classifiers
+        classifiers = [
+            'Framework :: TurboGears',
+            'Framework :: TurboGears :: 2',
+        ]
+        for c in classifiers:
+            for page in range(1, 11):
+                try:
+                    resp = requests.get('https://pypi.org/search/', params={'q': '', 'c': c, 'page': page}, timeout=10)
+                except Exception:
+                    print('Failed to fetch PyPI search page for classifier')
+                    print_exc()
+                    break
+                if resp.status_code != 200 or 'No projects found' in resp.text:
+                    break
+                for m in re.findall(r'/project/([A-Za-z0-9_.\-]+)/', resp.text):
+                    names.add(m)
 
-        last_update_pool = ThreadPool(processes=10)
-        if results:
-            last_update_pool.map(_fetch_last_update, results)
+        # 2) Free text queries likely to hit TG packages
+        queries = [
+            ('tgext', 15), ('tgext.', 15),
+            ('tgapp', 15), ('tgapp.', 15),
+            ('turbogears', 10), ('turbogears2', 10),
+        ]
+        for q, max_pages in queries:
+            for page in range(1, max_pages + 1):
+                try:
+                    resp = requests.get('https://pypi.org/search/', params={'q': q, 'page': page}, timeout=10)
+                except Exception:
+                    print('Failed to fetch PyPI search page for query')
+                    print_exc()
+                    break
+                if resp.status_code != 200 or 'No projects found' in resp.text:
+                    break
+                for m in re.findall(r'/project/([A-Za-z0-9_.\-]+)/', resp.text):
+                    names.add(m)
+
+        # 3) Heuristic seeds to ensure we show something
+        seeds = ['TurboGears2', 'tg.devtools', 'tgext.admin']
+        names.update(seeds)
+        # Debug logging removed after validation
+        return names
+
+    def _discover_from_simple_index():
+        names = set()
+        try:
+            resp = requests.get('https://pypi.org/simple/', timeout=20)
+            if resp.status_code != 200:
+                return names
+            # Extract project anchors: <a href='/simple/<name>/'>
+            for m in re.findall(r"/simple/([A-Za-z0-9_.\-]+)/", resp.text):
+                nm = m.lower()
+                if nm.startswith('tgext') or nm.startswith('tgapp') or nm.startswith('turbogears') or nm.startswith('tg'):
+                    names.add(m)
+        except Exception:
+            print('CogBin: failed to fetch/parse simple index')
+            print_exc()
+        # Debug logging removed after validation
+        return names
+
+    def _is_tg_related(name, info):
+        nm = name.lower()
+        if nm.startswith('tgext-') or nm.startswith('tgext.'):
+            return True
+        if nm.startswith('tgapp-') or nm.startswith('tgapp.'):
+            return True
+        summary = (info.get('summary') or '').lower()
+        kw_val = info.get('keywords')
+        if isinstance(kw_val, list):
+            kw_list = [str(k).lower() for k in kw_val]
+        else:
+            kw_list = [k for k in re.split(r'[\s,]+', (kw_val or '')) if k]
+            kw_list = [k.lower() for k in kw_list]
+        kws = ' '.join(kw_list)
+        # Respect metadata keywords like turbogears2, turbogears2.extension, etc.
+        if 'turbogears' in summary:
+            return True
+        if any(k == 'turbogears2' or k.startswith('turbogears2.') for k in kw_list):
+            return True
+        if 'turbogears' in kws:
+            return True
+        classifiers = [c.lower() for c in info.get('classifiers', [])]
+        if any('turbogears' in c for c in classifiers):
+            return True
+        return False
+
+    def _fetch_all_packages():
+        names = _discover_project_names()
+        if len(names) < 20:
+            names |= _discover_from_simple_index()
+        # Prefilter by common TG markers in project name
+        names = {n for n in names if any(k in n.lower() for k in ('tgext', 'tgapp', 'turbogears'))}
+        # Fetch JSON for discovered names and keep only TG-related
+        pool = ThreadPool(processes=10)
+        for n in list(names):
+            pool.apply_async(_add_package_from_json, (n,))
+        pool.close()
+        pool.join()
+        # Debug logging removed after validation
+        # Filter to TG related
+        filtered = []
+        for pkg in packages:
+            # Reconstruct minimal info dict for filter
+            info = {'summary': pkg.get('summary'), 'keywords': pkg.get('keywords'), 'classifiers': pkg.get('classifiers', [])}
+            if _is_tg_related(pkg['name'], info):
+                filtered.append(pkg)
+        packages[:] = filtered
+        # Debug logging removed after validation
 
 
     def _allot_categories(packages):
@@ -180,7 +270,16 @@ def getPackageList(options):
                     cogs.setdefault(category_name, {})[package_data['name']] = package_data
                     break
             else:
-                cogs.setdefault('Uncategorized',{})[package_data['name']] = package_data
+                # Heuristic categorization by name
+                n = package_data['name'].lower()
+                if n.startswith('tgapp-') or n.startswith('tgapp.'):
+                    cogs.setdefault('Applications', {})[package_data['name']] = package_data
+                elif n.startswith('tgext-') or n.startswith('tgext.'):
+                    cogs.setdefault('Extensions', {})[package_data['name']] = package_data
+                elif 'widget' in n or n.startswith('tw2'):
+                    cogs.setdefault('Widgets', {})[package_data['name']] = package_data
+                else:
+                    cogs.setdefault('Uncategorized',{})[package_data['name']] = package_data
 
     _fetch_all_packages()
     _allot_categories(packages)
@@ -188,7 +287,11 @@ def getPackageList(options):
 
 
 class CogBinOptions(object):
-    url = 'https://pypi.python.org/pypi'
+    # Try legacy then modern PyPI XML-RPC endpoints
+    endpoints = [
+        'https://pypi.python.org/pypi',
+        'https://pypi.org/pypi',
+    ]
 
 
 def _get_cogbin_data():
@@ -220,4 +323,3 @@ def setup(app):
 if __name__ == '__main__':
     """ Mostly for testing pourpose """
     print('\n'.join(_get_cogbin_data()))
-
