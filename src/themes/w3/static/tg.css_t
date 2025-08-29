@@ -157,7 +157,7 @@ body {
 }
 
 .sidebar li {
-    padding: 8px;
+    padding: 0;
 }
 
 .sidebar li > a {
@@ -175,8 +175,14 @@ body {
     margin-left: 260px;
 }
 /* Sphinx 7+ uses <section> instead of .section */
-.sidebar+section {
+/* Offset only the lead title/paragraph next to the sidebar */
+.sidebar+section > h1,
+.sidebar+section > p {
     margin-left: 260px;
+}
+/* Ensure following nested sections start below the floated sidebar */
+.sidebar+section > section {
+    clear: left;
 }
 
 pre {
