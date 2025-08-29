@@ -15,7 +15,7 @@ from multiprocessing.pool import ThreadPool
 from io import StringIO
 from traceback import print_exc
 
-# Network timeout for XML-RPC calls during build
+# Network timeout for HTTP calls during build
 socket.setdefaulttimeout(10)
 
 # Force import of strptime in main thread, this is a work-around for strptime
@@ -54,16 +54,7 @@ class UnicodeWriter:
         return self.buffer.getvalue()
 
 
-def genKeywordsToc(options, title, keywordlist):
-    output = []
-    output.append('`%s`_' % title)
-    for catname in keywordlist:
-        output.append('  `%s`_' % (catname))
-        output.append('    Add ``keyword="%s"`` to your setup.py before uploading to `Python Package Index`_' % (categories.get(catname, {'keyword':''})['keyword']))
-    return "\n".join(output)
-
-
-def genPackages(options, title, keywordlist, cogs):
+def genPackages(title, keywordlist, cogs):
     output = []
 
     output.append('.. _`%s`:' % (title))
@@ -101,10 +92,9 @@ def genPackages(options, title, keywordlist, cogs):
     return "\n".join(output)
 
 
-def getPackageList(options):
+def getPackageList():
     packages = []
     cogs = {}
-    selected_url = None
 
     def _add_package_from_json(name):
         try:
@@ -187,9 +177,7 @@ def getPackageList(options):
                 for m in re.findall(r'/project/([A-Za-z0-9_.\-]+)/', resp.text):
                     names.add(m)
 
-        # 3) Heuristic seeds to ensure we show something
-        seeds = ['TurboGears2', 'tg.devtools', 'tgext.admin']
-        names.update(seeds)
+        # No seeding: rely entirely on discovery mechanisms
         # Debug logging removed after validation
         return names
 
@@ -211,37 +199,20 @@ def getPackageList(options):
         return names
 
     def _is_tg_related(name, info):
-        nm = name.lower()
-        if nm.startswith('tgext-') or nm.startswith('tgext.'):
-            return True
-        if nm.startswith('tgapp-') or nm.startswith('tgapp.'):
-            return True
-        summary = (info.get('summary') or '').lower()
+        # Strict: include only if keywords contain 'turbogears2' or 'turbogears2.*'
         kw_val = info.get('keywords')
         if isinstance(kw_val, list):
             kw_list = [str(k).lower() for k in kw_val]
         else:
             kw_list = [k for k in re.split(r'[\s,]+', (kw_val or '')) if k]
             kw_list = [k.lower() for k in kw_list]
-        kws = ' '.join(kw_list)
-        # Respect metadata keywords like turbogears2, turbogears2.extension, etc.
-        if 'turbogears' in summary:
-            return True
-        if any(k == 'turbogears2' or k.startswith('turbogears2.') for k in kw_list):
-            return True
-        if 'turbogears' in kws:
-            return True
-        classifiers = [c.lower() for c in info.get('classifiers', [])]
-        if any('turbogears' in c for c in classifiers):
-            return True
-        return False
+        return any(k == 'turbogears2' or k.startswith('turbogears2.') for k in kw_list)
 
     def _fetch_all_packages():
         names = _discover_project_names()
         if len(names) < 20:
             names |= _discover_from_simple_index()
-        # Prefilter by common TG markers in project name
-        names = {n for n in names if any(k in n.lower() for k in ('tgext', 'tgapp', 'turbogears'))}
+        # No name-based prefiltering; rely on keywords in package metadata
         # Fetch JSON for discovered names and keep only TG-related
         pool = ThreadPool(processes=10)
         for n in list(names):
@@ -270,36 +241,18 @@ def getPackageList(options):
                     cogs.setdefault(category_name, {})[package_data['name']] = package_data
                     break
             else:
-                # Heuristic categorization by name
-                n = package_data['name'].lower()
-                if n.startswith('tgapp-') or n.startswith('tgapp.'):
-                    cogs.setdefault('Applications', {})[package_data['name']] = package_data
-                elif n.startswith('tgext-') or n.startswith('tgext.'):
-                    cogs.setdefault('Extensions', {})[package_data['name']] = package_data
-                elif 'widget' in n or n.startswith('tw2'):
-                    cogs.setdefault('Widgets', {})[package_data['name']] = package_data
-                else:
-                    cogs.setdefault('Uncategorized',{})[package_data['name']] = package_data
+                cogs.setdefault('Uncategorized',{})[package_data['name']] = package_data
 
     _fetch_all_packages()
     _allot_categories(packages)
     return cogs
 
 
-class CogBinOptions(object):
-    # Try legacy then modern PyPI XML-RPC endpoints
-    endpoints = [
-        'https://pypi.python.org/pypi',
-        'https://pypi.org/pypi',
-    ]
-
-
 def _get_cogbin_data():
-    options = CogBinOptions()
-    cogs = getPackageList(options)
+    cogs = getPackageList()
 
     output = []
-    output.extend(genPackages(options, "TurboGears 2 Packages", tg2, cogs).split('\n'))
+    output.extend(genPackages("TurboGears 2 Packages", tg2, cogs).split('\n'))
     output.append('')
     return output
 

@@ -10,6 +10,22 @@ TurboGears packages added to the `Python Package Index`_ will automatically appe
 
 The table below has the keywords you should use as well:
 
+.. note::
+   To have your package discovered and listed here, declare one of the
+   following keywords in your package metadata on PyPI:
+
+   - ``turbogears2`` (general)
+   - ``turbogears2.application``
+   - ``turbogears2.extension``
+   - ``turbogears2.widgets``
+   - ``turbogears2.command``
+
+   Examples:
+
+   - ``pyproject.toml``: add under ``[project]`` → ``keywords = ["turbogears2.extension"]``
+   - ``setup.cfg``: add under ``[metadata]`` → ``keywords = turbogears2.extension``
+   - ``setup.py``: ``setup(keywords=["turbogears2.extension"])``
+
 .. cogbin::
     
 
