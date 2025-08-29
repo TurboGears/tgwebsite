@@ -160,7 +160,9 @@ body {
     padding: 0;
 }
 
-.sidebar li > a {
+.sidebar li > a,
+.sidebar a:link,
+.sidebar a:visited {
     color: {{theme_secondarycolor}};
 }
 
