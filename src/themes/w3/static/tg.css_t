@@ -161,7 +161,7 @@ body {
 
 .body {
     box-sizing: border-box;
-    max-width: 1150px;
+    max-width: 1070px;
     margin: auto;
     padding: 40px 24px;
 }
