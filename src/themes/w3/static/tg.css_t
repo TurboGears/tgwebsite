@@ -118,6 +118,33 @@ body {
     color: white;
 }
 
+#github-flag {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    opacity: 0.85;
+    z-index: 10;
+    transition: opacity 0.2s ease;
+}
+
+#github-flag:hover {
+    opacity: 1.0;
+}
+
+#gplusdata {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+}
+
+#gitbtn {
+    display: inline-flex;
+    align-items: center;
+}
+
 #header > .brand {
     grid-column: 1;
     grid-row: 1;
@@ -152,77 +179,82 @@ a:focus-visible {
     overflow-wrap: anywhere;
 }
 
-.sidebar-title{
-    display: none;
-}
-
-.body h1 {
-    font-size: clamp(30px, 3.2vw, 40px);
-    font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.25;
-    color: {{ theme_secondarycolor }};
-    margin-top: 0;
-    margin-bottom: 24px;
-}
-
-.body h2 {
-    font-size: 26px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.35;
-    color: #1e282c;
-    border-bottom: 1px solid #e2e8e8;
-    margin-top: 48px;
-    margin-bottom: 18px;
-    padding-bottom: 8px;
+.body:has(> .sidebar),
+.body:has(> aside.sidebar) {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
 }
 
 .sidebar {
-    width: 215px;
-    min-height: 130px;
-    float: left;
-    border-right: 1px solid #e5e5e5;
+    width: 220px;
+    flex-shrink: 0;
+    float: none;
+    border-right: 1px solid #e2e8e8;
+    padding-right: 16px;
+    margin: 0;
+    min-height: auto;
 }
 
-.sidebar li {
-    padding: 0;
-}
-
-.sidebar p {
-    margin: 10px 0;
-}
-
-.sidebar a {
+.sidebar p.sidebar-title {
     display: block;
-    padding: 4px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #5c686d;
+    margin: 0 0 10px 0;
+    padding: 0 8px;
 }
 
-.sidebar li > a,
-.sidebar a:link,
-.sidebar a:visited {
+.sidebar ul.simple {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.sidebar ul.simple li {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+}
+
+.sidebar ul.simple li p {
+    margin: 0 !important;
+}
+
+.sidebar ul.simple li a {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 14px;
     color: {{theme_secondarycolor}};
+    text-decoration: none;
 }
 
-.sidebar li:hover {
-    background-color: #f5f5f5;
+.sidebar ul.simple li a:hover {
+    background-color: #f0f5f4;
+    text-decoration: none;
 }
 
-.sidebar+.section>h1,
-.sidebar+.section>ul,
-.sidebar+.section>p,
-.sidebar+.section>blockquote,
-.sidebar+section>h1,
-.sidebar+section>ul,
-.sidebar+section>p,
-.sidebar+section>blockquote {
-    margin-left: 260px;
+.sidebar + section,
+.sidebar + .section {
+    flex: 1;
+    min-width: 0;
+    margin-left: 0 !important;
 }
 
-/* Nested sections start below the floated sidebar. */
-.sidebar+.section > .section,
-.sidebar+section > section {
-    clear: left;
+.sidebar + section > h1,
+.sidebar + section > p,
+.sidebar + .section > h1,
+.sidebar + .section > p {
+    margin-left: 0 !important;
+}
+
+/* Ensure sections inside main content do not drop under floated elements */
+.sidebar + section > section,
+.sidebar + .section > .section {
+    clear: none !important;
 }
 
 pre {
@@ -297,33 +329,43 @@ pre {
 .body section ul.simple,
 .body div.section ul.simple {
     list-style: disc;
-    margin-left: 1.6em;
-    margin-top: 0.8em;
-    margin-bottom: 1.2em;
-    padding-left: 0.4em;
+    margin-left: 1.5em;
+    margin-top: 0.4em;
+    margin-bottom: 0.9em;
+    padding-left: 0.2em;
     list-style-position: outside;
 }
 
 .body section ul.simple li,
 .body div.section ul.simple li {
-    margin-bottom: 0.5em;
-    line-height: 1.55;
+    margin-bottom: 0.25em;
+    line-height: 1.45;
+}
+
+.body section ul.simple li p,
+.body div.section ul.simple li p {
+    margin: 0;
 }
 
 .body section ol.simple,
 .body div.section ol.simple {
     list-style: decimal;
-    margin-left: 1.6em;
-    margin-top: 0.8em;
-    margin-bottom: 1.2em;
-    padding-left: 0.4em;
+    margin-left: 1.5em;
+    margin-top: 0.4em;
+    margin-bottom: 0.9em;
+    padding-left: 0.2em;
     list-style-position: outside;
 }
 
 .body section ol.simple li,
 .body div.section ol.simple li {
-    margin-bottom: 0.5em;
-    line-height: 1.55;
+    margin-bottom: 0.25em;
+    line-height: 1.45;
+}
+
+.body section ol.simple li p,
+.body div.section ol.simple li p {
+    margin: 0;
 }
 
 #start-small .highlight-python pre>span {
@@ -453,6 +495,7 @@ pre {
 }
 
 @media only screen and (max-width: 640px) {
+    #github-flag { display: none; }
     #mainmenu > li > a { padding: 10px; font-size: 15px; }
     #header {
         background-size: 64px auto;
@@ -464,7 +507,10 @@ pre {
     #header > .brand { font-size: 36px; margin-left: 80px; }
     #header > .subtitle { font-size: 18px; margin-left: 80px; }
     #downloadbox { padding: 8px 12px; line-height: 1.4; justify-self: stretch; }
+    #gplusdata { margin-top: 8px; flex-wrap: wrap; }
     .body { padding: 16px; }
+    .body:has(> .sidebar),
+    .body:has(> aside.sidebar) { display: block; }
     .body h1 { margin-bottom: 16px; }
     .body .quicklinks ul.simple { gap: 8px; }
     .body .quicklinks li { flex-basis: calc(50% - 4px); }
