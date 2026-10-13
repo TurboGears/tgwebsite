@@ -1,149 +1,102 @@
-.. include:: welcome/sidebar.rst
+#########################################################
+The Web Framework that scales with you and your agent
+#########################################################
 
-#######################################
-The Web Framework that scales with you.
-#######################################
+.. container:: quicklinks
 
-TurboGears 2 is built on top of the experience of several next generation web frameworks including TurboGears 1 (of course), Django, and Rails.
-All of these frameworks had limitations that frustrated us, and TG2 was built as an answer to that frustration:
+   - `Start minimal <https://turbogears.readthedocs.io/en/latest/turbogears/minimal/index.html>`_
+   - `Create an API server <https://github.com/TurboGears/tg2docs/blob/tg2.5.1/docs/turbogears/api.rst>`_
+   - `Make webapps in minutes <https://turbogears.readthedocs.io/en/latest/turbogears/gearbox.html#quickstart>`_
+   - `Work with your agents <https://github.com/TurboGears/tg2docs/blob/tg2.5.1/docs/turbogears/agent-tooling.rst>`_
+
+TurboGears is a Python web framework for single-file services, JSON APIs
+(application programming interfaces) and database-backed web applications.
+Start with a small application; add controllers, templates, persistence and
+authentication as your application's needs grow. Use Python 3.10 or newer in
+a virtual environment. The API and agent links above open the 2.5.1
+documentation on GitHub.
 
 Start Small
 ===========
 
-TurboGears can start as a single file app through its `minimal mode`_ setup:
+Save this minimal-mode application as ``myapp.py``. Its root controller
+serves the home page; ``expose`` makes the method available over HTTP.
 
 .. code-block:: python
-   :emphasize-lines: 6-9
+   :emphasize-lines: 5-8
 
-    from wsgiref.simple_server import make_server
-    from tg import MinimalApplicationConfigurator
-    from tg import expose, TGController
+   from wsgiref.simple_server import make_server
+   from tg import MinimalApplicationConfigurator
+   from tg import expose, TGController
 
-    # RootController of our web app, in charge of serving content for /
-    class RootController(TGController):
-        @expose(content_type="text/plain")
-        def index(self):
-            return 'Hello World'
+   class RootController(TGController):
+       @expose(content_type="text/plain")
+       def index(self):
+           return 'Hello World'
 
-    # Configure a new minimal application with our root controller.
-    config = MinimalApplicationConfigurator()
-    config.update_blueprint({
-        'root_controller': RootController()
-    })
+   config = MinimalApplicationConfigurator()
+   config.update_blueprint({
+       'root_controller': RootController()
+   })
 
-    # Serve the newly configured web application.
-    print("Serving on port 8080...")
-    httpd = make_server('', 8080, config.make_wsgi_app())
-    httpd.serve_forever()
+   print("Serving on port 8080...")
+   httpd = make_server('', 8080, config.make_wsgi_app())
+   httpd.serve_forever()
 
-which you can then run on Python itself:
+Install TurboGears and run it, then open http://localhost:8080/:
 
 .. code-block:: bash
 
-   $ pip install TurboGears2
-   $ python myapp.py
+   python -m pip install TurboGears2
+   python myapp.py
 
-Or Scale to a FullStack Solution
+Grow to a Full-Stack Application
 ================================
 
-TurboGears can scale to a `full stack solution`_ for more complex
-applications using TurboGears `devtools`:
+When you need a structured project, ``tg.devtools`` provides Gearbox, the
+command-line development toolkit. Its web application quickstart generates
+controllers, templates, authentication and SQLAlchemy database models.
+The setup command below intentionally initializes the development database,
+including demo data; it is not a read-only check.
 
 .. code-block:: bash
 
-   $ pip install tg.devtools
-   $ gearbox quickstart myproj
+   python -m pip install tg.devtools
+   gearbox quickstart myproj
+   cd myproj
+   python -m pip install -e '.[development]'
+   gearbox setup-app -c development.ini
+   gearbox serve -c development.ini
 
-The newly created `myproj` application can be started with the **Gearbox** toolchain:
+Open http://localhost:8080/ and follow the generated ``README.rst`` to replace
+the demo with your application. For a JSON API instead, start with
+``gearbox quickstart-api myapi`` and the GitHub API guide linked above.
 
-.. code-block:: bash
+Work with Your Agents
+=====================
 
-   $ cd myproj
-   $ pip install -e .
-   $ gearbox serve
+Coding assistants can use the quickstart's ``AGENTS.md`` project instructions
+and optional skills (Markdown guidance for development). ``tginfo`` inspects
+project structure, ``scaffold`` creates conventional project files, and
+``tgshell`` runs checks in the application context. These tools help with
+development; they are not AI features or dependencies of your running app.
 
-#############################
-Feature Complete and Flexible
-#############################
-
-
-* Starts as a `microframework`_ and scales up to a `fullstack`_ solution
-* Code that is `as natural as writing a function`_
-* A powerful and flexible `Object Relational Mapper (ORM)`_ with real `multi-database support`_
-* Support for Horizontal data partitioning (aka, sharding)
-* A new `widget system`_ to make building `AJAX`_ heavy apps easier
-* Support for multiple data-exchange formats
-* Built in extensibility `Pluggable Applications`_ and standard WSGI components
-* `Designer friendly template system`_ great for programmers
-
-.. raw:: html
-
-   <iframe src="https://ghbtns.com/github-btn.html?user=TurboGears&repo=tg2&type=watch&count=true&size=large"  width="140" height="35" style="display:inline;vertical-align:middle;margin-top:8px;border: none"></iframe>
-
-.. rst-class:: inline
-
-   or follow TurboGears on `Twitter`_ for the latest news!
-
-Give It a Try
-=============
-
-TurboGears 2 works on Python 2.7, 3.4, 3.5, 3.6, 3.7 and 3.8.
-
-Or set it up in a `virtual environment`_ on your machine:
+From the installed project's root, inspect it or add skills to an existing
+project:
 
 .. code-block:: bash
 
-   $ virtualenv --no-site-packages tg2env
-   $ cd tg2env/
-   $ source bin/activate
-   (tg2env)$ pip install tg.devtools
+   gearbox tginfo summary --project . --config development.ini --json
+   gearbox tgskills
 
-   (tg2env)$ gearbox quickstart example
-   (tg2env)$ cd example/
-   (tg2env)$ pip install -e .
-   (tg2env)$ gearbox serve
-
-Get started Learning TurboGears 2 by looking at `Documentation`_ and our famous `wiki tutorial`_.
-
-.. _`minimal mode`: http://turbogears.readthedocs.io/en/latest/turbogears/minimal/index.html
-.. _`full stack solution`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html
-.. _`virtual environment`: https://virtualenv.pypa.io/en/stable/
-.. _`Overview`: welcome/overview.html
-.. _`Presentations`: welcome/presentations.html
-.. _`The TurboGears Way`: welcome/turbogears-way.html
-.. _`Documentation`: http://turbogears.readthedocs.io/en/latest/
-.. _`microframework`: http://turbogears.readthedocs.io/en/latest/index.html#single-file-application
-.. _`fullstack`: http://turbogears.readthedocs.io/en/latest/index.html#full-stack-projects
-.. _`as natural as writing a function`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html#controller-code
-.. _`Designer friendly template system`: http://genshi.edgewall.org/
-.. _`AJAX`: http://en.wikipedia.org/wiki/AJAX
-.. _`Pluggable Applications`: http://turbogears.readthedocs.io/en/latest/turbogears/Pluggable/index.html
-.. _`widget system`: http://www.toscawidgets.org/
-.. _`multi-database support`: http://turbogears.readthedocs.io/en/latest/cookbook/master-slave.html
-.. _`Object Relational Mapper (ORM)`: http://www.sqlalchemy.org/
-.. _`wiki tutorial`: http://turbogears.readthedocs.io/en/latest/turbogears/wiki20.html
-.. _`Twitter`: https://twitter.com/turbogearsorg
-.. _`Runnable`: http://runnable.com/Unq2c2CaTc52AAAm/basic-turbogears-example-for-python
+``tginfo`` is read-only, but importing application code can run startup side
+effects. Read ``AGENTS.md``, review changes and run the project's tests;
+only run database setup or migrations when you intend to change that database.
 
 .. toctree::
    :hidden:
-   
-   /index
+
    /current-status
    /documentation
    /features
    /resources
-   /cogbin
-   /welcome/overview
-   /welcome/presentations
-   /welcome/turbogears-way
-   /whos-using
-   /features/components
-   /features/deep-sidebar
-   /features/reuse
-   /features/shallow-sidebar
-   /features/wsgi
-   /features/components/genshi
-   /features/components/mako
-   /features/components/pylons
-   /features/components/sqlalchemy

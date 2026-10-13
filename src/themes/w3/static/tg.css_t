@@ -1,9 +1,6 @@
 @import url("basic.css");
 @import url("reset.css");
 
-@import url(https://fonts.googleapis.com/css?family=Marcellus+SC);
-@import url(https://fonts.googleapis.com/css?family=Antic+Didone);
-
 
 html {
     background: #fff;
@@ -13,7 +10,7 @@ body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 17px;
     font-weight: normal;
-    line-height: 1.4;
+    line-height: 1.6;
     color: #404040;
 }
 
@@ -23,7 +20,7 @@ body {
 }
 
 p {
-    margin: 20px 0 20px 0;
+    margin: 1em 0;
 }
 
 a {
@@ -50,7 +47,9 @@ body {
 }
 
 #mainmenu {
-    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #menu:after {
@@ -61,16 +60,17 @@ body {
     visibility: hidden;
 }
 
-#mainmenu > li {
-    display: inline-block;
-    padding: 16px;
+#mainmenu > li > a {
+    display: block;
+    padding: 14px 20px;
 }
 
 #mainmenu > li > a {
-    color: #bfbfbf;
+    color: #e5e5e5;
 }
 
-#mainmenu > li > a:hover {
+#mainmenu > li > a:hover,
+#mainmenu > li > a:focus-visible {
     color: {{theme_primarycolor }};
 }
 
@@ -106,30 +106,49 @@ body {
     background-repeat: no-repeat;
     background-position: 0px 16px;
     clear: both;
-    padding: 30px 20px 30px 180px;
+    padding: 32px 24px 32px 180px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px 24px;
     max-width: 950px;
     margin: auto;
 
     color: white;
 }
 
-#header > h1 {
-    font-size: 68px;
-    font-weight: bold;
-    font-family: 'Antic Didone', serif;
+#header > .brand {
+    grid-column: 1;
+    grid-row: 1;
+    font-size: 56px;
+    line-height: 1.1;
+    font-family: Georgia, serif;
 }
 
-#header > h2 {
-    font-size: 24px;
-    font-weight: 300;
-    line-height: 1.0;
-    font-family: 'Marcellus SC', serif;
+#header > .subtitle {
+    grid-column: 1;
+    font-size: 22px;
+    line-height: 1.3;
 }
 
 .body {
-    max-width: 1170px;
+    box-sizing: border-box;
+    max-width: 1150px;
     margin: auto;
-    padding-top: 30px;
+    padding: 40px 24px;
+}
+
+.body a:hover {
+    text-decoration: underline;
+}
+
+a:focus-visible {
+    outline: 2px solid {{ theme_primarycolor }};
+    outline-offset: 3px;
+}
+
+.body p, .body li, .body h1, .body h2, #header {
+    overflow-wrap: anywhere;
 }
 
 .sidebar-title{
@@ -137,16 +156,19 @@ body {
 }
 
 .body h1 {
-    font-size: 36px;
-    margin-bottom: 25px;
+    font-size: clamp(30px, 3.2vw, 40px);
+    line-height: 1.2;
+    color: {{ theme_secondarycolor }};
+    margin-bottom: 24px;
 }
 
 .body h2 {
-    font-size: 31.5px;
-    line-height: 40px;
+    font-size: 28px;
+    line-height: 1.3;
     color:#333333;
     border-bottom: 1px solid #eeeeee;
-    margin-top: 50px;
+    margin-top: 40px;
+    padding-bottom: 8px;
 }
 
 .sidebar {
@@ -158,6 +180,15 @@ body {
 
 .sidebar li {
     padding: 0;
+}
+
+.sidebar p {
+    margin: 10px 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 4px 12px;
 }
 
 .sidebar li > a,
@@ -173,25 +204,77 @@ body {
 .sidebar+.section>h1,
 .sidebar+.section>ul,
 .sidebar+.section>p,
-.sidebar+.section>blockquote {
+.sidebar+.section>blockquote,
+.sidebar+section>h1,
+.sidebar+section>ul,
+.sidebar+section>p,
+.sidebar+section>blockquote {
     margin-left: 260px;
 }
-/* Sphinx 7+ uses <section> instead of .section */
-/* Offset only the lead title/paragraph next to the sidebar */
-.sidebar+section > h1,
-.sidebar+section > p {
-    margin-left: 260px;
-}
-/* Ensure following nested sections start below the floated sidebar */
+
+/* Nested sections start below the floated sidebar. */
+.sidebar+.section > .section,
 .sidebar+section > section {
     clear: left;
 }
 
 pre {
-    padding: 7px 30px;
-    line-height: 1.3;
+    padding: 16px 20px;
+    line-height: 1.5;
     font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace!important;
-    font-size: 15px;
+    font-size: 14px;
+    background: #f5f7f7;
+    border: 1px solid #dce5e4;
+    border-radius: 4px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.body table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.body img, .body iframe, .body video, .body object, .body embed {
+    max-width: 100%;
+}
+
+.body img, .body video {
+    height: auto;
+}
+
+.body .quicklinks ul.simple {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    margin: 0 0 28px;
+    padding: 0;
+}
+
+.body .quicklinks li {
+    flex: 1 1 180px;
+    list-style: none;
+}
+
+.body .quicklinks p {
+    margin: 0;
+}
+
+.body .quicklinks a {
+    display: block;
+    padding: 12px 16px;
+    border: 1px solid #c9d9d7;
+    border-top: 3px solid {{ theme_primarycolor }};
+    border-radius: 4px;
+    background: #f5f9f8;
+    color: {{ theme_secondarycolor }};
+    font-weight: bold;
+}
+
+.body .quicklinks a:hover {
+    background: #e8f1ef;
 }
 
 .footer {
@@ -274,19 +357,7 @@ pre {
 }
 
 #turbogears-presentations iframe {
-    margin: 10px;
-}
-
-#github-flag {
-    position: absolute;
-    top: 0;
-    right: 0;
-    border: 0;
-    opacity: 0.8;
-}
-
-#github-flag:hover {
-    opacity: 1.0;
+    margin: 10px 0;
 }
 
 .doclink > * {
@@ -301,19 +372,18 @@ pre {
 #downloadbox {
     color: white;
     background-color: {{theme_downloadboxcolor}};
-    float: right;
-    border: 4px {{theme_tertiarycolor}} solid;
-    padding:10px;
-
-    -webkit-box-shadow: -2px 3px 5px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow:    -2px 3px 5px rgba(50, 50, 50, 0.75);
-    box-shadow:         -2px 3px 5px rgba(50, 50, 50, 0.75);
-
-    font-size: 16px;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    border: 1px solid {{theme_tertiarycolor}};
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 15px;
+    text-shadow: none;
 }
 
-#downloadbox strong {
-    font-weight: bold;
+#downloadbox a {
+    color: white;
+    text-decoration: underline;
 }
 
 #curversion {
@@ -326,23 +396,9 @@ pre {
 }
 
 #installcmd {
+    margin: 6px 0;
     font-family: 'Consolas', 'Menlo', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace!important;
     font-size: 14px;
-}
-
-#gplusdata { float: right; }
-#gplusbtn {
-    background-color: white;
-    display: inline-block;
-
-    background-color: #fafafa;
-    border: 1px solid #d4d4d4;
-    padding: 2px 5px 2px 4px;
-    border-radius: 3px;
-
-    vertical-align: top;
-    overflow: hidden;
-    width: 115px;
 }
 
 #the-cogbin #turbogears-2-packages > dt {
@@ -359,28 +415,37 @@ pre {
     font-weight: bold;
 }
 
-@media only screen and (max-width: 1170px) {
-    .body { padding: 0 10px 0 10px; }
-}
-
 @media only screen and (max-width: 968px) {
-    #downloadbox { display: none; }
-    #gplusdata { float: none; }
+    #header {
+        background-size: 120px auto;
+        padding-left: 140px;
+    }
+    #header > .brand { font-size: 44px; }
+    #downloadbox {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        justify-self: start;
+    }
 }
 
 @media only screen and (max-width: 640px) {
-    #gplusdata { display: none; }
-    #header > h1 { font-size: 44px; }
-    #header > h2 { font-size: 18px; }
-    #mainmenu { height: 40px; overflow: hidden; }
-    #mainmenu > li { padding: 8px; }
-    #header { background-size: 120px auto; padding-left: 140px; }
+    #mainmenu > li > a { padding: 10px; font-size: 15px; }
+    #header {
+        background-size: 64px auto;
+        background-position: 16px 8px;
+        padding: 16px;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+    }
+    #header > .brand { font-size: 36px; margin-left: 80px; }
+    #header > .subtitle { font-size: 18px; margin-left: 80px; }
+    #downloadbox { padding: 8px 12px; line-height: 1.4; justify-self: stretch; }
+    .body { padding: 16px; }
+    .body h1 { margin-bottom: 16px; }
+    .body .quicklinks ul.simple { gap: 8px; }
+    .body .quicklinks li { flex-basis: calc(50% - 4px); }
+    .body .quicklinks a { padding: 8px 10px; font-size: 16px; line-height: 1.4; }
     .body .sidebar { display: none; }
-    .sidebar+.section>* { margin-left: 0px !important; }
-}
-
-@media only screen and (max-width: 320px) {
-    #github-flag { display: none; }
-    #header > h1 { font-size: 32px; }
-    #header > h2 { font-size: 16px; }
+    .sidebar+.section>*,
+    .sidebar+section>* { margin-left: 0 !important; }
 }

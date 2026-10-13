@@ -1,47 +1,26 @@
-########################
-Project Status
-########################
+############
+Contributing
+############
 
 Latest stable release: 2.5.1 — released October 12, 2026
 
 Release announcement available at: https://github.com/TurboGears/tg2/releases/tag/tg2.5.1
 
-***************************
-Contributing to TurboGears
-***************************
+Code, documentation, bug reports and focused fixes are welcome. Choose the
+repository that owns the behavior you want to improve:
 
-All the TurboGears related projects are available on GitHub under the `TurboGears`_ account,
-if you want to take a look at TurboGears source code you can start there.
-In particular, we have several repositories for public use. The main ones are:
+- `Framework`_ — request handling, configuration and application runtime.
+- `Development tools`_ — Gearbox commands, generated projects and coding-assistant tools.
+- `Documentation`_ — tutorials, reference material and examples.
 
-- `TG2.x Core (Git)`_ - The actual framework code lives here
-- `TG2.x Devtools (Git)`_ - Useful tools used during development
-- `TG2.x Docs (Git)`_ - The documentation repository
+Read the repository's README and contribution guidance before starting.
+For a bug report, include your versions, reproduction steps and expected
+behavior. For a change, explain its user-visible effect and run the relevant
+tests or documentation build described by that repository.
 
-For continuous integration work, we use `Travis`_.
+For usage questions, visit :doc:`resources`; to start an application,
+visit :doc:`documentation`.
 
-**JetBrains** has been supporting the TurboGears development team with `PyCharm`_ licenses,
-which has been the development environment of choice for some of TurboGears contributors.
-
-Development happens on two core branches: the ``development`` one where major changes for
-the upcoming scheduled release happens and ``master`` branch which will point to the
-current stable release. Minor bugfix releases are branched from master on demand and merge
-back into the master branch when the release happens.
-
-To create your development environment you can perform:
-
-.. code-block:: bash
-
-   virtualenv ${HOME}/tg2env
-   source ${HOME}/tg2env/bin/activate
-   git clone git@github.com:TurboGears/tg2.git
-   cd tg2
-   git checkout development
-   pip install -e .[testing]
-
-.. _`TG2.x Core (Git)`: https://github.com/TurboGears/tg2
-.. _`TG2.x Devtools (Git)`: https://github.com/TurboGears/tg2devtools
-.. _`TG2.x Docs (Git)`: https://github.com/TurboGears/tg2docs
-.. _`Travis`: https://travis-ci.org/TurboGears/tg2
-.. _`TurboGears`: https://github.com/TurboGears
-.. _`PyCharm`: http://www.jetbrains.com/pycharm/
+.. _`Framework`: https://github.com/TurboGears/tg2
+.. _`Development tools`: https://github.com/TurboGears/tg2devtools
+.. _`Documentation`: https://github.com/TurboGears/tg2docs
