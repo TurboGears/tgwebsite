@@ -12,6 +12,7 @@
     <li class="{{['', 'active'][pagename=='documentation']}}"><a href="{{ pathto('documentation') }}">Documentation</a></li>
     <li class="{{['', 'active'][pagename=='resources']}}"><a href="{{ pathto('resources') }}">Community</a></li>
     <li class="{{['', 'active'][pagename=='current-status']}}"><a href="{{ pathto('current-status') }}">Contributing</a></li>
+    <li class="{{['', 'active'][pagename=='cogbin']}}"><a href="{{ pathto('cogbin') }}">The CogBin</a></li>
   </ul>
 </nav>
 
@@ -25,7 +26,7 @@
     </div>
 
     <div class="brand">TurboGears</div>
-    {% if pagename != 'index' %}<div class="subtitle">{{ title }}</div>{% endif %}
+    <div class="subtitle">{% if pagename == 'index' %}The Web Framework that scales with you and your agent{% else %}{{ title }}{% endif %}</div>
   </div>
 </div>
 {% endmacro %}

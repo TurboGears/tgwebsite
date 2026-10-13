@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.todo', 'sphinx.ext.ifconfig']
+extensions = ['sphinx.ext.todo', 'sphinx.ext.ifconfig', 'cogbin']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -64,7 +64,7 @@ release = '2.5.1'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', 'welcome/**', 'features/**', 'whos-using.rst', 'cogbin.rst']
+exclude_patterns = ['_build', 'welcome/**', 'features/**', 'whos-using.rst']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None

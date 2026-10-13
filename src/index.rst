@@ -5,16 +5,15 @@ The Web Framework that scales with you and your agent
 .. container:: quicklinks
 
    - `Start minimal <https://turbogears.readthedocs.io/en/latest/turbogears/minimal/index.html>`_
-   - `Create an API server <https://github.com/TurboGears/tg2docs/blob/tg2.5.1/docs/turbogears/api.rst>`_
+   - `Create an API server <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_
    - `Make webapps in minutes <https://turbogears.readthedocs.io/en/latest/turbogears/gearbox.html#quickstart>`_
-   - `Work with your agents <https://github.com/TurboGears/tg2docs/blob/tg2.5.1/docs/turbogears/agent-tooling.rst>`_
+   - `Work with your agents <https://turbogears.readthedocs.io/en/latest/turbogears/agent-tooling.html>`_
 
 TurboGears is a Python web framework for single-file services, JSON APIs
 (application programming interfaces) and database-backed web applications.
 Start with a small application; add controllers, templates, persistence and
 authentication as your application's needs grow. Use Python 3.10 or newer in
-a virtual environment. The API and agent links above open the 2.5.1
-documentation on GitHub.
+a virtual environment.
 
 Start Small
 ===========
@@ -70,7 +69,7 @@ including demo data; it is not a read-only check.
 
 Open http://localhost:8080/ and follow the generated ``README.rst`` to replace
 the demo with your application. For a JSON API instead, start with
-``gearbox quickstart-api myapi`` and the GitHub API guide linked above.
+``gearbox quickstart-api myapi`` and the `JSON API tutorial <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_.
 
 Work with Your Agents
 =====================
@@ -100,3 +99,4 @@ only run database setup or migrations when you intend to change that database.
    /documentation
    /features
    /resources
+   /cogbin
