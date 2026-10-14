@@ -1,28 +1,50 @@
-#########################################################
-The Web Framework that scales with you and your agent
-#########################################################
+#################################
+Start small. Build the whole app.
+#################################
 
-.. container:: quicklinks
+.. container:: home-intro
 
-   - `Start minimal <https://turbogears.readthedocs.io/en/latest/turbogears/minimal/index.html>`_
-   - `Create an API server <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_
-   - `Make webapps in minutes <https://turbogears.readthedocs.io/en/latest/turbogears/gearbox.html#quickstart>`_
-   - `Work with your agents <https://turbogears.readthedocs.io/en/latest/turbogears/agent-tooling.html>`_
+   TurboGears is a **Python web framework** for services, JSON APIs and
+   database-backed web apps. Start with one file and grow into a full-stack
+   project.
 
-TurboGears is a Python web framework for single-file services, JSON APIs
-(application programming interfaces) and database-backed web applications.
-Start with a small application; add controllers, templates, persistence and
-authentication as your application's needs grow. Use Python 3.10 or newer in
-a virtual environment.
+   .. container:: home-actions
 
-Start Small
+      `Try TurboGears <#start-small>`_
+      `Explore the docs <documentation.html>`_
+
+.. container:: home-benefits
+
+   .. container:: home-benefit
+
+      **Start with one file**
+
+      Serve your first response without a generated project. Add controllers
+      and templates as you need them.
+
+   .. container:: home-benefit
+
+      **Build beyond the endpoint**
+
+      Generate a web app with templates, SQLAlchemy models and authentication
+      already connected.
+
+   .. container:: home-benefit
+
+      **Make your API discoverable**
+
+      The API quickstart includes validation and generated OpenAPI
+      documentation. `Build a JSON API → <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_
+
+.. rst-class:: home-start
+
+Start small
 ===========
 
-Save this minimal-mode application as ``myapp.py``. Its root controller
-serves the home page; ``expose`` makes the method available over HTTP.
+**One file. A working web service.**
+Use Python 3.10+ in a virtual environment. Save this as ``myapp.py``:
 
 .. code-block:: python
-   :emphasize-lines: 5-8
 
    from wsgiref.simple_server import make_server
    from tg import MinimalApplicationConfigurator
@@ -42,21 +64,24 @@ serves the home page; ``expose`` makes the method available over HTTP.
    httpd = make_server('', 8080, config.make_wsgi_app())
    httpd.serve_forever()
 
-Install TurboGears and run it, then open http://localhost:8080/:
+Install and run:
 
 .. code-block:: bash
 
    python -m pip install TurboGears2
    python myapp.py
 
-Grow to a Full-Stack Application
-================================
+Open http://localhost:8080/ to see **Hello World**.
+`Keep building: the minimal tutorial → <https://turbogears.readthedocs.io/en/latest/turbogears/minimal/index.html>`_
 
-When you need a structured project, ``tg.devtools`` provides Gearbox, the
-command-line development toolkit. Its web application quickstart generates
-controllers, templates, authentication and SQLAlchemy database models.
-The setup command below intentionally initializes the development database,
-including demo data; it is not a read-only check.
+.. rst-class:: home-full
+
+Build the whole app
+===================
+
+**Ready for a database-backed project?**
+Gearbox, the development toolkit, generates your application's structure.
+In a Python 3.10+ virtual environment, run:
 
 .. code-block:: bash
 
@@ -67,30 +92,27 @@ including demo data; it is not a read-only check.
    gearbox setup-app -c development.ini
    gearbox serve -c development.ini
 
-Open http://localhost:8080/ and follow the generated ``README.rst`` to replace
-the demo with your application. For a JSON API instead, start with
-``gearbox quickstart-api myapi`` and the `JSON API tutorial <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_.
+``setup-app`` creates a local development database with demo data.
+Open http://localhost:8080/ to explore the generated app, then follow
+its ``README.rst`` to make it your own.
 
-Work with Your Agents
-=====================
+`Full-stack quickstart guide → <https://turbogears.readthedocs.io/en/latest/turbogears/gearbox.html#quickstart>`_
 
-Coding assistants can use the quickstart's ``AGENTS.md`` project instructions
-and optional skills (Markdown guidance for development). ``tginfo`` inspects
-project structure, ``scaffold`` creates conventional project files, and
-``tgshell`` runs checks in the application context. These tools help with
-development; they are not AI features or dependencies of your running app.
+Prefer an API? Use ``gearbox quickstart-api myapi`` and follow the
+`JSON API tutorial <https://turbogears.readthedocs.io/en/latest/turbogears/api.html>`_.
 
-From the installed project's root, inspect it or add skills to an existing
-project:
+.. rst-class:: home-agents
 
-.. code-block:: bash
+Give your coding agent project context
+======================================
 
-   gearbox tginfo summary --project . --config development.ini --json
-   gearbox tgskills
+Generated project instructions and optional development tools help agents
+inspect your app, create conventional project files and check it in a
+running application context. Your app's runtime stays independent of
+agent tooling.
 
-``tginfo`` is read-only, but importing application code can run startup side
-effects. Read ``AGENTS.md``, review changes and run the project's tests;
-only run database setup or migrations when you intend to change that database.
+`Explore agent tooling → <https://turbogears.readthedocs.io/en/latest/turbogears/agent-tooling.html>`_
+· `See a worked example <https://turbogears.readthedocs.io/en/latest/turbogears/agentic-development.html>`_
 
 .. toctree::
    :hidden:

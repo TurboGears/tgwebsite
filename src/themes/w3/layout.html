@@ -29,7 +29,7 @@
     </div>
 
     <div class="brand">TurboGears</div>
-    <div class="subtitle">{% if pagename == 'index' %}The Web Framework that scales with you and your agent{% else %}{{ title }}{% endif %}</div>
+    <div class="subtitle">{% if pagename == 'index' %}Web Framework that scales with you and your agent{% else %}{{ title }}{% endif %}</div>
 
     <div id="gplusdata">
       <a href="https://x.com/turbogearsorg" class="twitter-follow-button" data-show-count="false">Follow @turbogearsorg</a>
@@ -90,7 +90,7 @@
 
 {% block document %}
   <div class="documentwrapper">
-    <div class="body headerfix">
+    <div class="body headerfix{% if pagename == 'index' %} homepage{% endif %}">
       {% block body %} {% endblock %}
     </div>
   </div>
